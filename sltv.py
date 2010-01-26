@@ -24,8 +24,9 @@ class Sltv:
 		play_button.connect("toggled", self.on_play_press)
 		stop_button.connect("toggled", self.on_stop_press)
 		overlay_button.connect("pressed", self.on_overlay_change)
+		window.connect("delete_event", self.on_window_closed)
 
-	def on_play_press(self, signal):
+	def on_play_press(self, event):
 		if (self.state == 0):
 			stop_button = self.interface.get_object("stop_button")
 			stop_button.set_active(False)
@@ -47,14 +48,18 @@ class Sltv:
 			bus.add_signal_watch()
 			bus.connect("message", self.on_message)
 
-	def on_stop_press(self, signal):
+	def on_stop_press(self, event):
 		if (self.state == 1):
 			self.player.set_state(gst.STATE_NULL)
 			play_button = self.interface.get_object("play_button")
 			play_button.set_active(False)
 			self.state = 0
 
-	def on_overlay_change(self,signal):
+	def on_window_closed(self, event, data):
+		self.player.set_state(gst.STATE_NULL)
+		loop.quit()
+
+	def on_overlay_change(self, event):
 
 		overlay_text_entry = self.interface.get_object("overlay_text_entry")
 		overlay_text = overlay_text_entry.get_text()
