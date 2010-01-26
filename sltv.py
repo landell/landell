@@ -6,7 +6,7 @@ pygst.require("0.10")
 import gst
 import gtk
 
-class Sltv_Overlay:
+class Sltv:
 
 	def __init__(self):
 		self.state = 0
@@ -25,7 +25,6 @@ class Sltv_Overlay:
 		stop_button.connect("toggled", self.on_stop_press)
 		overlay_button.connect("pressed", self.on_overlay_change)
 
-
 	def on_play_press(self, signal):
 		if (self.state == 0):
 			stop_button = self.interface.get_object("stop_button")
@@ -37,12 +36,12 @@ class Sltv_Overlay:
 			self.source = gst.element_factory_make("v4l2src", "source")
 			self.overlay = gst.element_factory_make("cairotextoverlay", "overlay")
 			self.sink = gst.element_factory_make("xvimagesink", "sink")
-			self.player.add(self.source, self.overlay, self.sink);
+			self.player.add(self.source, self.overlay, self.sink)
 			gst.element_link_many(self.source, self.overlay, self.sink)
 
 			self.overlay.set_property("text", overlay_text)
 
-			self.player.set_state(gst.STATE_PLAYING);
+			self.player.set_state(gst.STATE_PLAYING)
 	
 			bus = self.player.get_bus()
 			bus.add_signal_watch()
@@ -50,7 +49,7 @@ class Sltv_Overlay:
 
 	def on_stop_press(self, signal):
 		if (self.state == 1):
-			self.player.set_state(gst.STATE_NULL);
+			self.player.set_state(gst.STATE_NULL)
 			play_button = self.interface.get_object("play_button")
 			play_button.set_active(False)
 			self.state = 0
@@ -69,6 +68,6 @@ class Sltv_Overlay:
 			self.player.set_state(gst.STATE_NULL) 
 			loop.quit()
 
-Sltv_Overlay()
+Sltv()
 loop = gobject.MainLoop()
 loop.run()
