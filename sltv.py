@@ -49,11 +49,14 @@ class Sltv:
 			stop_button = self.interface.get_object("stop_button")
 			stop_button.set_active(False)
 			self.state = 1
-			overlay_text_entry = self.interface.get_object("overlay_text_entry")
-			overlay_text = overlay_text_entry.get_text()
+			overlay_textview = self.interface.get_object("overlay_textview")
+			overlay_buffer = overlay_textview.get_buffer()
+			overlay_text = overlay_buffer.get_text(overlay_buffer.get_start_iter(),
+					overlay_buffer.get_end_iter(),
+					True)
 			self.player = gst.Pipeline("player")
 			self.source = gst.element_factory_make("v4l2src", "source")
-			self.overlay = gst.element_factory_make("cairotextoverlay", "overlay")
+			self.overlay = gst.element_factory_make("textoverlay", "overlay")
 			self.sink = gst.element_factory_make("xvimagesink", "sink")
 			self.player.add(self.source, self.overlay, self.sink)
 			gst.element_link_many(self.source, self.overlay, self.sink)
@@ -78,9 +81,11 @@ class Sltv:
 		loop.quit()
 
 	def on_overlay_change(self, event):
-
-		overlay_text_entry = self.interface.get_object("overlay_text_entry")
-		overlay_text = overlay_text_entry.get_text()
+		overlay_textview = self.interface.get_object("overlay_textview")
+		overlay_buffer = overlay_textview.get_buffer()
+		overlay_text = overlay_buffer.get_text(overlay_buffer.get_start_iter(),
+				overlay_buffer.get_end_iter(),
+				True)
 		self.overlay.set_property("text", overlay_text)
 
 	def on_message(self, bus, message):
