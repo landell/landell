@@ -34,7 +34,7 @@ class Sltv:
 		window = self.interface.get_object("window1")
 		window.show_all()
 
-		output = Output()
+		self.output = Output()
 
 		file_location_entry = self.interface.get_object("file_location_entry")
 		play_button = self.interface.get_object("play_button")
@@ -62,7 +62,7 @@ class Sltv:
 			self.player = gst.Pipeline("player")
 			self.source = gst.element_factory_make("v4l2src", "source")
 			self.overlay = gst.element_factory_make("textoverlay", "overlay")
-			self.sink = gst.element_factory_make("xvimagesink", "sink")
+			self.sink = self.output.output
 			self.player.add(self.source, self.overlay, self.sink)
 			gst.element_link_many(self.source, self.overlay, self.sink)
 
