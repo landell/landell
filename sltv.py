@@ -27,7 +27,7 @@ import gtk
 class Sltv:
 
 	def __init__(self):
-		self.state = 0
+		self.state = "stopped"
 		self.interface = gtk.Builder()
 		self.interface.add_from_file("sltv.ui")
 		window = self.interface.get_object("window1")
@@ -45,15 +45,17 @@ class Sltv:
 		window.connect("delete_event", self.on_window_closed)
 
 	def on_play_press(self, event):
-		if (self.state == 0):
+		if (self.state == "stopped"):
 			stop_button = self.interface.get_object("stop_button")
 			stop_button.set_active(False)
-			self.state = 1
+			self.state = "playing"
 			overlay_textview = self.interface.get_object("overlay_textview")
 			overlay_buffer = overlay_textview.get_buffer()
 			overlay_text = overlay_buffer.get_text(overlay_buffer.get_start_iter(),
 					overlay_buffer.get_end_iter(),
 					True)
+
+
 			self.player = gst.Pipeline("player")
 			self.source = gst.element_factory_make("v4l2src", "source")
 			self.overlay = gst.element_factory_make("textoverlay", "overlay")
@@ -70,14 +72,13 @@ class Sltv:
 			bus.connect("message", self.on_message)
 
 	def on_stop_press(self, event):
-		if (self.state == 1):
+		if (self.state == "playing"):
 			self.player.set_state(gst.STATE_NULL)
 			play_button = self.interface.get_object("play_button")
 			play_button.set_active(False)
-			self.state = 0
+			self.state = "stopped"
 
 	def on_window_closed(self, event, data):
-		self.player.set_state(gst.STATE_NULL)
 		loop.quit()
 
 	def on_overlay_change(self, event):
