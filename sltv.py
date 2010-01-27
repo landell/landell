@@ -23,6 +23,7 @@ import pygst
 pygst.require("0.10")
 import gst
 import gtk
+from output import *
 
 class Sltv:
 
@@ -32,6 +33,8 @@ class Sltv:
 		self.interface.add_from_file("sltv.ui")
 		window = self.interface.get_object("window1")
 		window.show_all()
+
+		output = Output()
 
 		file_location_entry = self.interface.get_object("file_location_entry")
 		play_button = self.interface.get_object("play_button")

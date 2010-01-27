@@ -172,7 +172,7 @@
                             <property name="homogeneous">True</property>
                             <property name="layout_style">spread</property>
                             <child>
-                              <object class="GtkRadioButton" id="radiobutton1">
+                              <object class="GtkRadioButton" id="dv_radiobutton">
                                 <property name="label" translatable="yes">File DV</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -187,13 +187,14 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkRadioButton" id="radiobutton2">
+                              <object class="GtkRadioButton" id="oggtheora_radiobutton">
                                 <property name="label" translatable="yes">Ogg Theora</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
+                                <property name="group">dv_radiobutton</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -202,12 +203,13 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkRadioButton" id="radiobutton3">
+                              <object class="GtkRadioButton" id="icecast_radiobutton">
                                 <property name="label" translatable="yes">icecast</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">True</property>
+                                <property name="group">dv_radiobutton</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
