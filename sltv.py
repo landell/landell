@@ -25,6 +25,9 @@ import gst
 import gtk
 from output import *
 
+def show_output(menuitem, output):
+	output.show_window()
+
 class Sltv:
 
 	def __init__(self):
@@ -41,11 +44,13 @@ class Sltv:
 		stop_button = self.interface.get_object("stop_button")
 		stop_button.set_active(True)
 		overlay_button = self.interface.get_object("overlay_button")
+		output_menuitem = self.interface.get_object("output_menuitem")
 
 		play_button.connect("toggled", self.on_play_press)
 		stop_button.connect("toggled", self.on_stop_press)
 		overlay_button.connect("pressed", self.on_overlay_change)
 		window.connect("delete_event", self.on_window_closed)
+		output_menuitem.connect("activate", show_output, self.output)
 
 	def on_play_press(self, event):
 		if (self.state == "stopped"):
@@ -62,7 +67,7 @@ class Sltv:
 			self.player = gst.Pipeline("player")
 			self.source = gst.element_factory_make("v4l2src", "source")
 			self.overlay = gst.element_factory_make("textoverlay", "overlay")
-			self.sink = self.output.output
+			self.sink = self.output.get_output()
 			self.player.add(self.source, self.overlay, self.sink)
 			gst.element_link_many(self.source, self.overlay, self.sink)
 
