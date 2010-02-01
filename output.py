@@ -32,7 +32,7 @@ def file_out(self):
 	self.output_selection = "file"
 
 class Output:
-	
+
 	def __init__(self):
 		self.interface = gtk.Builder()
 		self.interface.add_from_file("output.ui")
@@ -42,7 +42,7 @@ class Output:
 		file_radiobutton = self.interface.get_object("file_radiobutton")
 		icecast_radiobutton = self.interface.get_object("icecast_radiobutton")
 		output_action_group = gtk.ActionGroup("output_action_group")
-		output_action_entries = [("file_action", None, "File output", None, "Output to file", 0), 
+		output_action_entries = [("file_action", None, "File output", None, "Output to file", 0),
 				("icecast_action", None, "Icecast output", None, "Output to Icecast", 1)]
 		output_action_group.add_radio_actions(output_action_entries,
 				5, self.output_changed, None)
@@ -107,4 +107,3 @@ class Output:
 		notebook = self.interface.get_object("notebook1")
 		notebook.next_page()
 		self.output_selection = "icecast"
-
