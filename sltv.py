@@ -67,9 +67,20 @@ class Sltv:
 			self.player = gst.Pipeline("player")
 			self.source = gst.element_factory_make("v4l2src", "source")
 			self.overlay = gst.element_factory_make("textoverlay", "overlay")
+			self.tee = gst.element_factory_make("tee", "tee")
+			self.queue1 = gst.element_factory_make("queue", "queue1")
+			self.queue2 = gst.element_factory_make("queue", "queue2")
+			self.preview = gst.element_factory_make("xvimagesink", "preview")
 			self.sink = self.output.get_output()
-			self.player.add(self.source, self.overlay, self.sink)
-			gst.element_link_many(self.source, self.overlay, self.sink)
+			self.player.add(self.source, self.overlay, self.tee, self.queue1,
+					self.queue2, self.preview, self.sink)
+			gst.element_link_many(self.source, self.overlay, self.tee, self.queue1, self.sink)
+			gst.element_link_many(self.tee, self.queue2, self.preview)
+
+			#Setting preview to be displayed at preview_area
+			preview_area = self.interface.get_object("preview_area")
+			window_id = preview_area.window.xid
+			self.preview.set_xwindow_id(window_id)
 
 			self.overlay.set_property("text", overlay_text)
 
