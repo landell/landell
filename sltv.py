@@ -83,7 +83,7 @@ class Sltv:
 			self.overlay.set_property("text", overlay_text)
 
 			self.player.set_state(gst.STATE_PLAYING)
-	
+
 			bus = self.player.get_bus()
 			bus.add_signal_watch()
 			bus.connect("message", self.on_message)
@@ -107,11 +107,11 @@ class Sltv:
 		self.overlay.set_property("text", overlay_text)
 
 	def on_message(self, bus, message):
-		t = message.type 
-		if t == gst.MESSAGE_EOS: 
-			self.player.set_state(gst.STATE_NULL) 
-		elif t == gst.MESSAGE_ERROR: 
-			self.player.set_state(gst.STATE_NULL) 
+		t = message.type
+		if t == gst.MESSAGE_EOS:
+			self.player.set_state(gst.STATE_NULL)
+		elif t == gst.MESSAGE_ERROR:
+			self.player.set_state(gst.STATE_NULL)
 
 Sltv()
 loop = gobject.MainLoop()
