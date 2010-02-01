@@ -38,20 +38,6 @@ class Output:
 		self.interface.add_from_file("output.ui")
 		dialog = self.interface.get_object("dialog1")
 
-		#Encoding selection
-		dv_radiobutton = self.interface.get_object("dv_radiobutton")
-		theora_radiobutton = self.interface.get_object("theora_radiobutton")
-		encoding_action_group = gtk.ActionGroup("encoding_action_group")
-		action_entries = [("theora_action", None, "Ogg Theora", None, "Ogg Theora encoding", 0),
-				("dv_action", None, "DV", None, "Uncompressed DV", 1)]
-		encoding_action_group.add_radio_actions(action_entries,
-				0, self.encoding_changed, None)
-		theora_action = encoding_action_group.get_action("theora_action")
-		theora_action.connect_proxy(theora_radiobutton)
-		dv_action = encoding_action_group.get_action("dv_action")
-		dv_action.connect_proxy(dv_radiobutton)
-		self.encoding_selection = "theora"
-
 		#Output selection
 		file_radiobutton = self.interface.get_object("file_radiobutton")
 		icecast_radiobutton = self.interface.get_object("icecast_radiobutton")
@@ -101,26 +87,7 @@ class Output:
 			self.sink.set_property("password", self.password)
 			self.sink.set_property("port", self.port)
 			self.sink.set_property("mount", self.mount_point)
-
-		if self.encoding_selection == "theora":
-			self.output = gst.Bin()
-			theoraenc = gst.element_factory_make("theoraenc", "theoraenc")
-			oggmux = gst.element_factory_make("oggmux", "oggmux")
-			self.output.add(theoraenc, oggmux, self.sink)
-			gst.element_link_many(theoraenc, oggmux, self.sink)
-			sink_pad = gst.GhostPad("sink_ghost_pad", self.output.find_unlinked_pad(gst.PAD_SINK))
-			self.output.add_pad(sink_pad)
-			return self.output
-		if self.encoding_selection == "dv":
-			print "dv"
-			self.output = gst.Bin()
-			dvenc = gst.element_factory_make("ffenc_dvvideo", "dvenc")
-			ffmux = gst.element_factory_make("ffmux_dv", "ffmux")
-			self.output.add(dvenc, ffmux, self.sink)
-			gst.element_link_many(dvenc, ffmux, self.sink)
-			sink_pad = gst.GhostPad("sink_ghost_pad", self.output.find_unlinked_pad(gst.PAD_SINK))
-			self.output.add_pad(sink_pad)
-			return self.output
+		return self.sink
 
 	def file_set(self, button):
 		self.filename = button.get_filename()
@@ -128,12 +95,6 @@ class Output:
 	def close_dialog(self, button, data):
 		dialog = self.interface.get_object("dialog1")
 		dialog.hide_all()
-
-	def encoding_changed(self, radioaction, current):
-		if current.get_name() == "theora_action":
-			self.encoding_selection = "theora"
-		if current.get_name() == "dv_action":
-			self.encoding_selection = "dv"
 
 	def output_changed(self, radioaction, current):
 		if current.get_name() == "file_action":

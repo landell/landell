@@ -24,10 +24,15 @@ pygst.require("0.10")
 import gst
 import gtk
 from output import *
+from encoding import *
 from preview import *
+from audio import *
 
 def show_output(menuitem, output):
 	output.show_window()
+
+def show_encoding(menuitem, encoding):
+	encoding.show_window()
 
 class Sltv:
 
@@ -38,7 +43,9 @@ class Sltv:
 		window = self.interface.get_object("window1")
 		window.show_all()
 
+		self.encoding = Encoding()
 		self.output = Output()
+		self.audio = Audio()
 
 		file_location_entry = self.interface.get_object("file_location_entry")
 		play_button = self.interface.get_object("play_button")
@@ -46,12 +53,14 @@ class Sltv:
 		stop_button.set_active(True)
 		overlay_button = self.interface.get_object("overlay_button")
 		output_menuitem = self.interface.get_object("output_menuitem")
+		encoding_menuitem = self.interface.get_object("encoding_menuitem")
 
 		play_button.connect("toggled", self.on_play_press)
 		stop_button.connect("toggled", self.on_stop_press)
 		overlay_button.connect("pressed", self.on_overlay_change)
 		window.connect("delete_event", self.on_window_closed)
 		output_menuitem.connect("activate", show_output, self.output)
+		encoding_menuitem.connect("activate", show_encoding, self.encoding)
 
 	def on_play_press(self, event):
 		if (self.state == "stopped"):
@@ -73,12 +82,21 @@ class Sltv:
 			self.tee = gst.element_factory_make("tee", "tee")
 			self.queue1 = gst.element_factory_make("queue", "queue1")
 			self.queue2 = gst.element_factory_make("queue", "queue2")
+			self.video_encoding = self.encoding.get_video_encoding()
+			self.audio_encoding = self.encoding.get_audio_encoding()
+			self.mux = self.encoding.get_mux()
 			self.sink = self.output.get_output()
 			self.preview_element = preview.get_preview()
+			self.audio_src = self.audio.get_audiosrc()
 			self.player.add(self.source, self.overlay, self.tee, self.queue1,
-					self.queue2, self.preview_element, self.sink)
-			gst.element_link_many(self.source, self.overlay, self.tee, self.queue1, self.sink)
-			gst.element_link_many(self.tee, self.queue2, self.preview_element)
+					self.video_encoding, self.mux, self.queue2, self.preview_element, self.sink)
+			err = gst.element_link_many(self.source, self.overlay, self.tee, self.queue1, 
+					self.video_encoding, self.mux, self.sink)
+			if err == False:
+				print "Erro ao conectar elementos"
+			err = gst.element_link_many(self.tee, self.queue2, self.preview_element)
+			if err == False:
+				print "Erro ao conectar preview"
 
 			self.overlay.set_property("text", overlay_text)
 
