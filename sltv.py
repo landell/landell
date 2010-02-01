@@ -24,6 +24,7 @@ pygst.require("0.10")
 import gst
 import gtk
 from output import *
+from preview import *
 
 def show_output(menuitem, output):
 	output.show_window()
@@ -63,6 +64,8 @@ class Sltv:
 					overlay_buffer.get_end_iter(),
 					True)
 
+			preview_area = self.interface.get_object("preview_area")
+			preview = Preview(preview_area)
 
 			self.player = gst.Pipeline("player")
 			self.source = gst.element_factory_make("v4l2src", "source")
@@ -70,17 +73,12 @@ class Sltv:
 			self.tee = gst.element_factory_make("tee", "tee")
 			self.queue1 = gst.element_factory_make("queue", "queue1")
 			self.queue2 = gst.element_factory_make("queue", "queue2")
-			self.preview = gst.element_factory_make("xvimagesink", "preview")
 			self.sink = self.output.get_output()
+			self.preview_element = preview.get_preview()
 			self.player.add(self.source, self.overlay, self.tee, self.queue1,
-					self.queue2, self.preview, self.sink)
+					self.queue2, self.preview_element, self.sink)
 			gst.element_link_many(self.source, self.overlay, self.tee, self.queue1, self.sink)
-			gst.element_link_many(self.tee, self.queue2, self.preview)
-
-			#Setting preview to be displayed at preview_area
-			preview_area = self.interface.get_object("preview_area")
-			window_id = preview_area.window.xid
-			self.preview.set_xwindow_id(window_id)
+			gst.element_link_many(self.tee, self.queue2, self.preview_element)
 
 			self.overlay.set_property("text", overlay_text)
 
