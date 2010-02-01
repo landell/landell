@@ -94,14 +94,23 @@ class Sltv:
 			err = gst.element_link_many(self.source, self.overlay, self.tee, self.queue1,
 					self.video_encoding, self.mux, self.sink)
 			if err == False:
-				print "Erro ao conectar elementos"
+				print "Error conecting elements"
 			err = gst.element_link_many(self.tee, self.queue2, self.preview_element)
 			if err == False:
-				print "Erro ao conectar preview"
+				print "Error conecting preview"
 
 			self.overlay.set_property("text", overlay_text)
 
-			self.player.set_state(gst.STATE_PLAYING)
+			change_return = self.player.set_state(gst.STATE_PLAYING)
+			if change_return == 0:
+				print "Error: could not change state to playing: "
+				print change_return.value_name
+				print "Falling back to ximagesink"
+				self.player.remove(self.preview_element)
+				self.preview_element = preview.get_alternative_preview()
+				self.player.add(preview_element)
+				gst.element_link_many(self.queue2, self.preview_element, self.sink)
+				self.player.set_state(gst.STATE_PLAYING)
 
 			bus = self.player.get_bus()
 			bus.add_signal_watch()
