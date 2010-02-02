@@ -75,7 +75,7 @@ class Sltv:
 					True)
 
 			preview_area = self.interface.get_object("preview_area")
-			preview = Preview(preview_area)
+			self.preview = Preview(preview_area)
 
 			self.player = gst.Pipeline("player")
 			self.source = gst.element_factory_make("v4l2src", "source")
@@ -87,7 +87,7 @@ class Sltv:
 			self.audio_encoding = self.encoding.get_audio_encoding()
 			self.mux = self.encoding.get_mux()
 			self.sink = self.output.get_output()
-			self.preview_element = preview.get_preview()
+			self.preview_element = self.preview.get_preview()
 			self.audio_src = self.audio.get_audiosrc()
 			self.player.add(self.source, self.overlay, self.tee, self.queue1,
 					self.video_encoding, self.mux, self.queue2, self.preview_element, self.sink)
@@ -101,20 +101,12 @@ class Sltv:
 
 			self.overlay.set_property("text", overlay_text)
 
-			change_return = self.player.set_state(gst.STATE_PLAYING)
-			if change_return == 0:
-				print "Error: could not change state to playing: "
-				print change_return.value_name
-				print "Falling back to ximagesink"
-				self.player.remove(self.preview_element)
-				self.preview_element = preview.get_alternative_preview()
-				self.player.add(preview_element)
-				gst.element_link_many(self.queue2, self.preview_element, self.sink)
-				self.player.set_state(gst.STATE_PLAYING)
-
 			bus = self.player.get_bus()
 			bus.add_signal_watch()
+			bus.enable_sync_message_emission()
 			bus.connect("message", self.on_message)
+			bus.connect("sync-message::element", self.on_sync_message)
+			self.player.set_state(gst.STATE_PLAYING)
 
 	def on_stop_press(self, event):
 		if (self.state == "playing"):
@@ -124,7 +116,7 @@ class Sltv:
 			self.state = "stopped"
 
 	def on_window_closed(self, event, data):
-		loop.quit()
+		gtk.main_quit()
 
 	def on_overlay_change(self, event):
 		overlay_textview = self.interface.get_object("overlay_textview")
@@ -141,6 +133,16 @@ class Sltv:
 		elif t == gst.MESSAGE_ERROR:
 			self.player.set_state(gst.STATE_NULL)
 
+	def on_sync_message(self, bus, message):
+		print "sync_message received"
+		#import pdb; pdb.set_trace()
+		if message.structure is None:
+			return
+		message_name = message.structure.get_name()
+		if message_name == "prepare-xwindow-id":
+			previewsink = message.src
+			self.preview.set_display(previewsink)
+
 Sltv()
-loop = gobject.MainLoop()
-loop.run()
+gtk.gdk.threads_init()
+gtk.main()
