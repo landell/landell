@@ -25,7 +25,7 @@ import gst
 import gtk
 
 class Encoding:
-	
+
 	def __init__(self):
 		self.interface = gtk.Builder()
 		self.interface.add_from_file("encoding.ui")
