@@ -85,21 +85,19 @@ class Sltv:
 			queue2 = gst.element_factory_make("queue", "queue2")
 			queue3 = gst.element_factory_make("queue", "queue3")
 			queue4 = gst.element_factory_make("queue", "queue4")
-			self.video_encoding = self.encoding.get_video_encoding()
-			self.audio_encoding = self.encoding.get_audio_encoding()
 			self.mux = self.encoding.get_mux()
 			self.sink = self.output.get_output()
 			self.preview_element = self.preview.get_preview()
 			self.audiosrc = self.audio.get_audiosrc()
 			self.player.add(self.videosrc, self.overlay, self.tee, queue1,
-					self.video_encoding, queue3, self.mux, queue2, self.preview_element, self.sink,
-					self.audiosrc, self.audio_encoding, queue4)
+					queue3, self.mux, queue2, self.preview_element, self.sink,
+					self.audiosrc, queue4)
 			err = gst.element_link_many(self.videosrc, queue3, self.overlay, self.tee, queue1,
-					self.video_encoding, self.mux, self.sink)
+					self.mux, self.sink)
 			if err == False:
 				print "Error conecting elements"
 			err = gst.element_link_many(self.tee, queue2, self.preview_element)
-			gst.element_link_many(self.audiosrc, queue4, self.audio_encoding, self.mux)
+			gst.element_link_many(self.audiosrc, queue4, self.mux)
 			if err == False:
 				print "Error conecting preview"
 
