@@ -26,10 +26,11 @@ import gtk
 
 class Encoding:
 
-	def __init__(self):
+	def __init__(self, window):
 		self.interface = gtk.Builder()
 		self.interface.add_from_file("encoding.ui")
 		dialog = self.interface.get_object("dialog1")
+		dialog.set_transient_for(window)
 
 		#Encoding selection
 		dv_radiobutton = self.interface.get_object("dv_radiobutton")
@@ -54,6 +55,7 @@ class Encoding:
 	def show_window(self):
 		dialog = self.interface.get_object("dialog1")
 		dialog.show_all()
+		dialog.run()
 
 	def get_mux(self):
 		if self.encoding_selection == "theora":
