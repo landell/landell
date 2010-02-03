@@ -1,0 +1,11 @@
+README for sltv
+===============
+
+License: GPLv2
+
+Dependencies:
+
+  * gstreamer-plugins-base (>= 0.10)
+  * python (>= 2.5)
+  * python-gst (>= 0.10)
+  * gstreamer-tools (>= 0.10)
