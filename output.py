@@ -33,10 +33,11 @@ def file_out(self):
 
 class Output:
 
-	def __init__(self):
+	def __init__(self, window):
 		self.interface = gtk.Builder()
 		self.interface.add_from_file("output.ui")
 		dialog = self.interface.get_object("dialog1")
+		dialog.set_transient_for(window)
 
 		#Output selection
 		file_radiobutton = self.interface.get_object("file_radiobutton")
@@ -65,6 +66,7 @@ class Output:
 	def show_window(self):
 		dialog = self.interface.get_object("dialog1")
 		dialog.show_all()
+		dialog.run()
 
 	def get_output(self):
 		if self.output_selection == "file":
