@@ -44,8 +44,8 @@ class Sltv:
 		window = self.interface.get_object("window1")
 		window.show_all()
 
-		self.encoding = Encoding()
-		self.output = Output()
+		self.encoding = Encoding(window)
+		self.output = Output(window)
 		self.audio = Audio()
 
 		file_location_entry = self.interface.get_object("file_location_entry")

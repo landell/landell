@@ -26,10 +26,11 @@ import gtk
 
 class Encoding:
 
-	def __init__(self):
+	def __init__(self, window):
 		self.interface = gtk.Builder()
 		self.interface.add_from_file("encoding.ui")
 		dialog = self.interface.get_object("dialog1")
+		dialog.set_transient_for(window)
 
 		#Encoding selection
 		dv_radiobutton = self.interface.get_object("dv_radiobutton")
