@@ -94,12 +94,12 @@ class Sltv:
 			self.player.add(self.videosrc, self.overlay, self.tee, queue1,
 					self.video_encoding, queue3, self.mux, queue2, self.preview_element, self.sink,
 					self.audiosrc, self.audio_encoding, queue4)
-			err = gst.element_link_many(self.videosrc, self.overlay, self.tee, queue1,
-					self.video_encoding, queue3, self.mux, self.sink)
+			err = gst.element_link_many(self.videosrc, queue3, self.overlay, self.tee, queue1,
+					self.video_encoding, self.mux, self.sink)
 			if err == False:
 				print "Error conecting elements"
 			err = gst.element_link_many(self.tee, queue2, self.preview_element)
-			gst.element_link_many(self.audiosrc, self.audio_encoding, queue4, self.mux)
+			gst.element_link_many(self.audiosrc, queue4, self.audio_encoding, self.mux)
 			if err == False:
 				print "Error conecting preview"
 
