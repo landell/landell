@@ -28,12 +28,23 @@ from encoding import *
 from preview import *
 from audio import *
 from preview import *
+from effects import *
 
 def show_output(menuitem, output):
 	output.show_window()
 
 def show_encoding(menuitem, encoding):
 	encoding.show_window()
+
+def create_effects_combobox(combobox):
+	liststore = gtk.ListStore(gobject.TYPE_STRING)
+	combobox.set_model(liststore)
+	cell = gtk.CellRendererText()
+	combobox.pack_start(cell, True)
+	combobox.add_attribute(cell, 'text', 0)
+	for type in Effect.get_types():
+		liststore.append((type,))
+	combobox.set_active(1)
 
 class Sltv:
 
@@ -55,6 +66,8 @@ class Sltv:
 		overlay_button = self.interface.get_object("overlay_button")
 		output_menuitem = self.interface.get_object("output_menuitem")
 		encoding_menuitem = self.interface.get_object("encoding_menuitem")
+		self.effect_combobox = self.interface.get_object("effect_combobox")
+		create_effects_combobox(self.effect_combobox)
 
 		play_button.connect("toggled", self.on_play_press)
 		stop_button.connect("toggled", self.on_stop_press)
@@ -62,6 +75,7 @@ class Sltv:
 		window.connect("delete_event", self.on_window_closed)
 		output_menuitem.connect("activate", show_output, self.output)
 		encoding_menuitem.connect("activate", show_encoding, self.encoding)
+
 
 	def on_play_press(self, event):
 		if (self.state == "stopped"):
@@ -79,6 +93,7 @@ class Sltv:
 
 			self.player = gst.Pipeline("player")
 			self.videosrc = gst.element_factory_make("v4l2src", "videosrc")
+			self.effect = Effect.make_effect(self.effect_combobox.get_active_text())
 			self.overlay = gst.element_factory_make("textoverlay", "overlay")
 			self.tee = gst.element_factory_make("tee", "tee")
 			queue1 = gst.element_factory_make("queue", "queue1")
@@ -91,8 +106,8 @@ class Sltv:
 			self.audiosrc = self.audio.get_audiosrc()
 			self.player.add(self.videosrc, self.overlay, self.tee, queue1,
 					queue3, self.mux, queue2, self.preview_element, self.sink,
-					self.audiosrc, queue4)
-			err = gst.element_link_many(self.videosrc, queue3, self.overlay, self.tee, queue1,
+					self.audiosrc, queue4, self.effect)
+			err = gst.element_link_many(self.videosrc, queue3, self.effect, self.overlay, self.tee, queue1,
 					self.mux, self.sink)
 			if err == False:
 				print "Error conecting elements"
