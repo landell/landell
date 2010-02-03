@@ -65,6 +65,7 @@ class Output:
 	def show_window(self):
 		dialog = self.interface.get_object("dialog1")
 		dialog.show_all()
+		dialog.run()
 
 	def get_output(self):
 		if self.output_selection == "file":
