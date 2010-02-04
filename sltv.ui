@@ -269,6 +269,7 @@
                       <object class="GtkTextView" id="overlay_textview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="wrap_mode">word-char</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
