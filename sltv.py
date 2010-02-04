@@ -29,6 +29,7 @@ from preview import *
 from audio import *
 from preview import *
 from effects import *
+from swap import *
 
 def show_output(menuitem, output):
 	output.show_window()
@@ -50,6 +51,7 @@ class Sltv:
 
 	def __init__(self):
 		self.state = "stopped"
+		self.player = None
 		self.interface = gtk.Builder()
 		self.interface.add_from_file("sltv.ui")
 		window = self.interface.get_object("window1")
@@ -75,7 +77,7 @@ class Sltv:
 		window.connect("delete_event", self.on_window_closed)
 		output_menuitem.connect("activate", show_output, self.output)
 		encoding_menuitem.connect("activate", show_encoding, self.encoding)
-
+		self.effect_combobox.connect("changed", self.effect_changed)
 
 	def on_play_press(self, event):
 		if (self.state == "stopped"):
@@ -94,20 +96,21 @@ class Sltv:
 			self.player = gst.Pipeline("player")
 			self.videosrc = gst.element_factory_make("v4l2src", "videosrc")
 			self.effect = Effect.make_effect(self.effect_combobox.get_active_text())
+			self.effect_name = self.effect_combobox.get_active_text()
 			self.overlay = gst.element_factory_make("textoverlay", "overlay")
 			self.tee = gst.element_factory_make("tee", "tee")
 			queue1 = gst.element_factory_make("queue", "queue1")
 			queue2 = gst.element_factory_make("queue", "queue2")
-			queue3 = gst.element_factory_make("queue", "queue3")
+			self.queue3 = gst.element_factory_make("queue", "queue3")
 			queue4 = gst.element_factory_make("queue", "queue4")
 			self.mux = self.encoding.get_mux()
 			self.sink = self.output.get_output()
 			self.preview_element = self.preview.get_preview()
 			self.audiosrc = self.audio.get_audiosrc()
 			self.player.add(self.videosrc, self.overlay, self.tee, queue1,
-					queue3, self.mux, queue2, self.preview_element, self.sink,
+					self.queue3, self.mux, queue2, self.preview_element, self.sink,
 					self.audiosrc, queue4, self.effect)
-			err = gst.element_link_many(self.videosrc, queue3, self.effect, self.overlay, self.tee, queue1,
+			err = gst.element_link_many(self.videosrc, self.queue3, self.effect, self.overlay, self.tee, queue1,
 					self.mux, self.sink)
 			if err == False:
 				print "Error conecting elements"
@@ -124,6 +127,16 @@ class Sltv:
 			bus.connect("message", self.on_message)
 			bus.connect("sync-message::element", self.on_sync_message)
 			self.player.set_state(gst.STATE_PLAYING)
+
+	def effect_changed(self, combobox):
+		#FIXME set signal
+#		new_effect = Effect.make_effect(self.effect_combobox.get_active_text())
+#		Swap.swap_element(self.player, self.queue3, self.overlay, self.effect, new_effect)
+#		self.effect = new_effect
+		if self.player != None:
+			print "Effect name is: " + self.effect_name
+			Effect.change(self.effect, self.effect_name, self.effect_combobox.get_active_text())
+			self.effect_name = self.effect_combobox.get_active_text()
 
 	def on_stop_press(self, event):
 		if (self.state == "playing"):
