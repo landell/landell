@@ -22,27 +22,29 @@ import pygst
 pygst.require("0.10")
 import gst
 
+def register_filter(feature_list):
+	type_list = []
+	for plugin_feature in feature_list:
+		if plugin_feature.get_klass() == "Filter/Effect/Video":
+			type_list.append(plugin_feature.get_name())
+			print plugin_feature.get_name()
+			print plugin_feature.get_num_pad_templates()
+	return type_list
+
 class Effect:
 
-	effects = {}
-	effects["none"] = ("identity", "rgb")
-	effects["noir_blank"] = ("videobalance saturation=0", "yuv")
-	effects["saturation"] = ("videobalance saturation=2", "yuv")
-	effects["aging"] = ("agingtv", "rgb")
+	registry = gst.registry_get_default()
+	effects = registry.get_feature_list(gst.ElementFactory)
+	effects = register_filter(effects)
 
 	@classmethod
 	def get_types(klass):
-		return klass.effects.keys()
+		return klass.effects
 	
 	@classmethod
-	def make_effect(klass, effect_type):
-		if klass.effects[effect_type][1] == "yuv":
-			description = klass.effects[effect_type][0]
-		elif klass.effects[effect_type][1] == "rgb":
-			description = "ffmpegcolorspace ! " + klass.effects[effect_type][0] + " ! ffmpegcolorspace"
-		else:
-			print "Cannot create that effect"
-			return None
+	def make_effect(klass, effect_name):
+		plugin_feature = klass.registry.find_feature(effect_name, gst.ElementFactory)
+		description = "ffmpegcolorspace ! " + effect_name + " ! ffmpegcolorspace"
 		print description
 		effectbin = gst.parse_bin_from_description(description, True) 
 		return effectbin
