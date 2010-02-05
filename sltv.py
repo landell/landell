@@ -25,76 +25,36 @@ import gst
 import gtk
 from output import *
 from encoding import *
-from preview import *
 from audio import *
 from preview import *
 from effects import *
 from swap import *
 
-def show_output(menuitem, output):
-	output.show_window()
-
-def show_encoding(menuitem, encoding):
-	encoding.show_window()
-
-def create_effects_combobox(combobox):
-	liststore = gtk.ListStore(gobject.TYPE_STRING)
-	combobox.set_model(liststore)
-	cell = gtk.CellRendererText()
-	combobox.pack_start(cell, True)
-	combobox.add_attribute(cell, 'text', 0)
-	for type in Effect.get_types():
-		liststore.append((type,))
-	combobox.set_active(0)
 
 class Sltv:
 
-	def __init__(self):
+	def __init__(self, preview_area, window):
 		self.state = "stopped"
 		self.player = None
-		self.interface = gtk.Builder()
-		self.interface.add_from_file("sltv.ui")
-		window = self.interface.get_object("window1")
-		window.show_all()
+		self.preview = Preview(preview_area)
 
 		self.encoding = Encoding(window)
 		self.output = Output(window)
 		self.audio = Audio()
 
-		file_location_entry = self.interface.get_object("file_location_entry")
-		play_button = self.interface.get_object("play_button")
-		stop_button = self.interface.get_object("stop_button")
-		stop_button.set_active(True)
-		overlay_button = self.interface.get_object("overlay_button")
-		output_menuitem = self.interface.get_object("output_menuitem")
-		encoding_menuitem = self.interface.get_object("encoding_menuitem")
-		self.effect_combobox = self.interface.get_object("effect_combobox")
-		create_effects_combobox(self.effect_combobox)
-		self.effect_checkbutton = self.interface.get_object("effect_checkbutton")
-		self.effect_label = self.interface.get_object("effect_label")
-		self.set_effects(False)
+		self.effect_enabled = "False"
 
-		self.effect_checkbutton.connect("toggled", self.effect_toggled)
-		play_button.connect("toggled", self.on_play_press)
-		stop_button.connect("toggled", self.on_stop_press)
-		overlay_button.connect("pressed", self.on_overlay_change)
-		window.connect("delete_event", self.on_window_closed)
-		output_menuitem.connect("activate", show_output, self.output)
-		encoding_menuitem.connect("activate", show_encoding, self.encoding)
+	def show_encoding(self):
+		self.encoding.show_window()
 
-	def on_play_press(self, event):
-		if (self.state == "stopped"):
-			stop_button = self.interface.get_object("stop_button")
-			stop_button.set_active(False)
+	def show_output(self):
+		self.output.show_window()
+
+	def play(self, overlay_text, effect_name):
+		if self.state == "stopped":
 			self.state = "playing"
-			overlay_textview = self.interface.get_object("overlay_textview")
-			overlay_buffer = overlay_textview.get_buffer()
-			overlay_text = overlay_buffer.get_text(overlay_buffer.get_start_iter(),
-					overlay_buffer.get_end_iter(),
-					True)
 
-			preview_area = self.interface.get_object("preview_area")
-			self.preview = Preview(preview_area)
+			#Element creation
 
 			self.player = gst.Pipeline("player")
 			self.videosrc = gst.element_factory_make("v4l2src", "videosrc")
@@ -109,21 +69,25 @@ class Sltv:
 			self.preview_element = self.preview.get_preview()
 			self.audiosrc = self.audio.get_audiosrc()
 			self.colorspace = gst.element_factory_make("ffmpegcolorspace", "colorspacesink")
+
 			if self.effect_enabled:
-				self.effect = Effect.make_effect(self.effect_combobox.get_active_text())
-				self.effect_name = self.effect_combobox.get_active_text()
+				self.effect_name = effect_name
+				self.effect = Effect.make_effect(effect_name)
 				self.player.add(self.effect)
 			else:
 				src_colorspace = gst.element_factory_make("ffmpegcolorspace", "src_colorspace")
 				self.player.add(src_colorspace)
+
 			self.player.add(self.videosrc, self.overlay, self.tee, queue1,
 					self.queue3, self.mux, self.sink,
 					self.audiosrc, queue4, self.colorspace)
 			self.videosrc.link(self.queue3)
+
 			if self.effect_enabled:
 				gst.element_link_many(self.queue3, self.effect, self.overlay)
 			else:
 				gst.element_link_many(self.queue3, src_colorspace, self.overlay)
+
 			#self.player.add(queue2, self.preview_element)
 			err = gst.element_link_many(self.overlay, self.tee, queue1, self.colorspace, self.mux, self.sink)
 			if err == False:
@@ -142,30 +106,14 @@ class Sltv:
 			bus.connect("sync-message::element", self.on_sync_message)
 			self.player.set_state(gst.STATE_PLAYING)
 
+	def stop(self):
+		self.player.set_state(gst.STATE_NULL)
+		self.state = "stopped"
+
 	def set_effects(self, state):
-		self.effect_combobox.set_sensitive(state)
-		self.effect_label.set_sensitive(state)
 		self.effect_enabled = state
 
-	def effect_toggled(self, checkbox):
-		self.set_effects(not self.effect_enabled)
-
-	def on_stop_press(self, event):
-		if (self.state == "playing"):
-			self.player.set_state(gst.STATE_NULL)
-			play_button = self.interface.get_object("play_button")
-			play_button.set_active(False)
-			self.state = "stopped"
-
-	def on_window_closed(self, event, data):
-		gtk.main_quit()
-
-	def on_overlay_change(self, event):
-		overlay_textview = self.interface.get_object("overlay_textview")
-		overlay_buffer = overlay_textview.get_buffer()
-		overlay_text = overlay_buffer.get_text(overlay_buffer.get_start_iter(),
-				overlay_buffer.get_end_iter(),
-				True)
+	def change_overlay(self, overlay_text):
 		self.overlay.set_property("text", overlay_text)
 
 	def on_message(self, bus, message):
@@ -184,7 +132,3 @@ class Sltv:
 		if message_name == "prepare-xwindow-id":
 			previewsink = message.src
 			self.preview.set_display(previewsink)
-
-Sltv()
-gtk.gdk.threads_init()
-gtk.main()
