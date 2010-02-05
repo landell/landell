@@ -113,6 +113,9 @@ class Sltv:
 				self.effect = Effect.make_effect(self.effect_combobox.get_active_text())
 				self.effect_name = self.effect_combobox.get_active_text()
 				self.player.add(self.effect)
+			else:
+				src_colorspace = gst.element_factory_make("ffmpegcolorspace", "src_colorspace")
+				self.player.add(src_colorspace)
 			self.player.add(self.videosrc, self.overlay, self.tee, queue1,
 					self.queue3, self.mux, self.sink,
 					self.audiosrc, queue4, self.colorspace)
@@ -120,7 +123,7 @@ class Sltv:
 			if self.effect_enabled:
 				gst.element_link_many(self.queue3, self.effect, self.overlay)
 			else:
-				self.queue3.link(self.overlay)
+				gst.element_link_many(self.queue3, src_colorspace, self.overlay)
 			#self.player.add(queue2, self.preview_element)
 			err = gst.element_link_many(self.overlay, self.tee, queue1, self.colorspace, self.mux, self.sink)
 			if err == False:
