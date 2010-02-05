@@ -68,7 +68,7 @@ class Sltv:
 		play_button = self.interface.get_object("play_button")
 		stop_button = self.interface.get_object("stop_button")
 		stop_button.set_active(True)
-		overlay_button = self.interface.get_object("overlay_button")
+		self.overlay_button = self.interface.get_object("overlay_button")
 		output_menuitem = self.interface.get_object("output_menuitem")
 		encoding_menuitem = self.interface.get_object("encoding_menuitem")
 		video_switch_menuitem = self.interface.get_object("video_switch_menuitem")
@@ -77,7 +77,7 @@ class Sltv:
 
 		play_button.connect("toggled", self.on_play_press)
 		stop_button.connect("toggled", self.on_stop_press)
-		overlay_button.connect("pressed", self.on_overlay_change)
+		self.overlay_button.connect("pressed", self.on_overlay_change)
 		window.connect("delete_event", self.on_window_closed)
 		output_menuitem.connect("activate", show_output, self.output)
 		encoding_menuitem.connect("activate", show_encoding, self.encoding)
@@ -90,6 +90,7 @@ class Sltv:
 			stop_button = self.interface.get_object("stop_button")
 			stop_button.set_active(False)
 			self.state = "playing"
+			self.overlay_button.set_sensitive(True)
 			overlay_textview = self.interface.get_object("overlay_textview")
 			overlay_buffer = overlay_textview.get_buffer()
 			overlay_text = overlay_buffer.get_text (
@@ -183,6 +184,7 @@ class Sltv:
 			play_button = self.interface.get_object("play_button")
 			play_button.set_active(False)
 			self.state = "stopped"
+			self.overlay_button.set_sensitive(False)
 
 	def on_window_closed(self, event, data):
 		gtk.main_quit()
