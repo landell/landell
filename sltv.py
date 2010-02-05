@@ -45,7 +45,7 @@ def create_effects_combobox(combobox):
 	combobox.add_attribute(cell, 'text', 0)
 	for type in Effect.get_types():
 		liststore.append((type,))
-	combobox.set_active(1)
+	combobox.set_active(0)
 
 class Sltv:
 
@@ -70,7 +70,11 @@ class Sltv:
 		encoding_menuitem = self.interface.get_object("encoding_menuitem")
 		self.effect_combobox = self.interface.get_object("effect_combobox")
 		create_effects_combobox(self.effect_combobox)
+		self.effect_checkbutton = self.interface.get_object("effect_checkbutton")
+		self.effect_label = self.interface.get_object("effect_label")
+		self.set_effects(False)
 
+		self.effect_checkbutton.connect("toggled", self.effect_toggled)
 		play_button.connect("toggled", self.on_play_press)
 		stop_button.connect("toggled", self.on_stop_press)
 		overlay_button.connect("pressed", self.on_overlay_change)
@@ -107,14 +111,16 @@ class Sltv:
 			self.sink = self.output.get_output()
 			self.preview_element = self.preview.get_preview()
 			self.audiosrc = self.audio.get_audiosrc()
+			self.colorspace = gst.element_factory_make("ffmpegcolorspace", "colorspacesink")
 			self.player.add(self.videosrc, self.overlay, self.tee, queue1,
-					self.queue3, self.mux, queue2, self.preview_element, self.sink,
-					self.audiosrc, queue4, self.effect)
-			err = gst.element_link_many(self.videosrc, self.queue3, self.effect, self.overlay, self.tee, queue1,
+					self.queue3, self.mux, self.sink,
+					self.audiosrc, queue4, self.effect, self.colorspace)
+			#self.player.add(queue2, self.preview_element)
+			err = gst.element_link_many(self.videosrc, self.queue3, self.effect, self.overlay, self.tee, queue1, self.colorspace,
 					self.mux, self.sink)
 			if err == False:
 				print "Error conecting elements"
-			err = gst.element_link_many(self.tee, queue2, self.preview_element)
+			#err = gst.element_link_many(self.tee, queue2, self.preview_element)
 			gst.element_link_many(self.audiosrc, queue4, self.mux)
 			if err == False:
 				print "Error conecting preview"
@@ -127,6 +133,14 @@ class Sltv:
 			bus.connect("message", self.on_message)
 			bus.connect("sync-message::element", self.on_sync_message)
 			self.player.set_state(gst.STATE_PLAYING)
+
+	def set_effects(self, state):
+		self.effect_combobox.set_sensitive(state)
+		self.effect_label.set_sensitive(state)
+		self.effect_enabled = state
+
+	def effect_toggled(self, checkbox):
+		self.set_effects(not self.effect_enabled)
 
 	def effect_changed(self, combobox):
 		#FIXME set signal
