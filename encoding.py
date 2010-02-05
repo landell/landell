@@ -29,8 +29,8 @@ class Encoding:
 	def __init__(self, window):
 		self.interface = gtk.Builder()
 		self.interface.add_from_file("encoding.ui")
-		dialog = self.interface.get_object("dialog1")
-		dialog.set_transient_for(window)
+		self.dialog = self.interface.get_object("dialog1")
+		self.dialog.set_transient_for(window)
 
 		#Encoding selection
 		dv_radiobutton = self.interface.get_object("dv_radiobutton")
@@ -50,54 +50,49 @@ class Encoding:
 
 		close_button = self.interface.get_object("close_button")
 		close_button.connect("pressed", self.close_dialog, data)
-		dialog.connect("delete_event", self.close_dialog)
+		self.dialog.connect("delete_event", self.close_dialog)
 
 	def show_window(self):
-		dialog = self.interface.get_object("dialog1")
-		dialog.show_all()
-		dialog.run()
-
-	def get_video_encoding(self):
-		if self.encoding_selection == "theora":
-			print "theora_video_enc"
-			theoraenc = gst.element_factory_make("theoraenc", "theoraenc")
-			return theoraenc
-		if self.encoding_selection == "dv":
-			print "dv"
-			dvenc = gst.element_factory_make("ffenc_dvvideo", "dvenc")
-			return dvenc
-
-	def get_audio_encoding(self):
-		if self.encoding_selection == "theora":
-			print "theora_audio_enc"
-			self.audio = gst.Bin()
-			audioconvert = gst.element_factory_make("audioconvert", "audioconvert")
-			vorbisenc = gst.element_factory_make("vorbisenc", "vorbisenc")
-			self.audio.add(audioconvert, vorbisenc)
-			gst.element_link_many(audioconvert, vorbisenc)
-			source_pad = gst.GhostPad("source_ghost_pad", self.audio.find_unlinked_pad(gst.PAD_SRC))
-			sink_pad = gst.GhostPad("sink_ghost_pad", self.audio.find_unlinked_pad(gst.PAD_SINK))
-			self.audio.add_pad(source_pad)
-			self.audio.add_pad(sink_pad)
-			return self.audio
-		if self.encoding_selection == "dv":
-			print "dv"
-			audioconvert = gst.element_factory_make("audioconvert", "audioconvert")
-			return audioconvert
+		self.dialog.show_all()
+		self.dialog.run()
 
 	def get_mux(self):
 		if self.encoding_selection == "theora":
 			print "oggmux"
+			self.mux = gst.Bin()
+			audioconvert = gst.element_factory_make("audioconvert", "audioconvert")
+			vorbisenc = gst.element_factory_make("vorbisenc", "vorbisenc")
+			theoraenc = gst.element_factory_make("theoraenc", "theoraenc")
 			oggmux = gst.element_factory_make("oggmux", "oggmux")
-			return oggmux
+			self.mux.add(audioconvert, vorbisenc, theoraenc, oggmux)
+			gst.element_link_many(audioconvert, vorbisenc, oggmux)
+			theoraenc.link(oggmux)
+			source_pad = gst.GhostPad("source_ghost_pad", self.mux.find_unlinked_pad(gst.PAD_SRC))
+			self.mux.add_pad(source_pad)
+			sink_pad1 = gst.GhostPad("sink_pad1", self.mux.find_unlinked_pad(gst.PAD_SINK))
+			sink_pad2 = gst.GhostPad("sink_pad2", self.mux.find_unlinked_pad(gst.PAD_SINK))
+			self.mux.add_pad(sink_pad1)
+			self.mux.add_pad(sink_pad2)
+			return self.mux
 		if self.encoding_selection == "dv":
 			print "dv"
+			self.mux = gst.Bin()
+			dvenc = gst.element_factory_make("ffenc_dvvideo", "dvenc")
+			audioconvert = gst.element_factory_make("audioconvert", "audioconvert")
 			ffmux = gst.element_factory_make("ffmux_dv", "ffmux")
-			return ffmux
+			self.mux.add(audioconvert, ffmux, dvenc)
+			audioconvert.link(ffmux)
+			dvenc.link(ffmux)
+			source_pad = gst.GhostPad("source_ghost_pad", self.mux.find_unlinked_pad(gst.PAD_SRC))
+			self.mux.add_pad(source_pad)
+			sink_pad1 = gst.GhostPad("sink_pad1", self.mux.find_unlinked_pad(gst.PAD_SINK))
+			sink_pad2 = gst.GhostPad("sink_pad2", self.mux.find_unlinked_pad(gst.PAD_SINK))
+			self.mux.add_pad(sink_pad1)
+			self.mux.add_pad(sink_pad2)
+			return self.mux
 
 	def close_dialog(self, button, data):
-		dialog = self.interface.get_object("dialog1")
-		dialog.hide_all()
+		self.dialog.hide_all()
 
 	def encoding_changed(self, radioaction, current):
 		if current.get_name() == "theora_action":
