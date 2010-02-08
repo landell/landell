@@ -108,17 +108,17 @@ class Sltv:
 			else:
 				gst.element_link_many(self.queue_video, src_colorspace, self.overlay)
 
-			#self.player.add(queue2, self.preview_element)
-
 			err = gst.element_link_many(self.overlay, self.tee, queue1, self.colorspace, self.mux, self.sink)
 			if err == False:
 				print "Error conecting elements"
 
 			gst.element_link_many(self.queue_audio, self.convert, self.mux)
 
-			#err = gst.element_link_many(self.tee, queue2, self.preview_element)
-			if (err == False):
-				print "Error conecting preview"
+			if self.preview_enabled:
+				self.player.add(queue2, self.preview_element)
+				err = gst.element_link_many(self.tee, queue2, self.preview_element)
+				if (err == False):
+					print "Error conecting preview"
 
 			self.overlay.set_property("text", overlay_text)
 
@@ -147,8 +147,8 @@ class Sltv:
 	def set_effects(self, state):
 		self.effect_enabled = state
 
-	def effect_toggled(self, checkbox):
-		self.set_effects(not self.effect_enabled)
+	def set_preview(self, state):
+		self.preview_enabled = state
 
 	def on_stop_press(self, event):
 		if (self.state == "playing"):

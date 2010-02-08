@@ -55,11 +55,13 @@ class SltvUI:
 		self.effect_combobox = self.interface.get_object("effect_combobox")
 		create_effects_combobox(self.effect_combobox)
 		self.effect_checkbutton = self.interface.get_object("effect_checkbutton")
+		self.preview_checkbutton = self.interface.get_object("preview_checkbutton")
 		preview_area = self.interface.get_object("preview_area")
 
 		self.effect_label = self.interface.get_object("effect_label")
 
 		self.effect_checkbutton.connect("toggled", self.effect_toggled)
+		self.preview_checkbutton.connect("toggled", self.preview_toggled)
 		play_button.connect("toggled", self.on_play_press)
 		stop_button.connect("toggled", self.on_stop_press)
 		overlay_button.connect("pressed", self.on_overlay_change)
@@ -70,6 +72,8 @@ class SltvUI:
 
 		self.sltv = Sltv(preview_area, window)
 		self.set_effects(False)
+		self.preview_state = False
+		self.sltv.set_preview(False)
 
 	def on_play_press(self, event):
 		if self.state == "stopped":
@@ -103,6 +107,10 @@ class SltvUI:
 
 	def effect_toggled(self, checkbox):
 		self.set_effects(not self.effect_enabled)
+
+	def preview_toggled(self, checkbox):
+		self.preview_state = not self.preview_state
+		self.sltv.set_preview(self.preview_state)
 
 	def on_stop_press(self, event):
 		if (self.state == "playing"):
