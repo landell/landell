@@ -33,15 +33,22 @@ class Output:
 		#Output selection
 		file_radiobutton = self.interface.get_object("file_radiobutton")
 		icecast_radiobutton = self.interface.get_object("icecast_radiobutton")
+		fakesink_radiobutton = self.interface.get_object("fakesink_radiobutton")
 		output_action_group = gtk.ActionGroup("output_action_group")
-		output_action_entries = [("file_action", None, "File output", None, "Output to file", 0),
-				("icecast_action", None, "Icecast output", None, "Output to Icecast", 1)]
+		output_action_entries = [
+			("file_action", None, "File output", None, "Output to file", 0),
+			("icecast_action", None, "Icecast output", None, "Output to Icecast", 1),
+			("fakesink_action", None, "fakesink output", None, "Output to fakesink", 2)
+		]
 		output_action_group.add_radio_actions(output_action_entries,
 				5, self.output_changed, None)
 		file_action = output_action_group.get_action("file_action")
 		file_action.connect_proxy(file_radiobutton)
 		icecast_action = output_action_group.get_action("icecast_action")
 		icecast_action.connect_proxy(icecast_radiobutton)
+		fakesink_action = output_action_group.get_action("fakesink_action")
+		fakesink_action.connect_proxy(fakesink_radiobutton)
+
 		self.output_selection = "file"
 		self.filename = "default.ogg"
 
@@ -62,7 +69,7 @@ class Output:
 		if self.output_selection == "file":
 			self.sink = gst.element_factory_make("filesink", "filesink")
 			self.sink.set_property("location", self.filename);
-		else:
+		if self.output_selection ==  "icecast":
 			self.sink = gst.element_factory_make("shout2send", "icecastsink")
 			server_entry = self.interface.get_object("server_entry")
 			user_entry = self.interface.get_object("user_entry")
@@ -79,6 +86,8 @@ class Output:
 			self.sink.set_property("password", self.password)
 			self.sink.set_property("port", self.port)
 			self.sink.set_property("mount", self.mount_point)
+		if self.output_selection ==  "fakesink":
+			self.sink = gst.element_factory_make("fakesink", "filesink")
 		return self.sink
 
 	def file_set(self, button):
@@ -93,14 +102,23 @@ class Output:
 		if current.get_name() == "icecast_action":
 			self.icecast_out()
 
+		if current.get_name() == "fakesink_action":
+			self.fakesink_out()
+
 	def icecast_out(self):
 		print "Icecast"
 		notebook = self.interface.get_object("notebook1")
-		notebook.next_page()
+		notebook.set_current_page(1)
 		self.output_selection = "icecast"
 
 	def file_out(self):
 		print "File"
 		notebook = self.interface.get_object("notebook1")
-		notebook.prev_page()
+		notebook.set_current_page(0)
 		self.output_selection = "file"
+
+	def fakesink_out(self):
+		print "fakesink"
+		notebook = self.interface.get_object("notebook1")
+		notebook.set_current_page(2)
+		self.output_selection = "fakesink"
