@@ -160,14 +160,6 @@ class Sltv:
 	def set_preview(self, state):
 		self.preview_enabled = state
 
-	def on_stop_press(self, event):
-		if (self.state == "playing"):
-			self.player.set_state(gst.STATE_NULL)
-			play_button = self.interface.get_object("play_button")
-			play_button.set_active(False)
-			self.state = "stopped"
-			self.overlay_button.set_sensitive(False)
-
 	def on_window_closed(self, event, data):
 		gtk.main_quit()
 
