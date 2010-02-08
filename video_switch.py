@@ -33,12 +33,14 @@ class VideoSwitch:
 		#input selection
 		file_radiobutton = self.interface.get_object("file_radiobutton")
 		webcam_radiobutton = self.interface.get_object("webcam_radiobutton")
+		test_radiobutton = self.interface.get_object("test_radiobutton")
 
 		input_action_group = gtk.ActionGroup("input_action_group")
 
 		input_action_entries = [
 			("webcam_action", None, "Webcam", None, "Input to webcam", 0),
-			("file_action", None, "File", None, "Input to file", 1)
+			("file_action", None, "File", None, "Input to file", 1),
+			("test_action", None, "Test", None, "Test", 2)
 		]
 
 		input_action_group.add_radio_actions(
@@ -50,6 +52,10 @@ class VideoSwitch:
 
 		file_action = input_action_group.get_action("file_action")
 		file_action.connect_proxy(file_radiobutton)
+
+		test_action = input_action_group.get_action("test_action")
+		test_action.connect_proxy(test_radiobutton)
+
 
 		data = ""
 
@@ -94,12 +100,22 @@ class VideoSwitch:
 		notebook = self.interface.get_object("notebook1")
 		notebook.next_page()
 
+	def test_in(self):
+		self.status = "test"
+		print "test"
+		notebook = self.interface.get_object("notebook1")
+		notebook.prev_page()
+
 	def input_changed(self, radioaction, current):
 		if current.get_name() == "file_action":
 			self.file_in()
 
 		if current.get_name() == "webcam_action":
 			self.webcam_in()
+
+		if current.get_name() == "test_action":
+			self.test_in()
+
 
 	def get_status(self):
 		return self.status

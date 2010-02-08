@@ -85,6 +85,13 @@ class Sltv:
 				self.player.add (self.filesrc, self.decode)
 				gst.element_link_many (self.filesrc, self.decode)
 
+			if (self.switch_status == "test"):
+				self.videosrc = gst.element_factory_make ("videotestsrc", "videotestsrc")
+				self.audiosrc = gst.element_factory_make ("audiotestsrc", "audiotestsrc")
+				self.player.add (self.videosrc, self.audiosrc)
+				gst.element_link_many (self.videosrc, self.queue_video)
+				gst.element_link_many (self.audiosrc, self.queue_audio)
+
 			self.overlay = gst.element_factory_make("textoverlay", "overlay")
 			self.tee = gst.element_factory_make("tee", "tee")
 			queue1 = gst.element_factory_make("queue", "queue1")
