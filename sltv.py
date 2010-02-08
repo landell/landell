@@ -30,6 +30,7 @@ from audio import *
 from preview import *
 from effects import *
 from video_switch import *
+from swap import *
 
 def show_output(menuitem, output):
 	output.show_window()
@@ -48,12 +49,13 @@ def create_effects_combobox(combobox):
 	combobox.add_attribute(cell, 'text', 0)
 	for type in Effect.get_types():
 		liststore.append((type,))
-	combobox.set_active(1)
+	combobox.set_active(0)
 
 class Sltv:
 
 	def __init__(self):
 		self.state = "stopped"
+		self.player = None
 		self.interface = gtk.Builder()
 		self.interface.add_from_file("sltv.ui")
 		window = self.interface.get_object("window1")
@@ -74,7 +76,11 @@ class Sltv:
 		video_switch_menuitem = self.interface.get_object("video_switch_menuitem")
 		self.effect_combobox = self.interface.get_object("effect_combobox")
 		create_effects_combobox(self.effect_combobox)
+		self.effect_checkbutton = self.interface.get_object("effect_checkbutton")
+		self.effect_label = self.interface.get_object("effect_label")
+		self.set_effects(False)
 
+		self.effect_checkbutton.connect("toggled", self.effect_toggled)
 		play_button.connect("toggled", self.on_play_press)
 		stop_button.connect("toggled", self.on_stop_press)
 		self.overlay_button.connect("pressed", self.on_overlay_change)
@@ -84,6 +90,7 @@ class Sltv:
 		video_switch_menuitem.connect(
 		  "activate", show_video_switch, self.video_switch
 		)
+		self.effect_combobox.connect("changed", self.effect_changed)
 
 	def on_play_press(self, event):
 		if (self.state == "stopped"):
@@ -129,6 +136,7 @@ class Sltv:
 				gst.element_link_many (self.filesrc, self.decode)
 
 			self.effect = Effect.make_effect(self.effect_combobox.get_active_text())
+			self.effect_name = self.effect_combobox.get_active_text()
 			self.overlay = gst.element_factory_make("textoverlay", "overlay")
 			self.tee = gst.element_factory_make("tee", "tee")
 			queue1 = gst.element_factory_make("queue", "queue1")
@@ -136,23 +144,22 @@ class Sltv:
 			self.mux = self.encoding.get_mux()
 			self.sink = self.output.get_output()
 			self.preview_element = self.preview.get_preview()
+			self.colorspace = gst.element_factory_make("ffmpegcolorspace", "colorspacesink")
 
 			self.player.add (
 				self.overlay, self.tee, queue1,
 				self.mux, queue2, self.preview_element,
-				self.sink, self.effect
+				self.sink, self.effect, self.colorspace
 			)
 
-			colorspace = gst.element_factory_make ("ffmpegcolorspace", "colorspace")
-			self.player.add (colorspace)
 			err = gst.element_link_many (
-				self.queue_video, colorspace, self.effect, self.overlay,
-				self.tee, queue1, self.mux, self.sink
+				self.queue_video, self.effect, self.overlay,
+				self.tee, queue1, self.colorspace, self.mux, self.sink
 			)
 			if (err == False):
 				print "Error conecting elements"
 
-			err = gst.element_link_many(self.tee, queue2, self.preview_element)
+			#err = gst.element_link_many(self.tee, queue2, self.preview_element)
 			if (err == False):
 				print "Error conecting preview"
 
@@ -177,6 +184,24 @@ class Sltv:
 
 		if ("video" in name):
 			pad.link(self.queue_video.get_pad("sink"))
+
+	def set_effects(self, state):
+		self.effect_combobox.set_sensitive(state)
+		self.effect_label.set_sensitive(state)
+		self.effect_enabled = state
+
+	def effect_toggled(self, checkbox):
+		self.set_effects(not self.effect_enabled)
+
+	def effect_changed(self, combobox):
+		#FIXME set signal
+#		new_effect = Effect.make_effect(self.effect_combobox.get_active_text())
+#		Swap.swap_element(self.player, self.queue3, self.overlay, self.effect, new_effect)
+#		self.effect = new_effect
+		if self.player != None:
+			print "Effect name is: " + self.effect_name
+			Effect.change(self.effect, self.effect_name, self.effect_combobox.get_active_text())
+			self.effect_name = self.effect_combobox.get_active_text()
 
 	def on_stop_press(self, event):
 		if (self.state == "playing"):
