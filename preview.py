@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 # Copyright (C) 2009 Holoscopio Tecnologia
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
 #
