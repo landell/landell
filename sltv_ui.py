@@ -45,7 +45,7 @@ class SltvUI:
 		window.show_all()
 
 		file_location_entry = self.interface.get_object("file_location_entry")
-		play_button = self.interface.get_object("play_button")
+		self.play_button = self.interface.get_object("play_button")
 		stop_button = self.interface.get_object("stop_button")
 		stop_button.set_active(True)
 		overlay_button = self.interface.get_object("overlay_button")
@@ -60,7 +60,7 @@ class SltvUI:
 		self.effect_label = self.interface.get_object("effect_label")
 
 		self.effect_checkbutton.connect("toggled", self.effect_toggled)
-		play_button.connect("toggled", self.on_play_press)
+		self.play_button.connect("toggled", self.on_play_press)
 		stop_button.connect("toggled", self.on_stop_press)
 		overlay_button.connect("pressed", self.on_overlay_change)
 		window.connect("delete_event", self.on_window_closed)
@@ -106,8 +106,7 @@ class SltvUI:
 
 	def on_stop_press(self, event):
 		if (self.state == "playing"):
-			play_button = self.interface.get_object("play_button")
-			play_button.set_active(False)
+			self.play_button.set_active(False)
 			self.state = "stopped"
 			self.sltv.stop()
 
