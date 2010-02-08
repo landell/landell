@@ -173,7 +173,6 @@ class Sltv:
 
 	def on_sync_message(self, bus, message):
 		print "sync_message received"
-		#import pdb; pdb.set_trace()
 		if message.structure is None:
 			return
 		message_name = message.structure.get_name()

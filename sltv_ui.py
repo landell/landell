@@ -45,9 +45,9 @@ class SltvUI:
 		window.show_all()
 
 		file_location_entry = self.interface.get_object("file_location_entry")
-		play_button = self.interface.get_object("play_button")
-		stop_button = self.interface.get_object("stop_button")
-		stop_button.set_active(True)
+		self.play_button = self.interface.get_object("play_button")
+		self.stop_button = self.interface.get_object("stop_button")
+		self.stop_button.set_active(True)
 		overlay_button = self.interface.get_object("overlay_button")
 		output_menuitem = self.interface.get_object("output_menuitem")
 		encoding_menuitem = self.interface.get_object("encoding_menuitem")
@@ -62,8 +62,8 @@ class SltvUI:
 
 		self.effect_checkbutton.connect("toggled", self.effect_toggled)
 		self.preview_checkbutton.connect("toggled", self.preview_toggled)
-		play_button.connect("toggled", self.on_play_press)
-		stop_button.connect("toggled", self.on_stop_press)
+		self.play_button.connect("toggled", self.on_play_press)
+		self.stop_button.connect("toggled", self.on_stop_press)
 		overlay_button.connect("pressed", self.on_overlay_change)
 		window.connect("delete_event", self.on_window_closed)
 		output_menuitem.connect("activate", self.show_output)
@@ -74,15 +74,14 @@ class SltvUI:
 		self.set_effects(False)
 		self.preview_state = False
 		self.sltv.set_preview(False)
+		self.overlay_textview = self.interface.get_object("overlay_textview")
 
 	def on_play_press(self, event):
 		if self.state == "stopped":
-			stop_button = self.interface.get_object("stop_button")
-			stop_button.set_active(False)
+			self.stop_button.set_active(False)
 			self.state = "playing"
 
-			overlay_textview = self.interface.get_object("overlay_textview")
-			overlay_buffer = overlay_textview.get_buffer()
+			overlay_buffer = self.overlay_textview.get_buffer()
 			overlay_text = overlay_buffer.get_text(overlay_buffer.get_start_iter(),
 					overlay_buffer.get_end_iter(),
 					True)
@@ -114,8 +113,7 @@ class SltvUI:
 
 	def on_stop_press(self, event):
 		if (self.state == "playing"):
-			play_button = self.interface.get_object("play_button")
-			play_button.set_active(False)
+			self.play_button.set_active(False)
 			self.state = "stopped"
 			self.sltv.stop()
 
@@ -123,8 +121,7 @@ class SltvUI:
 		gtk.main_quit()
 
 	def on_overlay_change(self, event):
-		overlay_textview = self.interface.get_object("overlay_textview")
-		overlay_buffer = overlay_textview.get_buffer()
+		overlay_buffer = self.overlay_textview.get_buffer()
 		overlay_text = overlay_buffer.get_text(overlay_buffer.get_start_iter(),
 				overlay_buffer.get_end_iter(),
 				True)
