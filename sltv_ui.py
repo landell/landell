@@ -51,6 +51,7 @@ class SltvUI:
 		overlay_button = self.interface.get_object("overlay_button")
 		output_menuitem = self.interface.get_object("output_menuitem")
 		encoding_menuitem = self.interface.get_object("encoding_menuitem")
+		video_switch_menuitem = self.interface.get_object("video_switch_menuitem")
 		self.effect_combobox = self.interface.get_object("effect_combobox")
 		create_effects_combobox(self.effect_combobox)
 		self.effect_checkbutton = self.interface.get_object("effect_checkbutton")
@@ -65,6 +66,7 @@ class SltvUI:
 		window.connect("delete_event", self.on_window_closed)
 		output_menuitem.connect("activate", self.show_output)
 		encoding_menuitem.connect("activate", self.show_encoding)
+		video_switch_menuitem.connect("activate", self.show_video_switch)
 
 		self.sltv = Sltv(preview_area, window)
 		self.set_effects(False)
@@ -88,6 +90,9 @@ class SltvUI:
 
 	def show_output(self, menuitem):
 		self.sltv.show_output()
+
+	def show_video_switch(self, menuitem):
+		self.sltv.show_video_switch()
 
 	def set_effects(self, state):
 		self.effect_combobox.set_sensitive(state)
