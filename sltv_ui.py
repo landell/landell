@@ -48,7 +48,7 @@ class SltvUI:
 		self.play_button = self.interface.get_object("play_button")
 		self.stop_button = self.interface.get_object("stop_button")
 		self.stop_button.set_active(True)
-		overlay_button = self.interface.get_object("overlay_button")
+		self.overlay_button = self.interface.get_object("overlay_button")
 		output_menuitem = self.interface.get_object("output_menuitem")
 		encoding_menuitem = self.interface.get_object("encoding_menuitem")
 		video_switch_menuitem = self.interface.get_object("video_switch_menuitem")
@@ -64,7 +64,7 @@ class SltvUI:
 		self.preview_checkbutton.connect("toggled", self.preview_toggled)
 		self.play_button.connect("toggled", self.on_play_press)
 		self.stop_button.connect("toggled", self.on_stop_press)
-		overlay_button.connect("pressed", self.on_overlay_change)
+		self.overlay_button.connect("pressed", self.on_overlay_change)
 		window.connect("delete_event", self.on_window_closed)
 		output_menuitem.connect("activate", self.show_output)
 		encoding_menuitem.connect("activate", self.show_encoding)
@@ -86,6 +86,7 @@ class SltvUI:
 					overlay_buffer.get_end_iter(),
 					True)
 			effect_name = self.effect_combobox.get_active_text()
+			self.overlay_button.set_sensitive(True)
 			self.sltv.play(overlay_text, effect_name)
 
 	def show_encoding(self, menuitem):
@@ -115,6 +116,7 @@ class SltvUI:
 		if (self.state == "playing"):
 			self.play_button.set_active(False)
 			self.state = "stopped"
+			self.overlay_button.set_sensitive(False)
 			self.sltv.stop()
 
 	def on_window_closed(self, event, data):
