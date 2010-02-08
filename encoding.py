@@ -65,6 +65,7 @@ class Encoding:
 			self.mux.add(audioconvert, vorbisenc, theoraenc, oggmux)
 			gst.element_link_many(audioconvert, vorbisenc, oggmux)
 			theoraenc.link(oggmux)
+			theoraenc.set_property("quality", 32)
 			source_pad = gst.GhostPad("source_ghost_pad", self.mux.find_unlinked_pad(gst.PAD_SRC))
 			self.mux.add_pad(source_pad)
 			sink_pad1 = gst.GhostPad("sink_pad1", self.mux.find_unlinked_pad(gst.PAD_SINK))

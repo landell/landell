@@ -72,10 +72,13 @@ class Sltv:
 
 			if (self.switch_status == "webcam"):
 				self.videosrc = gst.element_factory_make ("v4l2src", "videosrc")
+				self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
 				self.audiosrc = self.audio.get_audiosrc ()
-				self.player.add (self.videosrc, self.audiosrc)
-				gst.element_link_many (self.videosrc, self.queue_video)
+				self.player.add(self.videosrc, self.capsfilter, self.audiosrc)
+				gst.element_link_many(self.videosrc, self.capsfilter, self.queue_video)
 				gst.element_link_many (self.audiosrc, self.queue_audio)
+				caps = gst.caps_from_string("video/x-raw-yuv, width=640, height=480")
+				self.capsfilter.set_property("caps", caps)
 
 			if (self.switch_status == "file"):
 				self.filesrc = gst.element_factory_make ("filesrc", "source")
@@ -179,3 +182,4 @@ class Sltv:
 		if message_name == "prepare-xwindow-id":
 			previewsink = message.src
 			self.preview.set_display(previewsink)
+			previewsink.set_property("sync", "false")
