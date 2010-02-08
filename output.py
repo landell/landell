@@ -24,20 +24,13 @@ pygst.require("0.10")
 import gst
 import gtk
 
-
-def file_out(self):
-	print "File"
-	notebook = self.interface.get_object("notebook1")
-	notebook.prev_page()
-	self.output_selection = "file"
-
 class Output:
 
 	def __init__(self, window):
 		self.interface = gtk.Builder()
 		self.interface.add_from_file("output.ui")
-		dialog = self.interface.get_object("dialog1")
-		dialog.set_transient_for(window)
+		self.dialog = self.interface.get_object("dialog1")
+		self.dialog.set_transient_for(window)
 
 		#Output selection
 		file_radiobutton = self.interface.get_object("file_radiobutton")
@@ -61,12 +54,11 @@ class Output:
 		file_chooser_button.set_local_only(True)
 		close_button.connect("pressed", self.close_dialog, data)
 		file_chooser_button.connect("file_set", self.file_set)
-		dialog.connect("delete_event", self.close_dialog)
+		self.dialog.connect("delete_event", self.close_dialog)
 
 	def show_window(self):
-		dialog = self.interface.get_object("dialog1")
-		dialog.show_all()
-		dialog.run()
+		self.dialog.show_all()
+		self.dialog.run()
 
 	def get_output(self):
 		if self.output_selection == "file":
@@ -95,12 +87,11 @@ class Output:
 		self.filename = button.get_filename()
 
 	def close_dialog(self, button, data):
-		dialog = self.interface.get_object("dialog1")
-		dialog.hide_all()
+		self.dialog.hide_all()
 
 	def output_changed(self, radioaction, current):
 		if current.get_name() == "file_action":
-			file_out(self)
+			self.file_out()
 		if current.get_name() == "icecast_action":
 			self.icecast_out()
 
@@ -109,3 +100,9 @@ class Output:
 		notebook = self.interface.get_object("notebook1")
 		notebook.next_page()
 		self.output_selection = "icecast"
+
+	def file_out(self):
+		print "File"
+		notebook = self.interface.get_object("notebook1")
+		notebook.prev_page()
+		self.output_selection = "file"

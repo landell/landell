@@ -138,8 +138,11 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+                      <object class="GtkImageMenuItem" id="video_switch_menuitem">
+                        <property name="label">Video Switch</property>
                         <property name="visible">True</property>
+                        <property name="image">image3</property>
+                        <property name="use_stock">False</property>
                       </object>
                     </child>
                   </object>
@@ -286,6 +289,7 @@
                       <object class="GtkTextView" id="overlay_textview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="wrap_mode">word-char</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -295,6 +299,7 @@
                       <object class="GtkButton" id="overlay_button">
                         <property name="label" translatable="yes">Apply overlay</property>
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                       </object>
@@ -493,4 +498,8 @@
     <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkListStore" id="liststore1"/>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="stock">gtk-missing-image</property>
+  </object>
 </interface>

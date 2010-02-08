@@ -28,6 +28,7 @@ from encoding import *
 from audio import *
 from preview import *
 from effects import *
+from video_switch import *
 from swap import *
 
 
@@ -41,6 +42,7 @@ class Sltv:
 		self.encoding = Encoding(window)
 		self.output = Output(window)
 		self.audio = Audio()
+		self.video_switch = VideoSwitch(window)
 
 		self.effect_enabled = "False"
 
@@ -50,6 +52,9 @@ class Sltv:
 	def show_output(self):
 		self.output.show_window()
 
+	def show_video_switch(self):
+		self.video_switch.show_window()
+
 	def play(self, overlay_text, effect_name):
 		if self.state == "stopped":
 			self.state = "playing"
@@ -57,17 +62,38 @@ class Sltv:
 			#Element creation
 
 			self.player = gst.Pipeline("player")
-			self.videosrc = gst.element_factory_make("v4l2src", "videosrc")
+
+			self.queue_video = gst.element_factory_make("queue", "queue_video")
+			self.queue_audio = gst.element_factory_make("queue", "queue_audio")
+			self.player.add (self.queue_video, self.queue_audio)
+
+			self.convert = gst.element_factory_make("audioconvert", "convert")
+			self.player.add (self.convert)
+
+			self.switch_status = self.video_switch.get_status()
+
+			if (self.switch_status == "webcam"):
+				self.videosrc = gst.element_factory_make ("v4l2src", "videosrc")
+				self.audiosrc = self.audio.get_audiosrc ()
+				self.player.add (self.videosrc, self.audiosrc)
+				gst.element_link_many (self.videosrc, self.queue_video)
+				gst.element_link_many (self.audiosrc, self.queue_audio)
+
+			if (self.switch_status == "file"):
+				self.filesrc = gst.element_factory_make ("filesrc", "source")
+				self.filesrc.set_property ("location", self.video_switch.get_filename())
+				self.decode = gst.element_factory_make ("decodebin", "decode")
+				self.decode.connect ("new-decoded-pad", self.on_dynamic_pad)
+				self.player.add (self.filesrc, self.decode)
+				gst.element_link_many (self.filesrc, self.decode)
+
 			self.overlay = gst.element_factory_make("textoverlay", "overlay")
 			self.tee = gst.element_factory_make("tee", "tee")
 			queue1 = gst.element_factory_make("queue", "queue1")
 			queue2 = gst.element_factory_make("queue", "queue2")
-			self.queue3 = gst.element_factory_make("queue", "queue3")
-			queue4 = gst.element_factory_make("queue", "queue4")
 			self.mux = self.encoding.get_mux()
 			self.sink = self.output.get_output()
 			self.preview_element = self.preview.get_preview()
-			self.audiosrc = self.audio.get_audiosrc()
 			self.colorspace = gst.element_factory_make("ffmpegcolorspace", "colorspacesink")
 
 			if self.effect_enabled:
@@ -78,23 +104,22 @@ class Sltv:
 				src_colorspace = gst.element_factory_make("ffmpegcolorspace", "src_colorspace")
 				self.player.add(src_colorspace)
 
-			self.player.add(self.videosrc, self.overlay, self.tee, queue1,
-					self.queue3, self.mux, self.sink,
-					self.audiosrc, queue4, self.colorspace)
-			self.videosrc.link(self.queue3)
-
+			self.player.add(self.overlay, self.tee, queue1, self.mux, self.sink, self.colorspace)
 			if self.effect_enabled:
-				gst.element_link_many(self.queue3, self.effect, self.overlay)
+				gst.element_link_many(self.queue_video, self.effect, self.overlay)
 			else:
-				gst.element_link_many(self.queue3, src_colorspace, self.overlay)
+				gst.element_link_many(self.queue_video, src_colorspace, self.overlay)
 
 			#self.player.add(queue2, self.preview_element)
+
 			err = gst.element_link_many(self.overlay, self.tee, queue1, self.colorspace, self.mux, self.sink)
 			if err == False:
 				print "Error conecting elements"
+
+			gst.element_link_many(self.queue_audio, self.convert, self.mux)
+
 			#err = gst.element_link_many(self.tee, queue2, self.preview_element)
-			gst.element_link_many(self.audiosrc, queue4, self.mux)
-			if err == False:
+			if (err == False):
 				print "Error conecting preview"
 
 			self.overlay.set_property("text", overlay_text)
@@ -110,8 +135,33 @@ class Sltv:
 		self.player.set_state(gst.STATE_NULL)
 		self.state = "stopped"
 
+	def on_dynamic_pad(self, dbin, pad, islast):
+		print "dynamic pad called!"
+		name = pad.get_caps()[0].get_name()
+		print name
+
+		if ("audio" in name):
+			pad.link(self.queue_audio.get_pad("sink"))
+
+		if ("video" in name):
+			pad.link(self.queue_video.get_pad("sink"))
+
 	def set_effects(self, state):
 		self.effect_enabled = state
+
+	def effect_toggled(self, checkbox):
+		self.set_effects(not self.effect_enabled)
+
+	def on_stop_press(self, event):
+		if (self.state == "playing"):
+			self.player.set_state(gst.STATE_NULL)
+			play_button = self.interface.get_object("play_button")
+			play_button.set_active(False)
+			self.state = "stopped"
+			self.overlay_button.set_sensitive(False)
+
+	def on_window_closed(self, event, data):
+		gtk.main_quit()
 
 	def change_overlay(self, overlay_text):
 		self.overlay.set_property("text", overlay_text)
