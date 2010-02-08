@@ -70,6 +70,7 @@ class SltvUI:
 
 		self.sltv = Sltv(preview_area, window)
 		self.set_effects(False)
+		self.overlay_textview = self.interface.get_object("overlay_textview")
 
 	def on_play_press(self, event):
 		if self.state == "stopped":
@@ -77,8 +78,7 @@ class SltvUI:
 			stop_button.set_active(False)
 			self.state = "playing"
 
-			overlay_textview = self.interface.get_object("overlay_textview")
-			overlay_buffer = overlay_textview.get_buffer()
+			overlay_buffer = self.overlay_textview.get_buffer()
 			overlay_text = overlay_buffer.get_text(overlay_buffer.get_start_iter(),
 					overlay_buffer.get_end_iter(),
 					True)
@@ -114,8 +114,7 @@ class SltvUI:
 		gtk.main_quit()
 
 	def on_overlay_change(self, event):
-		overlay_textview = self.interface.get_object("overlay_textview")
-		overlay_buffer = overlay_textview.get_buffer()
+		overlay_buffer = self.overlay_textview.get_buffer()
 		overlay_text = overlay_buffer.get_text(overlay_buffer.get_start_iter(),
 				overlay_buffer.get_end_iter(),
 				True)
