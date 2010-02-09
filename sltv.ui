@@ -207,8 +207,14 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <child>
-                  <object class="GtkDrawingArea" id="preview_area">
-                    <property name="visible">True</property>
+                  <object class="GtkFrame" id="preview_frame">
+                    <property name="label">Preview</property>
+                    <property name="shadow-type">in</property>
+                    <child>
+                      <object class="GtkDrawingArea" id="preview_area">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">True</property>
