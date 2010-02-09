@@ -203,128 +203,64 @@
               </packing>
             </child>
             <child>
-              <object class="GtkVPaned" id="vpaned1">
+              <object class="GtkVBox" id="vbox_preview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkFrame" id="frame1">
+                  <object class="GtkDrawingArea" id="preview_area">
                     <property name="visible">True</property>
-                    <property name="label_xalign">0</property>
-                    <property name="shadow_type">none</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox2">
+                    <property name="visible">True</property>
                     <child>
-                      <object class="GtkVPaned" id="vpaned2">
+                      <object class="GtkHButtonBox" id="hbuttonbox1">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="orientation">vertical</property>
+                        <property name="homogeneous">True</property>
+                        <property name="layout_style">spread</property>
                         <child>
-                          <object class="GtkFixed" id="fixed1">
+                          <object class="GtkToggleButton" id="play_button">
+                            <property name="label">gtk-media-play</property>
                             <property name="visible">True</property>
-                            <child>
-                              <object class="GtkFrame" id="frame5">
-                                <property name="width_request">320</property>
-                                <property name="height_request">240</property>
-                                <property name="visible">True</property>
-                                <property name="label_xalign">0</property>
-                                <property name="label_yalign">0</property>
-                                <property name="shadow_type">in</property>
-                                <child>
-                                  <object class="GtkDrawingArea" id="preview_area">
-                                    <property name="visible">True</property>
-                                  </object>
-                                </child>
-                                <child type="label_item">
-                                  <placeholder/>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="x">10</property>
-                                <property name="y">10</property>
-                              </packing>
-                            </child>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="use_stock">True</property>
+                            <property name="image_position">right</property>
                           </object>
                           <packing>
-                            <property name="resize">True</property>
-                            <property name="shrink">True</property>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox2">
+                          <object class="GtkToggleButton" id="stop_button">
+                            <property name="label">gtk-media-stop</property>
                             <property name="visible">True</property>
-                            <child>
-                              <object class="GtkHButtonBox" id="hbuttonbox1">
-                                <property name="visible">True</property>
-                                <property name="homogeneous">True</property>
-                                <property name="layout_style">spread</property>
-                                <child>
-                                  <object class="GtkToggleButton" id="play_button">
-                                    <property name="label">gtk-media-play</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="use_stock">True</property>
-                                    <property name="image_position">right</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkToggleButton" id="stop_button">
-                                    <property name="label">gtk-media-stop</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="use_stock">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="use_stock">True</property>
                           </object>
                           <packing>
-                            <property name="resize">True</property>
-                            <property name="shrink">True</property>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
-                      </object>
-                    </child>
-                    <child type="label">
-                      <object class="GtkLabel" id="label1">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Video Preview&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
                       </object>
                     </child>
                   </object>
                   <packing>
-                    <property name="resize">True</property>
-                    <property name="shrink">True</property>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
                   </packing>
                 </child>
-                <child>
-                  <placeholder/>
-                </child>
               </object>
-              <packing>
-                <property name="resize">True</property>
-                <property name="shrink">True</property>
-              </packing>
             </child>
           </object>
           <packing>
