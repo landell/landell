@@ -33,13 +33,13 @@ class VideoSwitch:
 
         #input selection
         file_radiobutton = self.interface.get_object("file_radiobutton")
-        webcam_radiobutton = self.interface.get_object("webcam_radiobutton")
+        v4l2_radiobutton = self.interface.get_object("v4l2_radiobutton")
         test_radiobutton = self.interface.get_object("test_radiobutton")
 
         input_action_group = gtk.ActionGroup("input_action_group")
 
         input_action_entries = [
-            ("webcam_action", None, "Webcam", None, "Input to webcam", 0),
+            ("v4l2_action", None, "Webcam", None, "Input to v4l2", 0),
             ("file_action", None, "File", None, "Input to file", 1),
             ("test_action", None, "Test", None, "Test", 2)
         ]
@@ -48,8 +48,8 @@ class VideoSwitch:
             input_action_entries, 0, self.input_changed, None
         )
 
-        webcam_action = input_action_group.get_action("webcam_action")
-        webcam_action.connect_proxy(webcam_radiobutton)
+        v4l2_action = input_action_group.get_action("v4l2_action")
+        v4l2_action.connect_proxy(v4l2_radiobutton)
 
         file_action = input_action_group.get_action("file_action")
         file_action.connect_proxy(file_radiobutton)
@@ -67,7 +67,7 @@ class VideoSwitch:
         self.dialog.connect("delete_event", self.close_dialog)
 
         self.filename = ""
-        self.status = "webcam"
+        self.status = "v4l2"
 
     def show_window(self):
         self.dialog.show_all()
@@ -88,9 +88,9 @@ class VideoSwitch:
     def get_filename(self):
         return self.filename
 
-    def webcam_in(self):
-        self.status = "webcam"
-        print "webcam"
+    def v4l2_in(self):
+        self.status = "v4l2"
+        print "v4l2"
         notebook = self.interface.get_object("notebook1")
         notebook.prev_page()
 
@@ -110,8 +110,8 @@ class VideoSwitch:
         if current.get_name() == "file_action":
             self.file_in()
 
-        if current.get_name() == "webcam_action":
-            self.webcam_in()
+        if current.get_name() == "v4l2_action":
+            self.v4l2_in()
 
         if current.get_name() == "test_action":
             self.test_in()

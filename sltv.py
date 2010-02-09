@@ -65,7 +65,7 @@ class Sltv:
 
         self.switch_status = self.video_switch.get_status()
 
-        if self.switch_status == "webcam":
+        if self.switch_status == "v4l2":
             self.videosrc = gst.element_factory_make("v4l2src", "videosrc")
             self.capsfilter = gst.element_factory_make(
                 "capsfilter", "capsfilter"
