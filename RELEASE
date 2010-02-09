@@ -1,0 +1,18 @@
+Release notes for version 0.1 of sltv
+
+This software is still under development and is not tested. 
+
+Still not implemented functionalities:
+- Encoding in DV (partially implemented)
+- Support for DV source
+- Video sources switch during transmission (though the choice before
+  transmission is supported)
+- Mix different video sources, such as computer slides and webcam video
+- Support for dynamic audio and video effects during transmission (though the
+  choice before transmission is supported)
+
+Known issues:
+
+There are performance issues when using source V4L2 + ALSA. The video recorded
+or transmited is sometimes freezing. This problem hasn't been observed while
+using test sources.
