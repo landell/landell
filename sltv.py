@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2009 Holoscopio Tecnologia
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
 #
