@@ -33,7 +33,6 @@ from swap import *
 class Sltv:
 
 	def __init__(self, preview_area, window):
-		self.state = "stopped"
 		self.player = None
 		self.preview = Preview(preview_area)
 
@@ -54,94 +53,88 @@ class Sltv:
 		self.video_switch.show_window()
 
 	def play(self, overlay_text, effect_name):
-		if self.state == "stopped":
-			self.state = "playing"
+		self.player = gst.Pipeline("player")
 
-			#Element creation
+		self.queue_video = gst.element_factory_make("queue", "queue_video")
+		self.queue_audio = gst.element_factory_make("queue", "queue_audio")
+		self.player.add (self.queue_video, self.queue_audio)
 
-			self.player = gst.Pipeline("player")
+		self.convert = gst.element_factory_make("audioconvert", "convert")
+		self.player.add (self.convert)
 
-			self.queue_video = gst.element_factory_make("queue", "queue_video")
-			self.queue_audio = gst.element_factory_make("queue", "queue_audio")
-			self.player.add (self.queue_video, self.queue_audio)
+		self.switch_status = self.video_switch.get_status()
 
-			self.convert = gst.element_factory_make("audioconvert", "convert")
-			self.player.add (self.convert)
+		if (self.switch_status == "webcam"):
+			self.videosrc = gst.element_factory_make ("v4l2src", "videosrc")
+			self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
+			self.audiosrc = self.audio.get_audiosrc ()
+			self.player.add(self.videosrc, self.capsfilter, self.audiosrc)
+			gst.element_link_many(self.videosrc, self.capsfilter, self.queue_video)
+			gst.element_link_many (self.audiosrc, self.queue_audio)
+			caps = gst.caps_from_string("video/x-raw-yuv, width=640, height=480")
+			self.capsfilter.set_property("caps", caps)
 
-			self.switch_status = self.video_switch.get_status()
+		if (self.switch_status == "file"):
+			self.filesrc = gst.element_factory_make ("filesrc", "source")
+			self.filesrc.set_property ("location", self.video_switch.get_filename())
+			self.decode = gst.element_factory_make ("decodebin", "decode")
+			self.decode.connect ("new-decoded-pad", self.on_dynamic_pad)
+			self.player.add (self.filesrc, self.decode)
+			gst.element_link_many (self.filesrc, self.decode)
 
-			if (self.switch_status == "webcam"):
-				self.videosrc = gst.element_factory_make ("v4l2src", "videosrc")
-				self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
-				self.audiosrc = self.audio.get_audiosrc ()
-				self.player.add(self.videosrc, self.capsfilter, self.audiosrc)
-				gst.element_link_many(self.videosrc, self.capsfilter, self.queue_video)
-				gst.element_link_many (self.audiosrc, self.queue_audio)
-				caps = gst.caps_from_string("video/x-raw-yuv, width=640, height=480")
-				self.capsfilter.set_property("caps", caps)
+		if (self.switch_status == "test"):
+			self.videosrc = gst.element_factory_make ("videotestsrc", "videotestsrc")
+			self.audiosrc = gst.element_factory_make ("audiotestsrc", "audiotestsrc")
+			self.player.add (self.videosrc, self.audiosrc)
+			gst.element_link_many (self.videosrc, self.queue_video)
+			gst.element_link_many (self.audiosrc, self.queue_audio)
 
-			if (self.switch_status == "file"):
-				self.filesrc = gst.element_factory_make ("filesrc", "source")
-				self.filesrc.set_property ("location", self.video_switch.get_filename())
-				self.decode = gst.element_factory_make ("decodebin", "decode")
-				self.decode.connect ("new-decoded-pad", self.on_dynamic_pad)
-				self.player.add (self.filesrc, self.decode)
-				gst.element_link_many (self.filesrc, self.decode)
+		self.overlay = gst.element_factory_make("textoverlay", "overlay")
+		self.tee = gst.element_factory_make("tee", "tee")
+		queue1 = gst.element_factory_make("queue", "queue1")
+		queue2 = gst.element_factory_make("queue", "queue2")
+		self.mux = self.encoding.get_mux()
+		self.sink = self.output.get_output()
+		self.preview_element = self.preview.get_preview()
+		self.colorspace = gst.element_factory_make("ffmpegcolorspace", "colorspacesink")
 
-			if (self.switch_status == "test"):
-				self.videosrc = gst.element_factory_make ("videotestsrc", "videotestsrc")
-				self.audiosrc = gst.element_factory_make ("audiotestsrc", "audiotestsrc")
-				self.player.add (self.videosrc, self.audiosrc)
-				gst.element_link_many (self.videosrc, self.queue_video)
-				gst.element_link_many (self.audiosrc, self.queue_audio)
+		if self.effect_enabled:
+			self.effect_name = effect_name
+			self.effect = Effect.make_effect(effect_name)
+			self.player.add(self.effect)
+		else:
+			src_colorspace = gst.element_factory_make("ffmpegcolorspace", "src_colorspace")
+			self.player.add(src_colorspace)
 
-			self.overlay = gst.element_factory_make("textoverlay", "overlay")
-			self.tee = gst.element_factory_make("tee", "tee")
-			queue1 = gst.element_factory_make("queue", "queue1")
-			queue2 = gst.element_factory_make("queue", "queue2")
-			self.mux = self.encoding.get_mux()
-			self.sink = self.output.get_output()
-			self.preview_element = self.preview.get_preview()
-			self.colorspace = gst.element_factory_make("ffmpegcolorspace", "colorspacesink")
+		self.player.add(self.overlay, self.tee, queue1, self.mux, self.sink, self.colorspace)
+		if self.effect_enabled:
+			gst.element_link_many(self.queue_video, self.effect, self.overlay)
+		else:
+			gst.element_link_many(self.queue_video, src_colorspace, self.overlay)
 
-			if self.effect_enabled:
-				self.effect_name = effect_name
-				self.effect = Effect.make_effect(effect_name)
-				self.player.add(self.effect)
-			else:
-				src_colorspace = gst.element_factory_make("ffmpegcolorspace", "src_colorspace")
-				self.player.add(src_colorspace)
+		err = gst.element_link_many(self.overlay, self.tee, queue1, self.colorspace, self.mux, self.sink)
+		if err == False:
+			print "Error conecting elements"
 
-			self.player.add(self.overlay, self.tee, queue1, self.mux, self.sink, self.colorspace)
-			if self.effect_enabled:
-				gst.element_link_many(self.queue_video, self.effect, self.overlay)
-			else:
-				gst.element_link_many(self.queue_video, src_colorspace, self.overlay)
+		gst.element_link_many(self.queue_audio, self.convert, self.mux)
 
-			err = gst.element_link_many(self.overlay, self.tee, queue1, self.colorspace, self.mux, self.sink)
-			if err == False:
-				print "Error conecting elements"
+		if self.preview_enabled:
+			self.player.add(queue2, self.preview_element)
+			err = gst.element_link_many(self.tee, queue2, self.preview_element)
+			if (err == False):
+				print "Error conecting preview"
 
-			gst.element_link_many(self.queue_audio, self.convert, self.mux)
+		self.overlay.set_property("text", overlay_text)
 
-			if self.preview_enabled:
-				self.player.add(queue2, self.preview_element)
-				err = gst.element_link_many(self.tee, queue2, self.preview_element)
-				if (err == False):
-					print "Error conecting preview"
-
-			self.overlay.set_property("text", overlay_text)
-
-			bus = self.player.get_bus()
-			bus.add_signal_watch()
-			bus.enable_sync_message_emission()
-			bus.connect("message", self.on_message)
-			bus.connect("sync-message::element", self.on_sync_message)
-			self.player.set_state(gst.STATE_PLAYING)
+		bus = self.player.get_bus()
+		bus.add_signal_watch()
+		bus.enable_sync_message_emission()
+		bus.connect("message", self.on_message)
+		bus.connect("sync-message::element", self.on_sync_message)
+		self.player.set_state(gst.STATE_PLAYING)
 
 	def stop(self):
 		self.player.set_state(gst.STATE_NULL)
-		self.state = "stopped"
 
 	def on_dynamic_pad(self, dbin, pad, islast):
 		print "dynamic pad called!"
