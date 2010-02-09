@@ -23,6 +23,8 @@ class About:
 
 		self.about = gtk.AboutDialog()
 		self.about.set_transient_for(window)
+		self.about.connect("response", self.on_close_dialog)
+		self.about.connect("delete_event", self.on_close_dialog)
 		self.create_about()
 
 	def create_about(self):
@@ -53,3 +55,8 @@ class About:
 
 	def show_window(self):
 		self.about.show_all()
+		self.about.run()
+
+	def on_close_dialog(self, dialog, response):
+		if response == gtk.RESPONSE_CANCEL or response == gtk.RESPONSE_DELETE_EVENT:
+			dialog.hide_all()
