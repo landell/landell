@@ -24,6 +24,7 @@ from output import *
 from encoding import *
 from audio import *
 from sltv import *
+from about import *
 
 def create_effects_combobox(combobox):
 	liststore = gtk.ListStore(gobject.TYPE_STRING)
@@ -35,6 +36,7 @@ def create_effects_combobox(combobox):
 		liststore.append((type,))
 	combobox.set_active(0)
 
+
 class SltvUI:
 
 	def __init__(self):
@@ -43,6 +45,7 @@ class SltvUI:
 		self.interface.add_from_file("sltv.ui")
 		window = self.interface.get_object("window1")
 		window.show_all()
+		self.about = About(window)
 
 		file_location_entry = self.interface.get_object("file_location_entry")
 		self.play_button = self.interface.get_object("play_button")
@@ -52,6 +55,7 @@ class SltvUI:
 		output_menuitem = self.interface.get_object("output_menuitem")
 		encoding_menuitem = self.interface.get_object("encoding_menuitem")
 		video_switch_menuitem = self.interface.get_object("video_switch_menuitem")
+		self.about_menu = self.interface.get_object("about_menu")
 		self.effect_combobox = self.interface.get_object("effect_combobox")
 		create_effects_combobox(self.effect_combobox)
 		self.effect_checkbutton = self.interface.get_object("effect_checkbutton")
@@ -69,6 +73,7 @@ class SltvUI:
 		output_menuitem.connect("activate", self.show_output)
 		encoding_menuitem.connect("activate", self.show_encoding)
 		video_switch_menuitem.connect("activate", self.show_video_switch)
+		self.about_menu.connect("activate", self.show_about)
 
 		self.sltv = Sltv(preview_area, window)
 		self.set_effects(False)
@@ -97,6 +102,9 @@ class SltvUI:
 
 	def show_video_switch(self, menuitem):
 		self.sltv.show_video_switch()
+
+	def show_about(self, menuitem):
+		self.about.show_window()
 
 	def set_effects(self, state):
 		self.effect_combobox.set_sensitive(state)

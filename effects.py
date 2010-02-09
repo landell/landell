@@ -26,8 +26,6 @@ def register_filter(feature_list):
 	for plugin_feature in feature_list:
 		if plugin_feature.get_klass() == "Filter/Effect/Video":
 			type_list.append(plugin_feature.get_name())
-			print plugin_feature.get_name()
-			print plugin_feature.get_num_pad_templates()
 	return type_list
 
 class Effect:
