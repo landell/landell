@@ -24,11 +24,11 @@ import gtk
 
 class Audio:
 
-	def __init__(self):
-		self.gnu_linux()
+    def __init__(self):
+        self.gnu_linux()
 
-	def gnu_linux(self):
-		self.audiosrc = gst.element_factory_make("alsasrc", "alsasrc")
+    def gnu_linux(self):
+        self.audiosrc = gst.element_factory_make("alsasrc", "alsasrc")
 
-	def get_audiosrc(self):
-		return self.audiosrc
+    def get_audiosrc(self):
+        return self.audiosrc

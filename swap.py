@@ -21,35 +21,37 @@ pygst.require("0.10")
 import gst
 
 def event_received(pad, event):
-	print "event_received"
-	return
+    print "event_received"
+    return
 
 class Swap:
 
-	@classmethod
-	def swap_element(klass, swap_bin, previous_element, next_element, old_element, new_element):
-		previous_pad = previous_element.get_static_pad("src")
+    @classmethod
+    def swap_element(klass, swap_bin, previous_element, next_element,
+        old_element, new_element):
 
-		#FIXME: Use the async method to work for paused state
+        previous_pad = previous_element.get_static_pad("src")
 
-		previous_pad.set_blocked(True)
-		previous_element.unlink(old_element)
+        #FIXME: Use the async method to work for paused state
 
-		#make sure data is flushed out of element2:
+        previous_pad.set_blocked(True)
+        previous_element.unlink(old_element)
 
-		old_pad = old_element.get_static_pad("src")
-		handler_id = old_pad.add_event_probe(event_received)
-		old_element.send_event(gst.event_new_eos())
-		old_pad.remove_event_probe(handler_id)
+        #make sure data is flushed out of element2:
 
-		previous_element.unlink(old_element)
-		old_element.unlink(next_element)
-		old_element.set_state(gst.STATE_NULL)
-		swap_bin.remove(old_element)
-		swap_bin.add(new_element)
-		new_element.link(next_element)
-		previous_element.link(new_element)
-		new_element.set_state(gst.STATE_PLAYING)
-		previous_pad.set_blocked(False)
-		swap_bin.set_state(gst.STATE_PLAYING)
-		return 
+        old_pad = old_element.get_static_pad("src")
+        handler_id = old_pad.add_event_probe(event_received)
+        old_element.send_event(gst.event_new_eos())
+        old_pad.remove_event_probe(handler_id)
+
+        previous_element.unlink(old_element)
+        old_element.unlink(next_element)
+        old_element.set_state(gst.STATE_NULL)
+        swap_bin.remove(old_element)
+        swap_bin.add(new_element)
+        new_element.link(next_element)
+        previous_element.link(new_element)
+        new_element.set_state(gst.STATE_PLAYING)
+        previous_pad.set_blocked(False)
+        swap_bin.set_state(gst.STATE_PLAYING)
+        return
