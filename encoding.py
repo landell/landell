@@ -69,10 +69,15 @@ class Encoding:
             )
             vorbisenc = gst.element_factory_make("vorbisenc", "vorbisenc")
             theoraenc = gst.element_factory_make("theoraenc", "theoraenc")
+            queue_video = gst.element_factory_make("queue", "queue_video_enc")
+            queue_audio = gst.element_factory_make("queue", "queue_audio_enc")
             oggmux = gst.element_factory_make("oggmux", "oggmux")
-            self.mux.add(audioconvert, vorbisenc, theoraenc, oggmux)
-            gst.element_link_many(audioconvert, vorbisenc, oggmux)
-            theoraenc.link(oggmux)
+            self.mux.add(
+                    audioconvert, vorbisenc, theoraenc, queue_video, 
+                    queue_audio, oggmux
+            )
+            gst.element_link_many(audioconvert, vorbisenc, queue_audio, oggmux)
+            gst.element_link_many(theoraenc, queue_video, oggmux)
             oggmux.set_property("max-delay",10000000)
             oggmux.set_property("max-page-delay",10000000)
             #theoraenc.set_property("quality", 32)
