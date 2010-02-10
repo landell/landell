@@ -106,12 +106,15 @@ class Sltv:
         self.tee = gst.element_factory_make("tee", "tee")
         queue1 = gst.element_factory_make("queue", "queue1")
         queue2 = gst.element_factory_make("queue", "queue2")
+        self.videorate = gst.element_factory_make("videorate", "videorate")
+        self.videoscale = gst.element_factory_make("videoscale", "videoscale")
         self.mux = self.encoding.get_mux()
         self.sink = self.output.get_output()
         self.preview_element = self.preview.get_preview()
         self.colorspace = gst.element_factory_make(
             "ffmpegcolorspace", "colorspacesink"
         )
+        self.videoscale.set_property("method",1)
 
         if self.effect_enabled:
             self.effect_name = effect_name
@@ -121,14 +124,14 @@ class Sltv:
         self.player.add(self.effect)
 
         self.player.add(
-            self.overlay, self.tee, queue1, self.mux, self.sink,
-            self.colorspace
+            self.overlay, self.tee, queue1, self.videorate, self.videoscale,
+            self.colorspace, self.mux, self.sink
         )
         gst.element_link_many(self.queue_video, self.effect, self.overlay)
 
         err = gst.element_link_many(
-            self.overlay, self.tee, queue1, self.colorspace, self.mux,
-            self.sink
+            self.overlay, self.tee, queue1, self.videorate,
+            self.videoscale, self.colorspace, self.mux, self.sink
         )
         if err == False:
             print "Error conecting elements"
