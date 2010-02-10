@@ -22,12 +22,13 @@ import pygst
 pygst.require("0.10")
 import gst
 import gtk
+from settings import UI_DIR
 
 class Output:
 
     def __init__(self, window):
         self.interface = gtk.Builder()
-        self.interface.add_from_file("output.ui")
+        self.interface.add_from_file(UI_DIR + "/output.ui")
         self.dialog = self.interface.get_object("dialog1")
         self.dialog.set_transient_for(window)
 
