@@ -200,3 +200,4 @@ class Sltv:
             previewsink = message.src
             self.preview.set_display(previewsink)
             previewsink.set_property("sync", "false")
+            previewsink.set_property("force-aspect-ratio", "true")
