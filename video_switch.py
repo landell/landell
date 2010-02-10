@@ -40,7 +40,7 @@ class VideoSwitch:
         input_action_group = gtk.ActionGroup("input_action_group")
 
         input_action_entries = [
-            ("v4l2_action", None, "Webcam", None, "Input to v4l2", 0),
+            ("v4l2_action", None, "V4L2 + ALSA", None, "Input to v4l2", 0),
             ("file_action", None, "File", None, "Input to file", 1),
             ("test_action", None, "Test", None, "Test", 2)
         ]
