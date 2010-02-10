@@ -42,13 +42,21 @@ class Effect:
     @classmethod
     def make_effect(klass, effect_name):
         effectbin = gst.Bin()
-        colorspace1 = gst.element_factory_make("ffmpegcolorspace", "colorspace1")
-        colorspace2 = gst.element_factory_make("ffmpegcolorspace", "colorspace2")
+        colorspace1 = gst.element_factory_make(
+                "ffmpegcolorspace", "colorspace1"
+        )
+        colorspace2 = gst.element_factory_make(
+                "ffmpegcolorspace", "colorspace2"
+        )
         effect_queue = gst.element_factory_make("queue", "effect_queue")
         effect_element = gst.element_factory_make(effect_name, effect_name)
         effectbin.add(colorspace1, effect_queue, effect_element, colorspace2)
-        gst.element_link_many(colorspace1, effect_queue, effect_element, colorspace2)
-        sink_pad = gst.GhostPad("sink", effectbin.find_unlinked_pad(gst.PAD_SINK))
+        gst.element_link_many(
+                colorspace1, effect_queue, effect_element, colorspace2
+        )
+        sink_pad = gst.GhostPad(
+                "sink", effectbin.find_unlinked_pad(gst.PAD_SINK)
+        )
         src_pad = gst.GhostPad("src", effectbin.find_unlinked_pad(gst.PAD_SRC))
         effectbin.add_pad(sink_pad)
         effectbin.add_pad(src_pad)
@@ -60,4 +68,7 @@ class Effect:
         effect_element = effect_bin.get_by_name(old_effect_name)
         effect_queue = effect_bin.get_by_name("effect_queue")
         colorspace2 = effect_bin.get_by_name("colorspace2")
-        Swap.swap_element(effect_bin, effect_queue, colorspace2, effect_element, new_effect)
+        Swap.swap_element(
+                effect_bin, effect_queue, colorspace2,
+                effect_element, new_effect
+        )
