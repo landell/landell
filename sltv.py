@@ -115,24 +115,16 @@ class Sltv:
 
         if self.effect_enabled:
             self.effect_name = effect_name
-            self.effect = Effect.make_effect(effect_name)
-            self.player.add(self.effect)
         else:
-            src_colorspace = gst.element_factory_make(
-                "ffmpegcolorspace", "src_colorspace"
-            )
-            self.player.add(src_colorspace)
+            self.effect_name = "identity"
+        self.effect = Effect.make_effect(self.effect_name)
+        self.player.add(self.effect)
 
         self.player.add(
             self.overlay, self.tee, queue1, self.mux, self.sink,
             self.colorspace
         )
-        if self.effect_enabled:
-            gst.element_link_many(self.queue_video, self.effect, self.overlay)
-        else:
-            gst.element_link_many(
-                self.queue_video, src_colorspace, self.overlay
-            )
+        gst.element_link_many(self.queue_video, self.effect, self.overlay)
 
         err = gst.element_link_many(
             self.overlay, self.tee, queue1, self.colorspace, self.mux,
@@ -174,6 +166,21 @@ class Sltv:
 
     def set_effects(self, state):
         self.effect_enabled = state
+
+        # If state is disabled and pipeline is playing, disable effects now
+
+        if not self.effect_enabled:
+            if self.player and self.player.get_state()[1] == gst.STATE_PLAYING:
+                Effect.change(self.effect, self.effect_name, "identity")
+                self.effect_name = "identity"
+
+    def change_effect(self, effect_name):
+        if self.player.get_state()[1] == gst.STATE_PLAYING:
+            print "PLAYING"
+            Effect.change(self.effect, self.effect_name, effect_name)
+            self.effect_name = effect_name
+        else:
+            print "NOT PLAYING"
 
     def set_preview(self, state):
         self.preview_enabled = state

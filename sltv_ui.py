@@ -64,6 +64,7 @@ class SltvUI:
         self.effect_checkbutton = self.interface.get_object(
             "effect_checkbutton"
         )
+        self.effect_button = self.interface.get_object("effect_button")
         self.preview_checkbutton = self.interface.get_object(
             "preview_checkbutton"
         )
@@ -81,6 +82,7 @@ class SltvUI:
         encoding_menuitem.connect("activate", self.show_encoding)
         video_switch_menuitem.connect("activate", self.show_video_switch)
         self.about_menu.connect("activate", self.show_about)
+        self.effect_button.connect("pressed", self.effect_changed)
 
         self.sltv = Sltv(preview_area, window)
         self.set_effects(False)
@@ -118,12 +120,19 @@ class SltvUI:
     def set_effects(self, state):
         self.effect_combobox.set_sensitive(state)
         self.effect_label.set_sensitive(state)
+        self.effect_button.set_sensitive(state)
         self.effect_enabled = state
         self.sltv.set_effects(state)
         #Send signal
 
     def effect_toggled(self, checkbox):
         self.set_effects(not self.effect_enabled)
+
+    def effect_changed(self, button):
+        print "button pressed"
+        if self.effect_enabled:
+            print "sending change_effect"
+            self.sltv.change_effect(self.effect_combobox.get_active_text())
 
     def preview_toggled(self, checkbox):
         self.preview_state = not self.preview_state
