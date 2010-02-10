@@ -73,7 +73,10 @@ class Encoding:
             self.mux.add(audioconvert, vorbisenc, theoraenc, oggmux)
             gst.element_link_many(audioconvert, vorbisenc, oggmux)
             theoraenc.link(oggmux)
-            theoraenc.set_property("quality", 32)
+            oggmux.set_property("max-delay",10000000)
+            oggmux.set_property("max-page-delay",10000000)
+            #theoraenc.set_property("quality", 32)
+            theoraenc.set_property("keyframe-force",1)
             source_pad = gst.GhostPad(
                 "source_ghost_pad", self.mux.find_unlinked_pad(gst.PAD_SRC)
             )
