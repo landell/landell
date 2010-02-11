@@ -43,6 +43,8 @@ class Sltv:
         self.video_switch = VideoSwitch(window)
 
         self.effect_enabled = "False"
+        self.effect = {}
+        self.effect_name = {}
 
     def show_encoding(self):
         self.encoding.show_window()
@@ -53,7 +55,7 @@ class Sltv:
     def show_video_switch(self):
         self.video_switch.show_window()
 
-    def play(self, overlay_text, effect_name):
+    def play(self, overlay_text, video_effect_name, audio_effect_name):
         self.player = gst.Pipeline("player")
 
         self.queue_video = gst.element_factory_make("queue", "queue_video")
@@ -117,17 +119,20 @@ class Sltv:
         self.videoscale.set_property("method",1)
 
         if self.effect_enabled:
-            self.effect_name = effect_name
+            self.effect_name['video'] = video_effect_name
+            self.effect_name['audio'] = audio_effect_name
         else:
-            self.effect_name = "identity"
-        self.effect = Effect.make_effect(self.effect_name)
-        self.player.add(self.effect)
+            self.effect_name['video'] = "identity"
+            self.effect_name['audio'] = "identity"
+        self.effect['video'] = Effect.make_effect(self.effect_name['video'], "video")
+        self.effect['audio'] = Effect.make_effect(self.effect_name['audio'], "audio")
+        self.player.add(self.effect['video'], self.effect['audio'])
 
         self.player.add(
             self.overlay, self.tee, queue1, self.videorate, self.videoscale,
             self.colorspace, self.mux, self.sink
         )
-        gst.element_link_many(self.queue_video, self.effect, self.overlay)
+        gst.element_link_many(self.queue_video, self.effect['video'], self.overlay)
 
         err = gst.element_link_many(
             self.overlay, self.tee, queue1, self.videorate,
@@ -136,7 +141,9 @@ class Sltv:
         if err == False:
             print "Error conecting elements"
 
-        gst.element_link_many(self.queue_audio, self.convert, self.mux)
+        gst.element_link_many(
+                self.queue_audio, self.effect['audio'], self.convert, self.mux
+        )
 
         if self.preview_enabled:
             self.player.add(queue2, self.preview_element)
@@ -174,16 +181,17 @@ class Sltv:
 
         if not self.effect_enabled:
             if self.player and self.player.get_state()[1] == gst.STATE_PLAYING:
-                Effect.change(self.effect, self.effect_name, "identity")
-                self.effect_name = "identity"
+                self.change_effect("identity", "video")
+                self.change_effect("identity", "audio")
 
-    def change_effect(self, effect_name):
+    def change_effect(self, effect_name, effect_type):
         if self.player.get_state()[1] == gst.STATE_PLAYING:
             print "PLAYING"
-            Effect.change(self.effect, self.effect_name, effect_name)
-            self.effect_name = effect_name
-        else:
-            print "NOT PLAYING"
+            Effect.change(
+                    self.effect[effect_type], self.effect_name[effect_type],
+                    effect_name
+            )
+            self.effect_name[effect_type] = effect_name
 
     def set_preview(self, state):
         self.preview_enabled = state
