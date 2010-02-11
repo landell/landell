@@ -28,14 +28,15 @@ from sltv import *
 from about import *
 from settings import UI_DIR
 
-def create_effects_combobox(combobox):
+def create_effects_combobox(combobox, effect_type):
     liststore = gtk.ListStore(gobject.TYPE_STRING)
     combobox.set_model(liststore)
     cell = gtk.CellRendererText()
     combobox.pack_start(cell, True)
     combobox.add_attribute(cell, 'text', 0)
-    for type in Effect.get_types():
-        liststore.append((type,))
+    liststore.append(("none",))
+    for etype in Effect.get_types(effect_type):
+        liststore.append((etype,))
     combobox.set_active(0)
 
 class SltvUI:
@@ -59,18 +60,30 @@ class SltvUI:
             "video_switch_menuitem"
         )
         self.about_menu = self.interface.get_object("about_menu")
-        self.effect_combobox = self.interface.get_object("effect_combobox")
-        create_effects_combobox(self.effect_combobox)
+        self.video_effect_combobox = self.interface.get_object(
+                "video_effect_combobox"
+        )
+        self.audio_effect_combobox = self.interface.get_object(
+                "audio_effect_combobox"
+        )
+        create_effects_combobox(self.video_effect_combobox, "video")
+        create_effects_combobox(self.audio_effect_combobox, "audio")
         self.effect_checkbutton = self.interface.get_object(
             "effect_checkbutton"
         )
-        self.effect_button = self.interface.get_object("effect_button")
+        self.video_effect_button = self.interface.get_object(
+                "video_effect_button"
+        )
+        self.audio_effect_button = self.interface.get_object(
+                "audio_effect_button"
+        )
         self.preview_checkbutton = self.interface.get_object(
             "preview_checkbutton"
         )
         preview_area = self.interface.get_object("preview_area")
 
-        self.effect_label = self.interface.get_object("effect_label")
+        self.video_effect_label = self.interface.get_object("video_effect_label")
+        self.audio_effect_label = self.interface.get_object("audio_effect_label")
 
         self.effect_checkbutton.connect("toggled", self.effect_toggled)
         self.preview_checkbutton.connect("toggled", self.preview_toggled)
@@ -82,7 +95,8 @@ class SltvUI:
         encoding_menuitem.connect("activate", self.show_encoding)
         video_switch_menuitem.connect("activate", self.show_video_switch)
         self.about_menu.connect("activate", self.show_about)
-        self.effect_button.connect("pressed", self.effect_changed)
+        self.video_effect_button.connect("pressed", self.effect_changed)
+        self.audio_effect_button.connect("pressed", self.effect_changed)
 
         self.sltv = Sltv(preview_area, window)
         self.set_effects(False)
@@ -101,9 +115,10 @@ class SltvUI:
                 overlay_buffer.get_end_iter(),
                 True
             )
-            effect_name = self.effect_combobox.get_active_text()
+            video_effect_name = self.video_effect_combobox.get_active_text()
+            audio_effect_name = self.audio_effect_combobox.get_active_text()
             self.overlay_button.set_sensitive(True)
-            self.sltv.play(overlay_text, effect_name)
+            self.sltv.play(overlay_text, video_effect_name, audio_effect_name)
 
     def show_encoding(self, menuitem):
         self.sltv.show_encoding()
@@ -118,9 +133,12 @@ class SltvUI:
         self.about.show_window()
 
     def set_effects(self, state):
-        self.effect_combobox.set_sensitive(state)
-        self.effect_label.set_sensitive(state)
-        self.effect_button.set_sensitive(state)
+        self.video_effect_combobox.set_sensitive(state)
+        self.audio_effect_combobox.set_sensitive(state)
+        self.video_effect_label.set_sensitive(state)
+        self.audio_effect_label.set_sensitive(state)
+        self.video_effect_button.set_sensitive(state)
+        self.audio_effect_button.set_sensitive(state)
         self.effect_enabled = state
         self.sltv.set_effects(state)
         #Send signal
@@ -132,7 +150,14 @@ class SltvUI:
         print "button pressed"
         if self.effect_enabled:
             print "sending change_effect"
-            self.sltv.change_effect(self.effect_combobox.get_active_text())
+            if button.get_name() == "video_effect_button":
+                self.sltv.change_effect(
+                        self.video_effect_combobox.get_active_text(), "video"
+                )
+            else:
+                self.sltv.change_effect(
+                        self.audio_effect_combobox.get_active_text(), "audio"
+                )
 
     def preview_toggled(self, checkbox):
         self.preview_state = not self.preview_state

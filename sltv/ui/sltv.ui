@@ -133,16 +133,17 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="effect_label">
+                      <object class="GtkLabel" id="video_effect_label">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Choose effect:</property>
+                        <property name="yalign">0.49000000953674316</property>
+                        <property name="label" translatable="yes">Video effect:</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBox" id="effect_combobox">
+                      <object class="GtkComboBox" id="video_effect_combobox">
                         <property name="visible">True</property>
                       </object>
                       <packing>
@@ -152,7 +153,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="effect_button">
+                      <object class="GtkButton" id="video_effect_button">
                         <property name="label" translatable="yes">Apply effect</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -160,6 +161,37 @@
                       </object>
                       <packing>
                         <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="audio_effect_label">
+                        <property name="visible">True</property>
+                        <property name="yalign">0.49000000953674316</property>
+                        <property name="label" translatable="yes">Audio effect:</property>
+                      </object>
+                      <packing>
+                        <property name="position">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="audio_effect_combobox">
+                        <property name="visible">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="audio_effect_button">
+                        <property name="label" translatable="yes">Apply effect</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">6</property>
                       </packing>
                     </child>
                   </object>
