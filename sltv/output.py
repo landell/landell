@@ -32,6 +32,8 @@ class Output:
         self.dialog = self.interface.get_object("dialog1")
         self.dialog.set_transient_for(window)
 
+        self.notebook = self.interface.get_object("notebook1")
+
         #Output selection
         file_radiobutton = self.interface.get_object("file_radiobutton")
         icecast_radiobutton = self.interface.get_object("icecast_radiobutton")
@@ -111,18 +113,15 @@ class Output:
 
     def icecast_out(self):
         print "Icecast"
-        notebook = self.interface.get_object("notebook1")
-        notebook.set_current_page(1)
+        self.notebook.set_current_page(1)
         self.output_selection = "icecast"
 
     def file_out(self):
         print "File"
-        notebook = self.interface.get_object("notebook1")
-        notebook.set_current_page(0)
+        self.notebook.set_current_page(0)
         self.output_selection = "file"
 
     def fakesink_out(self):
         print "fakesink"
-        notebook = self.interface.get_object("notebook1")
-        notebook.set_current_page(2)
+        self.notebook.set_current_page(2)
         self.output_selection = "fakesink"
