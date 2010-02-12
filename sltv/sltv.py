@@ -29,6 +29,7 @@ from preview import *
 from effects import *
 from video_switch import *
 from swap import *
+from testinput import *
 
 
 class Sltv:
@@ -94,15 +95,10 @@ class Sltv:
             gst.element_link_many(self.filesrc, self.decode)
 
         if self.switch_status == "test":
-            self.videosrc = gst.element_factory_make(
-                "videotestsrc", "videotestsrc"
-            )
-            self.audiosrc = gst.element_factory_make(
-                "audiotestsrc", "audiotestsrc"
-            )
-            self.player.add(self.videosrc, self.audiosrc)
-            gst.element_link_many(self.videosrc, self.queue_video)
-            gst.element_link_many(self.audiosrc, self.queue_audio)
+            self.input = TestInput()
+            self.player.add(self.input)
+            self.input.audio_pad.link(self.queue_audio.get_pad("sink"))
+            self.input.video_pad.link(self.queue_video.get_pad("sink"))
 
         if self.switch_status == "ximagesrc":
             self.capsfilter = gst.element_factory_make(
