@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010 Holoscopio Tecnologia
+# Copyright (C) 2010 Holoscópio Tecnologia
 # Author: Marcelo Jorge Vieira <metal@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
