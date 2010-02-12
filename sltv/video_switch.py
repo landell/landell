@@ -75,7 +75,7 @@ class VideoSwitch:
 
         self.filename = ""
         self.status = "v4l2"
-
+        self.notebook = self.interface.get_object("notebook1")
 
     def show_window(self):
         self.dialog.show_all()
@@ -99,26 +99,22 @@ class VideoSwitch:
     def v4l2_in(self):
         self.status = "v4l2"
         print "v4l2"
-        notebook = self.interface.get_object("notebook1")
-        notebook.prev_page()
+        self.notebook.prev_page()
 
     def file_in(self):
         self.status = "file"
         print "File"
-        notebook = self.interface.get_object("notebook1")
-        notebook.next_page()
+        self.notebook.next_page()
 
     def test_in(self):
         self.status = "test"
         print "test"
-        notebook = self.interface.get_object("notebook1")
-        notebook.prev_page()
+        self.notebook.prev_page()
 
     def ximagesrc_in(self):
         self.status = "ximagesrc"
         print "ximagesrc"
-        notebook = self.interface.get_object("notebook1")
-        notebook.prev_page()
+        self.notebook.prev_page()
 
     def input_changed(self, radioaction, current):
         if current.get_name() == "file_action":
