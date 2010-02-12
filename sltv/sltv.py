@@ -32,6 +32,7 @@ from swap import *
 from testinput import *
 from fileinput import *
 from xinput import *
+from v4l2input import *
 
 
 class Sltv:
@@ -71,20 +72,10 @@ class Sltv:
         self.switch_status = self.video_switch.get_status()
 
         if self.switch_status == "v4l2":
-            self.videosrc = gst.element_factory_make("v4l2src", "videosrc")
-            self.capsfilter = gst.element_factory_make(
-                "capsfilter", "capsfilter"
-            )
-            self.audiosrc = self.audio.get_audiosrc()
-            self.player.add(self.videosrc, self.capsfilter, self.audiosrc)
-            gst.element_link_many(
-                self.videosrc, self.capsfilter, self.queue_video
-            )
-            gst.element_link_many(self.audiosrc, self.queue_audio)
-            caps = gst.caps_from_string(
-                "video/x-raw-yuv, width=640, height=480"
-            )
-            self.capsfilter.set_property("caps", caps)
+            self.input = V4L2Input()
+            self.player.add(self.input)
+            self.input.audio_pad.link(self.queue_audio.get_pad("sink"))
+            self.input.video_pad.link(self.queue_video.get_pad("sink"))
 
         if self.switch_status == "file":
             self.input = FileInput()
