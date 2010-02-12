@@ -31,7 +31,7 @@ setup(
     package_data = {'sltv':['ui/*.ui']},
     entry_points = {
         'console_scripts': [
-            'sltv = sltv.sltv_ui',
+            'sltv = sltv.sltv_ui:main',
         ],
     },
 )

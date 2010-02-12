@@ -181,6 +181,10 @@ class SltvUI:
         )
         self.sltv.change_overlay(overlay_text)
 
-SltvUI()
-gtk.gdk.threads_init()
-gtk.main()
+def main():
+    SltvUI()
+    gtk.gdk.threads_init()
+    gtk.main()
+
+if __name__ == '__main__':
+    main()
