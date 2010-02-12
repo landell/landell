@@ -36,13 +36,16 @@ class VideoSwitch:
         file_radiobutton = self.interface.get_object("file_radiobutton")
         v4l2_radiobutton = self.interface.get_object("v4l2_radiobutton")
         test_radiobutton = self.interface.get_object("test_radiobutton")
-
+        ximagesrc_radiobutton = self.interface.get_object(
+            "ximagesrc_radiobutton"
+        )
         input_action_group = gtk.ActionGroup("input_action_group")
 
         input_action_entries = [
             ("v4l2_action", None, "V4L2 + ALSA", None, "Input to v4l2", 0),
             ("file_action", None, "File", None, "Input to file", 1),
-            ("test_action", None, "Test", None, "Test", 2)
+            ("test_action", None, "Test", None, "Test", 2),
+            ("ximagesrc_action", None, "ximagesrc", None, "ximagesrc", 3)
         ]
 
         input_action_group.add_radio_actions(
@@ -58,6 +61,9 @@ class VideoSwitch:
         test_action = input_action_group.get_action("test_action")
         test_action.connect_proxy(test_radiobutton)
 
+        ximagesrc_action = input_action_group.get_action("ximagesrc_action")
+        ximagesrc_action.connect_proxy(ximagesrc_radiobutton)
+
         data = ""
 
         close_button = self.interface.get_object("close_button")
@@ -69,6 +75,7 @@ class VideoSwitch:
 
         self.filename = ""
         self.status = "v4l2"
+
 
     def show_window(self):
         self.dialog.show_all()
@@ -107,6 +114,12 @@ class VideoSwitch:
         notebook = self.interface.get_object("notebook1")
         notebook.prev_page()
 
+    def ximagesrc_in(self):
+        self.status = "ximagesrc"
+        print "ximagesrc"
+        notebook = self.interface.get_object("notebook1")
+        notebook.prev_page()
+
     def input_changed(self, radioaction, current):
         if current.get_name() == "file_action":
             self.file_in()
@@ -116,6 +129,9 @@ class VideoSwitch:
 
         if current.get_name() == "test_action":
             self.test_in()
+
+        if current.get_name() == "ximagesrc_action":
+            self.ximagesrc_in()
 
     def get_status(self):
         return self.status

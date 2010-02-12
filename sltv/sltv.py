@@ -104,6 +104,29 @@ class Sltv:
             gst.element_link_many(self.videosrc, self.queue_video)
             gst.element_link_many(self.audiosrc, self.queue_audio)
 
+        if self.switch_status == "ximagesrc":
+            self.capsfilter = gst.element_factory_make(
+                "capsfilter", "capsfilter"
+            )
+            # FIXME
+            caps = gst.caps_from_string(
+                "video/x-raw-rgb, framerate=5/1"
+            )
+            self.capsfilter.set_property("caps", caps)
+
+            self.ximagesrc = gst.element_factory_make(
+                "ximagesrc", "ximagesrc"
+            )
+            self.audiosrc = gst.element_factory_make(
+                "autoaudiosrc", "autoaudiosrc"
+            )
+            self.player.add(self.capsfilter, self.ximagesrc, self.audiosrc)
+
+            gst.element_link_many(
+                self.ximagesrc, self.capsfilter, self.queue_video
+            )
+            gst.element_link_many(self.audiosrc, self.queue_audio)
+
         self.overlay = gst.element_factory_make("textoverlay", "overlay")
         self.tee = gst.element_factory_make("tee", "tee")
         queue1 = gst.element_factory_make("queue", "queue1")
