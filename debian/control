@@ -1,0 +1,21 @@
+Source: sltv
+Section: video
+Priority: optional
+Maintainer: Marcelo Jorge Vieira (metal) <metal@holoscopio.com>
+Build-Depends: debhelper (>= 7), python-setuptools
+Standards-Version: 3.8.4
+Homepage: https://wiki.softwarelivre.org/TV/ProjetoSLTV
+Vcs-Git: http://git.holoscopio.com/fujii/git/sltv.git
+Vcs-Browser: http://git.holoscopio.com/fujii/sltv.git/
+
+Package: sltv
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python-glade2, python-gst0.10,
+ libgstreamer0.10-0, gstreamer0.10-plugins-base, gstreamer0.10-plugins-good,
+ gstreamer0.10-ffmpeg
+XB-Python-Version: ${python:Versions}
+Provides: ${python:Provides}
+Description: audio and video streams manager
+ sltv is an audio and video streamer that receives streams from sources
+ and sends a stream using icecast. It has a graphical interface that
+ shows preview and allows applying dynamic effects and configuring stream.

@@ -1,0 +1,16 @@
+Format-Specification: http://wiki.debian.org/Proposals/CopyrightFormat
+Upstream-Name: sltv
+Upstream-Maintainer: Holoscópio Tecnologia
+Upstream-Source: http://sltv.holoscopio.com
+
+Files: *
+Copyright: (c) 2010 Holoscópio Tecnologia
+License: GPL-2+
+
+Files: debian/*
+Copyright: (c) 2010 Holoscópio Tecnologia
+License: GPL-2+
+
+License: GPL-2+
+  On Debian GNU/Linux systems, the complete text of the GPL License
+  can be found in `/usr/share/common-licenses/GPL-2'
