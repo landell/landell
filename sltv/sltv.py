@@ -30,6 +30,7 @@ from effects import *
 from video_switch import *
 from swap import *
 from testinput import *
+from fileinput import *
 
 
 class Sltv:
@@ -85,14 +86,11 @@ class Sltv:
             self.capsfilter.set_property("caps", caps)
 
         if self.switch_status == "file":
-            self.filesrc = gst.element_factory_make("filesrc", "source")
-            self.filesrc.set_property(
-                "location", self.video_switch.get_filename()
-            )
-            self.decode = gst.element_factory_make("decodebin", "decode")
-            self.decode.connect("new-decoded-pad", self.on_dynamic_pad)
-            self.player.add(self.filesrc, self.decode)
-            gst.element_link_many(self.filesrc, self.decode)
+            self.input = FileInput()
+            self.input.config({'location': self.video_switch.get_filename()})
+            self.player.add(self.input)
+            self.input.audio_pad.link(self.queue_audio.get_pad("sink"))
+            self.input.video_pad.link(self.queue_video.get_pad("sink"))
 
         if self.switch_status == "test":
             self.input = TestInput()
@@ -181,17 +179,6 @@ class Sltv:
 
     def stop(self):
         self.player.set_state(gst.STATE_NULL)
-
-    def on_dynamic_pad(self, dbin, pad, islast):
-        print "dynamic pad called!"
-        name = pad.get_caps()[0].get_name()
-        print name
-
-        if "audio" in name:
-            pad.link(self.queue_audio.get_pad("sink"))
-
-        if "video" in name:
-            pad.link(self.queue_video.get_pad("sink"))
 
     def set_effects(self, state):
         self.effect_enabled = state
