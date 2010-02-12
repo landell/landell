@@ -31,6 +31,7 @@ from video_switch import *
 from swap import *
 from testinput import *
 from fileinput import *
+from xinput import *
 
 
 class Sltv:
@@ -99,27 +100,10 @@ class Sltv:
             self.input.video_pad.link(self.queue_video.get_pad("sink"))
 
         if self.switch_status == "ximagesrc":
-            self.capsfilter = gst.element_factory_make(
-                "capsfilter", "capsfilter"
-            )
-            # FIXME
-            caps = gst.caps_from_string(
-                "video/x-raw-rgb, framerate=5/1"
-            )
-            self.capsfilter.set_property("caps", caps)
-
-            self.ximagesrc = gst.element_factory_make(
-                "ximagesrc", "ximagesrc"
-            )
-            self.audiosrc = gst.element_factory_make(
-                "autoaudiosrc", "autoaudiosrc"
-            )
-            self.player.add(self.capsfilter, self.ximagesrc, self.audiosrc)
-
-            gst.element_link_many(
-                self.ximagesrc, self.capsfilter, self.queue_video
-            )
-            gst.element_link_many(self.audiosrc, self.queue_audio)
+            self.input = XInput()
+            self.player.add(self.input)
+            self.input.audio_pad.link(self.queue_audio.get_pad("sink"))
+            self.input.video_pad.link(self.queue_video.get_pad("sink"))
 
         self.overlay = gst.element_factory_make("textoverlay", "overlay")
         self.tee = gst.element_factory_make("tee", "tee")
