@@ -81,12 +81,6 @@ class VideoSwitch:
         self.dialog.show_all()
         self.dialog.run()
 
-    def get_input(self):
-        if self.input_selection == "file":
-            self.sink = gst.element_factory_make("filesink", "filesink")
-            self.sink.set_property("location", self.filename);
-            return self.sink
-
     def close_dialog(self, button, data):
         self.dialog.hide_all()
 
