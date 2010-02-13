@@ -29,6 +29,7 @@ class VideoSwitch:
     def __init__(self, window):
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/video_switch.ui")
+        self.interface.add_from_file(UI_DIR + "/fileinput.ui")
         self.dialog = self.interface.get_object("switch_dialog")
         self.dialog.set_transient_for(window)
 
@@ -73,9 +74,12 @@ class VideoSwitch:
         file_chooser_button.connect("file_set", self.set_filename)
         self.dialog.connect("delete_event", self.close_dialog)
 
+        self.file_vbox = self.interface.get_object("file_vbox")
+        self.input_box = self.interface.get_object("input_box")
+        self.config_box = None
+
         self.filename = ""
         self.status = "v4l2"
-        self.notebook = self.interface.get_object("notebook1")
 
     def show_window(self):
         self.dialog.show_all()
@@ -93,22 +97,31 @@ class VideoSwitch:
     def v4l2_in(self):
         self.status = "v4l2"
         print "v4l2"
-        self.notebook.prev_page()
+        if self.config_box:
+            self.input_box.remove(self.config_box)
+        self.config_box = None
 
     def file_in(self):
         self.status = "file"
         print "File"
-        self.notebook.next_page()
+        if self.config_box:
+            self.input_box.remove(self.config_box)
+        self.input_box.add(self.file_vbox)
+        self.config_box = self.file_vbox
 
     def test_in(self):
         self.status = "test"
         print "test"
-        self.notebook.prev_page()
+        if self.config_box:
+            self.input_box.remove(self.config_box)
+        self.config_box = None
 
     def ximagesrc_in(self):
         self.status = "ximagesrc"
         print "ximagesrc"
-        self.notebook.prev_page()
+        if self.config_box:
+            self.input_box.remove(self.config_box)
+        self.config_box = None
 
     def input_changed(self, radioaction, current):
         if current.get_name() == "file_action":
