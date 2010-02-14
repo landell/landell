@@ -96,14 +96,12 @@ class VideoSwitch:
 
     def v4l2_in(self):
         self.status = "v4l2"
-        print "v4l2"
         if self.config_box:
             self.input_box.remove(self.config_box)
         self.config_box = None
 
     def file_in(self):
         self.status = "file"
-        print "File"
         if self.config_box:
             self.input_box.remove(self.config_box)
         self.input_box.add(self.file_vbox)
@@ -111,14 +109,12 @@ class VideoSwitch:
 
     def test_in(self):
         self.status = "test"
-        print "test"
         if self.config_box:
             self.input_box.remove(self.config_box)
         self.config_box = None
 
     def ximagesrc_in(self):
         self.status = "ximagesrc"
-        print "ximagesrc"
         if self.config_box:
             self.input_box.remove(self.config_box)
         self.config_box = None
