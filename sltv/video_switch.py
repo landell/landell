@@ -62,6 +62,9 @@ class V4L2InputFactory(InputFactory):
     def new_input(self):
         return V4L2Input()
 
+    def get_ui(self):
+        return None
+
 class XInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
@@ -69,12 +72,18 @@ class XInputFactory(InputFactory):
     def new_input(self):
         return XInput()
 
+    def get_ui(self):
+        return None
+
 class TestInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
 
     def new_input(self):
         return TestInput()
+
+    def get_ui(self):
+        return None
 
 
 class VideoSwitch:
@@ -126,11 +135,13 @@ class VideoSwitch:
         self.input_box = self.interface.get_object("input_box")
         self.config_box = None
 
-        self.test_factory = TestInputFactory()
-        self.x_factory = XInputFactory()
-        self.v4l2_factory = V4L2InputFactory()
-        self.file_factory = FileInputFactory()
-        self.factory = self.v4l2_factory
+        self.factories = {}
+        self.factories['test_action'] =  TestInputFactory()
+        self.factories['ximagesrc_action'] = XInputFactory()
+        self.factories['v4l2_action'] = V4L2InputFactory()
+        self.factories['file_action'] = FileInputFactory()
+
+        self.factory = self.factories['v4l2_action']
 
     def show_window(self):
         self.dialog.show_all()
@@ -139,43 +150,13 @@ class VideoSwitch:
     def close_dialog(self, button, data):
         self.dialog.hide_all()
 
-    def v4l2_in(self):
-        if self.config_box:
-            self.input_box.remove(self.config_box)
-        self.config_box = None
-        self.factory = self.v4l2_factory
-
-    def file_in(self):
-        if self.config_box:
-            self.input_box.remove(self.config_box)
-        self.config_box = self.file_factory.get_ui()
-        self.input_box.add(self.config_box)
-        self.factory = self.file_factory
-
-    def test_in(self):
-        if self.config_box:
-            self.input_box.remove(self.config_box)
-        self.config_box = None
-        self.factory = self.test_factory
-
-    def ximagesrc_in(self):
-        if self.config_box:
-            self.input_box.remove(self.config_box)
-        self.config_box = None
-        self.factory = self.x_factory
-
     def input_changed(self, radioaction, current):
-        if current.get_name() == "file_action":
-            self.file_in()
-
-        if current.get_name() == "v4l2_action":
-            self.v4l2_in()
-
-        if current.get_name() == "test_action":
-            self.test_in()
-
-        if current.get_name() == "ximagesrc_action":
-            self.ximagesrc_in()
+        self.factory = self.factories[current.get_name()]
+        if self.config_box:
+            self.input_box.remove(self.config_box)
+        self.config_box = self.factory.get_ui()
+        if self.config_box:
+            self.input_box.add(self.config_box)
 
     def new_input(self):
         return self.factory.new_input()
