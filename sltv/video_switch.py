@@ -55,6 +55,12 @@ class FileInputFactory(InputFactory):
         input.config(self.config)
         return input
 
+    def get_name(self):
+        return "File"
+
+    def get_description(self):
+        return "Get Video from file"
+
 class V4L2InputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
@@ -64,6 +70,12 @@ class V4L2InputFactory(InputFactory):
 
     def get_ui(self):
         return None
+
+    def get_name(self):
+        return "V4L2 + ALSA"
+
+    def get_description(self):
+        return "Get Video from V4L2 and Audio from ALSA"
 
 class XInputFactory(InputFactory):
     def __init__(self):
@@ -75,6 +87,12 @@ class XInputFactory(InputFactory):
     def get_ui(self):
         return None
 
+    def get_name(self):
+        return "XImageSrc"
+
+    def get_description(self):
+        return "Get Video from Desktop and Audio from ALSA"
+
 class TestInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
@@ -85,6 +103,12 @@ class TestInputFactory(InputFactory):
     def get_ui(self):
         return None
 
+    def get_name(self):
+        return "Test"
+
+    def get_description(self):
+        return "Video and Audio from test sources"
+
 
 class VideoSwitch:
 
@@ -94,37 +118,17 @@ class VideoSwitch:
         self.dialog = self.interface.get_object("switch_dialog")
         self.dialog.set_transient_for(window)
 
-        #input selection
-        file_radiobutton = self.interface.get_object("file_radiobutton")
-        v4l2_radiobutton = self.interface.get_object("v4l2_radiobutton")
-        test_radiobutton = self.interface.get_object("test_radiobutton")
-        ximagesrc_radiobutton = self.interface.get_object(
-            "ximagesrc_radiobutton"
-        )
-        input_action_group = gtk.ActionGroup("input_action_group")
+        self.factories = [TestInputFactory(), XInputFactory(), V4L2InputFactory(), FileInputFactory()]
+        self.factory = self.factories[0]
 
-        input_action_entries = [
-            ("v4l2_action", None, "V4L2 + ALSA", None, "Input to v4l2", 0),
-            ("file_action", None, "File", None, "Input to file", 1),
-            ("test_action", None, "Test", None, "Test", 2),
-            ("ximagesrc_action", None, "ximagesrc", None, "ximagesrc", 3)
-        ]
+        self.radio_box = self.interface.get_object("radio_box")
+        self.radiogroup = None
 
-        input_action_group.add_radio_actions(
-            input_action_entries, 0, self.input_changed, None
-        )
-
-        v4l2_action = input_action_group.get_action("v4l2_action")
-        v4l2_action.connect_proxy(v4l2_radiobutton)
-
-        file_action = input_action_group.get_action("file_action")
-        file_action.connect_proxy(file_radiobutton)
-
-        test_action = input_action_group.get_action("test_action")
-        test_action.connect_proxy(test_radiobutton)
-
-        ximagesrc_action = input_action_group.get_action("ximagesrc_action")
-        ximagesrc_action.connect_proxy(ximagesrc_radiobutton)
+        for factory in self.factories:
+            self.radiogroup = gtk.RadioButton(self.radiogroup)
+            self.radiogroup.set_label(factory.get_name())
+            self.radiogroup.connect("toggled", self.input_changed, factory)
+            self.radio_box.add(self.radiogroup)
 
         data = ""
 
@@ -135,14 +139,6 @@ class VideoSwitch:
         self.input_box = self.interface.get_object("input_box")
         self.config_box = None
 
-        self.factories = {}
-        self.factories['test_action'] =  TestInputFactory()
-        self.factories['ximagesrc_action'] = XInputFactory()
-        self.factories['v4l2_action'] = V4L2InputFactory()
-        self.factories['file_action'] = FileInputFactory()
-
-        self.factory = self.factories['v4l2_action']
-
     def show_window(self):
         self.dialog.show_all()
         self.dialog.run()
@@ -150,13 +146,14 @@ class VideoSwitch:
     def close_dialog(self, button, data):
         self.dialog.hide_all()
 
-    def input_changed(self, radioaction, current):
-        self.factory = self.factories[current.get_name()]
-        if self.config_box:
-            self.input_box.remove(self.config_box)
-        self.config_box = self.factory.get_ui()
-        if self.config_box:
-            self.input_box.add(self.config_box)
+    def input_changed(self, button, factory):
+        if button.get_active():
+            self.factory = factory
+            if self.config_box:
+                self.input_box.remove(self.config_box)
+            self.config_box = self.factory.get_ui()
+            if self.config_box:
+                self.input_box.add(self.config_box)
 
     def new_input(self):
         return self.factory.new_input()
