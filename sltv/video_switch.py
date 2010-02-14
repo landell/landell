@@ -22,6 +22,59 @@ pygst.require("0.10")
 import gst
 import gtk
 from settings import UI_DIR
+from fileinput import *
+from xinput import *
+from testinput import *
+from v4l2input import *
+
+class InputFactory:
+    def __init__(self):
+        self.interface = gtk.Builder()
+        self.config = {}
+    def get_config(self):
+        return self.config
+
+class FileInputFactory(InputFactory):
+    def __init__(self):
+        InputFactory.__init__(self)
+        self.interface.add_from_file(UI_DIR + "/fileinput.ui")
+        file_chooser_button = self.interface.get_object("filechooserbutton1")
+        file_chooser_button.set_local_only(True)
+        file_chooser_button.connect("file_set", self.set_filename)
+        self.file_vbox = self.interface.get_object("file_vbox")
+        self.config["location"] = ""
+
+    def set_filename(self, button):
+        self.config["location"] = button.get_filename()
+
+    def get_ui(self):
+        return self.file_vbox
+
+    def new_input(self):
+        input = FileInput()
+        input.config(self.config)
+        return input
+
+class V4L2InputFactory(InputFactory):
+    def __init__(self):
+        InputFactory.__init__(self)
+
+    def new_input(self):
+        return V4L2Input()
+
+class XInputFactory(InputFactory):
+    def __init__(self):
+        InputFactory.__init__(self)
+
+    def new_input(self):
+        return XInput()
+
+class TestInputFactory(InputFactory):
+    def __init__(self):
+        InputFactory.__init__(self)
+
+    def new_input(self):
+        return TestInput()
 
 
 class VideoSwitch:
@@ -29,7 +82,6 @@ class VideoSwitch:
     def __init__(self, window):
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/video_switch.ui")
-        self.interface.add_from_file(UI_DIR + "/fileinput.ui")
         self.dialog = self.interface.get_object("switch_dialog")
         self.dialog.set_transient_for(window)
 
@@ -68,18 +120,17 @@ class VideoSwitch:
         data = ""
 
         close_button = self.interface.get_object("close_button")
-        file_chooser_button = self.interface.get_object("filechooserbutton1")
-        file_chooser_button.set_local_only(True)
         close_button.connect("pressed", self.close_dialog, data)
-        file_chooser_button.connect("file_set", self.set_filename)
         self.dialog.connect("delete_event", self.close_dialog)
 
-        self.file_vbox = self.interface.get_object("file_vbox")
         self.input_box = self.interface.get_object("input_box")
         self.config_box = None
 
-        self.filename = ""
-        self.status = "v4l2"
+        self.test_factory = TestInputFactory()
+        self.x_factory = XInputFactory()
+        self.v4l2_factory = V4L2InputFactory()
+        self.file_factory = FileInputFactory()
+        self.factory = self.v4l2_factory
 
     def show_window(self):
         self.dialog.show_all()
@@ -88,36 +139,30 @@ class VideoSwitch:
     def close_dialog(self, button, data):
         self.dialog.hide_all()
 
-    def set_filename(self, button):
-        self.filename = button.get_filename()
-
-    def get_filename(self):
-        return self.filename
-
     def v4l2_in(self):
-        self.status = "v4l2"
         if self.config_box:
             self.input_box.remove(self.config_box)
         self.config_box = None
+        self.factory = self.v4l2_factory
 
     def file_in(self):
-        self.status = "file"
         if self.config_box:
             self.input_box.remove(self.config_box)
-        self.input_box.add(self.file_vbox)
-        self.config_box = self.file_vbox
+        self.config_box = self.file_factory.get_ui()
+        self.input_box.add(self.config_box)
+        self.factory = self.file_factory
 
     def test_in(self):
-        self.status = "test"
         if self.config_box:
             self.input_box.remove(self.config_box)
         self.config_box = None
+        self.factory = self.test_factory
 
     def ximagesrc_in(self):
-        self.status = "ximagesrc"
         if self.config_box:
             self.input_box.remove(self.config_box)
         self.config_box = None
+        self.factory = self.x_factory
 
     def input_changed(self, radioaction, current):
         if current.get_name() == "file_action":
@@ -132,5 +177,5 @@ class VideoSwitch:
         if current.get_name() == "ximagesrc_action":
             self.ximagesrc_in()
 
-    def get_status(self):
-        return self.status
+    def new_input(self):
+        return self.factory.new_input()

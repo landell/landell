@@ -29,10 +29,6 @@ from preview import *
 from effects import *
 from video_switch import *
 from swap import *
-from testinput import *
-from fileinput import *
-from xinput import *
-from v4l2input import *
 
 
 class Sltv:
@@ -69,25 +65,10 @@ class Sltv:
         self.convert = gst.element_factory_make("audioconvert", "convert")
         self.player.add(self.convert)
 
-        self.switch_status = self.video_switch.get_status()
-
-        if self.switch_status == "v4l2":
-            self.input = V4L2Input()
-
-        if self.switch_status == "file":
-            self.input = FileInput()
-            self.input.config({'location': self.video_switch.get_filename()})
-
-        if self.switch_status == "test":
-            self.input = TestInput()
-
-        if self.switch_status == "ximagesrc":
-            self.input = XInput()
-
+        self.input = self.video_switch.new_input()
         self.player.add(self.input)
         self.input.audio_pad.link(self.queue_audio.get_pad("sink"))
         self.input.video_pad.link(self.queue_video.get_pad("sink"))
-
 
         self.overlay = gst.element_factory_make("textoverlay", "overlay")
         self.tee = gst.element_factory_make("tee", "tee")
