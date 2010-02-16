@@ -26,6 +26,7 @@ from fileinput import *
 from xinput import *
 from testinput import *
 from v4l2input import *
+from dvinput import *
 
 class InputFactory:
     def __init__(self):
@@ -109,6 +110,22 @@ class TestInputFactory(InputFactory):
     def get_description(self):
         return "Video and Audio from test sources"
 
+class DVInputFactory(InputFactory):
+    def __init__(self):
+        InputFactory.__init__(self)
+
+    def new_input(self):
+        return DVInput()
+
+    def get_ui(self):
+        return None
+
+    def get_name(self):
+        return "DV Firewire"
+
+    def get_description(self):
+        return "Get video and audio from Firewire DV"
+
 
 class VideoSwitch:
 
@@ -118,7 +135,10 @@ class VideoSwitch:
         self.dialog = self.interface.get_object("switch_dialog")
         self.dialog.set_transient_for(window)
 
-        self.factories = [TestInputFactory(), XInputFactory(), V4L2InputFactory(), FileInputFactory()]
+        self.factories = [
+                TestInputFactory(), XInputFactory(), V4L2InputFactory(),
+                FileInputFactory(), DVInputFactory()
+        ]
         self.factory = self.factories[0]
 
         self.radio_box = self.interface.get_object("radio_box")
