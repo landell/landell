@@ -127,7 +127,7 @@ class Sltv:
         self.player.set_state(gst.STATE_PLAYING)
 
     def stop(self):
-        self.player.set_state(gst.STATE_NULL)
+        self.player.send_event(gst.event_new_eos())
 
     def set_effects(self, state):
         self.effect_enabled = state
