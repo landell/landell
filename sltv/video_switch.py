@@ -150,10 +150,8 @@ class VideoSwitch:
             self.radiogroup.connect("toggled", self.input_changed, factory)
             self.radio_box.add(self.radiogroup)
 
-        data = ""
-
         close_button = self.interface.get_object("close_button")
-        close_button.connect("clicked", self.close_dialog, data)
+        close_button.connect("clicked", self.close_dialog)
         self.dialog.connect("delete_event", self.close_dialog)
 
         self.input_box = self.interface.get_object("input_box")
@@ -163,7 +161,7 @@ class VideoSwitch:
         self.dialog.show_all()
         self.dialog.run()
 
-    def close_dialog(self, button, data):
+    def close_dialog(self, button, data = None):
         self.dialog.hide_all()
 
     def input_changed(self, button, factory):

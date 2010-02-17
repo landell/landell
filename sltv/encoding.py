@@ -50,10 +50,8 @@ class Encoding:
         dv_action.connect_proxy(dv_radiobutton)
         self.encoding_selection = "theora"
 
-        data = ""
-
         close_button = self.interface.get_object("close_button")
-        close_button.connect("clicked", self.close_dialog, data)
+        close_button.connect("clicked", self.close_dialog)
         self.dialog.connect("delete_event", self.close_dialog)
 
     def show_window(self):
@@ -120,7 +118,7 @@ class Encoding:
             self.mux.add_pad(sink_pad2)
             return self.mux
 
-    def close_dialog(self, button, data):
+    def close_dialog(self, button, data = None):
         self.dialog.hide_all()
 
     def encoding_changed(self, radioaction, current):

@@ -58,12 +58,10 @@ class Output:
         self.output_selection = "file"
         self.filename = "default.ogg"
 
-        data = ""
-
         close_button = self.interface.get_object("close_button")
         file_chooser_button = self.interface.get_object("filechooserbutton1")
         file_chooser_button.set_local_only(True)
-        close_button.connect("clicked", self.close_dialog, data)
+        close_button.connect("clicked", self.close_dialog)
         file_chooser_button.connect("file_set", self.file_set)
         self.dialog.connect("delete_event", self.close_dialog)
 
@@ -99,7 +97,7 @@ class Output:
     def file_set(self, button):
         self.filename = button.get_filename()
 
-    def close_dialog(self, button, data):
+    def close_dialog(self, button, data = None):
         self.dialog.hide_all()
 
     def output_changed(self, radioaction, current):
