@@ -63,7 +63,7 @@ class Output:
         close_button = self.interface.get_object("close_button")
         file_chooser_button = self.interface.get_object("filechooserbutton1")
         file_chooser_button.set_local_only(True)
-        close_button.connect("pressed", self.close_dialog, data)
+        close_button.connect("clicked", self.close_dialog, data)
         file_chooser_button.connect("file_set", self.file_set)
         self.dialog.connect("delete_event", self.close_dialog)
 

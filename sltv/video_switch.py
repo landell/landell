@@ -153,7 +153,7 @@ class VideoSwitch:
         data = ""
 
         close_button = self.interface.get_object("close_button")
-        close_button.connect("pressed", self.close_dialog, data)
+        close_button.connect("clicked", self.close_dialog, data)
         self.dialog.connect("delete_event", self.close_dialog)
 
         self.input_box = self.interface.get_object("input_box")

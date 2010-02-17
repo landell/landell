@@ -88,14 +88,14 @@ class SltvUI:
         self.preview_checkbutton.connect("toggled", self.preview_toggled)
         self.play_button.connect("toggled", self.on_play_press)
         self.stop_button.connect("toggled", self.on_stop_press)
-        self.overlay_button.connect("pressed", self.on_overlay_change)
+        self.overlay_button.connect("clicked", self.on_overlay_change)
         window.connect("delete_event", self.on_window_closed)
         output_menuitem.connect("activate", self.show_output)
         encoding_menuitem.connect("activate", self.show_encoding)
         video_switch_menuitem.connect("activate", self.show_video_switch)
         self.about_menu.connect("activate", self.show_about)
-        self.video_effect_button.connect("pressed", self.effect_changed)
-        self.audio_effect_button.connect("pressed", self.effect_changed)
+        self.video_effect_button.connect("clicked", self.effect_changed)
+        self.audio_effect_button.connect("clicked", self.effect_changed)
 
         self.sltv = Sltv(preview_area, window)
         self.set_effects(False)
@@ -146,7 +146,7 @@ class SltvUI:
         self.set_effects(not self.effect_enabled)
 
     def effect_changed(self, button):
-        print "button pressed"
+        print "button clicked"
         if self.effect_enabled:
             print "sending change_effect"
             if button.get_name() == "video_effect_button":
