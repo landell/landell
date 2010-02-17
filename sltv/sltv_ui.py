@@ -102,6 +102,7 @@ class SltvUI:
         self.preview_state = False
         self.sltv.set_preview(False)
         self.overlay_textview = self.interface.get_object("overlay_textview")
+        self.effect_enabled = False
 
     def on_play_press(self, event):
         if self.state == "stopped":
@@ -117,6 +118,9 @@ class SltvUI:
             video_effect_name = self.video_effect_combobox.get_active_text()
             audio_effect_name = self.audio_effect_combobox.get_active_text()
             self.overlay_button.set_sensitive(True)
+            if self.effect_enabled == True:
+                self.audio_effect_button.set_sensitive(True)
+                self.video_effect_button.set_sensitive(True)
             self.sltv.play(overlay_text, video_effect_name, audio_effect_name)
 
     def show_encoding(self, menuitem):
@@ -136,8 +140,13 @@ class SltvUI:
         self.audio_effect_combobox.set_sensitive(state)
         self.video_effect_label.set_sensitive(state)
         self.audio_effect_label.set_sensitive(state)
-        self.video_effect_button.set_sensitive(state)
-        self.audio_effect_button.set_sensitive(state)
+        if self.state == "playing" and state == True:
+            self.video_effect_button.set_sensitive(True)
+            self.audio_effect_button.set_sensitive(True)
+        elif self.state == "playing" and state == False:
+            self.video_effect_button.set_sensitive(False)
+            self.audio_effect_button.set_sensitive(False)
+
         self.effect_enabled = state
         self.sltv.set_effects(state)
         #Send signal
@@ -167,6 +176,8 @@ class SltvUI:
             self.play_button.set_active(False)
             self.state = "stopped"
             self.overlay_button.set_sensitive(False)
+            self.audio_effect_button.set_sensitive(False)
+            self.video_effect_button.set_sensitive(False)
             self.sltv.stop()
 
     def on_window_closed(self, event, data):
