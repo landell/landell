@@ -65,12 +65,26 @@ class FileInputFactory(InputFactory):
 class V4L2InputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.interface.add_from_file(UI_DIR + "/v4l2input.ui")
+        self.v4l2_vbox = self.interface.get_object("v4l2_vbox")
 
     def new_input(self):
-        return V4L2Input()
+        v4l2_entry = self.interface.get_object("v4l2_entry")
+        v4l2_device = v4l2_entry.get_text()
+        self.config["v4l2_device"] = v4l2_device
+        width_entry = self.interface.get_object("width_entry")
+        width = width_entry.get_text()
+        self.config["width"] = width
+        height_entry = self.interface.get_object("height_entry")
+        height = height_entry.get_text()
+        self.config["height"] = height
+
+        input = V4L2Input()
+        input.config(self.config)
+        return input
 
     def get_ui(self):
-        return None
+        return self.v4l2_vbox
 
     def get_name(self):
         return "V4L2 + ALSA"

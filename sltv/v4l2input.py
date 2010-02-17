@@ -35,10 +35,17 @@ class V4L2Input(Input):
 
         self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
         self.add(self.capsfilter)
-        # FIXME
-        caps = gst.caps_from_string("video/x-raw-yuv, width=640, height=480")
-        self.capsfilter.set_property("caps", caps)
+
         gst.element_link_many(self.video_src, self.capsfilter)
 
         self.audio_pad.set_target(self.audio_src.src_pads().next())
         self.video_pad.set_target(self.capsfilter.src_pads().next())
+
+    def config(self, dict):
+        self.video_src.set_property("device", dict["v4l2_device"])
+        caps = gst.caps_from_string(
+            "video/x-raw-yuv, width=%d, height=%d" % (
+                int(dict["width"]), int(dict["height"])
+            )
+        )
+        self.capsfilter.set_property("caps", caps)
