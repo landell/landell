@@ -25,7 +25,7 @@ from settings import UI_DIR
 from edit_source import *
 
 class Sources:
-    def __init__(self, window):
+    def __init__(self, window, liststore):
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/sources.ui")
         self.dialog = self.interface.get_object("sources_dialog")
@@ -35,7 +35,7 @@ class Sources:
         remove_button = self.interface.get_object("remove_button")
         close_button = self.interface.get_object("close_button")
 
-        self.sources_liststore = gtk.ListStore(str, gst.Element)
+        self.sources_liststore = liststore
         self.sources_treeview = self.interface.get_object("sources_treeview")
         self.sources_treeview.set_model(self.sources_liststore)
         cell = gtk.CellRendererText()
