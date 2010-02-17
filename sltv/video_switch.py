@@ -135,12 +135,20 @@ class TestInputFactory(InputFactory):
 class DVInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.interface.add_from_file(UI_DIR + "/dvinput.ui")
+        self.dv_vbox = self.interface.get_object("dv_vbox")
 
     def new_input(self):
-        return DVInput()
+        channel_entry = self.interface.get_object("channel_entry")
+        channel = channel_entry.get_text()
+        self.config["channel"] = channel
+
+        input = DVInput()
+        input.config(self.config)
+        return input
 
     def get_ui(self):
-        return None
+        return self.dv_vbox
 
     def get_name(self):
         return "DV Firewire"

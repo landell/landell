@@ -61,4 +61,4 @@ class DVInput(Input):
             self.audio_pad.set_target(pad)
 
     def config(self, dict):
-        self.capsfilter.set_property("caps", dict["caps"])
+        self.dv_src.set_property("channel", int(dict["channel"]))
