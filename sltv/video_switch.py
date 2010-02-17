@@ -81,12 +81,20 @@ class V4L2InputFactory(InputFactory):
 class XInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.interface.add_from_file(UI_DIR + "/xinput.ui")
+        self.x_vbox = self.interface.get_object("x_vbox")
 
     def new_input(self):
-        return XInput()
+        framerate_entry = self.interface.get_object("framerate_entry")
+        framerate = framerate_entry.get_text()
+        self.config["framerate"] = framerate
+
+        input = XInput()
+        input.config(self.config)
+        return input
 
     def get_ui(self):
-        return None
+        return self.x_vbox
 
     def get_name(self):
         return "XImageSrc"

@@ -27,18 +27,20 @@ class XInput(Input):
 
     def __init__(self):
         Input.__init__(self)
-
         self.audio_src = gst.element_factory_make("autoaudiosrc", "audio_src")
         self.add(self.audio_src)
         self.video_src = gst.element_factory_make("ximagesrc", "video_src")
         self.add(self.video_src)
-
         self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
         self.add(self.capsfilter)
-        # FIXME
-        caps = gst.caps_from_string("video/x-raw-rgb, framerate=5/1")
-        self.capsfilter.set_property("caps", caps)
+
         gst.element_link_many(self.video_src, self.capsfilter)
 
         self.audio_pad.set_target(self.audio_src.src_pads().next())
         self.video_pad.set_target(self.capsfilter.src_pads().next())
+
+    def config(self, dict):
+        caps = gst.caps_from_string(
+            "video/x-raw-rgb, framerate=%d/1" % int(dict["framerate"])
+        )
+        self.capsfilter.set_property("caps", caps)
