@@ -43,7 +43,7 @@ class DVInput(Input):
         self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
         self.add(self.capsfilter)
         gst.element_link_many(
-                self.dv_src, self.dvdemux, 
+                self.dv_src, self.dvdemux,
         )
         gst.element_link_many(
                 self.video_queue, self.dvdec,
