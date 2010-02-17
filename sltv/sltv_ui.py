@@ -25,6 +25,7 @@ from encoding import *
 from audio import *
 from sltv import *
 from about import *
+from sources import *
 from settings import UI_DIR
 
 def create_effects_combobox(combobox, effect_type):
@@ -47,6 +48,7 @@ class SltvUI:
         window = self.interface.get_object("window1")
         window.show_all()
         self.about = About(window)
+        self.sources = Sources(window)
 
         file_location_entry = self.interface.get_object("file_location_entry")
         self.play_button = self.interface.get_object("play_button")
@@ -55,6 +57,7 @@ class SltvUI:
         self.overlay_button = self.interface.get_object("overlay_button")
         output_menuitem = self.interface.get_object("output_menuitem")
         encoding_menuitem = self.interface.get_object("encoding_menuitem")
+        sources_menuitem = self.interface.get_object("sources_menuitem")
         video_switch_menuitem = self.interface.get_object(
             "video_switch_menuitem"
         )
@@ -93,6 +96,7 @@ class SltvUI:
         output_menuitem.connect("activate", self.show_output)
         encoding_menuitem.connect("activate", self.show_encoding)
         video_switch_menuitem.connect("activate", self.show_video_switch)
+        sources_menuitem.connect("activate", self.show_sources)
         self.about_menu.connect("activate", self.show_about)
         self.video_effect_button.connect("clicked", self.effect_changed)
         self.audio_effect_button.connect("clicked", self.effect_changed)
@@ -131,6 +135,9 @@ class SltvUI:
 
     def show_video_switch(self, menuitem):
         self.sltv.show_video_switch()
+
+    def show_sources(self, menuitem):
+        self.sources.show_window()
 
     def show_about(self, menuitem):
         self.about.show_window()
