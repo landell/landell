@@ -38,16 +38,14 @@ class DVInput(Input):
                 "videoscale", "dv_videoscale"
         )
         self.add(self.videoscale)
-        self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
-        self.add(self.capsfilter)
         gst.element_link_many(
                 self.dv_src, self.dvdemux,
         )
         gst.element_link_many(
                 self.video_queue, self.dvdec,
-                self.videoscale, self.capsfilter
+                self.videoscale
         )
-        self.video_pad.set_target(self.capsfilter.src_pads().next())
+        self.video_pad.set_target(self.videoscale.src_pads().next())
 
     def on_pad_added(self, element, pad):
         name = pad.get_caps()[0].get_name()
