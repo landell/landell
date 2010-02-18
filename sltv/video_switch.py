@@ -87,10 +87,10 @@ class V4L2InputFactory(InputFactory):
         return self.v4l2_vbox
 
     def get_name(self):
-        return "V4L2 + ALSA"
+        return "V4L2 + autoaudio"
 
     def get_description(self):
-        return "Get Video from V4L2 and Audio from ALSA"
+        return "Get Video from V4L2 and Audio from autoaudio"
 
 class XInputFactory(InputFactory):
     def __init__(self):
