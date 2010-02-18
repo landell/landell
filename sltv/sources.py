@@ -63,7 +63,8 @@ class Sources:
         self.sources_treeview.get_selection().get_selected()
 
     def on_remove_source(self, button):
-        bla = ""
+        (model, iter) = self.sources_treeview.get_selection().get_selected()
+        model.remove(iter)
 
     def add_source(self, name, element):
         self.sources_liststore.append((name,element))
