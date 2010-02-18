@@ -28,8 +28,6 @@ class DVInput(Input):
         Input.__init__(self)
         self.dv_src = gst.element_factory_make("dv1394src", "video_src")
         self.add(self.dv_src)
-        self.buffer_queue = gst.element_factory_make("queue", "buffer_queue")
-        self.add(self.buffer_queue)
         self.dvdemux = gst.element_factory_make("dvdemux", "dvdemux")
         self.add(self.dvdemux)
         self.video_queue = gst.element_factory_make("queue", "video_demux_queue")
