@@ -27,7 +27,7 @@ from xinput import *
 from testinput import *
 from v4l2input import *
 from dvinput import *
-from video_switch import * 
+from video_switch import *
 
 class EditSource:
     def __init__(self, window, sources):
@@ -47,7 +47,7 @@ class EditSource:
         self.elements_combobox.add_attribute(cell, "text", 0)
         self.name_entry = self.interface.get_object("name_entry")
         self.input_box = self.interface.get_object("input_box")
-        
+
         factories = [
                 TestInputFactory(), XInputFactory(), V4L2InputFactory(),
                 FileInputFactory(), DVInputFactory()
@@ -86,4 +86,3 @@ class EditSource:
         self.config_box = self.factory.get_ui()
         if self.config_box:
             self.input_box.add(self.config_box)
-
