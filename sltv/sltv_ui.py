@@ -55,6 +55,8 @@ class SltvUI:
         self.stop_button.set_active(True)
         self.overlay_button = self.interface.get_object("overlay_button")
 
+        #combobox to choose source
+
         self.source_combobox = self.interface.get_object("sources_combobox")
         self.sources_liststore = gtk.ListStore(str, gst.Element)
         self.sources = Sources(window, self.sources_liststore)
@@ -138,7 +140,11 @@ class SltvUI:
             if self.effect_enabled == True:
                 self.audio_effect_button.set_sensitive(True)
                 self.video_effect_button.set_sensitive(True)
-            self.sltv.play(overlay_text, video_effect_name, audio_effect_name)
+            self.sltv.play(
+                    overlay_text, video_effect_name, audio_effect_name,
+                    self.sources_liststore,
+                    self.source_combobox.get_active_text()
+            )
 
     def show_encoding(self, menuitem):
         self.sltv.show_encoding()
