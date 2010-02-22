@@ -1,13 +1,36 @@
-README for sltv
-===============
+About:
+======
 
-License: GPLv2 +
+  Sltv is an audio and video streamer that receives streams from sources
+  and sends a stream using icecast. It has a graphical interface that
+  shows preview and allows applying dynamic effects and configuring stream.
+
+License:
+========
+
+  Sltv is available under the terms of the GPL-2+
+
+  The complete text about the GPL license can be found here:
+  http://www.gnu.org/licenses/gpl-2.0.html
 
 Dependencies:
+=============
 
-  * libgstreamer0.10
-  * gstreamer-plugins-base (>= 0.10)
-  * gstreamer-plugins-good
-  * gstreamer0.10-ffmpeg
-  * python (>= 2.5)
-  * python-gst (>= 0.10)
+  libgstreamer0.10
+  gstreamer-plugins-base (>= 0.10)
+  gstreamer-plugins-good
+  gstreamer0.10-ffmpeg
+  python (>= 2.5)
+  python-gst (>= 0.10)
+
+Mailing list:
+=============
+
+http://listas.softwarelivre.org/cgi-bin/mailman/listinfo/sltv-dev
+sltv-dev@listas.softwarelivre.org
+
+Development:
+============
+
+http://git.holoscopio.com/fujii?p=sltv.git;a=summary
+git clone http://git.holoscopio.com/fujii/git/sltv.git
