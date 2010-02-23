@@ -32,12 +32,16 @@ class InputFactory:
     def __init__(self):
         self.interface = gtk.Builder()
         self.config = {}
+        self.id = ""
     def get_config(self):
         return self.config
+    def get_id(self):
+        return self.id
 
 class FileInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.id = "file"
         self.interface.add_from_file(UI_DIR + "/fileinput.ui")
         file_chooser_button = self.interface.get_object("filechooserbutton1")
         file_chooser_button.set_local_only(True)
@@ -65,6 +69,7 @@ class FileInputFactory(InputFactory):
 class V4L2InputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.id = "v4l2"
         self.interface.add_from_file(UI_DIR + "/v4l2input.ui")
         self.v4l2_vbox = self.interface.get_object("v4l2_vbox")
 
@@ -95,6 +100,7 @@ class V4L2InputFactory(InputFactory):
 class XInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.id = "x"
         self.interface.add_from_file(UI_DIR + "/xinput.ui")
         self.x_vbox = self.interface.get_object("x_vbox")
 
@@ -119,6 +125,7 @@ class XInputFactory(InputFactory):
 class TestInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.id = "test"
 
     def new_input(self):
         return TestInput()
@@ -135,6 +142,7 @@ class TestInputFactory(InputFactory):
 class DVInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.id = "dv"
         self.interface.add_from_file(UI_DIR + "/dvinput.ui")
         self.dv_vbox = self.interface.get_object("dv_vbox")
 
