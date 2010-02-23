@@ -19,8 +19,10 @@ AS_AC_EXPAND(DATADIR, $datarootdir)
 
 AC_CONFIG_FILES([
         Makefile
+        sltv/ui/Makefile
         sltv/Makefile
         sltv/sltv
+        sltv/settings.py
 ])
 
 AC_OUTPUT

@@ -1,3 +1,5 @@
+SUBDIRS = ui
+
 sltvdir = $(bindir)
 bin_SCRIPTS = sltv
 
