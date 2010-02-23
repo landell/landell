@@ -69,16 +69,30 @@ class Sltv:
 
         # Source selection
 
+        self.video_input_selector = gst.element_factory_make(
+                "input-selector", "video_input_selector"
+        )
+        self.player.add(self.video_input_selector)
+        self.source_pads = {'audio': {}, 'video': {}}
         iter = liststore.get_iter_first()
         while iter != None:
-            if liststore.get_value(iter, 0) == source_name:
-                self.input = liststore.get_value(iter, 1)
-                break
+            name = liststore.get_value(iter, 0)
+            element = liststore.get_value(iter, 1)
+            self.player.add(element)
+            if name == source_name:
+                element.audio_pad.link(self.queue_audio.get_static_pad("sink"))
+            else:
+                element.audio_pad.set_blocked_async(True, self.blocked)
+                self.audio_pad = element.audio_pad
+            self.source_pads['video'][name] = \
+                    self.video_input_selector.get_request_pad("sink%d")
+            element.video_pad.link(self.source_pads['video'][name])
             iter = liststore.iter_next(iter)
-        self.player.add(self.input)
-        self.input.audio_pad.link(self.queue_audio.get_pad("sink"))
-        self.input.video_pad.link(self.queue_video.get_pad("sink"))
 
+        self.video_input_selector.link(self.queue_video)
+        self.video_input_selector.set_property(
+                "active_pad", self.source_pads['video'][source_name]
+        )
         self.overlay = gst.element_factory_make("textoverlay", "overlay")
         self.tee = gst.element_factory_make("tee", "tee")
         queue1 = gst.element_factory_make("queue", "queue1")
@@ -135,6 +149,10 @@ class Sltv:
         bus.connect("sync-message::element", self.on_sync_message)
         self.player.set_state(gst.STATE_PLAYING)
 
+    def blocked(self, pad, blocked):
+        blocked = True;
+        return
+
     def stop(self):
         self.player.send_event(gst.event_new_eos())
 
@@ -156,6 +174,11 @@ class Sltv:
                     effect_name
             )
             self.effect_name[effect_type] = effect_name
+
+    def switch_source(self, source_name):
+        self.video_input_selector.set_property(
+                "active-pad", self.source_pads['video'][source_name]
+        )
 
     def set_preview(self, state):
         self.preview_enabled = state

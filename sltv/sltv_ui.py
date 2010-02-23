@@ -65,6 +65,7 @@ class SltvUI:
         self.source_combobox.pack_start(cell, True)
         self.source_combobox.add_attribute(cell, "text", 0)
         self.source_combobox.set_active(0)
+        self.source_combobox.connect("changed",self.on_switch_source)
 
         #menu
 
@@ -145,6 +146,11 @@ class SltvUI:
                     self.sources_liststore,
                     self.source_combobox.get_active_text()
             )
+
+    def on_switch_source(self, combobox):
+        if self.state == "playing":
+            source_name = self.source_combobox.get_active_text()
+            self.sltv.switch_source(source_name)
 
     def show_encoding(self, menuitem):
         self.sltv.show_encoding()
