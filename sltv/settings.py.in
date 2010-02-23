@@ -19,3 +19,5 @@
 import os
 
 UI_DIR = '@DATADIR@/sltv'
+
+VERSION = '@VERSION@'
