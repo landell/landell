@@ -55,7 +55,9 @@ class Sltv:
     def show_video_switch(self):
         self.video_switch.show_window()
 
-    def play(self, overlay_text, video_effect_name, audio_effect_name):
+    def play(self, overlay_text, video_effect_name,
+            audio_effect_name, liststore, source_name):
+
         self.player = gst.Pipeline("player")
 
         self.queue_video = gst.element_factory_make("queue", "queue_video")
@@ -65,7 +67,14 @@ class Sltv:
         self.convert = gst.element_factory_make("audioconvert", "convert")
         self.player.add(self.convert)
 
-        self.input = self.video_switch.new_input()
+        # Source selection
+
+        iter = liststore.get_iter_first()
+        while iter != None:
+            if liststore.get_value(iter, 0) == source_name:
+                self.input = liststore.get_value(iter, 1)
+                break
+            iter = liststore.iter_next(iter)
         self.player.add(self.input)
         self.input.audio_pad.link(self.queue_audio.get_pad("sink"))
         self.input.video_pad.link(self.queue_video.get_pad("sink"))

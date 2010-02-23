@@ -44,6 +44,14 @@
                         <property name="use_stock">False</property>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="sources_menuitem">
+                        <property name="label">Sources</property>
+                        <property name="visible">True</property>
+                        <property name="image">image4</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -114,6 +122,44 @@
                   </object>
                   <packing>
                     <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkVBox" id="vbox5">
+                    <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel" id="source_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Source (switch):</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="sources_combobox">
+                        <property name="visible">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
@@ -202,7 +248,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="position">2</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
                 <child>
@@ -242,7 +288,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="position">3</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
               </object>
@@ -350,6 +396,10 @@
   </object>
   <object class="GtkListStore" id="liststore1"/>
   <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="stock">gtk-missing-image</property>
+  </object>
+  <object class="GtkImage" id="image4">
     <property name="visible">True</property>
     <property name="stock">gtk-missing-image</property>
   </object>

@@ -59,3 +59,4 @@ class DVInput(Input):
 
     def config(self, dict):
         self.dv_src.set_property("channel", int(dict["channel"]))
+        self.dv_src.set_property("port", int(dict["port"]))

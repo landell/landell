@@ -25,6 +25,7 @@ from encoding import *
 from audio import *
 from sltv import *
 from about import *
+from sources import *
 from settings import UI_DIR
 
 def create_effects_combobox(combobox, effect_type):
@@ -53,12 +54,28 @@ class SltvUI:
         self.stop_button = self.interface.get_object("stop_button")
         self.stop_button.set_active(True)
         self.overlay_button = self.interface.get_object("overlay_button")
+
+        #combobox to choose source
+
+        self.source_combobox = self.interface.get_object("sources_combobox")
+        self.sources_liststore = gtk.ListStore(str, gst.Element)
+        self.sources = Sources(window, self.sources_liststore)
+        self.source_combobox.set_model(self.sources_liststore)
+        cell = gtk.CellRendererText()
+        self.source_combobox.pack_start(cell, True)
+        self.source_combobox.add_attribute(cell, "text", 0)
+        self.source_combobox.set_active(0)
+
+        #menu
+
         output_menuitem = self.interface.get_object("output_menuitem")
         encoding_menuitem = self.interface.get_object("encoding_menuitem")
+        sources_menuitem = self.interface.get_object("sources_menuitem")
         video_switch_menuitem = self.interface.get_object(
             "video_switch_menuitem"
         )
         self.about_menu = self.interface.get_object("about_menu")
+
         self.video_effect_combobox = self.interface.get_object(
                 "video_effect_combobox"
         )
@@ -79,6 +96,7 @@ class SltvUI:
         self.preview_checkbutton = self.interface.get_object(
             "preview_checkbutton"
         )
+
         preview_area = self.interface.get_object("preview_area")
 
         self.video_effect_label = self.interface.get_object("video_effect_label")
@@ -93,6 +111,7 @@ class SltvUI:
         output_menuitem.connect("activate", self.show_output)
         encoding_menuitem.connect("activate", self.show_encoding)
         video_switch_menuitem.connect("activate", self.show_video_switch)
+        sources_menuitem.connect("activate", self.show_sources)
         self.about_menu.connect("activate", self.show_about)
         self.video_effect_button.connect("clicked", self.effect_changed)
         self.audio_effect_button.connect("clicked", self.effect_changed)
@@ -121,7 +140,11 @@ class SltvUI:
             if self.effect_enabled == True:
                 self.audio_effect_button.set_sensitive(True)
                 self.video_effect_button.set_sensitive(True)
-            self.sltv.play(overlay_text, video_effect_name, audio_effect_name)
+            self.sltv.play(
+                    overlay_text, video_effect_name, audio_effect_name,
+                    self.sources_liststore,
+                    self.source_combobox.get_active_text()
+            )
 
     def show_encoding(self, menuitem):
         self.sltv.show_encoding()
@@ -131,6 +154,9 @@ class SltvUI:
 
     def show_video_switch(self, menuitem):
         self.sltv.show_video_switch()
+
+    def show_sources(self, menuitem):
+        self.sources.show_window()
 
     def show_about(self, menuitem):
         self.about.show_window()

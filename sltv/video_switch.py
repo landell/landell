@@ -142,6 +142,9 @@ class DVInputFactory(InputFactory):
         channel_entry = self.interface.get_object("channel_entry")
         channel = channel_entry.get_text()
         self.config["channel"] = channel
+        port_entry = self.interface.get_object("port_entry")
+        port = port_entry.get_text()
+        self.config["port"] = port
 
         input = DVInput()
         input.config(self.config)
