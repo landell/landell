@@ -74,7 +74,7 @@ class EditSource:
 
     def save(self):
         name = self.name_entry.get_text()
-        source = self.factory.new_input()
+        source = self.factory
         self.sources.add_source(name, source)
 
     def on_change_element(self, button):

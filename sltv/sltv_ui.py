@@ -58,7 +58,7 @@ class SltvUI:
         #combobox to choose source
 
         self.source_combobox = self.interface.get_object("sources_combobox")
-        self.sources_liststore = gtk.ListStore(str, gst.Element)
+        self.sources_liststore = gtk.ListStore(str, object)
         self.sources = Sources(window, self.sources_liststore)
         self.source_combobox.set_model(self.sources_liststore)
         cell = gtk.CellRendererText()
