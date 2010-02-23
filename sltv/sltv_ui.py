@@ -220,6 +220,7 @@ class SltvUI:
 
 def main():
     SltvUI()
+    gobject.threads_init()
     gtk.gdk.threads_init()
     gtk.main()
 
