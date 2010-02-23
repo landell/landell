@@ -74,18 +74,8 @@ class V4L2InputFactory(InputFactory):
         self.v4l2_vbox = self.interface.get_object("v4l2_vbox")
 
     def new_input(self):
-        v4l2_entry = self.interface.get_object("v4l2_entry")
-        v4l2_device = v4l2_entry.get_text()
-        self.config["v4l2_device"] = v4l2_device
-        width_entry = self.interface.get_object("width_entry")
-        width = width_entry.get_text()
-        self.config["width"] = width
-        height_entry = self.interface.get_object("height_entry")
-        height = height_entry.get_text()
-        self.config["height"] = height
-
         input = V4L2Input()
-        input.config(self.config)
+        input.config(self.get_config())
         return input
 
     def get_ui(self):
@@ -97,6 +87,18 @@ class V4L2InputFactory(InputFactory):
     def get_description(self):
         return "Get Video from V4L2 and Audio from autoaudio"
 
+    def get_config(self):
+        v4l2_entry = self.interface.get_object("v4l2_entry")
+        v4l2_device = v4l2_entry.get_text()
+        self.config["v4l2_device"] = v4l2_device
+        width_entry = self.interface.get_object("width_entry")
+        width = width_entry.get_text()
+        self.config["width"] = width
+        height_entry = self.interface.get_object("height_entry")
+        height = height_entry.get_text()
+        self.config["height"] = height
+        return self.config
+
 class XInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
@@ -105,12 +107,8 @@ class XInputFactory(InputFactory):
         self.x_vbox = self.interface.get_object("x_vbox")
 
     def new_input(self):
-        framerate_entry = self.interface.get_object("framerate_entry")
-        framerate = framerate_entry.get_text()
-        self.config["framerate"] = framerate
-
         input = XInput()
-        input.config(self.config)
+        input.config(self.get_config())
         return input
 
     def get_ui(self):
@@ -121,6 +119,12 @@ class XInputFactory(InputFactory):
 
     def get_description(self):
         return "Get Video from Desktop and Audio from ALSA"
+
+    def get_config(self):
+        framerate_entry = self.interface.get_object("framerate_entry")
+        framerate = framerate_entry.get_text()
+        self.config["framerate"] = framerate
+        return self.config
 
 class TestInputFactory(InputFactory):
     def __init__(self):
@@ -147,15 +151,8 @@ class DVInputFactory(InputFactory):
         self.dv_vbox = self.interface.get_object("dv_vbox")
 
     def new_input(self):
-        channel_entry = self.interface.get_object("channel_entry")
-        channel = channel_entry.get_text()
-        self.config["channel"] = channel
-        port_entry = self.interface.get_object("port_entry")
-        port = port_entry.get_text()
-        self.config["port"] = port
-
         input = DVInput()
-        input.config(self.config)
+        input.config(self.get_config())
         return input
 
     def get_ui(self):
@@ -167,6 +164,14 @@ class DVInputFactory(InputFactory):
     def get_description(self):
         return "Get video and audio from Firewire DV"
 
+    def get_config(self):
+        channel_entry = self.interface.get_object("channel_entry")
+        channel = channel_entry.get_text()
+        self.config["channel"] = channel
+        port_entry = self.interface.get_object("port_entry")
+        port = port_entry.get_text()
+        self.config["port"] = port
+        return self.config
 
 class VideoSwitch:
 
