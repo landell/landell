@@ -20,4 +20,4 @@ SLTVPATH="@LIBDIR@/sltv"
 PYTHONPATH="$PYTHONPATH:$SLTVPATH"
 PYTHON="/usr/bin/python"
 
-exec -a sltv $PYTHON -OO $SLTVPATH/sltv_ui.py "$@"
+exec $PYTHON -OO $SLTVPATH/sltv_ui.py "$@"
