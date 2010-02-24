@@ -20,7 +20,7 @@ import gobject
 import pygst
 pygst.require("0.10")
 import gst
-from input import *
+from core import Input
 
 class DVInput(Input):
 

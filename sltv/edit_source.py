@@ -22,11 +22,6 @@ pygst.require("0.10")
 import gst
 import gtk
 from settings import UI_DIR
-from fileinput import *
-from xinput import *
-from testinput import *
-from v4l2input import *
-from dvinput import *
 from factory import *
 from registry import *
 

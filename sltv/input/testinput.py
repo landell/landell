@@ -21,28 +21,20 @@ import gobject
 import pygst
 pygst.require("0.10")
 import gst
-from input import *
+from core import Input
 
-class FileInput(Input):
+class TestInput(Input):
 
     def __init__(self):
         Input.__init__(self)
-        self.file_src = gst.element_factory_make("filesrc", "src")
-        self.add(self.file_src)
-        self.decode_bin = gst.element_factory_make("decodebin", "decoder")
-        self.add(self.decode_bin)
-        self.decode_bin.connect("new-decoded-pad", self.on_dynamic_pad)
-        gst.element_link_many(self.file_src, self.decode_bin)
-
-    def on_dynamic_pad(self, dbin, pad, islast):
-        name = pad.get_caps()[0].get_name()
-
-        if "audio" in name:
-            self.audio_pad.set_target(pad)
-
-        if "video" in name:
-            self.video_pad.set_target(pad)
+        self.audio_src = gst.element_factory_make("audiotestsrc", "audio_src")
+        self.video_src = gst.element_factory_make("videotestsrc", "video_src")
+        self.video_src.set_property("is-live", True)
+        self.audio_src.set_property("is-live", True)
+        self.add(self.audio_src)
+        self.add(self.video_src)
+        self.audio_pad.set_target(self.audio_src.src_pads().next())
+        self.video_pad.set_target(self.video_src.src_pads().next())
 
     def config(self, dict):
-        self.file_src.set_property("location", dict["location"])
-
+        self.video_src.set_property("pattern", int(dict["pattern"]))

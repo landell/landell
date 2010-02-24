@@ -22,11 +22,8 @@ pygst.require("0.10")
 import gst
 import gtk
 from settings import UI_DIR
-from fileinput import *
-from xinput import *
-from testinput import *
-from v4l2input import *
-from dvinput import *
+
+import input
 
 class InputFactory:
     def __init__(self):
@@ -56,9 +53,9 @@ class FileInputFactory(InputFactory):
         return self.file_vbox
 
     def new_input(self):
-        input = FileInput()
-        input.config(self.config)
-        return input
+        inp = input.fileinput.FileInput()
+        inp.config(self.config)
+        return inp
 
     def get_name(self):
         return "File"
@@ -74,9 +71,9 @@ class V4L2InputFactory(InputFactory):
         self.v4l2_vbox = self.interface.get_object("v4l2_vbox")
 
     def new_input(self):
-        input = V4L2Input()
-        input.config(self.get_config())
-        return input
+        inp = input.v4l2input.V4L2Input()
+        inp.config(self.get_config())
+        return inp
 
     def get_ui(self):
         return self.v4l2_vbox
@@ -107,9 +104,9 @@ class XInputFactory(InputFactory):
         self.x_vbox = self.interface.get_object("x_vbox")
 
     def new_input(self):
-        input = XInput()
-        input.config(self.get_config())
-        return input
+        inp = input.xinput.XInput()
+        inp.config(self.get_config())
+        return inp
 
     def get_ui(self):
         return self.x_vbox
@@ -134,9 +131,9 @@ class TestInputFactory(InputFactory):
         self.test_vbox = self.interface.get_object("test_vbox")
 
     def new_input(self):
-        input = TestInput()
-        input.config(self.get_config())
-        return input
+        inp = input.testinput.TestInput()
+        inp.config(self.get_config())
+        return inp
 
     def get_ui(self):
         return self.test_vbox
@@ -161,9 +158,9 @@ class DVInputFactory(InputFactory):
         self.dv_vbox = self.interface.get_object("dv_vbox")
 
     def new_input(self):
-        input = DVInput()
-        input.config(self.get_config())
-        return input
+        inp = input.dvinput.DVInput()
+        inp.config(self.get_config())
+        return inp
 
     def get_ui(self):
         return self.dv_vbox
