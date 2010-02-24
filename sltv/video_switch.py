@@ -28,6 +28,7 @@ from testinput import *
 from v4l2input import *
 from dvinput import *
 from factory import *
+from registry import *
 
 class InputFactory:
     def __init__(self):
@@ -192,10 +193,8 @@ class VideoSwitch:
         self.dialog = self.interface.get_object("switch_dialog")
         self.dialog.set_transient_for(window)
 
-        self.factories = [
-                TestInputFactory(), XInputFactory(), V4L2InputFactory(),
-                FileInputFactory(), DVInputFactory()
-        ]
+        self.registry = Registry()
+        self.factories = self.registry.get_factories()
         self.factory = self.factories[0]
 
         self.radio_box = self.interface.get_object("radio_box")
