@@ -27,6 +27,7 @@ from xinput import *
 from testinput import *
 from v4l2input import *
 from dvinput import *
+from video_switch import *
 from registry import *
 
 class EditSource:
