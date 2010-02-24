@@ -30,6 +30,14 @@ class XInput(Input):
         self.audio_src = gst.element_factory_make("autoaudiosrc", "audio_src")
         self.add(self.audio_src)
         self.video_src = gst.element_factory_make("ximagesrc", "video_src")
+
+        # Setting format to time, to work with input-selector, since they're
+        # were not working together in version 0.10.18-1 from Debian.
+        # This should be fixed in ximagesrc's code and input-selector should
+        # also be fixed to work with byte format.
+
+        self.video_src.set_format(gst.FORMAT_TIME)
+
         self.add(self.video_src)
         self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
         self.add(self.capsfilter)
