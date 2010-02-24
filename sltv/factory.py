@@ -27,7 +27,6 @@ from xinput import *
 from testinput import *
 from v4l2input import *
 from dvinput import *
-from factory import *
 
 class InputFactory:
     def __init__(self):
@@ -131,28 +130,18 @@ class TestInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
         self.id = "test"
-        self.interface.add_from_file(UI_DIR + "/testinput.ui")
-        self.test_vbox = self.interface.get_object("test_vbox")
 
     def new_input(self):
-        input = TestInput()
-        input.config(self.get_config())
-        return input
+        return TestInput()
 
     def get_ui(self):
-        return self.test_vbox
+        return None
 
     def get_name(self):
         return "Test"
 
     def get_description(self):
         return "Video and Audio from test sources"
-
-    def get_config(self):
-        pattern_entry = self.interface.get_object("pattern_entry")
-        pattern = pattern_entry.get_text()
-        self.config["pattern"] = pattern
-        return self.config
 
 class DVInputFactory(InputFactory):
     def __init__(self):
@@ -183,52 +172,3 @@ class DVInputFactory(InputFactory):
         port = port_entry.get_text()
         self.config["port"] = port
         return self.config
-
-class VideoSwitch:
-
-    def __init__(self, window):
-        self.interface = gtk.Builder()
-        self.interface.add_from_file(UI_DIR + "/video_switch.ui")
-        self.dialog = self.interface.get_object("switch_dialog")
-        self.dialog.set_transient_for(window)
-
-        self.factories = [
-                TestInputFactory(), XInputFactory(), V4L2InputFactory(),
-                FileInputFactory(), DVInputFactory()
-        ]
-        self.factory = self.factories[0]
-
-        self.radio_box = self.interface.get_object("radio_box")
-        self.radiogroup = None
-
-        for factory in self.factories:
-            self.radiogroup = gtk.RadioButton(self.radiogroup)
-            self.radiogroup.set_label(factory.get_name())
-            self.radiogroup.connect("toggled", self.input_changed, factory)
-            self.radio_box.add(self.radiogroup)
-
-        close_button = self.interface.get_object("close_button")
-        close_button.connect("clicked", self.close_dialog)
-        self.dialog.connect("delete_event", self.close_dialog)
-
-        self.input_box = self.interface.get_object("input_box")
-        self.config_box = None
-
-    def show_window(self):
-        self.dialog.show_all()
-        self.dialog.run()
-
-    def close_dialog(self, button, data = None):
-        self.dialog.hide_all()
-
-    def input_changed(self, button, factory):
-        if button.get_active():
-            self.factory = factory
-            if self.config_box:
-                self.input_box.remove(self.config_box)
-            self.config_box = self.factory.get_ui()
-            if self.config_box:
-                self.input_box.add(self.config_box)
-
-    def new_input(self):
-        return self.factory.new_input()
