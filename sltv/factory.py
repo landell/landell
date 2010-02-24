@@ -130,18 +130,28 @@ class TestInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
         self.id = "test"
+        self.interface.add_from_file(UI_DIR + "/testinput.ui")
+        self.test_vbox = self.interface.get_object("test_vbox")
 
     def new_input(self):
-        return TestInput()
+        input = TestInput()
+        input.config(self.get_config())
+        return input
 
     def get_ui(self):
-        return None
+        return self.test_vbox
 
     def get_name(self):
         return "Test"
 
     def get_description(self):
         return "Video and Audio from test sources"
+
+    def get_config(self):
+        pattern_entry = self.interface.get_object("pattern_entry")
+        pattern = pattern_entry.get_text()
+        self.config["pattern"] = pattern
+        return self.config
 
 class DVInputFactory(InputFactory):
     def __init__(self):
