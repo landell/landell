@@ -35,3 +35,6 @@ class TestInput(Input):
         self.add(self.video_src)
         self.audio_pad.set_target(self.audio_src.src_pads().next())
         self.video_pad.set_target(self.video_src.src_pads().next())
+
+    def config(self, dict):
+        self.video_src.set_property("pattern", int(dict["pattern"]))
