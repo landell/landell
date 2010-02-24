@@ -21,6 +21,12 @@ class Registry:
     def __init__(self):
         self.factories = []
 
+    def get_factory_by_id(self, id):
+        for factory in self.factories:
+            if factory.get_id() == id:
+                return factory
+        return None
+
     def get_factories(self):
         return self.factories
 
