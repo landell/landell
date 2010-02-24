@@ -27,7 +27,6 @@ from encoding import *
 from audio import *
 from preview import *
 from effects import *
-from video_switch import *
 from swap import *
 
 
@@ -40,7 +39,6 @@ class Sltv:
         self.encoding = Encoding(window)
         self.output = Output(window)
         self.audio = Audio()
-        self.video_switch = VideoSwitch(window)
 
         self.effect_enabled = "False"
         self.effect = {}
@@ -51,9 +49,6 @@ class Sltv:
 
     def show_output(self):
         self.output.show_window()
-
-    def show_video_switch(self):
-        self.video_switch.show_window()
 
     def play(self, overlay_text, video_effect_name,
             audio_effect_name, liststore, source_name):
