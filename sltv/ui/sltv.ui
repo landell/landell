@@ -37,14 +37,6 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="video_switch_menuitem">
-                        <property name="label">Video Switch</property>
-                        <property name="visible">True</property>
-                        <property name="image">image3</property>
-                        <property name="use_stock">False</property>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkImageMenuItem" id="sources_menuitem">
                         <property name="label">Sources</property>
                         <property name="visible">True</property>
@@ -395,10 +387,6 @@
     <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkListStore" id="liststore1"/>
-  <object class="GtkImage" id="image3">
-    <property name="visible">True</property>
-    <property name="stock">gtk-missing-image</property>
-  </object>
   <object class="GtkImage" id="image4">
     <property name="visible">True</property>
     <property name="stock">gtk-missing-image</property>
