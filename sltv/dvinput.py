@@ -28,6 +28,10 @@ class DVInput(Input):
         Input.__init__(self)
         self.dv_src = gst.element_factory_make("dv1394src", "video_src")
         self.add(self.dv_src)
+        self.capsfilter = gst.element_factory_make(
+                "capsfilter", "dv_capsfilter"
+        )
+        self.add(self.capsfilter)
         self.dvdemux = gst.element_factory_make("dvdemux", "dvdemux")
         self.add(self.dvdemux)
         self.dvdemux.connect("pad-added", self.on_pad_added)
@@ -40,11 +44,10 @@ class DVInput(Input):
         )
         self.add(self.videoscale)
         gst.element_link_many(
-                self.dv_src, self.dvdemux,
+                self.dv_src, self.capsfilter, self.dvdemux,
         )
         gst.element_link_many(
-                self.video_queue, self.dvdec,
-                self.videoscale
+                self.video_queue, self.dvdec, self.videoscale
         )
         self.video_pad.set_target(self.videoscale.src_pads().next())
 
@@ -60,3 +63,9 @@ class DVInput(Input):
     def config(self, dict):
         self.dv_src.set_property("channel", int(dict["channel"]))
         self.dv_src.set_property("port", int(dict["port"]))
+        caps = gst.caps_from_string(
+            "video/x-dv, width=%d, height=%d" % (
+                int(dict["width"]), int(dict["height"])
+            )
+        )
+        self.capsfilter.set_property("caps", caps)
