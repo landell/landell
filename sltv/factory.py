@@ -187,4 +187,7 @@ class DVInputFactory(InputFactory):
         height_entry = self.interface.get_object("height_entry")
         height = height_entry.get_text()
         self.config["height"] = height
+        filechooserbutton = self.interface.get_object("filechooserbutton")
+        filename = filechooserbutton.get_filename()
+        self.config["filename"] = filename
         return self.config
