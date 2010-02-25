@@ -11,3 +11,5 @@ sltvlib_DATA = about.py dvinput.py effects.py fileinput.py output.py	\
 	registry.py factory.py
 
 EXTRA_DIST = $(bin_SCRIPTS) $(sltvlib_DATA)
+
+DISTCLEANFILES = settings.py
