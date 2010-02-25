@@ -1,4 +1,4 @@
-SUBDIRS = ui input
+SUBDIRS = input
 
 sltvdir = $(bindir)
 bin_SCRIPTS = sltv

@@ -19,8 +19,8 @@ AS_AC_EXPAND(DATADIR, $datarootdir)
 
 AC_CONFIG_FILES([
         Makefile
-        sltv/ui/Makefile
-	sltv/ui/input/Makefile
+        ui/Makefile
+	ui/input/Makefile
 	sltv/input/Makefile
         sltv/Makefile
         sltv/sltv
