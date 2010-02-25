@@ -51,7 +51,6 @@ class EditSource:
 
         self.registry = Registry()
         factories = self.registry.get_factories()
-        self.factory = factories[0]
         self.factories = {}
 
         for factory in factories:
@@ -62,6 +61,8 @@ class EditSource:
         self.elements_combobox.connect("changed", self.on_change_element)
         self.config_box = None
         self.sources = sources
+
+        self.set_factory(factories[0])
 
     def show_window(self):
         self.dialog.show_all()
@@ -76,12 +77,14 @@ class EditSource:
         source = self.factory
         self.sources.add_source(name, source)
 
-    def on_change_element(self, button):
-        self.factory = self.factories[
-                self.elements_combobox.get_active_text()
-        ]
+    def set_factory(self, factory):
+        self.factory = factory
         if self.config_box:
             self.input_box.remove(self.config_box)
         self.config_box = self.factory.get_ui()
         if self.config_box:
             self.input_box.add(self.config_box)
+
+    def on_change_element(self, button):
+        selection = self.elements_combobox.get_active_text()
+        self.set_factory(self.factories[selection])
