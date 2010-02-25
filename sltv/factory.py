@@ -181,4 +181,10 @@ class DVInputFactory(InputFactory):
         port_entry = self.interface.get_object("port_entry")
         port = port_entry.get_text()
         self.config["port"] = port
+        width_entry = self.interface.get_object("width_entry")
+        width = width_entry.get_text()
+        self.config["width"] = width
+        height_entry = self.interface.get_object("height_entry")
+        height = height_entry.get_text()
+        self.config["height"] = height
         return self.config
