@@ -39,7 +39,7 @@ class FileInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
         self.id = "file"
-        self.interface.add_from_file(UI_DIR + "/fileinput.ui")
+        self.interface.add_from_file(UI_DIR + "/input/fileinput.ui")
         file_chooser_button = self.interface.get_object("filechooserbutton1")
         file_chooser_button.set_local_only(True)
         file_chooser_button.connect("file_set", self.set_filename)
@@ -67,7 +67,7 @@ class V4L2InputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
         self.id = "v4l2"
-        self.interface.add_from_file(UI_DIR + "/v4l2input.ui")
+        self.interface.add_from_file(UI_DIR + "/input/v4l2input.ui")
         self.v4l2_vbox = self.interface.get_object("v4l2_vbox")
 
     def new_input(self):
@@ -100,7 +100,7 @@ class XInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
         self.id = "x"
-        self.interface.add_from_file(UI_DIR + "/xinput.ui")
+        self.interface.add_from_file(UI_DIR + "/input/xinput.ui")
         self.x_vbox = self.interface.get_object("x_vbox")
 
     def new_input(self):
@@ -127,7 +127,7 @@ class TestInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
         self.id = "test"
-        self.interface.add_from_file(UI_DIR + "/testinput.ui")
+        self.interface.add_from_file(UI_DIR + "/input/testinput.ui")
         self.test_vbox = self.interface.get_object("test_vbox")
 
     def new_input(self):
@@ -154,7 +154,7 @@ class DVInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
         self.id = "dv"
-        self.interface.add_from_file(UI_DIR + "/dvinput.ui")
+        self.interface.add_from_file(UI_DIR + "/input/dvinput.ui")
         self.dv_vbox = self.interface.get_object("dv_vbox")
 
     def new_input(self):
