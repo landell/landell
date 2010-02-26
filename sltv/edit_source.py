@@ -17,9 +17,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gobject
-import pygst
-pygst.require("0.10")
-import gst
 import gtk
 from settings import UI_DIR
 from factory import *

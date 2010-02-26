@@ -21,7 +21,6 @@ import gobject
 import pygst
 pygst.require("0.10")
 import gst
-import gtk
 from output import *
 from encoding import *
 from audio import *
