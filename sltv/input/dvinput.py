@@ -20,12 +20,12 @@ import gobject
 import pygst
 pygst.require("0.10")
 import gst
-from core import Input
+from core import Input, INPUT_TYPE_AUDIO, INPUT_TYPE_VIDEO
 
 class DVInput(Input):
 
     def __init__(self):
-        Input.__init__(self)
+        Input.__init__(self, INPUT_TYPE_AUDIO | INPUT_TYPE_VIDEO)
         self.dv_src = gst.element_factory_make("dv1394src", "video_src")
         self.add(self.dv_src)
         self.capsfilter = gst.element_factory_make(

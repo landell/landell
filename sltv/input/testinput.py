@@ -21,12 +21,12 @@ import gobject
 import pygst
 pygst.require("0.10")
 import gst
-from core import Input
+from core import Input, INPUT_TYPE_AUDIO, INPUT_TYPE_VIDEO
 
 class TestInput(Input):
 
     def __init__(self):
-        Input.__init__(self)
+        Input.__init__(self, INPUT_TYPE_AUDIO | INPUT_TYPE_VIDEO)
         self.audio_src = gst.element_factory_make("audiotestsrc", "audio_src")
         self.video_src = gst.element_factory_make("videotestsrc", "video_src")
         self.video_src.set_property("is-live", True)

@@ -22,11 +22,26 @@ import pygst
 pygst.require("0.10")
 import gst
 
+INPUT_TYPE_AUDIO = 1
+INPUT_TYPE_VIDEO = 2
+
 class Input(gst.Bin):
 
-    def __init__(self):
+    def __init__(self, type):
         gst.Bin.__init__(self)
-        self.audio_pad = gst.ghost_pad_new_notarget("audio_pad", gst.PAD_SRC)
-        self.video_pad = gst.ghost_pad_new_notarget("video_pad", gst.PAD_SRC)
-        self.add_pad(self.audio_pad)
-        self.add_pad(self.video_pad)
+        self.type = type
+        if (type & INPUT_TYPE_AUDIO):
+            self.audio_pad = gst.ghost_pad_new_notarget("audio_pad", gst.PAD_SRC)
+            self.add_pad(self.audio_pad)
+        if (type & INPUT_TYPE_VIDEO):
+            self.video_pad = gst.ghost_pad_new_notarget("video_pad", gst.PAD_SRC)
+            self.add_pad(self.video_pad)
+
+    def get_type(self):
+        return self.type
+
+    def does_audio(self):
+        return self.type & INPUT_TYPE_AUDIO
+
+    def does_video(self):
+        return self.type & INPUT_TYPE_VIDEO

@@ -21,12 +21,12 @@ import gobject
 import pygst
 pygst.require("0.10")
 import gst
-from core import Input
+from core import Input, INPUT_TYPE_AUDIO, INPUT_TYPE_VIDEO
 
 class FileInput(Input):
 
     def __init__(self):
-        Input.__init__(self)
+        Input.__init__(self, INPUT_TYPE_AUDIO | INPUT_TYPE_VIDEO)
         self.file_src = gst.element_factory_make("filesrc", "src")
         self.add(self.file_src)
         self.decode_bin = gst.element_factory_make("decodebin", "decoder")
