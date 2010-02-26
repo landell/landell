@@ -22,10 +22,10 @@ sys.path.append("@LIBDIR@")
 
 import gobject
 import gtk
-import sltv.sltv_ui
+import sltv.ui
 
 def main():
-    sltv.sltv_ui.SltvUI()
+    sltv.ui.SltvUI()
     gobject.threads_init()
     gtk.gdk.threads_init()
     gtk.main()
