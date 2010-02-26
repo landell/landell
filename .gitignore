@@ -15,5 +15,5 @@ autoscan.log
 config.status
 install-sh
 stamp-h1
-/sltv/sltv
+/src/sltv
 /sltv/settings.py
