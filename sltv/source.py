@@ -32,3 +32,5 @@ class Source:
         input = self.factory.new_input()
         input.config(self.config)
         return input
+    def get_factory(self):
+        return self.factory
