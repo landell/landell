@@ -74,14 +74,20 @@ class Sltv:
             source = liststore.get_value(iter, 1)
             element = source.new_input()
             self.player.add(element)
-            if name == source_name:
-                element.audio_pad.link(self.queue_audio.get_static_pad("sink"))
-            else:
-                element.audio_pad.set_blocked_async(True, self.blocked)
-                self.audio_pad = element.audio_pad
-            self.source_pads['video'][name] = \
+
+            if element.does_audio():
+                if name == source_name:
+                    pad = self.queue_audio.get_static_pad("sink")
+                    element.audio_pad.link(pad)
+                else:
+                    element.audio_pad.set_blocked_async(True, self.blocked)
+                    self.audio_pad = element.audio_pad
+
+            if element.does_video():
+                self.source_pads['video'][name] = \
                     self.video_input_selector.get_request_pad("sink%d")
-            element.video_pad.link(self.source_pads['video'][name])
+                element.video_pad.link(self.source_pads['video'][name])
+
             iter = liststore.iter_next(iter)
 
         self.video_input_selector.link(self.queue_video)
