@@ -134,3 +134,20 @@ class DVInputFactory(InputFactory):
     def get_config(self):
         self.config = self.ui.get_config()
         return self.config
+
+class ALSAInputFactory(InputFactory):
+    def __init__(self):
+        InputFactory.__init__(self)
+        self.id = "alsa"
+        self.ui = ui.input.alsainput.ALSAInputUI()
+    def new_input(self):
+        inp = input.alsainput.ALSAInput()
+        inp.config(self.get_config())
+        return inp
+    def get_name(self):
+        return "ALSA"
+    def get_description(self):
+        return "Advanced Linux Sound Architecture"
+    def get_config(self):
+        self.config = self.ui.get_config()
+        return self.config

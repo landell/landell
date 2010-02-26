@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010 Holoscopio Tecnologia
+# Copyright (C) 2010 Holoscópio Tecnologia
 # Author: Marcelo Jorge Vieira <metal@holoscopio.com>
 # Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
 #
@@ -17,9 +17,20 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import alsainput
-import dvinput
-import fileinput
-import testinput
-import v4l2input
-import xinput
+import gobject
+import gtk
+from sltv.settings import UI_DIR
+from core import InputUI
+
+class ALSAInputUI(InputUI):
+    def __init__(self):
+        InputUI.__init__(self)
+
+    def get_widget(self):
+        return None
+
+    def get_name(self):
+        return "ALSA"
+
+    def get_description(self):
+        return "Advanced Linux Sound Architecture"

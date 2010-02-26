@@ -17,9 +17,19 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import alsainput
-import dvinput
-import fileinput
-import testinput
-import v4l2input
-import xinput
+import gobject
+import pygst
+pygst.require("0.10")
+import gst
+from core import Input, INPUT_TYPE_AUDIO
+
+class ALSAInput(Input):
+
+    def __init__(self):
+        Input.__init__(self, INPUT_TYPE_AUDIO)
+        self.audio_src = gst.element_factory_make("audiotestsrc", "audio_src")
+        self.add(self.audio_src)
+        self.audio_pad.set_target(self.audio_src.src_pads().next())
+
+    def config(self, dict):
+        self
