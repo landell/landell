@@ -24,8 +24,8 @@ from output import *
 from encoding import *
 from audio import *
 from sltv import *
-from about import *
-from sources import *
+import ui.about
+import ui.sources
 from settings import UI_DIR
 
 def create_effects_combobox(combobox, effect_type):
@@ -47,7 +47,7 @@ class SltvUI:
         self.interface.add_from_file(UI_DIR + "/sltv.ui")
         window = self.interface.get_object("window1")
         window.show_all()
-        self.about = About(window)
+        self.about = ui.about.About(window)
 
         file_location_entry = self.interface.get_object("file_location_entry")
         self.play_button = self.interface.get_object("play_button")
@@ -59,7 +59,7 @@ class SltvUI:
 
         self.source_combobox = self.interface.get_object("sources_combobox")
         self.sources_liststore = gtk.ListStore(str, object)
-        self.sources = Sources(window, self.sources_liststore)
+        self.sources = ui.sources.Sources(window, self.sources_liststore)
         self.source_combobox.set_model(self.sources_liststore)
         cell = gtk.CellRendererText()
         self.source_combobox.pack_start(cell, True)

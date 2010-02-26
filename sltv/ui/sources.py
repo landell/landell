@@ -18,7 +18,7 @@
 
 import gobject
 import gtk
-from settings import UI_DIR
+from sltv.settings import UI_DIR
 from edit_source import *
 
 class Sources:

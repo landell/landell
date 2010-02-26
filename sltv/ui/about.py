@@ -17,7 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gtk
-from settings import VERSION
+from sltv.settings import VERSION
 
 class About:
 

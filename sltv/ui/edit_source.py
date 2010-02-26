@@ -18,9 +18,8 @@
 
 import gobject
 import gtk
-from settings import UI_DIR
-from factory import *
-from registry import *
+from sltv.settings import UI_DIR
+import sltv.registry
 
 class EditSource:
     def __init__(self, window, sources):
@@ -41,7 +40,7 @@ class EditSource:
         self.name_entry = self.interface.get_object("name_entry")
         self.input_box = self.interface.get_object("input_box")
 
-        self.registry = Registry()
+        self.registry = sltv.registry.Registry()
         factories = self.registry.get_factories()
         self.factories = {}
 
