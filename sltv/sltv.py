@@ -178,9 +178,6 @@ class Sltv:
     def set_preview(self, state):
         self.preview_enabled = state
 
-    def on_window_closed(self, event, data):
-        gtk.main_quit()
-
     def change_overlay(self, overlay_text):
         self.overlay.set_property("text", overlay_text)
 
