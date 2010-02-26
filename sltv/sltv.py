@@ -76,6 +76,7 @@ class Sltv:
             self.player.add(element)
 
             if element.does_audio():
+                print "element does audio"
                 if name == source_name:
                     pad = self.queue_audio.get_static_pad("sink")
                     element.audio_pad.link(pad)
@@ -84,6 +85,7 @@ class Sltv:
                     self.audio_pad = element.audio_pad
 
             if element.does_video():
+                print "element does video"
                 self.source_pads['video'][name] = \
                     self.video_input_selector.get_request_pad("sink%d")
                 element.video_pad.link(self.source_pads['video'][name])

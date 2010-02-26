@@ -22,8 +22,9 @@ class Registry:
 
     def __init__(self):
         self.factories = [
-                TestInputFactory(), XInputFactory(), V4L2InputFactory(),
-                FileInputFactory(), DVInputFactory(), ALSAInputFactory()
+                AudioTestInputFactory(), XInputFactory(), V4L2InputFactory(),
+                FileInputFactory(), DVInputFactory(), ALSAInputFactory(),
+                VideoTestInputFactory()
         ]
 
     def get_factories(self):

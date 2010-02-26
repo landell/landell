@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010 Holoscopio Tecnologia
+# Copyright (C) 2010 Holoscópio Tecnologia
 # Author: Marcelo Jorge Vieira <metal@holoscopio.com>
 # Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
+# Author: Luciana Fujii Pontello <luciana@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,25 +19,19 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gobject
-import pygst
-pygst.require("0.10")
-import gst
-from core import Input, INPUT_TYPE_AUDIO, INPUT_TYPE_VIDEO
+import gtk
+from sltv.settings import UI_DIR
+from core import InputUI
 
-CAPABILITIES = INPUT_TYPE_AUDIO | INPUT_TYPE_VIDEO
-
-class TestInput(Input):
-
+class AudioTestInputUI(InputUI):
     def __init__(self):
-        Input.__init__(self, CAPABILITIES)
-        self.audio_src = gst.element_factory_make("audiotestsrc", "audio_src")
-        self.video_src = gst.element_factory_make("videotestsrc", "video_src")
-        self.video_src.set_property("is-live", True)
-        self.audio_src.set_property("is-live", True)
-        self.add(self.audio_src)
-        self.add(self.video_src)
-        self.audio_pad.set_target(self.audio_src.src_pads().next())
-        self.video_pad.set_target(self.video_src.src_pads().next())
+        InputUI.__init__(self)
 
-    def config(self, dict):
-        self.video_src.set_property("pattern", int(dict["pattern"]))
+    def get_widget(self):
+        return None
+
+    def get_name(self):
+        return "Audio Test"
+
+    def get_description(self):
+        return "Audio from test source"

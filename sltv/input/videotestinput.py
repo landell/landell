@@ -17,10 +17,22 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import alsainput
-import dvinput
-import fileinput
-import videotestinput
-import audiotestinput
-import v4l2input
-import xinput
+import gobject
+import pygst
+pygst.require("0.10")
+import gst
+from core import Input, INPUT_TYPE_VIDEO
+
+CAPABILITIES = INPUT_TYPE_VIDEO
+
+class VideoTestInput(Input):
+
+    def __init__(self):
+        Input.__init__(self, CAPABILITIES)
+        self.video_src = gst.element_factory_make("videotestsrc", "video_src")
+        self.video_src.set_property("is-live", True)
+        self.add(self.video_src)
+        self.video_pad.set_target(self.video_src.src_pads().next())
+
+    def config(self, dict):
+        self.video_src.set_property("pattern", int(dict["pattern"]))

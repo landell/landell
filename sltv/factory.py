@@ -85,15 +85,31 @@ class XInputFactory(InputFactory):
         self.config = self.ui.get_config()
         return self.config
 
-class TestInputFactory(InputFactory):
+class VideoTestInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
-        self.capabilities = input.testinput.CAPABILITIES
-        self.id = "test"
-        self.ui = ui.input.testinput.TestInputUI()
+        self.capabilities = input.videotestinput.CAPABILITIES
+        self.id = "videotest"
+        self.ui = ui.input.videotestinput.VideoTestInputUI()
 
     def new_input(self):
-        inp = input.testinput.TestInput()
+        inp = input.videotestinput.VideoTestInput()
+        inp.config(self.get_config())
+        return inp
+
+    def get_config(self):
+        self.config = self.ui.get_config()
+        return self.config
+
+class AudioTestInputFactory(InputFactory):
+    def __init__(self):
+        InputFactory.__init__(self)
+        self.capabilities = input.audiotestinput.CAPABILITIES
+        self.id = "audiotest"
+        self.ui = ui.input.audiotestinput.AudioTestInputUI()
+
+    def new_input(self):
+        inp = input.audiotestinput.AudioTestInput()
         inp.config(self.get_config())
         return inp
 

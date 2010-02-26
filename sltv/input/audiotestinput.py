@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010 Holoscópio Tecnologia
+# Copyright (C) 2010 Holoscopio Tecnologia
 # Author: Marcelo Jorge Vieira <metal@holoscopio.com>
 # Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
 #
@@ -18,29 +18,21 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gobject
-import gtk
-from sltv.settings import UI_DIR
-from core import InputUI
+import pygst
+pygst.require("0.10")
+import gst
+from core import Input, INPUT_TYPE_AUDIO
 
-class TestInputUI(InputUI):
+CAPABILITIES = INPUT_TYPE_AUDIO
+
+class AudioTestInput(Input):
+
     def __init__(self):
-        InputUI.__init__(self)
-        self.interface.add_from_file(UI_DIR + "/input/testinput.ui")
-        self.vbox = self.interface.get_object("test_vbox")
-        self.pattern_entry = self.interface.get_object("pattern_entry")
+        Input.__init__(self, CAPABILITIES)
+        self.audio_src = gst.element_factory_make("audiotestsrc", "audio_src")
+        self.audio_src.set_property("is-live", True)
+        self.add(self.audio_src)
+        self.audio_pad.set_target(self.audio_src.src_pads().next())
 
-    def get_widget(self):
-        return self.vbox
-
-    def get_name(self):
-        return "Test"
-
-    def get_description(self):
-        return "Video and Audio from test sources"
-
-    def update_config(self):
-        self.pattern_entry.set_text(self.config["pattern"])
-
-    def get_config(self):
-        self.config["pattern"] = self.pattern_entry.get_text()
-        return self.config
+    def config(self, dict):
+        self

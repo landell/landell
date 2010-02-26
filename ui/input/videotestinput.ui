@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkVBox" id="test_vbox">
+  <object class="GtkVBox" id="videotest_vbox">
     <property name="visible">True</property>
     <property name="border_width">10</property>
     <property name="orientation">vertical</property>
