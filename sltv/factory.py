@@ -23,6 +23,7 @@ class InputFactory:
     def __init__(self):
         self.config = {}
         self.id = ""
+        self.capabilities = None 
     def get_config(self):
         return self.config
     def get_id(self):
@@ -33,10 +34,13 @@ class InputFactory:
         return self.ui.get_name()
     def get_description(self):
         return self.ui.get_description()
+    def get_capabilities(self):
+        return self.capabilities
 
 class FileInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.capabilities = input.fileinput.CAPABILITIES
         self.id = "file"
         self.ui = ui.input.fileinput.FileInputUI()
 
@@ -52,6 +56,7 @@ class FileInputFactory(InputFactory):
 class V4L2InputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.capabilities = input.v4l2input.CAPABILITIES
         self.id = "v4l2"
         self.ui = ui.input.v4l2input.V4L2InputUI()
 
@@ -67,6 +72,7 @@ class V4L2InputFactory(InputFactory):
 class XInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.capabilities = input.xinput.CAPABILITIES
         self.id = "x"
         self.ui = ui.input.xinput.XInputUI()
 
@@ -82,6 +88,7 @@ class XInputFactory(InputFactory):
 class TestInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.capabilities = input.testinput.CAPABILITIES
         self.id = "test"
         self.ui = ui.input.testinput.TestInputUI()
 
@@ -97,6 +104,7 @@ class TestInputFactory(InputFactory):
 class DVInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.capabilities = input.dvinput.CAPABILITIES
         self.id = "dv"
         self.ui = ui.input.dvinput.DVInputUI()
 
@@ -112,6 +120,7 @@ class DVInputFactory(InputFactory):
 class ALSAInputFactory(InputFactory):
     def __init__(self):
         InputFactory.__init__(self)
+        self.capabilities = input.alsainput.CAPABILITIES
         self.id = "alsa"
         self.ui = ui.input.alsainput.ALSAInputUI()
     def new_input(self):
