@@ -1,5 +1,6 @@
 *~
 *.pyc
+*.pyo
 *.ogg
 Makefile
 Makefile.in
