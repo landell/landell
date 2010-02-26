@@ -28,7 +28,11 @@ from preview import *
 from effects import *
 from swap import *
 
+import registry
+import config
+
 import sources
+import source
 
 class Sltv:
 
@@ -47,6 +51,22 @@ class Sltv:
 
         self.video_source = None
         self.audio_source = None
+
+        self.registry = registry.registry
+        self.config = config.config
+        self.load_sources()
+
+    def load_sources(self):
+        config_sources = self.config.get_section("Sources")
+        if config_sources != None:
+            # FIXME dict to list
+            sources = [(v, k) for (k, v) in config_sources[0].iteritems()]
+            for value, key in sources:
+                if value and key:
+                    factory = self.registry.get_factory_by_id(value["type"])
+                    src = source.Source(key, factory)
+                    src.set_config(value)
+                    self.sources.add_source(key, src)
 
     def show_encoding(self):
         self.encoding.show_window()

@@ -18,10 +18,12 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gtk
+import config
 
 class Sources:
     def __init__(self):
         self.liststore = gtk.ListStore(str, object)
+        self.config = config.config
 
     def _find_source(self, name):
         for row in self.liststore:
@@ -37,9 +39,14 @@ class Sources:
         row = self._find_source(name)
         if row != None:
             self.liststore.remove(row.iter)
+        self.config.remove_item("Sources", name)
 
     def add_source(self, name, source):
         self.liststore.append((name, source))
+        factory = source.get_factory()
+        items = source.get_config()
+        items["type"] = factory.get_id()
+        self.config.set_item("Sources", name, items)
 
     def get_store(self):
         return self.liststore
