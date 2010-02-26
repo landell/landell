@@ -216,12 +216,3 @@ class SltvUI:
             True
         )
         self.sltv.change_overlay(overlay_text)
-
-def main():
-    SltvUI()
-    gobject.threads_init()
-    gtk.gdk.threads_init()
-    gtk.main()
-
-if __name__ == '__main__':
-    main()

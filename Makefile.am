@@ -1,4 +1,4 @@
-SUBDIRS = sltv ui
+SUBDIRS = sltv ui src
 
 ACLOCAL_AMFLAGS = -I m4
 

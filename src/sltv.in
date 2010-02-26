@@ -1,7 +1,7 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
-# Author: Marcelo Jorge Vieira <metal@holoscopio.com>
-# Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
+# Author: Luciana Fujii Pontello <luciana@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,17 +17,18 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import sys
+sys.path.append("@LIBDIR@")
+
 import gobject
 import gtk
+import sltv.sltv_ui
 
-class InputUI:
-    def __init__(self):
-        self.interface = gtk.Builder()
-        self.config = {}
-    def get_config(self):
-        return self.config
-    def update_config(self):
-        self
-    def set_config(self, config):
-        self.config = config
-        self.update_config()
+def main():
+    sltv.sltv_ui.SltvUI()
+    gobject.threads_init()
+    gtk.gdk.threads_init()
+    gtk.main()
+
+if __name__ == '__main__':
+    main()
