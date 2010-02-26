@@ -29,6 +29,10 @@ class InputFactory:
         return self.id
     def get_ui(self):
         return self.ui.get_widget()
+    def get_name(self):
+        return self.ui.get_name()
+    def get_description(self):
+        return self.ui.get_description()
 
 class FileInputFactory(InputFactory):
     def __init__(self):
@@ -40,12 +44,6 @@ class FileInputFactory(InputFactory):
         inp = input.fileinput.FileInput()
         inp.config(self.get_config())
         return inp
-
-    def get_name(self):
-        return "File"
-
-    def get_description(self):
-        return "Get Video from file"
 
     def get_config(self):
         self.config = self.ui.get_config()
@@ -62,12 +60,6 @@ class V4L2InputFactory(InputFactory):
         inp.config(self.get_config())
         return inp
 
-    def get_name(self):
-        return "V4L2 + autoaudio"
-
-    def get_description(self):
-        return "Get Video from V4L2 and Audio from autoaudio"
-
     def get_config(self):
         self.config = self.ui.get_config()
         return self.config
@@ -82,12 +74,6 @@ class XInputFactory(InputFactory):
         inp = input.xinput.XInput()
         inp.config(self.get_config())
         return inp
-
-    def get_name(self):
-        return "XImageSrc"
-
-    def get_description(self):
-        return "Get Video from Desktop and Audio from ALSA"
 
     def get_config(self):
         self.config = self.ui.get_config()
@@ -104,12 +90,6 @@ class TestInputFactory(InputFactory):
         inp.config(self.get_config())
         return inp
 
-    def get_name(self):
-        return "Test"
-
-    def get_description(self):
-        return "Video and Audio from test sources"
-
     def get_config(self):
         self.config = self.ui.get_config()
         return self.config
@@ -125,12 +105,6 @@ class DVInputFactory(InputFactory):
         inp.config(self.get_config())
         return inp
 
-    def get_name(self):
-        return "DV Firewire"
-
-    def get_description(self):
-        return "Get video and audio from Firewire DV"
-
     def get_config(self):
         self.config = self.ui.get_config()
         return self.config
@@ -144,10 +118,6 @@ class ALSAInputFactory(InputFactory):
         inp = input.alsainput.ALSAInput()
         inp.config(self.get_config())
         return inp
-    def get_name(self):
-        return "ALSA"
-    def get_description(self):
-        return "Advanced Linux Sound Architecture"
     def get_config(self):
         self.config = self.ui.get_config()
         return self.config
