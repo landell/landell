@@ -20,6 +20,7 @@ import gobject
 import gtk
 from sltv.settings import UI_DIR
 import sltv.registry
+import sltv.source
 
 class EditSource:
     def __init__(self, window, sources):
@@ -65,7 +66,8 @@ class EditSource:
 
     def save(self):
         name = self.name_entry.get_text()
-        source = self.factory
+        source = sltv.source.Source(name, self.factory)
+        source.set_config(self.factory.get_config())
         self.sources.add_source(name, source)
 
     def set_factory(self, factory):

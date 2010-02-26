@@ -71,7 +71,8 @@ class Sltv:
         iter = liststore.get_iter_first()
         while iter != None:
             name = liststore.get_value(iter, 0)
-            element = liststore.get_value(iter, 1).new_input()
+            source = liststore.get_value(iter, 1)
+            element = source.new_input()
             self.player.add(element)
             if name == source_name:
                 element.audio_pad.link(self.queue_audio.get_static_pad("sink"))
