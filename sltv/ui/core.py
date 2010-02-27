@@ -122,6 +122,11 @@ class SltvUI:
         self.overlay_textview = self.interface.get_object("overlay_textview")
         self.effect_enabled = False
 
+    def selected_video_source(self):
+        model = self.source_combobox.get_model()
+        iter = self.source_combobox.get_active_iter()
+        return model.get_value(iter, 0)
+
     def on_play_press(self, event):
         if self.state == "stopped":
             self.stop_button.set_active(False)
@@ -141,12 +146,12 @@ class SltvUI:
                 self.video_effect_button.set_sensitive(True)
             self.sltv.play(
                     overlay_text, video_effect_name, audio_effect_name,
-                    self.source_combobox.get_active_text()
+                    self.selected_video_source()
             )
 
     def on_switch_source(self, combobox):
         if self.state == "playing":
-            source_name = self.source_combobox.get_active_text()
+            source_name = self.selected_video_source()
             self.sltv.switch_source(source_name)
 
     def show_encoding(self, menuitem):
