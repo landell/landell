@@ -36,7 +36,7 @@ class XInputUI(InputUI):
         return "XImageSrc"
 
     def get_description(self):
-        return "Get Video from Desktop and Audio from ALSA"
+        return "Get Video from Desktop"
 
     def update_config(self):
         self.framerate_entry.set_text(self.config["framerate"])
