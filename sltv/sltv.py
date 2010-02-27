@@ -50,7 +50,7 @@ class Sltv:
         self.output.show_window()
 
     def play(self, overlay_text, video_effect_name,
-            audio_effect_name, liststore, source_name):
+            audio_effect_name, sources, source_name):
 
         self.player = gst.Pipeline("player")
 
@@ -66,10 +66,8 @@ class Sltv:
         )
         self.player.add(self.video_input_selector)
         self.source_pads = {}
-        iter = liststore.get_iter_first()
-        while iter != None:
-            name = liststore.get_value(iter, 0)
-            source = liststore.get_value(iter, 1)
+        for row in sources.get_store():
+            (name, source) = row
             element = source.new_input()
             self.player.add(element)
 
@@ -91,7 +89,6 @@ class Sltv:
 
             if name == source_name:
                 type = element.get_type()
-            iter = liststore.iter_next(iter)
 
         self.video_input_selector.link(self.queue_video)
         self.video_input_selector.set_property(

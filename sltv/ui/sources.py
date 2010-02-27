@@ -22,7 +22,7 @@ from sltv.settings import UI_DIR
 from edit_source import *
 
 class Sources:
-    def __init__(self, window, liststore):
+    def __init__(self, window, sources):
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/sources.ui")
         self.dialog = self.interface.get_object("sources_dialog")
@@ -32,9 +32,9 @@ class Sources:
         remove_button = self.interface.get_object("remove_button")
         close_button = self.interface.get_object("close_button")
 
-        self.sources_liststore = liststore
+        self.sources = sources
         self.sources_treeview = self.interface.get_object("sources_treeview")
-        self.sources_treeview.set_model(self.sources_liststore)
+        self.sources_treeview.set_model(self.sources.get_store())
         cell = gtk.CellRendererText()
         column =  gtk.TreeViewColumn('Sources', cell, text=0)
         self.sources_treeview.append_column(column)
@@ -53,7 +53,7 @@ class Sources:
         self.dialog.hide_all()
 
     def on_add_source(self, button):
-        edit_source = EditSource(self.dialog, self)
+        edit_source = EditSource(self.dialog, self.sources)
         edit_source.show_window()
 
     def on_edit_source(self, button):
@@ -61,7 +61,5 @@ class Sources:
 
     def on_remove_source(self, button):
         (model, iter) = self.sources_treeview.get_selection().get_selected()
-        model.remove(iter)
-
-    def add_source(self, name, source):
-        self.sources_liststore.append((name, source))
+        name = model.get_value(iter, 0)
+        self.sources.remove_source(name)

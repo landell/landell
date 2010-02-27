@@ -26,6 +26,8 @@ from sltv.audio import *
 from sltv.sltv import *
 from sltv.settings import UI_DIR
 
+import sltv.sources
+
 import about
 import sources
 
@@ -59,9 +61,9 @@ class SltvUI:
         #combobox to choose source
 
         self.source_combobox = self.interface.get_object("sources_combobox")
-        self.sources_liststore = gtk.ListStore(str, object)
-        self.sources = sources.Sources(window, self.sources_liststore)
-        self.source_combobox.set_model(self.sources_liststore)
+        self.sources = sltv.sources.Sources()
+        self.sources_ui = sources.Sources(window, self.sources)
+        self.source_combobox.set_model(self.sources.get_store())
         cell = gtk.CellRendererText()
         self.source_combobox.pack_start(cell, True)
         self.source_combobox.add_attribute(cell, "text", 0)
@@ -140,7 +142,7 @@ class SltvUI:
                 self.video_effect_button.set_sensitive(True)
             self.sltv.play(
                     overlay_text, video_effect_name, audio_effect_name,
-                    self.sources_liststore,
+                    self.sources,
                     self.source_combobox.get_active_text()
             )
 
@@ -156,7 +158,7 @@ class SltvUI:
         self.sltv.show_output()
 
     def show_sources(self, menuitem):
-        self.sources.show_window()
+        self.sources_ui.show_window()
 
     def show_about(self, menuitem):
         self.about.show_window()
