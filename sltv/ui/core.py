@@ -43,7 +43,6 @@ def create_effects_combobox(combobox, effect_type):
 class SltvUI:
 
     def __init__(self):
-        self.state = "stopped"
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/sltv.ui")
         window = self.interface.get_object("window1")
@@ -128,9 +127,8 @@ class SltvUI:
         return model.get_value(iter, 0)
 
     def on_play_press(self, event):
-        if self.state == "stopped":
+        if not self.sltv.playing():
             self.stop_button.set_active(False)
-            self.state = "playing"
 
             overlay_buffer = self.overlay_textview.get_buffer()
             overlay_text = overlay_buffer.get_text(
@@ -150,7 +148,7 @@ class SltvUI:
             )
 
     def on_switch_source(self, combobox):
-        if self.state == "playing":
+        if self.sltv.playing():
             source_name = self.selected_video_source()
             self.sltv.switch_source(source_name)
 
@@ -171,10 +169,10 @@ class SltvUI:
         self.audio_effect_combobox.set_sensitive(state)
         self.video_effect_label.set_sensitive(state)
         self.audio_effect_label.set_sensitive(state)
-        if self.state == "playing" and state == True:
+        if self.sltv.playing() and state == True:
             self.video_effect_button.set_sensitive(True)
             self.audio_effect_button.set_sensitive(True)
-        elif self.state == "playing" and state == False:
+        elif self.sltv.playing() and state == False:
             self.video_effect_button.set_sensitive(False)
             self.audio_effect_button.set_sensitive(False)
 
@@ -203,9 +201,8 @@ class SltvUI:
         self.sltv.set_preview(self.preview_state)
 
     def on_stop_press(self, event):
-        if self.state == "playing":
+        if self.sltv.playing():
             self.play_button.set_active(False)
-            self.state = "stopped"
             self.overlay_button.set_sensitive(False)
             self.audio_effect_button.set_sensitive(False)
             self.video_effect_button.set_sensitive(False)
