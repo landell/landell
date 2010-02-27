@@ -28,12 +28,14 @@ from preview import *
 from effects import *
 from swap import *
 
+import sources
 
 class Sltv:
 
     def __init__(self, preview_area, window):
         self.player = None
         self.preview = Preview(preview_area)
+        self.sources = sources.Sources()
 
         self.encoding = Encoding(window)
         self.output = Output(window)
@@ -50,7 +52,7 @@ class Sltv:
         self.output.show_window()
 
     def play(self, overlay_text, video_effect_name,
-            audio_effect_name, sources, source_name):
+            audio_effect_name, source_name):
 
         self.player = gst.Pipeline("player")
 
@@ -66,7 +68,7 @@ class Sltv:
         )
         self.player.add(self.video_input_selector)
         self.source_pads = {}
-        for row in sources.get_store():
+        for row in self.sources.get_store():
             (name, source) = row
             element = source.new_input()
             self.player.add(element)

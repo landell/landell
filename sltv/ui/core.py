@@ -26,8 +26,6 @@ from sltv.audio import *
 from sltv.sltv import *
 from sltv.settings import UI_DIR
 
-import sltv.sources
-
 import about
 import sources
 
@@ -52,6 +50,9 @@ class SltvUI:
         window.show_all()
         self.about = about.About(window)
 
+        preview_area = self.interface.get_object("preview_area")
+        self.sltv = Sltv(preview_area, window)
+
         file_location_entry = self.interface.get_object("file_location_entry")
         self.play_button = self.interface.get_object("play_button")
         self.stop_button = self.interface.get_object("stop_button")
@@ -61,7 +62,7 @@ class SltvUI:
         #combobox to choose source
 
         self.source_combobox = self.interface.get_object("sources_combobox")
-        self.sources = sltv.sources.Sources()
+        self.sources = self.sltv.sources
         self.sources_ui = sources.Sources(window, self.sources)
         self.source_combobox.set_model(self.sources.get_store())
         cell = gtk.CellRendererText()
@@ -98,7 +99,6 @@ class SltvUI:
             "preview_checkbutton"
         )
 
-        preview_area = self.interface.get_object("preview_area")
 
         self.video_effect_label = self.interface.get_object("video_effect_label")
         self.audio_effect_label = self.interface.get_object("audio_effect_label")
@@ -116,7 +116,6 @@ class SltvUI:
         self.video_effect_button.connect("clicked", self.effect_changed)
         self.audio_effect_button.connect("clicked", self.effect_changed)
 
-        self.sltv = Sltv(preview_area, window)
         self.set_effects(False)
         self.preview_state = False
         self.sltv.set_preview(False)
@@ -142,7 +141,6 @@ class SltvUI:
                 self.video_effect_button.set_sensitive(True)
             self.sltv.play(
                     overlay_text, video_effect_name, audio_effect_name,
-                    self.sources,
                     self.source_combobox.get_active_text()
             )
 
