@@ -64,7 +64,7 @@ class SltvUI:
         self.source_combobox = self.interface.get_object("sources_combobox")
         self.sources = self.sltv.sources
         self.sources_ui = sources.Sources(window, self.sources)
-        self.source_combobox.set_model(self.sources.get_store())
+        self.source_combobox.set_model(sources.VideoModel(self.sources).model)
         cell = gtk.CellRendererText()
         self.source_combobox.pack_start(cell, True)
         self.source_combobox.add_attribute(cell, "text", 0)

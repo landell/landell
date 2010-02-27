@@ -21,6 +21,17 @@ import gtk
 from sltv.settings import UI_DIR
 from edit_source import *
 
+from sltv.input.core import INPUT_TYPE_VIDEO
+
+class VideoModel:
+    def __init__(self, sources):
+        self.model = sources.get_store().filter_new()
+        self.model.set_visible_func(self.filter)
+    def filter(self, model, iter):
+        source = model.get_value(iter, 1)
+        return source != None and \
+            source.factory.get_capabilities() & INPUT_TYPE_VIDEO > 0
+
 class Sources:
     def __init__(self, window, sources):
         self.interface = gtk.Builder()
