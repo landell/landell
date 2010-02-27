@@ -20,8 +20,8 @@ import input
 import ui.input
 
 class InputFactory:
-    def __init__(self):
-        self.id = ""
+    def __init__(self, id):
+        self.id = id
         self.capabilities = None 
     def get_id(self):
         return self.id
@@ -33,72 +33,54 @@ class InputFactory:
         return self.ui.get_description()
     def get_capabilities(self):
         return self.capabilities
+    def new_input(self):
+        return self.input_class()
 
 class FileInputFactory(InputFactory):
     def __init__(self):
-        InputFactory.__init__(self)
+        InputFactory.__init__(self, "file")
         self.capabilities = input.fileinput.CAPABILITIES
-        self.id = "file"
         self.ui = ui.input.fileinput.FileInputUI()
-
-    def new_input(self):
-        return input.fileinput.FileInput()
+        self.input_class = input.fileinput.FileInput
 
 class V4L2InputFactory(InputFactory):
     def __init__(self):
-        InputFactory.__init__(self)
+        InputFactory.__init__(self, "v4l2")
         self.capabilities = input.v4l2input.CAPABILITIES
-        self.id = "v4l2"
         self.ui = ui.input.v4l2input.V4L2InputUI()
-
-    def new_input(self):
-        return input.v4l2input.V4L2Input()
+        self.input_class = input.v4l2input.V4L2Input
 
 class XInputFactory(InputFactory):
     def __init__(self):
-        InputFactory.__init__(self)
+        InputFactory.__init__(self, "x")
         self.capabilities = input.xinput.CAPABILITIES
-        self.id = "x"
         self.ui = ui.input.xinput.XInputUI()
-
-    def new_input(self):
-        return input.xinput.XInput()
+        self.input_class = input.xinput.XInput
 
 class VideoTestInputFactory(InputFactory):
     def __init__(self):
-        InputFactory.__init__(self)
+        InputFactory.__init__(self, "videotest")
         self.capabilities = input.videotestinput.CAPABILITIES
-        self.id = "videotest"
         self.ui = ui.input.videotestinput.VideoTestInputUI()
-
-    def new_input(self):
-        return input.videotestinput.VideoTestInput()
+        self.input_class = input.videotestinput.VideoTestInput
 
 class AudioTestInputFactory(InputFactory):
     def __init__(self):
-        InputFactory.__init__(self)
+        InputFactory.__init__(self, "audiotest")
         self.capabilities = input.audiotestinput.CAPABILITIES
-        self.id = "audiotest"
         self.ui = ui.input.audiotestinput.AudioTestInputUI()
-
-    def new_input(self):
-        return input.audiotestinput.AudioTestInput()
+        self.input_class = input.audiotestinput.AudioTestInput
 
 class DVInputFactory(InputFactory):
     def __init__(self):
-        InputFactory.__init__(self)
+        InputFactory.__init__(self, "dv")
         self.capabilities = input.dvinput.CAPABILITIES
-        self.id = "dv"
         self.ui = ui.input.dvinput.DVInputUI()
-
-    def new_input(self):
-        return input.dvinput.DVInput()
+        self.input_class = input.dvinput.DVInput
 
 class ALSAInputFactory(InputFactory):
     def __init__(self):
-        InputFactory.__init__(self)
+        InputFactory.__init__(self, "alsa")
         self.capabilities = input.alsainput.CAPABILITIES
-        self.id = "alsa"
         self.ui = ui.input.alsainput.ALSAInputUI()
-    def new_input(self):
-        return input.alsainput.ALSAInput()
+        self.input_class = input.alsainput.ALSAInput
