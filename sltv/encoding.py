@@ -23,6 +23,7 @@ pygst.require("0.10")
 import gst
 import gtk
 from settings import UI_DIR
+from input.core import INPUT_TYPE_AUDIO, INPUT_TYPE_VIDEO
 
 class Encoding:
 
@@ -58,24 +59,34 @@ class Encoding:
         self.dialog.show_all()
         self.dialog.run()
 
-    def get_mux(self):
+    def get_mux(self, type):
         if self.encoding_selection == "theora":
             print "oggmux"
             self.mux = gst.Bin()
-            audioconvert = gst.element_factory_make(
-                "audioconvert", "audioconvert"
-            )
-            vorbisenc = gst.element_factory_make("vorbisenc", "vorbisenc")
-            theoraenc = gst.element_factory_make("theoraenc", "theoraenc")
-            queue_video = gst.element_factory_make("queue", "queue_video_enc")
-            queue_audio = gst.element_factory_make("queue", "queue_audio_enc")
             oggmux = gst.element_factory_make("oggmux", "oggmux")
-            self.mux.add(
-                    audioconvert, vorbisenc, theoraenc, queue_video, 
-                    queue_audio, oggmux
-            )
-            gst.element_link_many(audioconvert, vorbisenc, queue_audio, oggmux)
-            gst.element_link_many(theoraenc, queue_video, oggmux)
+            self.mux.add(oggmux)
+            if type & INPUT_TYPE_AUDIO:
+                audioconvert = gst.element_factory_make(
+                        "audioconvert", "audioconvert"
+                )
+                self.mux.add(audioconvert)
+                vorbisenc = gst.element_factory_make("vorbisenc", "vorbisenc")
+                self.mux.add(vorbisenc)
+                queue_audio = gst.element_factory_make(
+                        "queue", "queue_audio_enc"
+                )
+                self.mux.add(queue_audio)
+                gst.element_link_many(
+                        audioconvert, vorbisenc, queue_audio, oggmux
+                )
+            if type & INPUT_TYPE_VIDEO:
+                theoraenc = gst.element_factory_make("theoraenc", "theoraenc")
+                self.mux.add(theoraenc)
+                queue_video = gst.element_factory_make(
+                        "queue", "queue_video_enc"
+                )
+                self.mux.add(queue_video)
+                gst.element_link_many(theoraenc, queue_video, oggmux)
             oggmux.set_property("max-delay",10000000)
             oggmux.set_property("max-page-delay",10000000)
             #theoraenc.set_property("quality", 32)
@@ -84,14 +95,13 @@ class Encoding:
                 "source_ghost_pad", self.mux.find_unlinked_pad(gst.PAD_SRC)
             )
             self.mux.add_pad(source_pad)
-            sink_pad1 = gst.GhostPad(
-                "sink_pad1", self.mux.find_unlinked_pad(gst.PAD_SINK)
-            )
-            sink_pad2 = gst.GhostPad(
-                "sink_pad2", self.mux.find_unlinked_pad(gst.PAD_SINK)
-            )
-            self.mux.add_pad(sink_pad1)
-            self.mux.add_pad(sink_pad2)
+            pad =  self.mux.find_unlinked_pad(gst.PAD_SINK)
+            sink_pad = gst.GhostPad("sink_1", pad)
+            self.mux.add_pad(sink_pad)
+            pad =  self.mux.find_unlinked_pad(gst.PAD_SINK)
+            if pad:
+                sink_pad = gst.GhostPad("sink_2", pad)
+                self.mux.add_pad(sink_pad)
             return self.mux
         if self.encoding_selection == "dv":
             print "dv"

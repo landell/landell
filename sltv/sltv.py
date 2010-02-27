@@ -55,11 +55,9 @@ class Sltv:
         self.player = gst.Pipeline("player")
 
         self.queue_video = gst.element_factory_make("queue", "queue_video")
-        self.queue_audio = gst.element_factory_make("queue", "queue_audio")
-        self.player.add(self.queue_video, self.queue_audio)
+        self.player.add(self.queue_video)
 
-        self.convert = gst.element_factory_make("audioconvert", "convert")
-        self.player.add(self.convert)
+        audio_present = False
 
         # Source selection
 
@@ -67,7 +65,7 @@ class Sltv:
                 "input-selector", "video_input_selector"
         )
         self.player.add(self.video_input_selector)
-        self.source_pads = {'audio': {}, 'video': {}}
+        self.source_pads = {}
         iter = liststore.get_iter_first()
         while iter != None:
             name = liststore.get_value(iter, 0)
@@ -76,33 +74,37 @@ class Sltv:
             self.player.add(element)
 
             if element.does_audio():
-                print "element does audio"
                 if name == source_name:
+                    self.queue_audio = gst.element_factory_make("queue", "queue_audio")
+                    self.player.add(self.queue_audio)
                     pad = self.queue_audio.get_static_pad("sink")
                     element.audio_pad.link(pad)
+                    audio_present = True
                 else:
                     element.audio_pad.set_blocked_async(True, self.blocked)
                     self.audio_pad = element.audio_pad
 
             if element.does_video():
-                print "element does video"
-                self.source_pads['video'][name] = \
+                self.source_pads[name] = \
                     self.video_input_selector.get_request_pad("sink%d")
-                element.video_pad.link(self.source_pads['video'][name])
+                element.video_pad.link(self.source_pads[name])
 
+            if name == source_name:
+                type = element.get_type()
             iter = liststore.iter_next(iter)
 
         self.video_input_selector.link(self.queue_video)
         self.video_input_selector.set_property(
-                "active_pad", self.source_pads['video'][source_name]
+                "active_pad", self.source_pads[source_name]
         )
+
         self.overlay = gst.element_factory_make("textoverlay", "overlay")
         self.tee = gst.element_factory_make("tee", "tee")
         queue1 = gst.element_factory_make("queue", "queue1")
         queue2 = gst.element_factory_make("queue", "queue2")
         self.videorate = gst.element_factory_make("videorate", "videorate")
         self.videoscale = gst.element_factory_make("videoscale", "videoscale")
-        self.mux = self.encoding.get_mux()
+        self.mux = self.encoding.get_mux(type)
         self.sink = self.output.get_output()
         self.preview_element = self.preview.get_preview()
         self.colorspace = gst.element_factory_make(
@@ -117,8 +119,7 @@ class Sltv:
             self.effect_name['video'] = "identity"
             self.effect_name['audio'] = "identity"
         self.effect['video'] = Effect.make_effect(self.effect_name['video'], "video")
-        self.effect['audio'] = Effect.make_effect(self.effect_name['audio'], "audio")
-        self.player.add(self.effect['video'], self.effect['audio'])
+        self.player.add(self.effect['video'])
 
         self.player.add(
             self.overlay, self.tee, queue1, self.videorate, self.videoscale,
@@ -133,9 +134,18 @@ class Sltv:
         if err == False:
             print "Error conecting elements"
 
-        gst.element_link_many(
-                self.queue_audio, self.effect['audio'], self.convert, self.mux
-        )
+        if audio_present:
+            print "audio_present"
+            self.convert = gst.element_factory_make("audioconvert", "convert")
+            self.player.add(self.convert)
+            self.effect['audio'] = Effect.make_effect(
+                    self.effect_name['audio'], "audio"
+            )
+            self.player.add(self.effect['audio'])
+            gst.element_link_many(
+                    self.queue_audio, self.effect['audio'], self.convert,
+                    self.mux
+            )
 
         if self.preview_enabled:
             self.player.add(queue2, self.preview_element)
@@ -180,7 +190,7 @@ class Sltv:
 
     def switch_source(self, source_name):
         self.video_input_selector.set_property(
-                "active-pad", self.source_pads['video'][source_name]
+                "active-pad", self.source_pads[source_name]
         )
 
     def set_preview(self, state):
