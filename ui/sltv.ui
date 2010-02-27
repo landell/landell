@@ -138,6 +138,23 @@
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkLabel" id="audio_source_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Audio Source:</property>
+                      </object>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="audio_sources_combobox">
+                        <property name="visible">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child>
                       <placeholder/>
                     </child>
                     <child>

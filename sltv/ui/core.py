@@ -70,6 +70,14 @@ class SltvUI:
         self.source_combobox.set_active(0)
         self.source_combobox.connect("changed",self.on_switch_source)
 
+        # audio combobox
+        self.audio_sources_combobox = self.interface.get_object("audio_sources_combobox")
+        self.audio_sources_combobox.set_model(sources.AudioModel(self.sources).model)
+        cell = gtk.CellRendererText()
+        self.audio_sources_combobox.pack_start(cell, True)
+        self.audio_sources_combobox.add_attribute(cell, "text", 0)
+        self.audio_sources_combobox.connect("changed", self.on_select_audio_source)
+
         #menu
 
         output_menuitem = self.interface.get_object("output_menuitem")
@@ -126,6 +134,11 @@ class SltvUI:
         iter = self.source_combobox.get_active_iter()
         return model.get_value(iter, 0)
 
+    def selected_audio_source(self):
+        model = self.audio_sources_combobox.get_model()
+        iter = self.audio_sources_combobox.get_active_iter()
+        return model.get_value(iter, 0)
+
     def on_play_press(self, event):
         if not self.sltv.playing():
             self.stop_button.set_active(False)
@@ -149,6 +162,10 @@ class SltvUI:
     def on_switch_source(self, combobox):
         source_name = self.selected_video_source()
         self.sltv.set_video_source(source_name)
+
+    def on_select_audio_source(self, combobox):
+        source_name = self.selected_audio_source()
+        self.sltv.set_audio_source(source_name)
 
     def show_encoding(self, menuitem):
         self.sltv.show_encoding()
