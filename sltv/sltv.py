@@ -168,18 +168,21 @@ class Sltv:
     def stop(self):
         self.player.send_event(gst.event_new_eos())
 
+    def playing(self):
+        return self.player and self.player.get_state()[1] == gst.STATE_PLAYING
+
     def set_effects(self, state):
         self.effect_enabled = state
 
         # If state is disabled and pipeline is playing, disable effects now
 
         if not self.effect_enabled:
-            if self.player and self.player.get_state()[1] == gst.STATE_PLAYING:
+            if self.playing():
                 self.change_effect("identity", "video")
                 self.change_effect("identity", "audio")
 
     def change_effect(self, effect_name, effect_type):
-        if self.player.get_state()[1] == gst.STATE_PLAYING:
+        if self.playing():
             print "PLAYING"
             Effect.change(
                     self.effect[effect_type], self.effect_name[effect_type],
