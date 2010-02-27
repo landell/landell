@@ -26,11 +26,11 @@ from settings import UI_DIR
 
 class Output:
 
-    def __init__(self, window):
+    def __init__(self, ui):
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/output.ui")
         self.dialog = self.interface.get_object("dialog1")
-        self.dialog.set_transient_for(window)
+        self.dialog.set_transient_for(ui.main_window)
 
         self.notebook = self.interface.get_object("notebook1")
 

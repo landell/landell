@@ -27,11 +27,11 @@ from input.core import INPUT_TYPE_AUDIO, INPUT_TYPE_VIDEO
 
 class Encoding:
 
-    def __init__(self, window):
+    def __init__(self, ui):
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/encoding.ui")
         self.dialog = self.interface.get_object("dialog1")
-        self.dialog.set_transient_for(window)
+        self.dialog.set_transient_for(ui.main_window)
 
         #Encoding selection
         dv_radiobutton = self.interface.get_object("dv_radiobutton")

@@ -42,11 +42,11 @@ class AudioModel:
             source.factory.get_capabilities() & INPUT_TYPE_AUDIO > 0
 
 class Sources:
-    def __init__(self, window, sources):
+    def __init__(self, ui, sources):
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/sources.ui")
         self.dialog = self.interface.get_object("sources_dialog")
-        self.dialog.set_transient_for(window)
+        self.dialog.set_transient_for(ui.main_window)
         add_button = self.interface.get_object("add_button")
         edit_button = self.interface.get_object("edit_button")
         remove_button = self.interface.get_object("remove_button")

@@ -36,13 +36,13 @@ import source
 
 class Sltv:
 
-    def __init__(self, preview_area, window):
+    def __init__(self, preview_area, ui):
         self.player = None
         self.preview = Preview(preview_area)
         self.sources = sources.Sources()
 
-        self.encoding = Encoding(window)
-        self.output = Output(window)
+        self.encoding = Encoding(ui)
+        self.output = Output(ui)
         self.audio = Audio()
 
         self.effect_enabled = "False"

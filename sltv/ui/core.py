@@ -45,12 +45,12 @@ class SltvUI:
     def __init__(self):
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/sltv.ui")
-        window = self.interface.get_object("window1")
-        window.show_all()
-        self.about = about.About(window)
+        self.main_window = self.interface.get_object("window1")
+        self.main_window.show_all()
+        self.about = about.About(self)
 
         preview_area = self.interface.get_object("preview_area")
-        self.sltv = Sltv(preview_area, window)
+        self.sltv = Sltv(preview_area, self)
 
         file_location_entry = self.interface.get_object("file_location_entry")
         self.play_button = self.interface.get_object("play_button")
@@ -62,7 +62,7 @@ class SltvUI:
 
         self.source_combobox = self.interface.get_object("sources_combobox")
         self.sources = self.sltv.sources
-        self.sources_ui = sources.Sources(window, self.sources)
+        self.sources_ui = sources.Sources(self, self.sources)
         self.source_combobox.set_model(sources.VideoModel(self.sources).model)
         cell = gtk.CellRendererText()
         self.source_combobox.pack_start(cell, True)
@@ -117,7 +117,7 @@ class SltvUI:
         self.play_button.connect("toggled", self.on_play_press)
         self.stop_button.connect("toggled", self.on_stop_press)
         self.overlay_button.connect("clicked", self.on_overlay_change)
-        window.connect("delete_event", self.on_window_closed)
+        self.main_window.connect("delete_event", self.on_window_closed)
         output_menuitem.connect("activate", self.show_output)
         encoding_menuitem.connect("activate", self.show_encoding)
         sources_menuitem.connect("activate", self.show_sources)
