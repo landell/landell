@@ -21,15 +21,12 @@ import ui.input
 
 class InputFactory:
     def __init__(self):
-        self.config = {}
         self.id = ""
         self.capabilities = None 
-    def get_config(self):
-        return self.config
     def get_id(self):
         return self.id
     def get_ui(self):
-        return self.ui.get_widget()
+        return self.ui
     def get_name(self):
         return self.ui.get_name()
     def get_description(self):
@@ -45,13 +42,7 @@ class FileInputFactory(InputFactory):
         self.ui = ui.input.fileinput.FileInputUI()
 
     def new_input(self):
-        inp = input.fileinput.FileInput()
-        inp.config(self.get_config())
-        return inp
-
-    def get_config(self):
-        self.config = self.ui.get_config()
-        return self.config
+        return input.fileinput.FileInput()
 
 class V4L2InputFactory(InputFactory):
     def __init__(self):
@@ -61,13 +52,7 @@ class V4L2InputFactory(InputFactory):
         self.ui = ui.input.v4l2input.V4L2InputUI()
 
     def new_input(self):
-        inp = input.v4l2input.V4L2Input()
-        inp.config(self.get_config())
-        return inp
-
-    def get_config(self):
-        self.config = self.ui.get_config()
-        return self.config
+        return input.v4l2input.V4L2Input()
 
 class XInputFactory(InputFactory):
     def __init__(self):
@@ -77,13 +62,7 @@ class XInputFactory(InputFactory):
         self.ui = ui.input.xinput.XInputUI()
 
     def new_input(self):
-        inp = input.xinput.XInput()
-        inp.config(self.get_config())
-        return inp
-
-    def get_config(self):
-        self.config = self.ui.get_config()
-        return self.config
+        return input.xinput.XInput()
 
 class VideoTestInputFactory(InputFactory):
     def __init__(self):
@@ -93,13 +72,7 @@ class VideoTestInputFactory(InputFactory):
         self.ui = ui.input.videotestinput.VideoTestInputUI()
 
     def new_input(self):
-        inp = input.videotestinput.VideoTestInput()
-        inp.config(self.get_config())
-        return inp
-
-    def get_config(self):
-        self.config = self.ui.get_config()
-        return self.config
+        return input.videotestinput.VideoTestInput()
 
 class AudioTestInputFactory(InputFactory):
     def __init__(self):
@@ -109,13 +82,7 @@ class AudioTestInputFactory(InputFactory):
         self.ui = ui.input.audiotestinput.AudioTestInputUI()
 
     def new_input(self):
-        inp = input.audiotestinput.AudioTestInput()
-        inp.config(self.get_config())
-        return inp
-
-    def get_config(self):
-        self.config = self.ui.get_config()
-        return self.config
+        return input.audiotestinput.AudioTestInput()
 
 class DVInputFactory(InputFactory):
     def __init__(self):
@@ -125,13 +92,7 @@ class DVInputFactory(InputFactory):
         self.ui = ui.input.dvinput.DVInputUI()
 
     def new_input(self):
-        inp = input.dvinput.DVInput()
-        inp.config(self.get_config())
-        return inp
-
-    def get_config(self):
-        self.config = self.ui.get_config()
-        return self.config
+        return input.dvinput.DVInput()
 
 class ALSAInputFactory(InputFactory):
     def __init__(self):
@@ -140,9 +101,4 @@ class ALSAInputFactory(InputFactory):
         self.id = "alsa"
         self.ui = ui.input.alsainput.ALSAInputUI()
     def new_input(self):
-        inp = input.alsainput.ALSAInput()
-        inp.config(self.get_config())
-        return inp
-    def get_config(self):
-        self.config = self.ui.get_config()
-        return self.config
+        return input.alsainput.ALSAInput()

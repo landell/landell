@@ -67,14 +67,14 @@ class EditSource:
     def save(self):
         name = self.name_entry.get_text()
         source = sltv.source.Source(name, self.factory)
-        source.set_config(self.factory.get_config())
+        source.set_config(self.factory.get_ui().get_config())
         self.sources.add_source(name, source)
 
     def set_factory(self, factory):
         self.factory = factory
         if self.config_box:
             self.input_box.remove(self.config_box)
-        self.config_box = self.factory.get_ui()
+        self.config_box = self.factory.get_ui().get_widget()
         if self.config_box:
             self.input_box.add(self.config_box)
 
