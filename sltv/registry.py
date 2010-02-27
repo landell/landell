@@ -29,3 +29,5 @@ class Registry:
 
     def get_factories(self):
         return self.factories
+
+registry = Registry()
