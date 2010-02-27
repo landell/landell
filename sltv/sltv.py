@@ -45,6 +45,8 @@ class Sltv:
         self.effect = {}
         self.effect_name = {}
 
+        self.video_source = None
+
     def show_encoding(self):
         self.encoding.show_window()
 
@@ -52,7 +54,7 @@ class Sltv:
         self.output.show_window()
 
     def play(self, overlay_text, video_effect_name,
-            audio_effect_name, source_name):
+            audio_effect_name):
 
         self.player = gst.Pipeline("player")
 
@@ -74,7 +76,7 @@ class Sltv:
             self.player.add(element)
 
             if element.does_audio():
-                if name == source_name:
+                if name == self.video_source:
                     self.queue_audio = gst.element_factory_make("queue", "queue_audio")
                     self.player.add(self.queue_audio)
                     pad = self.queue_audio.get_static_pad("sink")
@@ -89,12 +91,12 @@ class Sltv:
                     self.video_input_selector.get_request_pad("sink%d")
                 element.video_pad.link(self.source_pads[name])
 
-            if name == source_name:
+            if name == self.video_source:
                 type = element.get_type()
 
         self.video_input_selector.link(self.queue_video)
         self.video_input_selector.set_property(
-                "active_pad", self.source_pads[source_name]
+                "active_pad", self.source_pads[self.video_source]
         )
 
         self.overlay = gst.element_factory_make("textoverlay", "overlay")
@@ -190,10 +192,15 @@ class Sltv:
             )
             self.effect_name[effect_type] = effect_name
 
-    def switch_source(self, source_name):
+    def switch_source(self):
         self.video_input_selector.set_property(
-                "active-pad", self.source_pads[source_name]
+                "active-pad", self.source_pads[self.video_source]
         )
+
+    def set_video_source(self, source_name):
+        self.video_source = source_name
+        if self.playing():
+            self.switch_source()
 
     def set_preview(self, state):
         self.preview_enabled = state

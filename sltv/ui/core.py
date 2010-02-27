@@ -143,14 +143,12 @@ class SltvUI:
                 self.audio_effect_button.set_sensitive(True)
                 self.video_effect_button.set_sensitive(True)
             self.sltv.play(
-                    overlay_text, video_effect_name, audio_effect_name,
-                    self.selected_video_source()
+                    overlay_text, video_effect_name, audio_effect_name
             )
 
     def on_switch_source(self, combobox):
-        if self.sltv.playing():
-            source_name = self.selected_video_source()
-            self.sltv.switch_source(source_name)
+        source_name = self.selected_video_source()
+        self.sltv.set_video_source(source_name)
 
     def show_encoding(self, menuitem):
         self.sltv.show_encoding()
