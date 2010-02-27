@@ -35,10 +35,10 @@ class V4L2InputUI(InputUI):
         return self.vbox
 
     def get_name(self):
-        return "V4L2 + autoaudio"
+        return "V4L2"
 
     def get_description(self):
-        return "Get Video from V4L2 and Audio from autoaudio"
+        return "Get Video from V4L2"
 
     def update_config(self):
         self.device_entry.set_text(self.config["v4l2_device"])
