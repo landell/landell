@@ -18,6 +18,7 @@
 
 import input
 import ui.input
+import registry
 
 class InputFactory:
     def __init__(self, id):
@@ -84,3 +85,12 @@ class ALSAInputFactory(InputFactory):
         self.capabilities = input.alsainput.CAPABILITIES
         self.ui = ui.input.alsainput.ALSAInputUI()
         self.input_class = input.alsainput.ALSAInput
+
+factories = [
+        AudioTestInputFactory(), XInputFactory(), V4L2InputFactory(),
+        FileInputFactory(), DVInputFactory(), ALSAInputFactory(),
+        VideoTestInputFactory()
+]
+
+for i in factories:
+    registry.registry.register_factory(i)

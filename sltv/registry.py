@@ -16,18 +16,15 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from factory import *
-
 class Registry:
 
     def __init__(self):
-        self.factories = [
-                AudioTestInputFactory(), XInputFactory(), V4L2InputFactory(),
-                FileInputFactory(), DVInputFactory(), ALSAInputFactory(),
-                VideoTestInputFactory()
-        ]
+        self.factories = []
 
     def get_factories(self):
         return self.factories
+
+    def register_factory(self, factory):
+        self.factories.append(factory)
 
 registry = Registry()
