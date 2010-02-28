@@ -70,6 +70,8 @@ class SltvUI:
         self.source_combobox.set_active(0)
         self.source_combobox.connect("changed",self.on_switch_source)
 
+        self.on_switch_source(self.source_combobox)
+
         # audio combobox
         self.audio_sources_combobox = self.interface.get_object("audio_sources_combobox")
         self.audio_sources_combobox.set_model(sources.AudioModel(self.sources).model)
