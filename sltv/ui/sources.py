@@ -65,6 +65,8 @@ class Sources:
         close_button.connect("clicked", self.close_dialog)
         self.dialog.connect("delete_event", self.close_dialog)
 
+        self.edit_source = EditSource(self.dialog, self.sources)
+
     def show_window(self):
         self.dialog.show_all()
         self.dialog.run()
@@ -73,8 +75,7 @@ class Sources:
         self.dialog.hide_all()
 
     def on_add_source(self, button):
-        edit_source = EditSource(self.dialog, self.sources)
-        edit_source.show_window()
+        self.edit_source.show_window()
 
     def on_edit_source(self, button):
         self.sources_treeview.get_selection().get_selected()
