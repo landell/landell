@@ -71,6 +71,8 @@ class EditSource:
 
     def save(self):
         name = self.name_entry.get_text()
+        if name == None or name == "":
+            return False
         source = sltv.source.Source(name, self.factory)
         source.set_config(self.factory.get_ui().get_config())
         self.sources.add_source(name, source)
