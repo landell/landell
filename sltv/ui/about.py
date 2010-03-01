@@ -32,7 +32,7 @@ class About:
         self.about.set_name("SLTV")
         self.about.set_copyright("Copyright (c) 2010 Holoscópio Tecnologia")
         self.about.set_version(VERSION)
-        self.about.set_website("https://wiki.softwarelivre.org/TV/ProjetoSLTV")
+        self.about.set_website("http://wiki.softwarelivre.org/TV/SltvProject")
         self.about.set_wrap_license(True)
         self.about.set_license(
             "This program is free software; you can redistribute it and/or modify"
