@@ -134,11 +134,15 @@ class SltvUI:
     def selected_video_source(self):
         model = self.source_combobox.get_model()
         iter = self.source_combobox.get_active_iter()
+        if iter == None:
+            return None
         return model.get_value(iter, 0)
 
     def selected_audio_source(self):
         model = self.audio_sources_combobox.get_model()
         iter = self.audio_sources_combobox.get_active_iter()
+        if iter == None:
+            return None
         return model.get_value(iter, 0)
 
     def on_play_press(self, event):
