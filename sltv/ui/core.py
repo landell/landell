@@ -148,7 +148,10 @@ class SltvUI:
     def on_play_press(self, event):
         if not self.sltv.playing():
             self.stop_button.set_active(False)
+            self.play()
 
+    def play(self):
+        if not self.sltv.playing():
             overlay_buffer = self.overlay_textview.get_buffer()
             overlay_text = overlay_buffer.get_text(
                 overlay_buffer.get_start_iter(),
@@ -224,6 +227,10 @@ class SltvUI:
     def on_stop_press(self, event):
         if self.sltv.playing():
             self.play_button.set_active(False)
+            self.stop()
+
+    def stop(self):
+        if self.sltv.playing():
             self.overlay_button.set_sensitive(False)
             self.audio_effect_button.set_sensitive(False)
             self.video_effect_button.set_sensitive(False)
