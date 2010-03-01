@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010 Holoscopio Tecnologia
-# Author: Marcelo Jorge Vieira <metal@holoscopio.com>
-# Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
+# Copyright (C) 2010 Holoscópio Tecnologia
+# Author: Luciana Fujii Pontello <luciana@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,11 +16,20 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import alsainput
-import dvinput
-import fileinput
-import videotestinput
-import audiotestinput
-import v4l2input
-import xinput
-import pulseinput
+import gobject
+import gtk
+from sltv.settings import UI_DIR
+from core import InputUI
+
+class PulseInputUI(InputUI):
+    def __init__(self):
+        InputUI.__init__(self)
+
+    def get_widget(self):
+        return None
+
+    def get_name(self):
+        return "Pulse"
+
+    def get_description(self):
+        return "Pulse Audio Source"
