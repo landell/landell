@@ -29,9 +29,11 @@ class EditSource:
         self.dialog = self.interface.get_object("edit_source_dialog")
         self.dialog.set_transient_for(window)
         self.elements_combobox = self.interface.get_object("elements_combobox")
-        close_button = self.interface.get_object("close_button")
-        close_button.connect("clicked", self.close_dialog)
-        self.dialog.connect("delete_event", self.close_dialog)
+        ok_button = self.interface.get_object("ok_button")
+        ok_button.connect("clicked", self.ok_dialog)
+        cancel_button = self.interface.get_object("cancel_button")
+        cancel_button.connect("clicked", self.cancel_dialog)
+        self.dialog.connect("delete_event", self.cancel_dialog)
 
         self.elements_liststore = gtk.ListStore(str)
         self.elements_combobox.set_model(self.elements_liststore)
@@ -60,8 +62,11 @@ class EditSource:
         self.dialog.show_all()
         self.dialog.run()
 
-    def close_dialog(self, widget, data= None):
+    def ok_dialog(self, widget, data=None):
         self.save()
+        self.dialog.hide_all()
+
+    def cancel_dialog(self, widget, data= None):
         self.dialog.hide_all()
 
     def save(self):
