@@ -28,6 +28,7 @@ from sltv.settings import UI_DIR
 
 import about
 import sources
+import message
 
 def create_effects_combobox(combobox, effect_type):
     liststore = gtk.ListStore(gobject.TYPE_STRING)
@@ -146,6 +147,16 @@ class SltvUI:
         return model.get_value(iter, 0)
 
     def on_play_press(self, event):
+        if self.selected_video_source() == None:
+            if self.play_button.get_active() == True:
+                message.MessageInfo(
+                    "Please, choose or add a video source.",
+                    self
+                )
+                self.play_button.set_active(False)
+                return False
+            return False
+
         if not self.sltv.playing():
             self.stop_button.set_active(False)
             self.play()
