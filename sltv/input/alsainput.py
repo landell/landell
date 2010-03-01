@@ -29,7 +29,7 @@ class ALSAInput(Input):
 
     def __init__(self):
         Input.__init__(self, CAPABILITIES)
-        self.audio_src = gst.element_factory_make("audiotestsrc", "audio_src")
+        self.audio_src = gst.element_factory_make("alsasrc", "audio_src")
         self.add(self.audio_src)
         self.audio_pad.set_target(self.audio_src.src_pads().next())
 
