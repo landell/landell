@@ -51,6 +51,12 @@ class Config:
         else:
             return None
 
+    def has_item(self, section, item_name):
+        if item_name in self.config[section].keys():
+            return True
+        else:
+            return False
+
     def save(self):
         self.config.write()
 
