@@ -99,5 +99,6 @@ class Sources:
 
     def on_remove_source(self, button):
         (model, iter) = self.sources_treeview.get_selection().get_selected()
-        name = model.get_value(iter, 0)
-        self.sources.remove_source(name)
+        if iter != None and model != None:
+            name = model.get_value(iter, 0)
+            self.sources.remove_source(name)
