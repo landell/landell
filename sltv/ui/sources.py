@@ -64,6 +64,8 @@ class Sources:
         self.sources.get_store().connect(
             "row-deleted", self.on_delete_treeview_item
         )
+        self.sources_treeview.get_selection().set_mode(gtk.SELECTION_BROWSE)
+
         self.block_remove_button()
 
         add_button.connect("clicked", self.on_add_source)
