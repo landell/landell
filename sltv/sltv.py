@@ -97,20 +97,19 @@ class Sltv:
         for row in self.sources.get_store():
             (name, source) = row
             element = source.new_input()
-            self.player.add(element)
 
             if element.does_audio():
                 if name == self.audio_source:
+                    self.player.add(element)
                     self.queue_audio = gst.element_factory_make("queue", "queue_audio")
                     self.player.add(self.queue_audio)
                     pad = self.queue_audio.get_static_pad("sink")
                     element.audio_pad.link(pad)
                     audio_present = True
-                else:
-                    element.audio_pad.set_blocked_async(True, self.blocked)
-                    self.audio_pad = element.audio_pad
 
             if element.does_video():
+                if name != self.audio_source:
+                    self.player.add(element)
                 self.source_pads[name] = \
                     self.video_input_selector.get_request_pad("sink%d")
                 element.video_pad.link(self.source_pads[name])
@@ -188,10 +187,6 @@ class Sltv:
         bus.connect("message", self.on_message)
         bus.connect("sync-message::element", self.on_sync_message)
         self.player.set_state(gst.STATE_PLAYING)
-
-    def blocked(self, pad, blocked):
-        blocked = True;
-        return
 
     def stop(self):
         self.player.send_event(gst.event_new_eos())
