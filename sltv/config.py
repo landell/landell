@@ -57,6 +57,9 @@ class Config:
         else:
             return False
 
+    def get_item(self, section, item_name):
+        return config[section][item_name]
+
     def save(self):
         self.config.write()
 
