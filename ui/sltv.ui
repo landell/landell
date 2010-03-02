@@ -123,7 +123,7 @@
                     <child>
                       <object class="GtkLabel" id="source_label">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Source (switch):</property>
+                        <property name="label" translatable="yes">Video Source (switch):</property>
                       </object>
                       <packing>
                         <property name="position">0</property>
