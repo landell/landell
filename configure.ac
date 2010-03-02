@@ -21,6 +21,7 @@ AC_CONFIG_FILES([
         Makefile
         ui/Makefile
 	ui/input/Makefile
+	ui/output/Makefile
 	sltv/input/Makefile
 	sltv/ui/Makefile
 	sltv/ui/input/Makefile

@@ -1,4 +1,4 @@
-SUBDIRS = input
+SUBDIRS = input output
 
 uidir = $(datadir)/sltv
 ui_DATA = edit_source.ui encoding.ui output.ui	\

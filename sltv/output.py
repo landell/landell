@@ -29,10 +29,17 @@ class Output:
     def __init__(self, ui):
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/output.ui")
+        self.output_box = self.interface.get_object("output_box")
+        self.file_interface = gtk.Builder()
+        self.file_interface.add_from_file(UI_DIR + "/output/fileoutput.ui")
+        self.file_vbox = self.file_interface.get_object("file_vbox")
+        self.icecast_interface = gtk.Builder()
+        self.icecast_interface.add_from_file(UI_DIR + "/output/icecastoutput.ui")
+        self.icecast_vbox = self.icecast_interface.get_object("icecast_vbox")
         self.dialog = self.interface.get_object("dialog1")
         self.dialog.set_transient_for(ui.main_window)
-
-        self.notebook = self.interface.get_object("notebook1")
+        self.config_box = None
+        self.set_ui(self.file_vbox)
 
         #Output selection
         file_radiobutton = self.interface.get_object("file_radiobutton")
@@ -59,7 +66,7 @@ class Output:
         self.filename = "default.ogg"
 
         close_button = self.interface.get_object("close_button")
-        file_chooser_button = self.interface.get_object("filechooserbutton1")
+        file_chooser_button = self.file_interface.get_object("filechooserbutton1")
         file_chooser_button.set_local_only(True)
         close_button.connect("clicked", self.close_dialog)
         file_chooser_button.connect("file_set", self.file_set)
@@ -75,11 +82,11 @@ class Output:
             self.sink.set_property("location", self.filename);
         if self.output_selection == "icecast":
             self.sink = gst.element_factory_make("shout2send", "icecastsink")
-            server_entry = self.interface.get_object("server_entry")
-            user_entry = self.interface.get_object("user_entry")
-            port_spinbutton = self.interface.get_object("port_spinbutton")
-            password_entry = self.interface.get_object("password_entry")
-            mount_point_entry = self.interface.get_object("mount_point_entry")
+            server_entry = self.icecast_interface.get_object("server_entry")
+            user_entry = self.icecast_interface.get_object("user_entry")
+            port_spinbutton = self.icecast_interface.get_object("port_spinbutton")
+            password_entry = self.icecast_interface.get_object("password_entry")
+            mount_point_entry = self.icecast_interface.get_object("mount_point_entry")
             self.ip = server_entry.get_text()
             self.username = user_entry.get_text()
             self.password = password_entry.get_text()
@@ -109,17 +116,24 @@ class Output:
         if current.get_name() == "fakesink_action":
             self.fakesink_out()
 
+    def set_ui(self, vbox):
+        if self.config_box:
+            self.output_box.remove(self.config_box)
+        self.config_box = vbox
+        if self.config_box:
+            self.output_box.add(self.config_box)
+
     def icecast_out(self):
         print "Icecast"
-        self.notebook.set_current_page(1)
+        self.set_ui(self.icecast_vbox)
         self.output_selection = "icecast"
 
     def file_out(self):
         print "File"
-        self.notebook.set_current_page(0)
+        self.set_ui(self.file_vbox)
         self.output_selection = "file"
 
     def fakesink_out(self):
         print "fakesink"
-        self.notebook.set_current_page(2)
+        self.set_ui(None)
         self.output_selection = "fakesink"
