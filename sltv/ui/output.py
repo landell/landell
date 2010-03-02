@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2009 Holoscópio Tecnologia
+# Copyright (C) 2010 Holoscópio Tecnologia
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -22,9 +22,10 @@ import pygst
 pygst.require("0.10")
 import gst
 import gtk
-from settings import UI_DIR
+from sltv.settings import UI_DIR
+import sltv.output
 
-class Output:
+class OutputUI:
 
     def __init__(self, ui):
         self.interface = gtk.Builder()
@@ -63,7 +64,8 @@ class Output:
         fakesink_action.connect_proxy(fakesink_radiobutton)
 
         self.output_selection = "file"
-        self.filename = "default.ogg"
+        self.config = {}
+        self.config["location"] = "default.ogg"
 
         close_button = self.interface.get_object("close_button")
         file_chooser_button = self.file_interface.get_object("filechooserbutton1")
@@ -78,31 +80,28 @@ class Output:
 
     def get_output(self):
         if self.output_selection == "file":
-            self.sink = gst.element_factory_make("filesink", "filesink")
-            self.sink.set_property("location", self.filename);
+            self.sink = sltv.output.fileoutput.FileOutput()
         if self.output_selection == "icecast":
-            self.sink = gst.element_factory_make("shout2send", "icecastsink")
+            self.sink = sltv.output.icecastoutput.IcecastOutput()
+
             server_entry = self.icecast_interface.get_object("server_entry")
             user_entry = self.icecast_interface.get_object("user_entry")
             port_spinbutton = self.icecast_interface.get_object("port_spinbutton")
             password_entry = self.icecast_interface.get_object("password_entry")
             mount_point_entry = self.icecast_interface.get_object("mount_point_entry")
-            self.ip = server_entry.get_text()
-            self.username = user_entry.get_text()
-            self.password = password_entry.get_text()
-            self.port = port_spinbutton.get_value_as_int()
-            self.mount_point = mount_point_entry.get_text()
-            self.sink.set_property("ip", self.ip)
-            self.sink.set_property("username", self.username)
-            self.sink.set_property("password", self.password)
-            self.sink.set_property("port", self.port)
-            self.sink.set_property("mount", self.mount_point)
+            self.config["ip"] = server_entry.get_text()
+            self.config["username"] = user_entry.get_text()
+            self.config["password"] = password_entry.get_text()
+            self.config["port"] = port_spinbutton.get_value_as_int()
+            self.config["mount"] = mount_point_entry.get_text()
+
         if self.output_selection == "fakesink":
-            self.sink = gst.element_factory_make("fakesink", "filesink")
+            self.sink = sltv.output.fakeoutput.FakeOutput()
+        self.sink.config(self.config)
         return self.sink
 
     def file_set(self, button):
-        self.filename = button.get_filename()
+        self.config["location"] = button.get_filename()
 
     def close_dialog(self, button, data = None):
         self.dialog.hide_all()

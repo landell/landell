@@ -23,6 +23,7 @@ AC_CONFIG_FILES([
 	ui/input/Makefile
 	ui/output/Makefile
 	sltv/input/Makefile
+	sltv/output/Makefile
 	sltv/ui/Makefile
 	sltv/ui/input/Makefile
         sltv/Makefile

@@ -21,7 +21,7 @@ import gobject
 import pygst
 pygst.require("0.10")
 import gst
-from output import *
+from ui import output
 from encoding import *
 from audio import *
 from preview import *
@@ -42,7 +42,7 @@ class Sltv:
         self.sources = sources.Sources()
 
         self.encoding = Encoding(ui)
-        self.output = Output(ui)
+        self.output = output.OutputUI(ui)
         self.audio = Audio()
 
         self.effect_enabled = "False"
