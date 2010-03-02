@@ -93,10 +93,17 @@ class PulseInputFactory(InputFactory):
         self.ui = ui.input.pulseinput.PulseInputUI()
         self.input_class = input.pulseinput.PulseInput
 
+class AutoAudioInputFactory(InputFactory):
+    def __init__(self):
+        InputFactory.__init__(self, "auto")
+        self.capabilities = input.autoaudioinput.CAPABILITIES
+        self.ui = ui.input.autoaudioinput.AutoAudioInputUI()
+        self.input_class = input.autoaudioinput.AutoAudioInput
+
 factories = [
         AudioTestInputFactory(), XInputFactory(), V4L2InputFactory(),
         FileInputFactory(), DVInputFactory(), ALSAInputFactory(),
-        VideoTestInputFactory(), PulseInputFactory()
+        VideoTestInputFactory(), PulseInputFactory(), AutoAudioInputFactory()
 ]
 
 for i in factories:

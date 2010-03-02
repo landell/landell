@@ -25,3 +25,4 @@ import audiotestinput
 import v4l2input
 import xinput
 import pulseinput
+import autoaudioinput
