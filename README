@@ -25,6 +25,16 @@ Dependencies:
   python-gst (>= 0.10)
   python-configobj (>= 4.7.1)
 
+Bugs:
+=====
+
+  The bug tracker can be reached by visiting the website
+  http://gonod.softwarelivre.org/cgi-bin/bugzilla/buglist.cgi?product=sltv
+
+  Before sending a bug report, please verify that you have the latest
+  version of Sltv. Many bugs (major and minor) are fixed at each release,
+  and if yours is out of date, the problem may already have been solved.
+
 Mailing list:
 =============
 
