@@ -73,9 +73,11 @@ class EditSource:
         name = self.name_entry.get_text()
         if name == None or name == "":
             return False
-        source = sltv.source.Source(name, self.factory)
-        source.set_config(self.factory.get_ui().get_config())
-        self.sources.add_source(name, source)
+
+        if not self.sources.config.has_item("Sources", name):
+            source = sltv.source.Source(name, self.factory)
+            source.set_config(self.factory.get_ui().get_config())
+            self.sources.add_source(name, source)
 
     def set_factory(self, factory):
         self.factory = factory
