@@ -333,7 +333,7 @@
                         <property name="homogeneous">True</property>
                         <property name="layout_style">spread</property>
                         <child>
-                          <object class="GtkToggleButton" id="play_button">
+                          <object class="GtkButton" id="play_button">
                             <property name="label">gtk-media-play</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
@@ -348,12 +348,13 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkToggleButton" id="stop_button">
+                          <object class="GtkButton" id="stop_button">
                             <property name="label">gtk-media-stop</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_stock">True</property>
+                            <property name="sensitive">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>

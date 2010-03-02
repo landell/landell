@@ -56,7 +56,6 @@ class SltvUI:
         file_location_entry = self.interface.get_object("file_location_entry")
         self.play_button = self.interface.get_object("play_button")
         self.stop_button = self.interface.get_object("stop_button")
-        self.stop_button.set_active(True)
         self.overlay_button = self.interface.get_object("overlay_button")
 
         #combobox to choose source
@@ -115,8 +114,8 @@ class SltvUI:
 
         self.effect_checkbutton.connect("toggled", self.effect_toggled)
         self.preview_checkbutton.connect("toggled", self.preview_toggled)
-        self.play_button.connect("toggled", self.on_play_press)
-        self.stop_button.connect("toggled", self.on_stop_press)
+        self.play_button.connect("clicked", self.on_play_press)
+        self.stop_button.connect("clicked", self.on_stop_press)
         self.overlay_button.connect("clicked", self.on_overlay_change)
         self.main_window.connect("delete_event", self.on_window_closed)
         output_menuitem.connect("activate", self.show_output)
@@ -148,18 +147,15 @@ class SltvUI:
 
     def on_play_press(self, event):
         if self.selected_video_source() == None:
-            if self.play_button.get_active() == True:
-                message.MessageInfo(
-                    "Please, choose or add a video source.",
-                    self
-                )
-                self.play_button.set_active(False)
-                return False
+            message.MessageInfo(
+                "Please, choose or add a video source.",
+                self
+            )
             return False
 
-        if not self.sltv.playing():
-            self.stop_button.set_active(False)
-            self.play()
+        self.play_button.set_sensitive(False)
+        self.play()
+        self.stop_button.set_sensitive(True)
 
     def play(self):
         if not self.sltv.playing():
@@ -236,9 +232,9 @@ class SltvUI:
         self.sltv.set_preview(self.preview_state)
 
     def on_stop_press(self, event):
-        if self.sltv.playing():
-            self.play_button.set_active(False)
-            self.stop()
+        self.stop_button.set_sensitive(False)
+        self.stop()
+        self.play_button.set_sensitive(True)
 
     def stop(self):
         if self.sltv.playing():
