@@ -79,8 +79,21 @@ class EditSource:
             source.set_config(self.factory.get_ui().get_config())
             self.sources.add_source(name, source)
 
+    def _gfi_helper(self, model, path, iter):
+        name = self.factory.get_name()
+        if model.get_value(iter, 0) == name:
+            self._factory_iter = iter
+            return True
+        return False
+
+    def _get_factory_index(self):
+        self._factory_iter = None
+        self.elements_liststore.foreach(self._gfi_helper)
+        return self._factory_iter
+
     def set_factory(self, factory):
         self.factory = factory
+        self.elements_combobox.set_active_iter(self._get_factory_index())
         if self.config_box:
             self.input_box.remove(self.config_box)
         self.config_box = self.factory.get_ui().get_widget()
