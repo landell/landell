@@ -46,8 +46,9 @@ class Config:
         self.save()
 
     def remove_section(self, section):
-        self.config.pop(section)
-        self.save()
+        if self.has_section(section):
+            self.config.pop(section)
+            self.save()
 
     def get_section(self, section):
         if self.has_section(section):
