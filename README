@@ -48,5 +48,5 @@ sltv-dev@listas.softwarelivre.org
 Development:
 ============
 
-http://git.holoscopio.com/fujii?p=sltv.git;a=summary
-git clone http://git.holoscopio.com/fujii/git/sltv.git
+http://git.holoscopio.com/?p=sltv.git;a=summary
+git clone http://git.holoscopio.com/git/sltv.git
