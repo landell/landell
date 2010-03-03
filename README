@@ -16,14 +16,18 @@ License:
 Dependencies:
 =============
 
-  libgstreamer0.10
-  gstreamer-plugins-base (>= 0.10)
-  gstreamer-plugins-good
+  libgstreamer0.10-0
+  gstreamer0.10-plugins-base
+  gstreamer0.10-plugins-good
+  gstreamer0.10-plugins-bad
   gstreamer0.10-ffmpeg
   gstreamer0.10-alsa
+  gstreamer0.10-x
   python (>= 2.5)
-  python-gst (>= 0.10)
+  python-gst0.10
   python-configobj (>= 4.7.1)
+  python-gobject (>= 2.20.0)
+  python-gtk2 (>= 2.16)
 
 Bugs:
 =====
