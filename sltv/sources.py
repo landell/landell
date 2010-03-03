@@ -44,12 +44,15 @@ class Sources:
             self.liststore.remove(row.iter)
         self.config.remove_item("Sources", name)
 
-    def add_source(self, name, source):
-        self.liststore.append((name, source))
+    def _save_source(self, name, source):
         factory = source.get_factory()
         items = source.get_config()
         items["type"] = factory.get_id()
         self.config.set_item("Sources", name, items)
+
+    def add_source(self, name, source):
+        self.liststore.append((name, source))
+        self.save_source(name, source)
 
     def get_store(self):
         return self.liststore
