@@ -45,6 +45,10 @@ class Config:
         self.config[section].pop(item_name)
         self.save()
 
+    def remove_section(self, section):
+        self.config.pop(section)
+        self.save()
+
     def get_section(self, section):
         if self.has_section(section):
             return self.config.as_list(section)
