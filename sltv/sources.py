@@ -18,12 +18,15 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gtk
+import registry
 import config
+import source
 
 class Sources:
     def __init__(self):
         self.liststore = gtk.ListStore(str, object)
         self.config = config.config
+        self.registry = registry.registry
 
     def _find_source(self, name):
         for row in self.liststore:
@@ -50,3 +53,15 @@ class Sources:
 
     def get_store(self):
         return self.liststore
+
+    def load(self):
+        config_sources = self.config.get_section("Sources")
+        if config_sources != None:
+            # FIXME dict to list
+            sources = [(v, k) for (k, v) in config_sources[0].iteritems()]
+            for value, key in sources:
+                if value and key:
+                    factory = self.registry.get_factory_by_id(value["type"])
+                    src = source.Source(key, factory)
+                    src.set_config(value)
+                    self.add_source(key, src)
