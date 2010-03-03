@@ -10,9 +10,19 @@ Vcs-Browser: http://git.holoscopio.com/?p=sltv.git;a=summary
 
 Package: sltv
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-glade2, python-gst0.10,
- libgstreamer0.10-0, gstreamer0.10-plugins-base, gstreamer0.10-plugins-good,
- gstreamer0.10-ffmpeg
+Depends: ${misc:Depends},
+         ${python:Depends},
+         libgstreamer0.10-0,
+         gstreamer0.10-plugins-base,
+         gstreamer0.10-plugins-good,
+         gstreamer0.10-plugins-bad,
+         gstreamer0.10-ffmpeg,
+         gstreamer0.10-alsa,
+         gstreamer0.10-x,
+         python-gst0.10,
+         python-configobj (>= 4.7.1),
+         python-gobject (>= 2.20.0),
+         python-gtk2 (>= 2.16)
 XB-Python-Version: ${python:Versions}
 Provides: ${python:Provides}
 Description: audio and video streams manager
