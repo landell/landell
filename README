@@ -42,11 +42,11 @@ Bugs:
 Mailing list:
 =============
 
-http://listas.softwarelivre.org/cgi-bin/mailman/listinfo/sltv-dev
-sltv-dev@listas.softwarelivre.org
+  http://listas.softwarelivre.org/cgi-bin/mailman/listinfo/sltv-dev
+  sltv-dev@listas.softwarelivre.org
 
 Development:
 ============
 
-http://git.holoscopio.com/?p=sltv.git;a=summary
-git clone http://git.holoscopio.com/git/sltv.git
+  http://git.holoscopio.com/?p=sltv.git;a=summary
+  git clone http://git.holoscopio.com/git/sltv.git
