@@ -42,7 +42,6 @@ class Sources:
         row = self._find_source(name)
         if row != None:
             self.liststore.remove(row.iter)
-        self.config.remove_item("Sources", name)
 
     def _save_source(self, name, source):
         factory = source.get_factory()
@@ -52,7 +51,6 @@ class Sources:
 
     def add_source(self, name, source):
         self.liststore.append((name, source))
-        self.save_source(name, source)
 
     def get_store(self):
         return self.liststore

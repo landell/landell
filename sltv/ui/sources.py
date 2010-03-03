@@ -109,3 +109,4 @@ class Sources:
         if iter != None and model != None:
             name = model.get_value(iter, 0)
             self.sources.remove_source(name)
+            self.sources.save()

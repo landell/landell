@@ -91,6 +91,7 @@ class EditSource:
                 self.sources.add_source(name, source)
         else:
             self.source.set_config(config)
+        self.sources.save()
 
     def _gfi_helper(self, model, path, iter):
         name = self.factory.get_name()
