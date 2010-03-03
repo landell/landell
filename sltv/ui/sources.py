@@ -94,10 +94,16 @@ class Sources:
         self.dialog.hide_all()
 
     def on_add_source(self, button):
+        self.edit_source.set_source(None)
         self.edit_source.show_window()
 
     def on_edit_source(self, button):
-        self.sources_treeview.get_selection().get_selected()
+        (model, iter) = self.sources_treeview.get_selection().get_selected()
+        if iter != None and model != None:
+            name = model.get_value(iter, 0)
+            source = self.sources.get_source(name)
+            self.edit_source.set_source(source)
+            self.edit_source.show_window()
 
     def on_remove_source(self, button):
         (model, iter) = self.sources_treeview.get_selection().get_selected()

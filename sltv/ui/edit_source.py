@@ -55,10 +55,20 @@ class EditSource:
         self.elements_combobox.connect("changed", self.on_change_element)
         self.config_box = None
         self.sources = sources
+        self.source = None
 
         self.set_factory(factories[0])
 
+    def set_source(self, source):
+        self.source = source
+        if self.source != None:
+            self.set_factory(self.source.factory)
+            self.name_entry.set_text(self.source.name)
+            self.source.factory.get_ui().set_config(source.get_config())
+
     def show_window(self):
+        self.name_entry.set_sensitive(self.source == None)
+        self.elements_combobox.set_sensitive(self.source == None)
         self.dialog.show_all()
         self.dialog.run()
 
@@ -70,14 +80,17 @@ class EditSource:
         self.dialog.hide_all()
 
     def save(self):
-        name = self.name_entry.get_text()
-        if name == None or name == "":
-            return False
-
-        if not self.sources.config.has_item("Sources", name):
-            source = sltv.source.Source(name, self.factory)
-            source.set_config(self.factory.get_ui().get_config())
-            self.sources.add_source(name, source)
+        config = self.factory.get_ui().get_config()
+        if self.source == None:
+            name = self.name_entry.get_text()
+            if name == None or name == "":
+                return False
+            if not self.sources.config.has_item("Sources", name):
+                source = sltv.source.Source(name, self.factory)
+                source.set_config(self.factory.get_ui().get_config())
+                self.sources.add_source(name, source)
+        else:
+            self.source.set_config(config)
 
     def _gfi_helper(self, model, path, iter):
         name = self.factory.get_name()
