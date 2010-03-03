@@ -48,7 +48,7 @@ class Sources:
         self.dialog = self.interface.get_object("sources_dialog")
         self.dialog.set_transient_for(ui.main_window)
         add_button = self.interface.get_object("add_button")
-        edit_button = self.interface.get_object("edit_button")
+        self.edit_button = self.interface.get_object("edit_button")
         self.remove_button = self.interface.get_object("remove_button")
         close_button = self.interface.get_object("close_button")
 
@@ -63,25 +63,27 @@ class Sources:
         selection.set_mode(gtk.SELECTION_BROWSE)
         selection.connect("changed", self.on_treeview_changed)
 
-        self.block_remove_button(selection)
+        self.block_buttons(selection)
 
         add_button.connect("clicked", self.on_add_source)
-        edit_button.connect("clicked", self.on_edit_source)
+        self.edit_button.connect("clicked", self.on_edit_source)
         self.remove_button.connect("clicked", self.on_remove_source)
         close_button.connect("clicked", self.close_dialog)
         self.dialog.connect("delete_event", self.close_dialog)
 
         self.edit_source = EditSource(self.dialog, self.sources)
 
-    def block_remove_button(self, selection):
+    def block_buttons(self, selection):
         (model, iter) = selection.get_selected()
         if iter == None or model == None:
             self.remove_button.set_sensitive(False)
+            self.edit_button.set_sensitive(False)
         else:
             self.remove_button.set_sensitive(True)
+            self.edit_button.set_sensitive(True)
 
     def on_treeview_changed(self, selection):
-        self.block_remove_button(selection)
+        self.block_buttons(selection)
 
     def show_window(self):
         self.dialog.show_all()
