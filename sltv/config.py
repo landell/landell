@@ -46,10 +46,16 @@ class Config:
         self.save()
 
     def get_section(self, section):
-        if section in self.config.keys():
+        if self.has_section(section):
             return self.config.as_list(section)
         else:
             return None
+
+    def has_section(self, section):
+        if section in self.config.keys():
+            return True
+        else:
+            return False
 
     def has_item(self, section, item_name):
         if item_name in self.config[section].keys():
