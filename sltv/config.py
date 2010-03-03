@@ -58,10 +58,12 @@ class Config:
             return False
 
     def has_item(self, section, item_name):
-        if item_name in self.config[section].keys():
-            return True
-        else:
-            return False
+        if self.has_section(section):
+            if item_name in self.config[section].keys():
+                return True
+            else:
+                return False
+        return False
 
     def get_item(self, section, item_name):
         return config[section][item_name]
