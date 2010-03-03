@@ -24,6 +24,7 @@ class About:
     def __init__(self, ui):
         self.about = gtk.AboutDialog()
         self.about.set_transient_for(ui.main_window)
+        self.about.set_destroy_with_parent(True)
         self.about.connect("response", self.on_close_dialog)
         self.about.connect("delete_event", self.on_close_dialog)
         self.create_about()
