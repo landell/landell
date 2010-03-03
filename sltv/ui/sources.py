@@ -58,15 +58,12 @@ class Sources:
         cell = gtk.CellRendererText()
         column =  gtk.TreeViewColumn('Sources', cell, text=0)
         self.sources_treeview.append_column(column)
-        self.sources.get_store().connect(
-            "row_changed", self.on_change_treeview_item
-        )
-        self.sources.get_store().connect(
-            "row-deleted", self.on_delete_treeview_item
-        )
-        self.sources_treeview.get_selection().set_mode(gtk.SELECTION_BROWSE)
 
-        self.block_remove_button()
+        selection = self.sources_treeview.get_selection()
+        selection.set_mode(gtk.SELECTION_BROWSE)
+        selection.connect("changed", self.on_treeview_changed)
+
+        self.block_remove_button(selection)
 
         add_button.connect("clicked", self.on_add_source)
         edit_button.connect("clicked", self.on_edit_source)
@@ -76,15 +73,15 @@ class Sources:
 
         self.edit_source = EditSource(self.dialog, self.sources)
 
-    def block_remove_button(self):
-        if self.sources.get_store().get_iter_first() == None:
+    def block_remove_button(self, selection):
+        (model, iter) = selection.get_selected()
+        if iter == None or model == None:
             self.remove_button.set_sensitive(False)
-
-    def on_change_treeview_item(self, path, iter, user_data):
+        else:
             self.remove_button.set_sensitive(True)
 
-    def on_delete_treeview_item(self, path, user_data):
-        self.block_remove_button()
+    def on_treeview_changed(self, selection):
+        self.block_remove_button(selection)
 
     def show_window(self):
         self.dialog.show_all()
