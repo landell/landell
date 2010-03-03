@@ -5,6 +5,8 @@
   <object class="GtkWindow" id="window1">
     <property name="title" translatable="yes">SLTV</property>
     <property name="window_position">center</property>
+    <property name="default_width">640</property>
+    <property name="default_height">480</property>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
