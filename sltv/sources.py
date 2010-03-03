@@ -68,3 +68,8 @@ class Sources:
                     src = source.Source(key, factory)
                     src.set_config(value)
                     self.add_source(key, src)
+
+    def save(self):
+        self.config.remove_section("Sources")
+        for row in self.liststore:
+            self._save_source(row[0], row[1])
