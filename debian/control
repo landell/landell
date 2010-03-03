@@ -5,8 +5,8 @@ Maintainer: Marcelo Jorge Vieira (metal) <metal@holoscopio.com>
 Build-Depends: debhelper (>= 7)
 Standards-Version: 3.8.4
 Homepage: https://wiki.softwarelivre.org/TV/ProjetoSLTV
-Vcs-Git: http://git.holoscopio.com/fujii/git/sltv.git
-Vcs-Browser: http://git.holoscopio.com/fujii/sltv.git/
+Vcs-Git: http://git.holoscopio.com/git/sltv.git
+Vcs-Browser: http://git.holoscopio.com/?p=sltv.git;a=summary
 
 Package: sltv
 Architecture: all
