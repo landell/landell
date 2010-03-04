@@ -1,4 +1,4 @@
-AC_PREREQ([2.65])
+AC_PREREQ([2.61])
 
 AC_INIT([sltv], [0.5], [sltv-dev@listas.softwarelivre.org])
 
