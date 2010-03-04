@@ -26,7 +26,7 @@ Dependencies:
   python (>= 2.5)
   python-gst0.10
   python-configobj (>= 4.7.1)
-  python-gobject (>= 2.20.0)
+  python-gobject (>= 2.14.2)
   python-gtk2 (>= 2.16)
 
 Bugs:
