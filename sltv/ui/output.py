@@ -25,22 +25,69 @@ import gtk
 from sltv.settings import UI_DIR
 import sltv.output
 
+class FileOutputUI:
+    def __init__(self):
+        self.interface = gtk.Builder()
+        self.interface.add_from_file(UI_DIR + "/output/fileoutput.ui")
+        self.vbox = self.interface.get_object("file_vbox")
+        self.config = {}
+        self.config["location"] = "default.ogg"
+        button = self.interface.get_object("filechooserbutton1")
+        button.set_local_only(True)
+        button.connect("file_set", self.file_set)
+    def file_set(self, button):
+        self.config["location"] = button.get_filename()
+    def get_widget(self):
+        return self.vbox
+    def get_config(self):
+        return self.config
+    def new_output(self):
+        return sltv.output.fileoutput.FileOutput()
+
+class FakeOutputUI:
+    def __init__(self):
+        self.interface = gtk.Builder()
+        self.config = {}
+    def get_widget(self):
+        return None
+    def get_config(self):
+        return self.config
+    def new_output(self):
+        return sltv.output.fakeoutput.FakeOutput()
+
+class IcecastOutputUI:
+    def __init__(self):
+        self.interface = gtk.Builder()
+        self.interface.add_from_file(UI_DIR + "/output/icecastoutput.ui")
+        self.vbox = self.interface.get_object("icecast_vbox")
+        self.server_entry = self.interface.get_object("server_entry")
+        self.user_entry = self.interface.get_object("user_entry")
+        self.port_spinbutton = self.interface.get_object("port_spinbutton")
+        self.password_entry = self.interface.get_object("password_entry")
+        self.mount_point_entry = self.interface.get_object("mount_point_entry")
+        self.config = {}
+    def get_widget(self):
+        return self.vbox
+    def get_config(self):
+        self.config["ip"] = self.server_entry.get_text()
+        self.config["username"] = self.user_entry.get_text()
+        self.config["password"] = self.password_entry.get_text()
+        self.config["port"] = self.port_spinbutton.get_value_as_int()
+        self.config["mount"] = self.mount_point_entry.get_text()
+        return self.config
+    def new_output(self):
+        return sltv.output.icecastoutput.IcecastOutput()
+
+
 class OutputUI:
 
     def __init__(self, ui):
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/output.ui")
         self.output_box = self.interface.get_object("output_box")
-        self.file_interface = gtk.Builder()
-        self.file_interface.add_from_file(UI_DIR + "/output/fileoutput.ui")
-        self.file_vbox = self.file_interface.get_object("file_vbox")
-        self.icecast_interface = gtk.Builder()
-        self.icecast_interface.add_from_file(UI_DIR + "/output/icecastoutput.ui")
-        self.icecast_vbox = self.icecast_interface.get_object("icecast_vbox")
         self.dialog = self.interface.get_object("dialog1")
         self.dialog.set_transient_for(ui.main_window)
         self.config_box = None
-        self.set_ui(self.file_vbox)
 
         #Output selection
         file_radiobutton = self.interface.get_object("file_radiobutton")
@@ -63,15 +110,17 @@ class OutputUI:
         fakesink_action = output_action_group.get_action("fakesink_action")
         fakesink_action.connect_proxy(fakesink_radiobutton)
 
-        self.output_selection = "file"
+        self.factories = {
+                        'file_action': FileOutputUI(),
+                        'icecast_action': IcecastOutputUI(),
+                        'fakesink_action': FakeOutputUI(),
+                    }
+        self.set_factory(self.factories['file_action'])
+
         self.config = {}
-        self.config["location"] = "default.ogg"
 
         close_button = self.interface.get_object("close_button")
-        file_chooser_button = self.file_interface.get_object("filechooserbutton1")
-        file_chooser_button.set_local_only(True)
         close_button.connect("clicked", self.close_dialog)
-        file_chooser_button.connect("file_set", self.file_set)
         self.dialog.connect("delete_event", self.close_dialog)
 
     def show_window(self):
@@ -79,41 +128,16 @@ class OutputUI:
         self.dialog.run()
 
     def get_output(self):
-        if self.output_selection == "file":
-            self.sink = sltv.output.fileoutput.FileOutput()
-        if self.output_selection == "icecast":
-            self.sink = sltv.output.icecastoutput.IcecastOutput()
-
-            server_entry = self.icecast_interface.get_object("server_entry")
-            user_entry = self.icecast_interface.get_object("user_entry")
-            port_spinbutton = self.icecast_interface.get_object("port_spinbutton")
-            password_entry = self.icecast_interface.get_object("password_entry")
-            mount_point_entry = self.icecast_interface.get_object("mount_point_entry")
-            self.config["ip"] = server_entry.get_text()
-            self.config["username"] = user_entry.get_text()
-            self.config["password"] = password_entry.get_text()
-            self.config["port"] = port_spinbutton.get_value_as_int()
-            self.config["mount"] = mount_point_entry.get_text()
-
-        if self.output_selection == "fakesink":
-            self.sink = sltv.output.fakeoutput.FakeOutput()
-        self.sink.config(self.config)
+        self.sink = self.factory.new_output()
+        self.sink.config(self.factory.get_config())
         return self.sink
-
-    def file_set(self, button):
-        self.config["location"] = button.get_filename()
 
     def close_dialog(self, button, data = None):
         self.dialog.hide_all()
 
     def output_changed(self, radioaction, current):
-        if current.get_name() == "file_action":
-            self.file_out()
-        if current.get_name() == "icecast_action":
-            self.icecast_out()
-
-        if current.get_name() == "fakesink_action":
-            self.fakesink_out()
+        name = current.get_name()
+        self.set_factory(self.factories[name])
 
     def set_ui(self, vbox):
         if self.config_box:
@@ -122,17 +146,6 @@ class OutputUI:
         if self.config_box:
             self.output_box.add(self.config_box)
 
-    def icecast_out(self):
-        print "Icecast"
-        self.set_ui(self.icecast_vbox)
-        self.output_selection = "icecast"
-
-    def file_out(self):
-        print "File"
-        self.set_ui(self.file_vbox)
-        self.output_selection = "file"
-
-    def fakesink_out(self):
-        print "fakesink"
-        self.set_ui(None)
-        self.output_selection = "fakesink"
+    def set_factory(self, factory):
+        self.factory = factory
+        self.set_ui(self.factory.get_widget())
