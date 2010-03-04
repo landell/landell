@@ -1,9 +1,9 @@
-SUBDIRS = input ui output
+SUBDIRS = input ui output encoding
 
 sltvlibdir = $(libdir)/sltv
 sltvlib_DATA = __init__.py effects.py \
 	settings.py swap.py		\
-	audio.py encoding.py preview.py		\
+	audio.py preview.py		\
 	sltv.py videomixer.py		\
 	registry.py factory.py source.py sources.py config.py
 

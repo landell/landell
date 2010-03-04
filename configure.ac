@@ -24,6 +24,7 @@ AC_CONFIG_FILES([
 	ui/output/Makefile
 	sltv/input/Makefile
 	sltv/output/Makefile
+	sltv/encoding/Makefile
 	sltv/ui/Makefile
 	sltv/ui/input/Makefile
         sltv/Makefile
