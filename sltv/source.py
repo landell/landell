@@ -17,7 +17,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import input
-import ui.input
 
 class Source:
     def __init__(self, name, factory):
