@@ -24,7 +24,7 @@ Dependencies:
   gstreamer0.10-alsa
   gstreamer0.10-x
   python (>= 2.5)
-  python-gst0.10
+  python-gst0.10 (>= 0.10.12)
   python-configobj (>= 4.5.2)
   python-gobject (>= 2.14.2)
   python-gtk2 (>= 2.12.1)
