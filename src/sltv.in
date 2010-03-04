@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
@@ -16,19 +17,18 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import sys
+sys.path.append("@LIBDIR@")
 
 import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gtk
+import sltv.ui
 
-class Audio:
+def main():
+    sltv.ui.SltvUI()
+    gobject.threads_init()
+    gtk.gdk.threads_init()
+    gtk.main()
 
-    def __init__(self):
-        self.gnu_linux()
-
-    def gnu_linux(self):
-        self.audiosrc = gst.element_factory_make("alsasrc", "alsasrc")
-
-    def get_audiosrc(self):
-        return self.audiosrc
+if __name__ == '__main__':
+    main()

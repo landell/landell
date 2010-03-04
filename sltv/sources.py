@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
+# Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,55 +17,57 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
 import gtk
-from settings import UI_DIR
-from edit_source import *
+import registry
+import config
+import source
 
 class Sources:
-    def __init__(self, window, liststore):
-        self.interface = gtk.Builder()
-        self.interface.add_from_file(UI_DIR + "/sources.ui")
-        self.dialog = self.interface.get_object("sources_dialog")
-        self.dialog.set_transient_for(window)
-        add_button = self.interface.get_object("add_button")
-        edit_button = self.interface.get_object("edit_button")
-        remove_button = self.interface.get_object("remove_button")
-        close_button = self.interface.get_object("close_button")
+    def __init__(self):
+        self.liststore = gtk.ListStore(str, object)
+        self.config = config.config
+        self.registry = registry.registry
 
-        self.sources_liststore = liststore
-        self.sources_treeview = self.interface.get_object("sources_treeview")
-        self.sources_treeview.set_model(self.sources_liststore)
-        cell = gtk.CellRendererText()
-        column =  gtk.TreeViewColumn('Sources', cell, text=0)
-        self.sources_treeview.append_column(column)
+    def _find_source(self, name):
+        for row in self.liststore:
+            if row[0] == name:
+                return row
+        return None
 
-        add_button.connect("clicked", self.on_add_source)
-        edit_button.connect("clicked", self.on_edit_source)
-        remove_button.connect("clicked", self.on_remove_source)
-        close_button.connect("clicked", self.close_dialog)
-        self.dialog.connect("delete_event", self.close_dialog)
+    def get_source(self, name):
+        row = self._find_source(name)
+        return row[1]
 
-    def show_window(self):
-        self.dialog.show_all()
-        self.dialog.run()
+    def remove_source(self, name):
+        row = self._find_source(name)
+        if row != None:
+            self.liststore.remove(row.iter)
 
-    def close_dialog(self, widget, data= None):
-        self.dialog.hide_all()
+    def _save_source(self, name, source):
+        factory = source.get_factory()
+        items = source.get_config()
+        items["type"] = factory.get_id()
+        self.config.set_item("Sources", name, items)
 
-    def on_add_source(self, button):
-        edit_source = EditSource(self.dialog, self)
-        edit_source.show_window()
+    def add_source(self, name, source):
+        self.liststore.append((name, source))
 
-    def on_edit_source(self, button):
-        self.sources_treeview.get_selection().get_selected()
+    def get_store(self):
+        return self.liststore
 
-    def on_remove_source(self, button):
-        (model, iter) = self.sources_treeview.get_selection().get_selected()
-        model.remove(iter)
+    def load(self):
+        config_sources = self.config.get_section("Sources")
+        if config_sources != None:
+            # FIXME dict to list
+            sources = [(v, k) for (k, v) in config_sources[0].iteritems()]
+            for value, key in sources:
+                if value and key:
+                    factory = self.registry.get_factory_by_id(value["type"])
+                    src = source.Source(key, factory)
+                    src.set_config(value)
+                    self.add_source(key, src)
 
-    def add_source(self, name, element):
-        self.sources_liststore.append((name,element))
+    def save(self):
+        self.config.remove_section("Sources")
+        for row in self.liststore:
+            self._save_source(row[0], row[1])

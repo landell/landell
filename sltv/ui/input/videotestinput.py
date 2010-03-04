@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
+# Author: Marcelo Jorge Vieira <metal@holoscopio.com>
+# Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,19 +18,30 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gtk
+from sltv.settings import UI_DIR
+from core import InputUI
 
-class Audio:
-
+class VideoTestInputUI(InputUI):
     def __init__(self):
-        self.gnu_linux()
+        InputUI.__init__(self)
+        self.interface.add_from_file(UI_DIR + "/input/videotestinput.ui")
+        self.vbox = self.interface.get_object("videotest_vbox")
+        self.pattern_entry = self.interface.get_object("pattern_entry")
 
-    def gnu_linux(self):
-        self.audiosrc = gst.element_factory_make("alsasrc", "alsasrc")
+    def get_widget(self):
+        return self.vbox
 
-    def get_audiosrc(self):
-        return self.audiosrc
+    def get_name(self):
+        return "Video Test"
+
+    def get_description(self):
+        return "Video from test source"
+
+    def update_config(self):
+        self.pattern_entry.set_text(self.config["pattern"])
+
+    def get_config(self):
+        self.config["pattern"] = self.pattern_entry.get_text()
+        return self.config

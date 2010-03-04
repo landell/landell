@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010 Holoscópio Tecnologia
-# Author: Luciana Fujii Pontello <luciana@holoscopio.com>
+# Copyright (C) 2010 Holoscopio Tecnologia
+# Author: Marcelo Jorge Vieira <metal@holoscopio.com>
+# Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,19 +17,21 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 import gobject
 import pygst
 pygst.require("0.10")
 import gst
+from core import Input, INPUT_TYPE_AUDIO
 
-class Audio:
+CAPABILITIES = INPUT_TYPE_AUDIO
+
+class ALSAInput(Input):
 
     def __init__(self):
-        self.gnu_linux()
+        Input.__init__(self, CAPABILITIES)
+        self.audio_src = gst.element_factory_make("alsasrc", "audio_src")
+        self.add(self.audio_src)
+        self.audio_pad.set_target(self.audio_src.src_pads().next())
 
-    def gnu_linux(self):
-        self.audiosrc = gst.element_factory_make("alsasrc", "alsasrc")
-
-    def get_audiosrc(self):
-        return self.audiosrc
+    def config(self, dict):
+        self

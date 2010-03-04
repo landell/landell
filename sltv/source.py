@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
-# Author: Luciana Fujii Pontello <luciana@holoscopio.com>
+# Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,19 +16,21 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import input
+import ui.input
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
-
-class Audio:
-
-    def __init__(self):
-        self.gnu_linux()
-
-    def gnu_linux(self):
-        self.audiosrc = gst.element_factory_make("alsasrc", "alsasrc")
-
-    def get_audiosrc(self):
-        return self.audiosrc
+class Source:
+    def __init__(self, name, factory):
+        self.name = name
+        self.factory = factory
+        self.config = {}
+    def get_config(self):
+        return self.config
+    def set_config(self, config):
+        self.config = config
+    def new_input(self):
+        input = self.factory.new_input()
+        input.config(self.config)
+        return input
+    def get_factory(self):
+        return self.factory

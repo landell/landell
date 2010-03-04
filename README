@@ -16,22 +16,37 @@ License:
 Dependencies:
 =============
 
-  libgstreamer0.10
-  gstreamer-plugins-base (>= 0.10)
-  gstreamer-plugins-good
+  libgstreamer0.10-0
+  gstreamer0.10-plugins-base
+  gstreamer0.10-plugins-good
+  gstreamer0.10-plugins-bad
   gstreamer0.10-ffmpeg
   gstreamer0.10-alsa
+  gstreamer0.10-x
   python (>= 2.5)
-  python-gst (>= 0.10)
+  python-gst0.10
+  python-configobj (>= 4.7.1)
+  python-gobject (>= 2.20.0)
+  python-gtk2 (>= 2.16)
+
+Bugs:
+=====
+
+  The bug tracker can be reached by visiting the website
+  http://gonod.softwarelivre.org/cgi-bin/bugzilla/buglist.cgi?product=sltv
+
+  Before sending a bug report, please verify that you have the latest
+  version of Sltv. Many bugs (major and minor) are fixed at each release,
+  and if yours is out of date, the problem may already have been solved.
 
 Mailing list:
 =============
 
-http://listas.softwarelivre.org/cgi-bin/mailman/listinfo/sltv-dev
-sltv-dev@listas.softwarelivre.org
+  http://listas.softwarelivre.org/cgi-bin/mailman/listinfo/sltv-dev
+  sltv-dev@listas.softwarelivre.org
 
 Development:
 ============
 
-http://git.holoscopio.com/fujii?p=sltv.git;a=summary
-git clone http://git.holoscopio.com/fujii/git/sltv.git
+  http://git.holoscopio.com/?p=sltv.git;a=summary
+  git clone http://git.holoscopio.com/git/sltv.git

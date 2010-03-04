@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010 Holoscópio Tecnologia
-# Author: Luciana Fujii Pontello <luciana@holoscopio.com>
+# Copyright (C) 2010 Holoscopio Tecnologia
+# Author: Marcelo Jorge Vieira <metal@holoscopio.com>
+# Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,19 +17,4 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
-
-class Audio:
-
-    def __init__(self):
-        self.gnu_linux()
-
-    def gnu_linux(self):
-        self.audiosrc = gst.element_factory_make("alsasrc", "alsasrc")
-
-    def get_audiosrc(self):
-        return self.audiosrc
+from core import SltvUI
