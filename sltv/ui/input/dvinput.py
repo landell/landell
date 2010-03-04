@@ -52,6 +52,6 @@ class DVInputUI(InputUI):
         self.config["channel"] = self.channel_entry.get_text()
         self.config["port"] = self.port_entry.get_text()
         self.config["width"] = self.width_entry.get_text()
-        self.config["height"] = self.width_entry.get_text()
+        self.config["height"] = self.height_entry.get_text()
         self.config["filename"] = self.filechooserbutton.get_filename()
         return self.config
