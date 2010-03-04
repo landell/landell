@@ -21,7 +21,6 @@ import gobject
 import pygst
 pygst.require("0.10")
 import gst
-from ui import output
 from encoding import *
 from audio import *
 from preview import *
@@ -40,7 +39,6 @@ class Sltv:
         self.sources.load()
 
         self.encoding = Encoding(ui)
-        self.output = output.OutputUI(ui)
         self.audio = Audio()
 
         self.effect_enabled = "False"
@@ -49,12 +47,10 @@ class Sltv:
 
         self.video_source = None
         self.audio_source = None
+        self.output = None
 
     def show_encoding(self):
         self.encoding.show_window()
-
-    def show_output(self):
-        self.output.show_window()
 
     def play(self, overlay_text, video_effect_name,
             audio_effect_name):
@@ -124,7 +120,7 @@ class Sltv:
         self.videorate = gst.element_factory_make("videorate", "videorate")
         self.videoscale = gst.element_factory_make("videoscale", "videoscale")
         self.mux = self.encoding.get_mux(type)
-        self.sink = self.output.get_output()
+        self.sink = self.output
         self.preview_element = self.preview.get_preview()
         self.colorspace = gst.element_factory_make(
             "ffmpegcolorspace", "colorspacesink"
@@ -218,6 +214,9 @@ class Sltv:
 
     def set_audio_source(self, source_name):
         self.audio_source = source_name
+
+    def set_output(self, output):
+        self.output = output
 
     def set_preview(self, state):
         self.preview_enabled = state
