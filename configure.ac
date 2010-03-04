@@ -30,6 +30,7 @@ AC_CONFIG_FILES([
         sltv/settings.py
 	src/Makefile
         src/sltv
+	man/Makefile
 ])
 
 AC_OUTPUT
