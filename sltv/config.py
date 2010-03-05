@@ -52,7 +52,8 @@ class Config:
 
     def get_section(self, section):
         if self.has_section(section):
-            return self.config.as_list(section)
+            # FIXME: change it to as_list in configobj 4.7
+            return list([self.config.get(section)])
         else:
             return None
 
