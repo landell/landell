@@ -16,8 +16,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import input
-
 class Source:
     def __init__(self, name, factory):
         self.name = name
@@ -27,8 +25,8 @@ class Source:
         return self.config
     def set_config(self, config):
         self.config = config
-    def new_input(self):
-        input = self.factory.new_input()
+    def create(self):
+        input = self.factory.create()
         input.config(self.config)
         return input
     def get_factory(self):

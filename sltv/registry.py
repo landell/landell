@@ -19,18 +19,18 @@
 class Registry:
 
     def __init__(self):
-        self.factories = []
+        self.input_factories = []
 
-    def get_factory_by_id(self, id):
-        for factory in self.factories:
+    def get_input_factory_by_id(self, id):
+        for factory in self.input_factories:
             if factory.get_id() == id:
                 return factory
         return None
 
-    def get_factories(self):
-        return self.factories
+    def get_input_factories(self):
+        return self.input_factories
 
-    def register_factory(self, factory):
-        self.factories.append(factory)
+    def register_input_factory(self, factory):
+        self.input_factories.append(factory)
 
 registry = Registry()

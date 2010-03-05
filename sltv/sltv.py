@@ -74,7 +74,7 @@ class Sltv:
 
         for row in self.sources.get_store():
             (name, source) = row
-            element = source.new_input()
+            element = source.create()
 
             if element.does_audio():
                 if name == self.audio_source:

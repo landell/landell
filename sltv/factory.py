@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
 # Author: Marcelo Jorge Vieira <metal@holoscopio.com>
+# Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +21,7 @@ import input
 import ui.input
 import registry
 
-class InputFactory:
+class SltvFactory:
     def __init__(self, id):
         self.id = id
         self.capabilities = None 
@@ -34,77 +35,77 @@ class InputFactory:
         return self.ui.get_description()
     def get_capabilities(self):
         return self.capabilities
-    def new_input(self):
-        return self.input_class()
+    def create(self):
+        return self.factory_class()
 
-class FileInputFactory(InputFactory):
+class FileInputFactory(SltvFactory):
     def __init__(self):
-        InputFactory.__init__(self, "file")
+        SltvFactory.__init__(self, "file")
         self.capabilities = input.fileinput.CAPABILITIES
         self.ui = ui.input.fileinput.FileInputUI()
-        self.input_class = input.fileinput.FileInput
+        self.factory_class = input.fileinput.FileInput
 
-class V4L2InputFactory(InputFactory):
+class V4L2InputFactory(SltvFactory):
     def __init__(self):
-        InputFactory.__init__(self, "v4l2")
+        SltvFactory.__init__(self, "v4l2")
         self.capabilities = input.v4l2input.CAPABILITIES
         self.ui = ui.input.v4l2input.V4L2InputUI()
-        self.input_class = input.v4l2input.V4L2Input
+        self.factory_class = input.v4l2input.V4L2Input
 
-class XInputFactory(InputFactory):
+class XInputFactory(SltvFactory):
     def __init__(self):
-        InputFactory.__init__(self, "x")
+        SltvFactory.__init__(self, "x")
         self.capabilities = input.xinput.CAPABILITIES
         self.ui = ui.input.xinput.XInputUI()
-        self.input_class = input.xinput.XInput
+        self.factory_class = input.xinput.XInput
 
-class VideoTestInputFactory(InputFactory):
+class VideoTestInputFactory(SltvFactory):
     def __init__(self):
-        InputFactory.__init__(self, "videotest")
+        SltvFactory.__init__(self, "videotest")
         self.capabilities = input.videotestinput.CAPABILITIES
         self.ui = ui.input.videotestinput.VideoTestInputUI()
-        self.input_class = input.videotestinput.VideoTestInput
+        self.factory_class = input.videotestinput.VideoTestInput
 
-class AudioTestInputFactory(InputFactory):
+class AudioTestInputFactory(SltvFactory):
     def __init__(self):
-        InputFactory.__init__(self, "audiotest")
+        SltvFactory.__init__(self, "audiotest")
         self.capabilities = input.audiotestinput.CAPABILITIES
         self.ui = ui.input.audiotestinput.AudioTestInputUI()
-        self.input_class = input.audiotestinput.AudioTestInput
+        self.factory_class = input.audiotestinput.AudioTestInput
 
-class DVInputFactory(InputFactory):
+class DVInputFactory(SltvFactory):
     def __init__(self):
-        InputFactory.__init__(self, "dv")
+        SltvFactory.__init__(self, "dv")
         self.capabilities = input.dvinput.CAPABILITIES
         self.ui = ui.input.dvinput.DVInputUI()
-        self.input_class = input.dvinput.DVInput
+        self.factory_class = input.dvinput.DVInput
 
-class ALSAInputFactory(InputFactory):
+class ALSAInputFactory(SltvFactory):
     def __init__(self):
-        InputFactory.__init__(self, "alsa")
+        SltvFactory.__init__(self, "alsa")
         self.capabilities = input.alsainput.CAPABILITIES
         self.ui = ui.input.alsainput.ALSAInputUI()
-        self.input_class = input.alsainput.ALSAInput
+        self.factory_class = input.alsainput.ALSAInput
 
-class PulseInputFactory(InputFactory):
+class PulseInputFactory(SltvFactory):
     def __init__(self):
-        InputFactory.__init__(self, "pulse")
+        SltvFactory.__init__(self, "pulse")
         self.capabilities = input.pulseinput.CAPABILITIES
         self.ui = ui.input.pulseinput.PulseInputUI()
-        self.input_class = input.pulseinput.PulseInput
+        self.factory_class = input.pulseinput.PulseInput
 
-class AutoAudioInputFactory(InputFactory):
+class AutoAudioInputFactory(SltvFactory):
     def __init__(self):
-        InputFactory.__init__(self, "auto")
+        SltvFactory.__init__(self, "auto")
         self.capabilities = input.autoaudioinput.CAPABILITIES
         self.ui = ui.input.autoaudioinput.AutoAudioInputUI()
-        self.input_class = input.autoaudioinput.AutoAudioInput
+        self.factory_class = input.autoaudioinput.AutoAudioInput
 
-factories = [
+input_factories = [
         AudioTestInputFactory(), XInputFactory(), V4L2InputFactory(),
         FileInputFactory(), DVInputFactory(), ALSAInputFactory(),
         VideoTestInputFactory(), PulseInputFactory(), AutoAudioInputFactory()
 ]
 
-for i in factories:
-    registry.registry.register_factory(i)
+for i in input_factories:
+    registry.registry.register_input_factory(i)

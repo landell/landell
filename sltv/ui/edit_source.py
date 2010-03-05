@@ -44,7 +44,7 @@ class EditSource:
         self.input_box = self.interface.get_object("input_box")
 
         self.registry = sltv.registry.registry
-        factories = self.registry.get_factories()
+        factories = self.registry.get_input_factories()
         self.factories = {}
 
         for factory in factories:
