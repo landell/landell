@@ -36,10 +36,11 @@
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkButton" id="add_button">
-                    <property name="label" translatable="yes">Add</property>
+                    <property name="label">gtk-add</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="use_stock">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -49,10 +50,11 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="edit_button">
-                    <property name="label" translatable="yes">Edit</property>
+                    <property name="label">gtk-edit</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="use_stock">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -62,10 +64,11 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="remove_button">
-                    <property name="label" translatable="yes">Remove</property>
+                    <property name="label">gtk-remove</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="use_stock">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
