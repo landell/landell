@@ -280,10 +280,18 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkTextView" id="overlay_textview">
+                      <object class="GtkScrolledWindow" id="scrolledwindow1">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="wrap_mode">word-char</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
+                        <child>
+                          <object class="GtkTextView" id="overlay_textview">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="wrap_mode">word-char</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="fill">False</property>
