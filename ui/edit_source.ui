@@ -55,6 +55,7 @@
                     <property name="visible">True</property>
                   </object>
                   <packing>
+                    <property name="fill">False</property>
                     <property name="position">3</property>
                   </packing>
                 </child>
