@@ -93,7 +93,7 @@ class Sources:
         self.dialog.hide_all()
 
     def on_add_source(self, button):
-        self.edit_source.set_source(None)
+        self.edit_source.set_media_item(None)
         self.edit_source.show_window()
 
     def on_edit_source(self, button):
@@ -101,7 +101,7 @@ class Sources:
         if iter != None and model != None:
             name = model.get_value(iter, 0)
             source = self.sources.get_source(name)
-            self.edit_source.set_source(source)
+            self.edit_source.set_media_item(source)
             self.edit_source.show_window()
 
     def on_remove_source(self, button):

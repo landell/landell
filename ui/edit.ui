@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkDialog" id="edit_source_dialog">
+  <object class="GtkDialog" id="edit_dialog">
     <property name="border_width">5</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
@@ -25,7 +25,7 @@
                 <child>
                   <object class="GtkLabel" id="name_label">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Source name:</property>
+                    <property name="label" translatable="yes">name:</property>
                   </object>
                   <packing>
                     <property name="position">0</property>
@@ -65,7 +65,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="input_box">
+              <object class="GtkHBox" id="container_box">
                 <property name="visible">True</property>
                 <child>
                   <placeholder/>
