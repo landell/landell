@@ -114,6 +114,7 @@ class Sltv:
         )
 
         self.overlay = gst.element_factory_make("textoverlay", "overlay")
+        self.overlay.set_property("font-desc", "Sans Bold 14")
         self.tee = gst.element_factory_make("tee", "tee")
         queue1 = gst.element_factory_make("queue", "queue1")
         queue2 = gst.element_factory_make("queue", "queue2")
