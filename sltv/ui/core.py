@@ -29,7 +29,7 @@ from sltv.settings import UI_DIR
 import about
 import sources
 import message
-import output
+import output_ui
 
 def create_effects_combobox(combobox, effect_type):
     liststore = gtk.ListStore(gobject.TYPE_STRING)
@@ -54,7 +54,7 @@ class SltvUI:
         preview_area = self.interface.get_object("preview_area")
         self.sltv = Sltv(preview_area, self)
 
-        self.output = output.OutputUI(self)
+        self.output = output_ui.OutputUI(self)
 
         file_location_entry = self.interface.get_object("file_location_entry")
         self.play_button = self.interface.get_object("play_button")
