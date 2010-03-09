@@ -44,7 +44,7 @@ class Preview:
         self.preview.add(colorspace, sink, videoscale)
         gst.element_link_many(colorspace, videoscale, sink)
         sink_pad = gst.GhostPad(
-            "sink_ghost_pad", self.preview.find_unlinked_pad(gst.PAD_SINK)
+            "sink_ghost_pad", colorspace.sink_pads().next()
         )
         self.preview.add_pad(sink_pad)
         return self.preview
