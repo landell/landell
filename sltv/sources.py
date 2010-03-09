@@ -20,7 +20,7 @@
 import gtk
 import registry
 import config
-import source
+import mediaitem
 
 class Sources:
     def __init__(self):
@@ -63,7 +63,7 @@ class Sources:
             for value, key in sources:
                 if value and key:
                     factory = self.registry.get_factory_by_id("input", value["type"])
-                    src = source.Source(key, factory)
+                    src = mediaitem.MediaItem(key, factory)
                     src.set_config(value)
                     self.add_source(key, src)
 

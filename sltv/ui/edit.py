@@ -20,7 +20,6 @@ import gobject
 import gtk
 from sltv.settings import UI_DIR
 import sltv.registry
-import sltv.source
 
 class Edit:
     def __init__(self, window, media_list):

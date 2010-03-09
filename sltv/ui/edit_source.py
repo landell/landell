@@ -20,7 +20,7 @@ import gobject
 import gtk
 from sltv.settings import UI_DIR
 import sltv.registry
-import sltv.source
+import sltv.mediaitem
 from edit import Edit
 
 class EditSource(Edit):
@@ -45,7 +45,7 @@ class EditSource(Edit):
             if name == None or name == "":
                 return False
             if not self.media_list.config.has_item("Sources", name):
-                media_item = sltv.source.Source(name, self.factory)
+                media_item = sltv.mediaitem.MediaItem(name, self.factory)
                 media_item.set_config(self.factory.get_ui().get_config())
                 self.media_list.add_source(name, media_item)
         else:

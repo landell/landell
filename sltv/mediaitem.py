@@ -16,7 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-class Source:
+class MediaItem:
     def __init__(self, name, factory):
         self.name = name
         self.factory = factory
@@ -26,8 +26,8 @@ class Source:
     def set_config(self, config):
         self.config = config
     def create(self):
-        input = self.factory.create()
-        input.config(self.config)
-        return input
+        media_item = self.factory.create()
+        media_item.config(self.config)
+        return media_item
     def get_factory(self):
         return self.factory
