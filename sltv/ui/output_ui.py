@@ -24,60 +24,8 @@ import gst
 import gtk
 from sltv.settings import UI_DIR
 import sltv.output
-
-class FileOutputUI:
-    def __init__(self):
-        self.interface = gtk.Builder()
-        self.interface.add_from_file(UI_DIR + "/output/fileoutput.ui")
-        self.vbox = self.interface.get_object("file_vbox")
-        self.config = {}
-        self.config["location"] = "default.ogg"
-        button = self.interface.get_object("filechooserbutton1")
-        button.set_local_only(True)
-        button.connect("file_set", self.file_set)
-    def file_set(self, button):
-        self.config["location"] = button.get_filename()
-    def get_widget(self):
-        return self.vbox
-    def get_config(self):
-        return self.config
-    def new_output(self):
-        return sltv.output.fileoutput.FileOutput()
-
-class FakeOutputUI:
-    def __init__(self):
-        self.interface = gtk.Builder()
-        self.config = {}
-    def get_widget(self):
-        return None
-    def get_config(self):
-        return self.config
-    def new_output(self):
-        return sltv.output.fakeoutput.FakeOutput()
-
-class IcecastOutputUI:
-    def __init__(self):
-        self.interface = gtk.Builder()
-        self.interface.add_from_file(UI_DIR + "/output/icecastoutput.ui")
-        self.vbox = self.interface.get_object("icecast_vbox")
-        self.server_entry = self.interface.get_object("server_entry")
-        self.user_entry = self.interface.get_object("user_entry")
-        self.port_spinbutton = self.interface.get_object("port_spinbutton")
-        self.password_entry = self.interface.get_object("password_entry")
-        self.mount_point_entry = self.interface.get_object("mount_point_entry")
-        self.config = {}
-    def get_widget(self):
-        return self.vbox
-    def get_config(self):
-        self.config["ip"] = self.server_entry.get_text()
-        self.config["username"] = self.user_entry.get_text()
-        self.config["password"] = self.password_entry.get_text()
-        self.config["port"] = self.port_spinbutton.get_value_as_int()
-        self.config["mount"] = self.mount_point_entry.get_text()
-        return self.config
-    def new_output(self):
-        return sltv.output.icecastoutput.IcecastOutput()
-
+import output
+import sltv.registry
 
 class OutputUI:
 
@@ -95,27 +43,28 @@ class OutputUI:
         fakesink_radiobutton = self.interface.get_object("fakesink_radiobutton")
         output_action_group = gtk.ActionGroup("output_action_group")
         output_action_entries = [
-            ("file_action", None, "File output", None, "Output to file", 0),
-            ("icecast_action", None, "Icecast output", None,
+            ("File", None, "File output", None, "Output to file", 0),
+            ("Icecast", None, "Icecast output", None,
                 "Output to Icecast", 1),
-            ("fakesink_action", None, "fakesink output", None,
+            ("Fake", None, "fakesink output", None,
                 "Output to fakesink", 2)
         ]
         output_action_group.add_radio_actions(output_action_entries,
                 5, self.output_changed, None)
-        file_action = output_action_group.get_action("file_action")
+        file_action = output_action_group.get_action("File")
         file_action.connect_proxy(file_radiobutton)
-        icecast_action = output_action_group.get_action("icecast_action")
+        icecast_action = output_action_group.get_action("Icecast")
         icecast_action.connect_proxy(icecast_radiobutton)
-        fakesink_action = output_action_group.get_action("fakesink_action")
+        fakesink_action = output_action_group.get_action("Fake")
         fakesink_action.connect_proxy(fakesink_radiobutton)
 
-        self.factories = {
-                        'file_action': FileOutputUI(),
-                        'icecast_action': IcecastOutputUI(),
-                        'fakesink_action': FakeOutputUI(),
-                    }
-        self.set_factory(self.factories['file_action'])
+        self.registry = sltv.registry.registry
+        self.factories = {}
+        factories = self.registry.get_factories("output")
+        for factory in factories:
+            self.factories[factory.get_name()] = factory
+
+        self.set_factory(self.factories["File"])
 
         self.config = {}
 
@@ -128,8 +77,10 @@ class OutputUI:
         self.dialog.run()
 
     def get_output(self):
-        self.sink = self.factory.new_output()
-        self.sink.config(self.factory.get_config())
+        name = "output"
+        media_item = sltv.mediaitem.MediaItem(name, self.factory)
+        media_item.set_config(self.factory.get_ui().get_config())
+        self.sink = media_item.create()
         return self.sink
 
     def close_dialog(self, button, data = None):
@@ -148,4 +99,4 @@ class OutputUI:
 
     def set_factory(self, factory):
         self.factory = factory
-        self.set_ui(self.factory.get_widget())
+        self.set_ui(self.factory.get_ui().get_widget())
