@@ -65,10 +65,8 @@ class Effect:
                 convertion_element1, effect_queue, effect_element,
                 convertion_element2
         )
-        sink_pad = gst.GhostPad(
-                "sink", effectbin.find_unlinked_pad(gst.PAD_SINK)
-        )
-        src_pad = gst.GhostPad("src", effectbin.find_unlinked_pad(gst.PAD_SRC))
+        sink_pad = gst.GhostPad("sink", convertion_element1.sink_pads().next())
+        src_pad = gst.GhostPad("src", convertion_element2.src_pads().next())
         effectbin.add_pad(sink_pad)
         effectbin.add_pad(src_pad)
         return effectbin
