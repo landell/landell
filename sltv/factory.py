@@ -18,7 +18,9 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import input
+import output
 import ui.input
+import ui.output
 import registry
 
 class SltvFactory:
@@ -101,6 +103,24 @@ class AutoAudioInputFactory(SltvFactory):
         self.ui = ui.input.autoaudioinput.AutoAudioInputUI()
         self.factory_class = input.autoaudioinput.AutoAudioInput
 
+class IcecastOutputFactory(SltvFactory):
+    def __init__(self):
+        SltvFactory.__init__(self, "icecast")
+        self.ui = ui.output.icecastoutput.IcecastOutputUI()
+        self.factory_class = output.icecastoutput.IcecastOutput
+
+class FileOutputFactory(SltvFactory):
+    def __init__(self):
+        SltvFactory.__init__(self, "file")
+        self.ui = ui.output.fileoutput.FileOutputUI()
+        self.factory_class = output.fileoutput.FileOutput
+
+class FakeOutputFactory(SltvFactory):
+    def __init__(self):
+        SltvFactory.__init__(self, "fake")
+        self.ui = ui.output.fakeoutput.FakeOutputUI()
+        self.factory_class = output.fakeoutput.FakeOutput
+
 input_factories = [
         AudioTestInputFactory(), XInputFactory(), V4L2InputFactory(),
         FileInputFactory(), DVInputFactory(), ALSAInputFactory(),
@@ -109,3 +129,10 @@ input_factories = [
 
 for i in input_factories:
     registry.registry.register_factory("input", i)
+
+output_factories = [
+        IcecastOutputFactory(), FileOutputFactory(), FakeOutputFactory()
+]
+
+for i in output_factories:
+    registry.registry.register_factory("output", i)

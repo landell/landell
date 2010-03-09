@@ -19,7 +19,9 @@
 class Registry:
 
     def __init__(self):
-        self.factories = {"input": []}
+        self.factories = {
+                "input": [], "output": []
+        }
 
     def get_factory_by_id(self, type, id):
         for factory in self.factories[type]:
