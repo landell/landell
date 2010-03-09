@@ -230,6 +230,8 @@ class Sltv:
         if t == gst.MESSAGE_EOS:
             self.player.set_state(gst.STATE_NULL)
         elif t == gst.MESSAGE_ERROR:
+            (gerror, debug) = message.parse_error()
+            print debug
             self.player.set_state(gst.STATE_NULL)
 
     def on_sync_message(self, bus, message):
