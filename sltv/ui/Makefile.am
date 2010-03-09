@@ -1,4 +1,4 @@
-SUBDIRS = input
+SUBDIRS = input output
 
 sltvlibdir = $(libdir)/sltv/ui
 sltvlib_DATA =	\
