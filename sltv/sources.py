@@ -62,7 +62,7 @@ class Sources:
             sources = [(v, k) for (k, v) in config_sources[0].iteritems()]
             for value, key in sources:
                 if value and key:
-                    factory = self.registry.get_input_factory_by_id(value["type"])
+                    factory = self.registry.get_factory_by_id("input", value["type"])
                     src = source.Source(key, factory)
                     src.set_config(value)
                     self.add_source(key, src)

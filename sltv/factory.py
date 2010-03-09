@@ -108,4 +108,4 @@ input_factories = [
 ]
 
 for i in input_factories:
-    registry.registry.register_input_factory(i)
+    registry.registry.register_factory("input", i)

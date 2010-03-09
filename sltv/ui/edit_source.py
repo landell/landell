@@ -29,7 +29,7 @@ class EditSource(Edit):
         label = self.interface.get_object("name_label")
         label.set_label("Source name")
 
-        factories = self.registry.get_input_factories()
+        factories = self.registry.get_factories("input")
 
         for factory in factories:
             self.elements_liststore.append((factory.get_name(),))
