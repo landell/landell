@@ -44,7 +44,7 @@ class EditSource(Edit):
             name = self.name_entry.get_text()
             if name == None or name == "":
                 return False
-            if not self.media_list.config.has_item("Sources", name):
+            if not self.media_list.get_item(name):
                 media_item = sltv.mediaitem.MediaItem(name, self.factory)
                 media_item.set_config(self.factory.get_ui().get_config())
                 self.media_list.add_item(name, media_item)
