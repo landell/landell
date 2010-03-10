@@ -47,7 +47,7 @@ class EditSource(Edit):
             if not self.media_list.config.has_item("Sources", name):
                 media_item = sltv.mediaitem.MediaItem(name, self.factory)
                 media_item.set_config(self.factory.get_ui().get_config())
-                self.media_list.add_source(name, media_item)
+                self.media_list.add_item(name, media_item)
         else:
             self.media_item.set_config(config)
         self.media_list.save()
