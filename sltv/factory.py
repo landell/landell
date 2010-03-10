@@ -26,7 +26,7 @@ import registry
 class SltvFactory:
     def __init__(self, id):
         self.id = id
-        self.capabilities = None 
+        self.capabilities = None
     def get_id(self):
         return self.id
     def get_ui(self):
