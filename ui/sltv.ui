@@ -23,27 +23,21 @@
                   <object class="GtkMenu" id="menu4">
                     <property name="visible">True</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="output_menuitem">
-                        <property name="label">Output settings</property>
+                      <object class="GtkMenuItem" id="output_menuitem">
                         <property name="visible">True</property>
-                        <property name="image">image1</property>
-                        <property name="use_stock">False</property>
+                        <property name="label" translatable="yes">Output settings</property>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="encoding_menuitem">
-                        <property name="label">Encoding settings</property>
+                      <object class="GtkMenuItem" id="encoding_menuitem">
                         <property name="visible">True</property>
-                        <property name="image">image2</property>
-                        <property name="use_stock">False</property>
+                        <property name="label" translatable="yes">Encoding settings</property>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="sources_menuitem">
-                        <property name="label">Sources</property>
+                      <object class="GtkMenuItem" id="sources_menuitem">
                         <property name="visible">True</property>
-                        <property name="image">image4</property>
-                        <property name="use_stock">False</property>
+                        <property name="label" translatable="yes">Sources</property>
                       </object>
                     </child>
                   </object>
@@ -440,17 +434,5 @@
     <property name="page_size">10</property>
   </object>
   <object class="GtkTextBuffer" id="textbuffer1"/>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="stock">gtk-missing-image</property>
-  </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="stock">gtk-missing-image</property>
-  </object>
   <object class="GtkListStore" id="liststore1"/>
-  <object class="GtkImage" id="image4">
-    <property name="visible">True</property>
-    <property name="stock">gtk-missing-image</property>
-  </object>
 </interface>
