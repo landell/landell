@@ -37,17 +37,3 @@ class EditSource(Edit):
 
         self.elements_combobox.set_active(0)
         self.set_factory(factories[0])
-
-    def save(self):
-        config = self.factory.get_ui().get_config()
-        if self.media_item == None:
-            name = self.name_entry.get_text()
-            if name == None or name == "":
-                return False
-            if not self.media_list.get_item(name):
-                media_item = sltv.mediaitem.MediaItem(name, self.factory)
-                media_item.set_config(self.factory.get_ui().get_config())
-                self.media_list.add_item(name, media_item)
-        else:
-            self.media_item.set_config(config)
-        self.media_list.save()

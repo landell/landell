@@ -61,7 +61,19 @@ class Edit:
             self.save()
         self.dialog.hide_all()
 
-
+    def save(self):
+        config = self.factory.get_ui().get_config()
+        if self.media_item == None:
+            name = self.name_entry.get_text()
+            if name == None or name == "":
+                return False
+            if not self.media_list.get_item(name):
+                media_item = sltv.mediaitem.MediaItem(name, self.factory)
+                media_item.set_config(self.factory.get_ui().get_config())
+                self.media_list.add_item(name, media_item)
+        else:
+            self.media_item.set_config(config)
+        self.media_list.save()
 
     def _gfi_helper(self, model, path, iter):
         name = self.factory.get_name()

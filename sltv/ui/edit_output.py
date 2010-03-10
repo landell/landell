@@ -38,9 +38,6 @@ class EditOutput(Edit):
         self.elements_combobox.set_active(0)
         self.set_factory(factories[0])
 
-    def save(self):
-        pass
-
     def get_output(self):
         name = self.name_entry.get_text()
         media_item = sltv.mediaitem.MediaItem(name, self.factory)
