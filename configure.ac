@@ -10,7 +10,7 @@ AC_PROG_INSTALL
 
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
-AM_PATH_PYTHON(2.4.0)
+AM_PATH_PYTHON(2.5.0)
 
 dnl expanding useful variables
 AS_AC_EXPAND(LIBDIR, $libdir)
