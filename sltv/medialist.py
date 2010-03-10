@@ -22,52 +22,54 @@ import registry
 import config
 import mediaitem
 
-class Sources:
-    def __init__(self):
+class MediaList:
+    def __init__(self, section, type):
         self.liststore = gtk.ListStore(str, object)
         self.config = config.config
         self.registry = registry.registry
+        self.section = section
+        self.type = type
 
-    def _find_source(self, name):
+    def _find_item(self, name):
         for row in self.liststore:
             if row[0] == name:
                 return row
         return None
 
-    def get_source(self, name):
-        row = self._find_source(name)
+    def get_item(self, name):
+        row = self._find_item(name)
         return row[1]
 
-    def remove_source(self, name):
-        row = self._find_source(name)
+    def remove_item(self, name):
+        row = self._find_item(name)
         if row != None:
             self.liststore.remove(row.iter)
 
-    def _save_source(self, name, source):
-        factory = source.get_factory()
-        items = source.get_config()
+    def _save_item(self, name, item):
+        factory = item.get_factory()
+        items = item.get_config()
         items["type"] = factory.get_id()
-        self.config.set_item("Sources", name, items)
+        self.config.set_item(self.section, name, items)
 
-    def add_source(self, name, source):
-        self.liststore.append((name, source))
+    def add_item(self, name, item):
+        self.liststore.append((name, item))
 
     def get_store(self):
         return self.liststore
 
     def load(self):
-        config_sources = self.config.get_section("Sources")
-        if config_sources != None:
+        config_items = self.config.get_section(self.section)
+        if config_items != None:
             # FIXME dict to list
-            sources = [(v, k) for (k, v) in config_sources[0].iteritems()]
-            for value, key in sources:
+            items = [(v, k) for (k, v) in config_items[0].iteritems()]
+            for value, key in items:
                 if value and key:
-                    factory = self.registry.get_factory_by_id("input", value["type"])
+                    factory = self.registry.get_factory_by_id(self.type, value["type"])
                     src = mediaitem.MediaItem(key, factory)
                     src.set_config(value)
-                    self.add_source(key, src)
+                    self.add_item(key, src)
 
     def save(self):
-        self.config.remove_section("Sources")
+        self.config.remove_section(self.section)
         for row in self.liststore:
-            self._save_source(row[0], row[1])
+            self._save_item(row[0], row[1])

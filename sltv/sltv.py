@@ -27,7 +27,7 @@ from preview import *
 from effects import *
 from swap import *
 
-import sources
+import medialist
 
 class Sltv:
 
@@ -35,7 +35,7 @@ class Sltv:
         self.player = None
         self.preview = Preview(preview_area)
 
-        self.sources = sources.Sources()
+        self.sources = medialist.MediaList("Sources", "input")
         self.sources.load()
 
         self.encoding = encoding.EncodingUI(ui)

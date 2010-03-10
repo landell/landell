@@ -100,7 +100,7 @@ class Sources:
         (model, iter) = self.sources_treeview.get_selection().get_selected()
         if iter != None and model != None:
             name = model.get_value(iter, 0)
-            source = self.sources.get_source(name)
+            source = self.sources.get_item(name)
             self.edit_source.set_media_item(source)
             self.edit_source.show_window()
 
@@ -108,5 +108,5 @@ class Sources:
         (model, iter) = self.sources_treeview.get_selection().get_selected()
         if iter != None and model != None:
             name = model.get_value(iter, 0)
-            self.sources.remove_source(name)
+            self.sources.remove_item(name)
             self.sources.save()
