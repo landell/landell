@@ -20,7 +20,7 @@ Dependencies:
   gstreamer0.10-plugins-base (>= 0.10.19)
   gstreamer0.10-plugins-good (>= 0.10.8)
   gstreamer0.10-plugins-bad (>= 0.10.7)
-  gstreamer0.10-ffmpeg
+  gstreamer0.10-ffmpeg (>= 0.10.4)
   gstreamer0.10-alsa (>= 0.10.19)
   gstreamer0.10-x
   python (>= 2.5)
