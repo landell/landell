@@ -18,21 +18,21 @@ AS_AC_EXPAND(BINDIR, $bindir)
 AS_AC_EXPAND(DATADIR, $datarootdir)
 
 AC_CONFIG_FILES([
-        Makefile
-        ui/Makefile
-	ui/input/Makefile
-	ui/output/Makefile
-	sltv/input/Makefile
-	sltv/output/Makefile
-	sltv/encoding/Makefile
-	sltv/ui/Makefile
-	sltv/ui/input/Makefile
-	sltv/ui/output/Makefile
-        sltv/Makefile
-        sltv/settings.py
-	src/Makefile
-        src/sltv
-	man/Makefile
+    Makefile
+    ui/Makefile
+    ui/input/Makefile
+    ui/output/Makefile
+    sltv/input/Makefile
+    sltv/output/Makefile
+    sltv/encoding/Makefile
+    sltv/ui/Makefile
+    sltv/ui/input/Makefile
+    sltv/ui/output/Makefile
+    sltv/Makefile
+    sltv/settings.py
+    src/Makefile
+    src/sltv
+    man/Makefile
 ])
 
 AC_OUTPUT
