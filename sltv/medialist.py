@@ -38,6 +38,8 @@ class MediaList:
 
     def get_item(self, name):
         row = self._find_item(name)
+        if row == None:
+            return None
         return row[1]
 
     def remove_item(self, name):
