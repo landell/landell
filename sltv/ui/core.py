@@ -46,6 +46,7 @@ class SltvUI:
 
         preview_area = self.interface.get_object("preview_area")
         self.sltv = Sltv(preview_area, self)
+        self.sltv.connect("stopped", self.stopped)
 
         self.settings_box = self.interface.get_object("vbox4")
         self.preview = preview.PreviewUI(self, self.sltv)
@@ -98,6 +99,10 @@ class SltvUI:
         output_menuitem.connect("activate", self.show_output)
         sources_menuitem.connect("activate", self.show_sources)
         self.about_menu.connect("activate", self.show_about)
+
+    def stopped(self, sltv):
+        self.stop_button.set_sensitive(False)
+        self.play_button.set_sensitive(True)
 
     def selected_video_source(self):
         model = self.source_combobox.get_model()
@@ -155,7 +160,6 @@ class SltvUI:
     def on_stop_press(self, event):
         self.stop_button.set_sensitive(False)
         self.stop()
-        self.play_button.set_sensitive(True)
 
     def stop(self):
         if self.sltv.playing():
