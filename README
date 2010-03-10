@@ -16,6 +16,8 @@ License:
 Dependencies:
 =============
 
+  Sltv was tested with the following minimal versions:
+
   libgstreamer0.10-0 (>= 0.10.19)
   gstreamer0.10-plugins-base (>= 0.10.19)
   gstreamer0.10-plugins-good (>= 0.10.8)
@@ -28,6 +30,9 @@ Dependencies:
   python-configobj (>= 4.5.2)
   python-gobject (>= 2.14.2)
   python-gtk2 (>= 2.12.1)
+
+  It may work with lower versions, but we haven't tested it.
+  Please, send us any findings you make about minimal versions.
 
 Bugs:
 =====
