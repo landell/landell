@@ -59,5 +59,5 @@ class IcecastOutputUI(OutputUI):
         self.config["username"] = self.user_entry.get_text()
         self.config["password"] = self.password_entry.get_text()
         self.config["port"] = self.port_spinbutton.get_value_as_int()
-        self.config["mount_point"] = self.mount_point_entry.get_text()
+        self.config["mount"] = self.mount_point_entry.get_text()
         return self.config
