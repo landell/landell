@@ -32,9 +32,13 @@ import volume
 MEDIA_AUDIO = 1
 MEDIA_VIDEO = 2
 
-class Sltv:
+class Sltv(gobject.GObject):
 
     def __init__(self, preview_area, ui):
+        gobject.GObject.__init__(self)
+        gobject.signal_new("stopped", Sltv, gobject.SIGNAL_RUN_LAST,
+                           gobject.TYPE_NONE, ())
+
         self.player = None
         self.preview = Preview(preview_area)
 
@@ -58,6 +62,8 @@ class Sltv:
         self.video_effect_name = None
         self.volume = None
         self.volume_value = None
+
+        self.pending_state = None
 
     def set_overlay_text(self, overlay_text):
         self.overlay_text = overlay_text
@@ -221,7 +227,11 @@ class Sltv:
         self.player.set_state(gst.STATE_PLAYING)
 
     def stop(self):
-        self.player.set_state(gst.STATE_NULL)
+        cr = self.player.set_state(gst.STATE_NULL)
+        if cr == gst.STATE_CHANGE_SUCCESS:
+            self.emit("stopped")
+        elif cr == gst.STATE_CHANGE_ASYNC:
+            self.pending_state = gst.STATE_NULL
 
     def playing(self):
         return self.player and self.player.get_state()[1] == gst.STATE_PLAYING
@@ -291,11 +301,19 @@ class Sltv:
     def on_message(self, bus, message):
         t = message.type
         if t == gst.MESSAGE_EOS:
-            self.player.set_state(gst.STATE_NULL)
+            cr = self.player.set_state(gst.STATE_NULL)
+            if cr == gst.STATE_CHANGE_SUCCESS:
+                self.emit("stopped")
+            elif cr == gst.STATE_CHANGE_ASYNC:
+                self.pending_state = gst.STATE_NULL
         elif t == gst.MESSAGE_ERROR:
             (gerror, debug) = message.parse_error()
             print debug
             self.player.set_state(gst.STATE_NULL)
+        elif t == gst.MESSAGE_ASYNC_DONE:
+            if self.pending_state == gst.STATE_NULL:
+                self.pending_state = None
+                self.emit("stopped")
 
     def on_sync_message(self, bus, message):
         print "sync_message received"
