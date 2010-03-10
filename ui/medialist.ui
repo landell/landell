@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkDialog" id="sources_dialog">
+  <object class="GtkDialog" id="medialist_dialog">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Sources</property>
     <property name="resizable">False</property>
@@ -20,7 +20,7 @@
           <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
             <child>
-              <object class="GtkTreeView" id="sources_treeview">
+              <object class="GtkTreeView" id="medialist_treeview">
                 <property name="width_request">100</property>
                 <property name="height_request">160</property>
                 <property name="visible">True</property>
