@@ -1,6 +1,9 @@
 uidir = $(datadir)/sltv/input
-ui_DATA =	\
-	dvinput.ui fileinput.ui videotestinput.ui	\
-	v4l2input.ui xinput.ui
+ui_DATA = \
+	dvinput.ui \
+	fileinput.ui \
+	videotestinput.ui \
+	v4l2input.ui \
+	xinput.ui
 
 EXTRA_DIST = $(ui_DATA)
