@@ -117,22 +117,35 @@ class Sltv:
 
         self.overlay = gst.element_factory_make("textoverlay", "overlay")
         self.overlay.set_property("font-desc", "Sans Bold 14")
+        self.player.add(self.overlay)
+
         self.tee = gst.element_factory_make("tee", "tee")
+        self.player.add(self.tee)
+
         queue1 = gst.element_factory_make("queue", "queue1")
-        queue2 = gst.element_factory_make("queue", "queue2")
+        self.player.add(queue1)
+
         self.videorate = gst.element_factory_make("videorate", "videorate")
+        self.player.add(self.videorate)
+
         self.videoscale = gst.element_factory_make("videoscale", "videoscale")
+        self.videoscale.set_property("method",1)
+        self.player.add(self.videoscale)
+
         self.mux = self.encoding.get_mux(type)
+        self.player.add(self.mux)
 
         row = self.outputs.get_store()[0]
         (name, output) = row
         self.sink = output.create()
+        self.player.add(self.sink)
 
         self.preview_element = self.preview.get_preview()
+
         self.colorspace = gst.element_factory_make(
             "ffmpegcolorspace", "colorspacesink"
         )
-        self.videoscale.set_property("method",1)
+        self.player.add(self.colorspace)
 
         if self.effect_enabled:
             self.effect_name['video'] = video_effect_name
@@ -143,10 +156,6 @@ class Sltv:
         self.effect['video'] = Effect.make_effect(self.effect_name['video'], "video")
         self.player.add(self.effect['video'])
 
-        self.player.add(
-            self.overlay, self.tee, queue1, self.videorate, self.videoscale,
-            self.colorspace, self.mux, self.sink
-        )
         gst.element_link_many(self.queue_video, self.effect['video'], self.overlay)
 
         err = gst.element_link_many(
@@ -170,6 +179,7 @@ class Sltv:
             )
 
         if self.preview_enabled:
+            queue2 = gst.element_factory_make("queue", "queue2")
             self.player.add(queue2, self.preview_element)
             err = gst.element_link_many(self.tee, queue2, self.preview_element)
             if err == False:
