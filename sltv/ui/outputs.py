@@ -18,22 +18,12 @@
 
 import gobject
 import gtk
+from medialist import MediaListUI
 from sltv.settings import UI_DIR
-import sltv.registry
-import sltv.mediaitem
-from edit import Edit
+import edit_output
 
-class EditOutput(Edit):
-    def __init__(self, window, outputs):
-        Edit.__init__(self, window, outputs)
-        label = self.interface.get_object("name_label")
-        label.set_label("Output name")
-
-        factories = self.registry.get_factories("output")
-
-        for factory in factories:
-            self.elements_liststore.append((factory.get_name(),))
-            self.factories[factory.get_name()] = factory
-
-        self.elements_combobox.set_active(0)
-        self.set_factory(factories[0])
+class Outputs(MediaListUI):
+    def __init__(self, ui, outputs):
+        MediaListUI.__init__(self, ui, outputs)
+        self.dialog.set_title("Outputs")
+        self.edit_item = edit_output.EditOutput(self.dialog, self.media_list)

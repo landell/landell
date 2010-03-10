@@ -35,6 +35,9 @@ class Sltv:
         self.player = None
         self.preview = Preview(preview_area)
 
+        self.outputs = medialist.MediaList("Outputs", "output")
+        self.outputs.load()
+
         self.sources = medialist.MediaList("Sources", "input")
         self.sources.load()
 
@@ -47,7 +50,6 @@ class Sltv:
 
         self.video_source = None
         self.audio_source = None
-        self.output = None
 
     def show_encoding(self):
         self.encoding.show_window()
@@ -121,7 +123,11 @@ class Sltv:
         self.videorate = gst.element_factory_make("videorate", "videorate")
         self.videoscale = gst.element_factory_make("videoscale", "videoscale")
         self.mux = self.encoding.get_mux(type)
-        self.sink = self.output
+
+        row = self.outputs.get_store()[0]
+        (name, output) = row
+        self.sink = output.create()
+
         self.preview_element = self.preview.get_preview()
         self.colorspace = gst.element_factory_make(
             "ffmpegcolorspace", "colorspacesink"
@@ -215,9 +221,6 @@ class Sltv:
 
     def set_audio_source(self, source_name):
         self.audio_source = source_name
-
-    def set_output(self, output):
-        self.output = output
 
     def set_preview(self, state):
         self.preview_enabled = state
