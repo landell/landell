@@ -31,4 +31,4 @@ class FakeOutput(Output):
         self.sink_pad.set_target(self.fake_sink.sink_pads().next())
 
     def config(self, dict):
-        self
+        pass

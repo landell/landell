@@ -26,7 +26,7 @@ class OutputUI:
     def get_config(self):
         return self.config
     def update_config(self):
-        self
+        pass
     def set_config(self, config):
         self.config = config
         self.update_config()

@@ -33,4 +33,4 @@ class PulseInput(Input):
         self.audio_pad.set_target(self.audio_src.src_pads().next())
 
     def config(self, dict):
-        self
+        pass
