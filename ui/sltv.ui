@@ -25,13 +25,13 @@
                     <child>
                       <object class="GtkMenuItem" id="output_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Output settings</property>
+                        <property name="label" translatable="yes">Output</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="encoding_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Encoding settings</property>
+                        <property name="label" translatable="yes">Encoding</property>
                       </object>
                     </child>
                     <child>
