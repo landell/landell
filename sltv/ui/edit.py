@@ -99,5 +99,8 @@ class Edit:
             self.container_box.add(self.config_box)
 
     def on_change_media_item(self, button):
+        self.set_current_factory()
+
+    def set_current_factory(self):
         selection = self.elements_combobox.get_active_text()
         self.set_factory(self.factories[selection])

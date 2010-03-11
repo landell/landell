@@ -36,4 +36,4 @@ class EditOutput(Edit):
             self.factories[factory.get_name()] = factory
 
         self.elements_combobox.set_active(0)
-        self.set_factory(factories[0])
+        self.set_current_factory()
