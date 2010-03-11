@@ -28,6 +28,10 @@ class EditOutput(Edit):
         Edit.__init__(self, window, outputs)
         label = self.interface.get_object("name_label")
         label.set_label("Output name:")
+        self.output_label = self.interface.get_object("output_label")
+        self.output_label.show()
+        self.output_separator = self.interface.get_object("output_separator")
+        self.output_separator.show()
 
         factories = self.registry.get_factories("output")
 

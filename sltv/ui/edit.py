@@ -38,6 +38,12 @@ class Edit:
         self.elements_combobox.add_attribute(cell, "text", 0)
         self.name_entry = self.interface.get_object("name_entry")
         self.container_box = self.interface.get_object("container_box")
+        self.element_setting_label = self.interface.get_object(
+                "element_setting_label"
+        )
+        self.element_setting_separator = self.interface.get_object(
+                "element_setting_separator"
+        )
 
         self.registry = sltv.registry.registry
         self.factories = {}
@@ -97,6 +103,11 @@ class Edit:
         self.config_box = self.factory.get_ui().get_widget()
         if self.config_box:
             self.container_box.add(self.config_box)
+            self.element_setting_label.show()
+            self.element_setting_separator.show()
+        else:
+            self.element_setting_label.hide()
+            self.element_setting_separator.hide()
 
     def on_change_media_item(self, button):
         self.set_current_factory()
