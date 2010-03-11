@@ -26,7 +26,7 @@ class V4L2InputUI(InputUI):
     def __init__(self):
         InputUI.__init__(self)
         self.interface.add_from_file(UI_DIR + "/input/v4l2input.ui")
-        self.vbox = self.interface.get_object("v4l2_vbox")
+        self.vbox = self.interface.get_object("v4l2_box")
         self.device_entry = self.interface.get_object("v4l2_entry")
         self.width_entry = self.interface.get_object("width_entry")
         self.height_entry = self.interface.get_object("height_entry")

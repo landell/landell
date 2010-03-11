@@ -29,7 +29,7 @@ class FileInputUI(InputUI):
         self.button = self.interface.get_object("filechooserbutton1")
         self.button.set_local_only(True)
         self.button.connect("file_set", self.set_filename)
-        self.vbox = self.interface.get_object("file_vbox")
+        self.vbox = self.interface.get_object("file_box")
         self.config["location"] = ""
 
     def set_filename(self, button):

@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkVBox" id="icecast_vbox">
+  <object class="GtkVBox" id="icecast_box">
     <property name="visible">True</property>
     <property name="orientation">vertical</property>
     <child>
