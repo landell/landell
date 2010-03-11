@@ -16,68 +16,66 @@
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
-          <object class="GtkHBox" id="hbox1">
+          <object class="GtkTable" id="table1">
             <property name="visible">True</property>
+            <property name="n_rows">2</property>
+            <property name="n_columns">2</property>
+            <property name="column_spacing">5</property>
             <child>
-              <object class="GtkVBox" id="vbox1">
+              <object class="GtkLabel" id="name_label">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkLabel" id="name_label">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">name:</property>
-                  </object>
-                  <packing>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="name_entry">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="invisible_char">&#x25CF;</property>
-                  </object>
-                  <packing>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="element_label">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Element type:</property>
-                  </object>
-                  <packing>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkComboBox" id="elements_combobox">
-                    <property name="visible">True</property>
-                  </object>
-                  <packing>
-                    <property name="fill">False</property>
-                    <property name="position">3</property>
-                  </packing>
-                </child>
+                <property name="label" translatable="yes">name:</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkEntry" id="name_entry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="invisible_char">&#x25CF;</property>
               </object>
               <packing>
-                <property name="position">0</property>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="container_box">
+              <object class="GtkLabel" id="element_label">
                 <property name="visible">True</property>
-                <child>
-                  <placeholder/>
-                </child>
+                <property name="label" translatable="yes">Element type:</property>
               </object>
               <packing>
-                <property name="position">1</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="elements_combobox">
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
               </packing>
             </child>
           </object>
           <packing>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <object class="GtkHBox" id="container_box">
+            <property name="visible">True</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="position">3</property>
           </packing>
         </child>
         <child internal-child="action_area">
