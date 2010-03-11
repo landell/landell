@@ -32,7 +32,7 @@ class IcecastOutputUI(OutputUI):
         self.password_entry = self.interface.get_object("password_entry")
         self.mount_point_entry = self.interface.get_object("mount_point_entry")
 
-        self.box = self.interface.get_object("icecast_vbox")
+        self.box = self.interface.get_object("icecast_box")
         self.config["location"] = ""
 
     def set_filename(self, button):
