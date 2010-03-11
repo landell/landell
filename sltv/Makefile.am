@@ -14,7 +14,8 @@ sltvlib_DATA = \
 	factory.py \
 	mediaitem.py \
 	medialist.py \
-	config.py
+	config.py \
+	videoconverter.py
 
 EXTRA_DIST = $(sltvlib_DATA)
 
