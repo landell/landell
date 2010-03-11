@@ -27,7 +27,7 @@ class EditSource(Edit):
     def __init__(self, window, sources):
         Edit.__init__(self, window, sources)
         label = self.interface.get_object("name_label")
-        label.set_label("Source name")
+        label.set_label("Source name:")
 
         factories = self.registry.get_factories("input")
 

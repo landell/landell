@@ -27,7 +27,7 @@ class EditOutput(Edit):
     def __init__(self, window, outputs):
         Edit.__init__(self, window, outputs)
         label = self.interface.get_object("name_label")
-        label.set_label("Output name")
+        label.set_label("Output name:")
 
         factories = self.registry.get_factories("output")
 
