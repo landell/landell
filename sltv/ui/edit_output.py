@@ -32,6 +32,7 @@ class EditOutput(Edit):
         self.output_label.show()
         self.output_separator = self.interface.get_object("output_separator")
         self.output_separator.show()
+        self.dialog.set_title("Edit Output")
 
         factories = self.registry.get_factories("output")
 

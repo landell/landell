@@ -28,6 +28,7 @@ class EditSource(Edit):
         Edit.__init__(self, window, sources)
         label = self.interface.get_object("name_label")
         label.set_label("Source name:")
+        self.dialog.set_title("Edit Source")
 
         factories = self.registry.get_factories("input")
 
