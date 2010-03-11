@@ -135,16 +135,32 @@ class Sltv:
         self.mux = self.encoding.get_mux(type)
         self.player.add(self.mux)
 
-        row = self.outputs.get_store()[0]
-        (name, output) = row
-        self.sink = output.create()
-        self.player.add(self.sink)
-
+        self.output_tee = gst.element_factory_make("tee", "output_tee")
+        self.player.add(self.output_tee)
 
         self.colorspace = gst.element_factory_make(
             "ffmpegcolorspace", "colorspacesink"
         )
         self.player.add(self.colorspace)
+
+        err = gst.element_link_many(
+            self.overlay, self.preview_tee, queue_output, self.videorate,
+            self.videoscale, self.colorspace, self.mux, self.output_tee
+        )
+
+        if err == False:
+            print "Error conecting elements"
+
+        for row in self.outputs.get_store():
+            (name, output) = row
+            sink = output.create()
+            self.player.add(sink)
+
+            queue = gst.element_factory_make("queue", None)
+            self.player.add(queue)
+
+            gst.element_link_many(self.output_tee, queue, sink)
+
 
         if self.effect_enabled:
             self.effect_name['video'] = video_effect_name
@@ -157,12 +173,6 @@ class Sltv:
 
         gst.element_link_many(self.queue_video, self.effect['video'], self.overlay)
 
-        err = gst.element_link_many(
-            self.overlay, self.preview_tee, queue_output, self.videorate,
-            self.videoscale, self.colorspace, self.mux, self.sink
-        )
-        if err == False:
-            print "Error conecting elements"
 
 
         if audio_present:
