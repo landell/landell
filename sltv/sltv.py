@@ -119,8 +119,8 @@ class Sltv:
         self.overlay.set_property("font-desc", "Sans Bold 14")
         self.player.add(self.overlay)
 
-        self.tee = gst.element_factory_make("tee", "tee")
-        self.player.add(self.tee)
+        self.preview_tee = gst.element_factory_make("tee", "tee")
+        self.player.add(self.preview_tee)
 
         queue_output = gst.element_factory_make("queue", "queue_output")
         self.player.add(queue_output)
@@ -159,7 +159,7 @@ class Sltv:
         gst.element_link_many(self.queue_video, self.effect['video'], self.overlay)
 
         err = gst.element_link_many(
-            self.overlay, self.tee, queue_output, self.videorate,
+            self.overlay, self.preview_tee, queue_output, self.videorate,
             self.videoscale, self.colorspace, self.mux, self.sink
         )
         if err == False:
