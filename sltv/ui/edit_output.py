@@ -34,6 +34,12 @@ class EditOutput(Edit):
         self.output_separator.show()
         self.dialog.set_title("Edit Output")
 
+        self.output_box = self.interface.get_object("output_box")
+        self.setting_interface = gtk.Builder()
+        self.setting_interface.add_from_file(UI_DIR + "/output_setting.ui")
+        self.setting_box = self.setting_interface.get_object("setting_box")
+        self.output_box.add(self.setting_box)
+
         factories = self.registry.get_factories("output")
 
         for factory in factories:
