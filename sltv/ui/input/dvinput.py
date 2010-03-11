@@ -25,7 +25,7 @@ class DVInputUI(InputUI):
     def __init__(self):
         InputUI.__init__(self)
         self.interface.add_from_file(UI_DIR + "/input/dvinput.ui")
-        self.vbox = self.interface.get_object("dv_box")
+        self.box = self.interface.get_object("dv_box")
         self.channel_entry = self.interface.get_object("channel_entry")
         self.port_entry = self.interface.get_object("port_entry")
         self.width_entry = self.interface.get_object("width_entry")
@@ -33,7 +33,7 @@ class DVInputUI(InputUI):
         self.filechooserbutton = self.interface.get_object("filechooserbutton")
 
     def get_widget(self):
-        return self.vbox
+        return self.box
 
     def get_name(self):
         return "DV Firewire"

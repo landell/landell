@@ -27,11 +27,11 @@ class VideoTestInputUI(InputUI):
     def __init__(self):
         InputUI.__init__(self)
         self.interface.add_from_file(UI_DIR + "/input/videotestinput.ui")
-        self.vbox = self.interface.get_object("videotest_box")
+        self.box = self.interface.get_object("videotest_box")
         self.pattern_entry = self.interface.get_object("pattern_entry")
 
     def get_widget(self):
-        return self.vbox
+        return self.box
 
     def get_name(self):
         return "Video Test"

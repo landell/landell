@@ -26,11 +26,11 @@ class XInputUI(InputUI):
     def __init__(self):
         InputUI.__init__(self)
         self.interface.add_from_file(UI_DIR + "/input/xinput.ui")
-        self.vbox = self.interface.get_object("x_box")
+        self.box = self.interface.get_object("x_box")
         self.framerate_entry = self.interface.get_object("framerate_entry")
 
     def get_widget(self):
-        return self.vbox
+        return self.box
 
     def get_name(self):
         return "XImageSrc"

@@ -28,7 +28,7 @@ class FileOutputUI(OutputUI):
         self.button = self.interface.get_object("filechooserbutton1")
         self.button.set_local_only(True)
         self.button.connect("file_set", self.set_filename)
-        self.vbox = self.interface.get_object("file_vbox")
+        self.box = self.interface.get_object("file_vbox")
         self.config["location"] = "default.ogg"
 
     def set_filename(self, button):
@@ -38,7 +38,7 @@ class FileOutputUI(OutputUI):
         self.button.set_filename(self.config["location"])
 
     def get_widget(self):
-        return self.vbox
+        return self.box
 
     def get_name(self):
         return "File"
