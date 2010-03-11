@@ -49,8 +49,6 @@ class OggTheoraVorbisEncoder(Encoder):
             self.audio_pad.set_target(audioconvert.sink_pads().next())
         if type & INPUT_TYPE_VIDEO:
             theoraenc = gst.element_factory_make("theoraenc", "theoraenc")
-            #theoraenc.set_property("quality", 32)
-            theoraenc.set_property("keyframe-force", 1)
             self.add(theoraenc)
             queue_video = gst.element_factory_make(
                     "queue", "queue_video_enc"
@@ -58,6 +56,11 @@ class OggTheoraVorbisEncoder(Encoder):
             self.add(queue_video)
             gst.element_link_many(theoraenc, queue_video, oggmux)
             self.video_pad.set_target(theoraenc.sink_pads().next())
+            self.source_pad.set_target(oggmux.src_pads().next())
+
+
+    def config(self, dict):
         oggmux.set_property("max-delay",10000000)
         oggmux.set_property("max-page-delay",10000000)
-        self.source_pad.set_target(oggmux.src_pads().next())
+        theoraenc.set_property("quality", int(dict["quality"]))
+        theoraenc.set_property("keyframe-force", int(dict["keyframe"]))
