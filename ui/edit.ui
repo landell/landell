@@ -21,9 +21,11 @@
             <property name="n_rows">2</property>
             <property name="n_columns">2</property>
             <property name="column_spacing">5</property>
+            <property name="homogeneous">True</property>
             <child>
               <object class="GtkLabel" id="name_label">
                 <property name="visible">True</property>
+                <property name="xalign">0</property>
                 <property name="label" translatable="yes">name:</property>
               </object>
             </child>
@@ -41,6 +43,7 @@
             <child>
               <object class="GtkLabel" id="element_label">
                 <property name="visible">True</property>
+                <property name="xalign">0</property>
                 <property name="label" translatable="yes">Element type:</property>
               </object>
               <packing>
