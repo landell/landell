@@ -35,7 +35,11 @@ class MediaListUI:
         self.media_list_treeview = self.interface.get_object(
                 "medialist_treeview"
         )
-        self.media_list_treeview.set_model(self.media_list.get_store())
+
+        elements_liststore = self.media_list.get_store()
+        elements_liststore.set_default_sort_func(lambda *args: -1)
+        elements_liststore.set_sort_column_id(0, gtk.SORT_ASCENDING)
+        self.media_list_treeview.set_model(elements_liststore)
         cell = gtk.CellRendererText()
         column =  gtk.TreeViewColumn('Items', cell, text=0)
         self.media_list_treeview.append_column(column)
