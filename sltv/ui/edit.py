@@ -30,6 +30,8 @@ class Edit:
         self.elements_combobox = self.interface.get_object("elements_combobox")
 
         self.elements_liststore = gtk.ListStore(str)
+        self.elements_liststore.set_default_sort_func(lambda *args: -1)
+        self.elements_liststore.set_sort_column_id(0, gtk.SORT_ASCENDING)
         self.elements_combobox.set_model(self.elements_liststore)
         cell = gtk.CellRendererText()
         self.elements_combobox.pack_start(cell, True)
