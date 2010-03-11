@@ -140,7 +140,6 @@ class Sltv:
         self.sink = output.create()
         self.player.add(self.sink)
 
-        self.preview_element = self.preview.get_preview()
 
         self.colorspace = gst.element_factory_make(
             "ffmpegcolorspace", "colorspacesink"
@@ -181,7 +180,9 @@ class Sltv:
 
         if self.preview_enabled:
             queue_preview = gst.element_factory_make("queue", "queue_preview")
-            self.player.add(queue_preview, self.preview_element)
+            self.player.add(queue_preview)
+            self.preview_element = self.preview.get_preview()
+            self.player.add(self.preview_element)
             err = gst.element_link_many(self.preview_tee, queue_preview, self.preview_element)
             if err == False:
                 print "Error conecting preview"
