@@ -179,6 +179,7 @@ class SltvUI:
             self.sltv.play(
                     overlay_text, video_effect_name, audio_effect_name
             )
+        self.audio_sources_combobox.set_sensitive(False)
 
     def on_switch_source(self, combobox):
         source_name = self.selected_video_source()
@@ -246,6 +247,7 @@ class SltvUI:
             self.overlay_button.set_sensitive(False)
             self.audio_effect_button.set_sensitive(False)
             self.video_effect_button.set_sensitive(False)
+            self.audio_sources_combobox.set_sensitive(True)
             self.sltv.stop()
 
     def on_window_closed(self, event, data):
