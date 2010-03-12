@@ -152,3 +152,13 @@ output_factories = [
 
 for i in output_factories:
     registry.registry.register_factory("output", i)
+
+converter_factories = [VideoConverterFactory()]
+
+for i in converter_factories:
+    registry.registry.register_factory("converter", i)
+
+encoding_factories = [OggTheoraVorbisEncodingFactory()]
+
+for i in encoding_factories:
+    registry.registry.register_factory("encoding", i)

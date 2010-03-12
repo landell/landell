@@ -20,7 +20,7 @@ class Registry:
 
     def __init__(self):
         self.factories = {
-                "input": [], "output": []
+                "input": [], "output": [], "converter": [], "encoding": []
         }
 
     def get_factory_by_id(self, type, id):
