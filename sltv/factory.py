@@ -19,9 +19,11 @@
 
 import input
 import output
+import encoding
 import videoconverter
 import ui.input
 import ui.output
+import ui.encoding
 import ui.videoconverter
 import registry
 
@@ -128,6 +130,12 @@ class VideoConverterFactory(SltvFactory):
         SltvFactory.__init__(self, "videoconv")
         self.ui = ui.videoconverter.VideoConverterUI()
         self.factory_class = videoconverter.VideoConverter
+
+class OggTheoraVorbisEncodingFactory(SltvFactory):
+    def __init__(self):
+        SltvFactory.__init__(self, "encoding")
+        self.ui = ui.encoding.oggtheoravorbisenc.OggTheoraVorbisEncodingUI()
+        self.factory_class = encoding.oggtheoravorbisenc.OggTheoraVorbisEncoder
 
 input_factories = [
         AudioTestInputFactory(), XInputFactory(), V4L2InputFactory(),

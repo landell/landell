@@ -1,4 +1,4 @@
-SUBDIRS = input output
+SUBDIRS = input output encoding
 
 sltvlibdir = $(libdir)/sltv/ui
 sltvlib_DATA = \
@@ -9,7 +9,7 @@ sltvlib_DATA = \
 	edit_source.py \
 	message.py \
 	edit_output.py \
-	encoding.py \
+	encoding_ui.py \
 	edit.py \
 	medialist.py \
 	outputs.py \
