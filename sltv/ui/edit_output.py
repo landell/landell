@@ -22,6 +22,7 @@ from sltv.settings import UI_DIR
 import sltv.registry
 import sltv.mediaitem
 from edit import Edit
+import sltv.factory
 
 class EditOutput(Edit):
     def __init__(self, window, outputs):
@@ -60,3 +61,52 @@ class EditOutput(Edit):
 
         self.elements_combobox.set_active(0)
         self.set_current_factory()
+
+
+    def set_media_item(self, media_item):
+        self.media_item = media_item
+        if self.media_item:
+            self.set_factory(self.media_item.factory)
+            self.name_entry.set_text(self.media_item.name)
+            self.media_item.factory.get_ui().set_config(media_item.get_config())
+            self.media_item.encoding.get_ui().set_config(
+                    media_item.get_config()
+            )
+            self.media_item.converter.get_ui().set_config(
+                    media_item.get_config()
+            )
+
+    def _merge_dict(self, dict1, dict2, dict3):
+        for key in dict2.keys():
+            dict1[key] = dict2[key]
+
+        for key in dict3.keys():
+            dict1[key] = dict3[key]
+
+        return dict1
+
+    def save(self):
+        if self.media_item == None:
+            name = self.name_entry.get_text()
+            if name == None or name == "":
+                return False
+            if not self.media_list.get_item(name):
+                media_item = sltv.mediaitem.MediaItem(name, self.factory)
+                media_item.encoding = \
+                        sltv.factory.OggTheoraVorbisEncodingFactory()
+                media_item.converter = sltv.factory.VideoConverterFactory()
+                merged_config = self._merge_dict(
+                        self.factory.get_ui().get_config(),
+                        media_item.encoding.get_ui().get_config(),
+                        media_item.converter.get_ui().get_config()
+                )
+                media_item.set_config(merged_config)
+                self.media_list.add_item(name, media_item)
+        else:
+            merged_config = self._merge_dict(
+                    self.factory.get_ui().get_config(),
+                    self.media_item.encoding.get_ui().get_config(),
+                    self.media_item.converter.get_ui().get_config()
+            )
+            self.media_item.set_config(merged_config)
+        self.media_list.save()
