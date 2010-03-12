@@ -36,5 +36,5 @@ class IcecastOutput(Output):
         self.icecast_sink.set_property("ip", dict["ip"])
         self.icecast_sink.set_property("username", dict["username"])
         self.icecast_sink.set_property("password", dict["password"])
-        self.icecast_sink.set_property("port", dict["port"])
+        self.icecast_sink.set_property("port", int(dict["port"]))
         self.icecast_sink.set_property("mount", dict["mount"])
