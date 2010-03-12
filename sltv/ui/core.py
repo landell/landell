@@ -21,7 +21,6 @@
 import gobject
 import gtk
 from sltv.output import *
-from sltv.encoding import *
 from sltv.audio import *
 from sltv.sltv import *
 from sltv.settings import UI_DIR
