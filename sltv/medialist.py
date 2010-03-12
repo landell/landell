@@ -21,6 +21,7 @@ import gtk
 import registry
 import config
 import mediaitem
+import factory
 
 class MediaList:
     def __init__(self, section, type):
@@ -66,8 +67,12 @@ class MediaList:
             items = [(v, k) for (k, v) in config_items[0].iteritems()]
             for value, key in items:
                 if value and key:
-                    factory = self.registry.get_factory_by_id(self.type, value["type"])
-                    src = mediaitem.MediaItem(key, factory)
+                    current_factory = self.registry.get_factory_by_id(
+                            self.type, value["type"]
+                    )
+                    src = mediaitem.MediaItem(key, current_factory)
+                    src.encoding = self.registry.get_factories("encoding")[0]
+                    src.converter = self.registry.get_factories("converter")[0]
                     src.set_config(value)
                     self.add_item(key, src)
 

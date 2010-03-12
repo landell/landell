@@ -41,17 +41,6 @@ class EditOutput(Edit):
         self.encoding_separator = self.interface.get_object("encoding_separator")
         self.encoding_separator.show()
 
-        self.output_box = self.interface.get_object("output_box")
-        self.setting_interface = gtk.Builder()
-        self.setting_interface.add_from_file(UI_DIR + "/output_setting.ui")
-        self.setting_box = self.setting_interface.get_object("setting_box")
-        self.output_box.add(self.setting_box)
-
-        self.encoding_box = self.interface.get_object("encoding_box")
-        self.encoding_interface = gtk.Builder()
-        self.encoding_interface.add_from_file(UI_DIR + "/encoding/theora.ui")
-        self.theora_box = self.encoding_interface.get_object("theora_box")
-        self.encoding_box.add(self.theora_box)
 
         factories = self.registry.get_factories("output")
 
@@ -62,6 +51,16 @@ class EditOutput(Edit):
         self.elements_combobox.set_active(0)
         self.set_current_factory()
 
+        self.encoding_factory = self.registry.get_factories("encoding")[0]
+        self.converter_factory = self.registry.get_factories("converter")[0]
+
+        self.encoding_box = self.interface.get_object("encoding_box")
+        self.theora_box = self.encoding_factory.get_ui().get_widget()
+        self.encoding_box.add(self.theora_box)
+
+        self.output_box = self.interface.get_object("output_box")
+        self.setting_box = self.converter_factory.get_ui().get_widget()
+        self.output_box.add(self.setting_box)
 
     def set_media_item(self, media_item):
         self.media_item = media_item
@@ -92,9 +91,9 @@ class EditOutput(Edit):
                 return False
             if not self.media_list.get_item(name):
                 media_item = sltv.mediaitem.MediaItem(name, self.factory)
-                media_item.encoding = \
-                        sltv.factory.OggTheoraVorbisEncodingFactory()
-                media_item.converter = sltv.factory.VideoConverterFactory()
+                media_item.encoding = self.registry.get_factories("encoding")[0]
+                media_item.converter = \
+                        self.registry.get_factories("converter")[0]
                 merged_config = self._merge_dict(
                         self.factory.get_ui().get_config(),
                         media_item.encoding.get_ui().get_config(),
