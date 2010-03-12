@@ -115,12 +115,29 @@ class Sltv:
                 "active_pad", self.source_pads[self.video_source]
         )
 
+        if self.effect_enabled:
+            self.effect_name['video'] = video_effect_name
+            self.effect_name['audio'] = audio_effect_name
+        else:
+            self.effect_name['video'] = "identity"
+            self.effect_name['audio'] = "identity"
+        self.effect['video'] = Effect.make_effect(
+                self.effect_name['video'], "video"
+                )
+        self.player.add(self.effect['video'])
+
         self.overlay = gst.element_factory_make("textoverlay", "overlay")
         self.overlay.set_property("font-desc", "Sans Bold 14")
         self.player.add(self.overlay)
 
+        gst.element_link_many(
+                self.queue_video, self.effect['video'], self.overlay
+        )
+
         self.preview_tee = gst.element_factory_make("tee", "tee")
         self.player.add(self.preview_tee)
+
+        self.overlay.link(self.preview_tee)
 
         queue_output = gst.element_factory_make("queue", "queue_output")
         self.player.add(queue_output)
@@ -144,8 +161,8 @@ class Sltv:
         self.player.add(self.colorspace)
 
         err = gst.element_link_many(
-            self.overlay, self.preview_tee, queue_output, self.videorate,
-            self.videoscale, self.colorspace, self.mux, self.output_tee
+            self.preview_tee, queue_output, self.videorate, self.videoscale, self.colorspace,
+            self.mux, self.output_tee
         )
 
         if err == False:
@@ -160,18 +177,6 @@ class Sltv:
             self.player.add(queue)
 
             gst.element_link_many(self.output_tee, queue, sink)
-
-
-        if self.effect_enabled:
-            self.effect_name['video'] = video_effect_name
-            self.effect_name['audio'] = audio_effect_name
-        else:
-            self.effect_name['video'] = "identity"
-            self.effect_name['audio'] = "identity"
-        self.effect['video'] = Effect.make_effect(self.effect_name['video'], "video")
-        self.player.add(self.effect['video'])
-
-        gst.element_link_many(self.queue_video, self.effect['video'], self.overlay)
 
 
 
