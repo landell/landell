@@ -19,8 +19,10 @@
 
 import input
 import output
+import videoconverter
 import ui.input
 import ui.output
+import ui.videoconverter
 import registry
 
 class SltvFactory:
@@ -120,6 +122,12 @@ class FakeOutputFactory(SltvFactory):
         SltvFactory.__init__(self, "fake")
         self.ui = ui.output.fakeoutput.FakeOutputUI()
         self.factory_class = output.fakeoutput.FakeOutput
+
+class VideoConverterFactory(SltvFactory):
+    def __init__(self):
+        SltvFactory.__init__(self, "videoconv")
+        self.ui = ui.videoconverter.VideoConverterUI()
+        self.factory_class = videoconverter.VideoConverter
 
 input_factories = [
         AudioTestInputFactory(), XInputFactory(), V4L2InputFactory(),
