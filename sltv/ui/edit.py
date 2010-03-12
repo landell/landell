@@ -77,7 +77,7 @@ class Edit:
                 return False
             if not self.media_list.get_item(name):
                 media_item = sltv.mediaitem.MediaItem(name, self.factory)
-                media_item.set_config(self.factory.get_ui().get_config())
+                media_item.set_config(config)
                 self.media_list.add_item(name, media_item)
         else:
             self.media_item.set_config(config)
