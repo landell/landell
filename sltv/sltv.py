@@ -139,59 +139,48 @@ class Sltv:
 
         self.overlay.link(self.preview_tee)
 
-        queue_output = gst.element_factory_make("queue", "queue_output")
-        self.player.add(queue_output)
-
-        self.videorate = gst.element_factory_make("videorate", "videorate")
-        self.player.add(self.videorate)
-
-        self.videoscale = gst.element_factory_make("videoscale", "videoscale")
-        self.videoscale.set_property("method",1)
-        self.player.add(self.videoscale)
-
-        self.mux = self.encoding.get_mux(type)
-        self.player.add(self.mux)
-
-        self.output_tee = gst.element_factory_make("tee", "output_tee")
-        self.player.add(self.output_tee)
-
-        self.colorspace = gst.element_factory_make(
-            "ffmpegcolorspace", "colorspacesink"
-        )
-        self.player.add(self.colorspace)
-
-        err = gst.element_link_many(
-            self.preview_tee, queue_output, self.videorate, self.videoscale, self.colorspace,
-            self.mux, self.output_tee
-        )
-
-        if err == False:
-            print "Error conecting elements"
-
-        for row in self.outputs.get_store():
-            (name, output) = row
-            sink = output.create()
-            self.player.add(sink)
-
-            queue = gst.element_factory_make("queue", None)
-            self.player.add(queue)
-
-            gst.element_link_many(self.output_tee, queue, sink)
-
-
-
         if audio_present:
             print "audio_present"
             self.convert = gst.element_factory_make("audioconvert", "convert")
             self.player.add(self.convert)
+
             self.effect['audio'] = Effect.make_effect(
                     self.effect_name['audio'], "audio"
             )
             self.player.add(self.effect['audio'])
+
+            self.audio_tee = gst.element_factory_make("tee", "audio_tee")
+            self.player.add(self.audio_tee)
+
             gst.element_link_many(
                     self.queue_audio, self.effect['audio'], self.convert,
-                    self.mux
+                    self.audio_tee
             )
+
+        for row in self.outputs.get_store():
+            (name, output) = row
+
+            queue_output = gst.element_factory_make("queue", None)
+            self.player.add(queue_output)
+
+            converter = output.converter.factory_class()
+            self.player.add(converter)
+
+            encoder = output.encoding.factory_class(type)
+            self.player.add(encoder)
+
+            sink = output.create()
+            self.player.add(sink)
+
+            gst.element_link_many(
+                    self.preview_tee, queue_output, converter, encoder, sink
+            )
+
+            if audio_present:
+                audio_queue = gst.element_factory_make("queue", None)
+                self.player.add(audio_queue)
+
+                gst.element_link_many(self.audio_tee, audio_queue, encoder)
 
         if self.preview_enabled:
             queue_preview = gst.element_factory_make("queue", "queue_preview")
