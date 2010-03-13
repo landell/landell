@@ -23,7 +23,7 @@ import gst
 
 class VideoConverter(gst.Bin):
 
-    def __init__(self, type):
+    def __init__(self):
         gst.Bin.__init__(self)
         self.colorspace = gst.element_factory_make(
                 "ffmpegcolorspace", "videoconvert_colorspace"
@@ -39,6 +39,7 @@ class VideoConverter(gst.Bin):
                 "videoscale", "videoconvert_videoscale"
         )
         self.add(self.videoscale)
+        self.videoscale.set_property("method", 1)
 
         self.capsfilter = gst.element_factory_make(
                 "capsfilter", "videoconvert_capsfilter"
@@ -55,7 +56,7 @@ class VideoConverter(gst.Bin):
         )
         self.add_pad(self.source_pad)
         self.sink_pad = gst.GhostPad(
-                "sink", self.videoscale.sink_pads().next()
+                "sink", self.colorspace.sink_pads().next()
         )
         self.add_pad(self.sink_pad)
 
