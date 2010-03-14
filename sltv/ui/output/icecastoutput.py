@@ -52,7 +52,7 @@ class IcecastOutputUI(OutputUI):
         self.user_entry.set_text(self.config["username"])
         self.password_entry.set_text(self.config["password"])
         self.port_spinbutton.set_value(float(self.config["port"]))
-        self.mount_point_entry.set_text(self.config["mount_point"])
+        self.mount_point_entry.set_text(self.config["mount"])
 
     def get_config(self):
         self.config["ip"] = self.server_entry.get_text()
