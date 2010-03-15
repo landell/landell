@@ -29,9 +29,8 @@ class OggTheoraVorbisEncoder(Encoder):
 
     def __init__(self, type):
         Encoder.__init__(self, type)
-        print "oggmux"
-        oggmux = gst.element_factory_make("oggmux", "oggmux")
-        self.add(oggmux)
+        self.oggmux = gst.element_factory_make("oggmux", "oggmux")
+        self.add(self.oggmux)
         if type & INPUT_TYPE_AUDIO:
             audioconvert = gst.element_factory_make(
                 "audioconvert", "audioconvert"
@@ -44,23 +43,25 @@ class OggTheoraVorbisEncoder(Encoder):
             )
             self.add(queue_audio)
             gst.element_link_many(
-                    audioconvert, vorbisenc, queue_audio, oggmux
+                    audioconvert, vorbisenc, queue_audio, self.oggmux
             )
             self.audio_pad.set_target(audioconvert.sink_pads().next())
         if type & INPUT_TYPE_VIDEO:
-            theoraenc = gst.element_factory_make("theoraenc", "theoraenc")
-            self.add(theoraenc)
+            self.theoraenc = gst.element_factory_make("theoraenc", "theoraenc")
+            self.add(self.theoraenc)
             queue_video = gst.element_factory_make(
                     "queue", "queue_video_enc"
             )
             self.add(queue_video)
-            gst.element_link_many(theoraenc, queue_video, oggmux)
-            self.video_pad.set_target(theoraenc.sink_pads().next())
-            self.source_pad.set_target(oggmux.src_pads().next())
+            gst.element_link_many(self.theoraenc, queue_video, self.oggmux)
+            self.video_pad.set_target(self.theoraenc.sink_pads().next())
+
+        self.source_pad.set_target(self.oggmux.src_pads().next())
 
 
     def config(self, dict):
-        oggmux.set_property("max-delay",10000000)
-        oggmux.set_property("max-page-delay",10000000)
-        theoraenc.set_property("quality", int(dict["quality"]))
-        theoraenc.set_property("keyframe-force", int(dict["keyframe"]))
+        self.oggmux.set_property("max-delay", 10000000)
+        self.oggmux.set_property("max-page-delay", 10000000)
+        if self.theoraenc:
+            self.theoraenc.set_property("quality", int(dict["quality"]))
+            self.theoraenc.set_property("keyframe-force", int(dict["keyframe"]))
