@@ -28,7 +28,7 @@ class OutputItem(MediaItem):
         item = self.converter.create()
         item.config(self.config)
         return item
-    def create_encoding(self):
-        item = self.encoding.create()
+    def create_encoding(self, type):
+        item = self.encoding.create(type)
         item.config(self.config)
         return item

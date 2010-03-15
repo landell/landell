@@ -136,6 +136,8 @@ class OggTheoraVorbisEncodingFactory(SltvFactory):
         SltvFactory.__init__(self, "encoding")
         self.ui = ui.encoding.oggtheoravorbisenc.OggTheoraVorbisEncodingUI()
         self.factory_class = encoding.oggtheoravorbisenc.OggTheoraVorbisEncoder
+    def create(self, type):
+        return self.factory_class(type)
 
 input_factories = [
         AudioTestInputFactory(), XInputFactory(), V4L2InputFactory(),
