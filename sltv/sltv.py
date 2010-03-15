@@ -163,10 +163,10 @@ class Sltv:
             queue_output = gst.element_factory_make("queue", None)
             self.player.add(queue_output)
 
-            converter = output.converter.factory_class()
+            converter = output.create_converter()
             self.player.add(converter)
 
-            encoder = output.encoding.factory_class(type)
+            encoder = output.create_encoding(type)
             self.player.add(encoder)
 
             sink = output.create()
