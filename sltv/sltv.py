@@ -123,7 +123,7 @@ class Sltv:
             self.effect_name['audio'] = "identity"
         self.effect['video'] = Effect.make_effect(
                 self.effect_name['video'], "video"
-                )
+        )
         self.player.add(self.effect['video'])
 
         self.overlay = gst.element_factory_make("textoverlay", "overlay")
