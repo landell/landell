@@ -20,7 +20,7 @@ import gobject
 import gtk
 from sltv.settings import UI_DIR
 import sltv.registry
-import sltv.mediaitem
+import sltv.outputitem
 from edit import Edit
 import sltv.factory
 
@@ -90,10 +90,7 @@ class EditOutput(Edit):
             if name == None or name == "":
                 return False
             if not self.media_list.get_item(name):
-                media_item = sltv.mediaitem.MediaItem(name, self.factory)
-                media_item.encoding = self.registry.get_factories("encoding")[0]
-                media_item.converter = \
-                        self.registry.get_factories("converter")[0]
+                media_item = sltv.outputitem.OutputItem(name, self.factory)
                 merged_config = self._merge_dict(
                         self.factory.get_ui().get_config(),
                         media_item.encoding.get_ui().get_config(),
