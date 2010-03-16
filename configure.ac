@@ -10,6 +10,8 @@ AC_PROG_INSTALL
 
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.16)
+
 AM_PATH_PYTHON(2.5.0)
 
 dnl expanding useful variables
