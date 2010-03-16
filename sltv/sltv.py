@@ -21,7 +21,6 @@ import gobject
 import pygst
 pygst.require("0.10")
 import gst
-from ui import encoding_ui
 from audio import *
 from preview import *
 from effects import *
@@ -41,7 +40,6 @@ class Sltv:
         self.sources = medialist.MediaList("Sources", "input")
         self.sources.load()
 
-        self.encoding = encoding_ui.EncodingUI(ui)
         self.audio = Audio()
 
         self.effect_enabled = "False"
@@ -50,9 +48,6 @@ class Sltv:
 
         self.video_source = None
         self.audio_source = None
-
-    def show_encoding(self):
-        self.encoding.show_window()
 
     def play(self, overlay_text, video_effect_name,
             audio_effect_name):
