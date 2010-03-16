@@ -37,6 +37,7 @@ class XInput(Input):
         # also be fixed to work with byte format.
 
         self.video_src.set_format(gst.FORMAT_TIME)
+        self.video_src.set_property("use-damage", False)
 
         self.add(self.video_src)
         self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
