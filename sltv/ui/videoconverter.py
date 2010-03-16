@@ -30,6 +30,7 @@ class VideoConverterUI:
         self.box = self.interface.get_object("setting_box")
         self.width_entry = self.interface.get_object("width_entry")
         self.height_entry = self.interface.get_object("height_entry")
+        self.framerate_entry = self.interface.get_object("framerate_entry")
 
         self.config = {}
 
@@ -42,11 +43,13 @@ class VideoConverterUI:
     def get_config(self):
         self.config["width"] = self.width_entry.get_text()
         self.config["height"] = self.height_entry.get_text()
+        self.config["framerate"] = self.framerate_entry.get_text()
         return self.config
 
     def update_config(self):
         self.width_entry.set_text(self.config["width"])
         self.height_entry.set_text(self.config["height"])
+        self.framerate_entry.set_text(self.config["framerate"])
 
     def set_config(self, config):
         self.config = config

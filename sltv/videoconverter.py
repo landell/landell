@@ -62,8 +62,8 @@ class VideoConverter(gst.Bin):
 
     def config(self, dict):
         caps = gst.caps_from_string(
-                "video/x-raw-yuv, width=%d, height=%d" % (
-                    int(dict["width"]), int(dict["height"])
+                "video/x-raw-yuv, width=%d, height=%d, framerate=%f/1" % (
+                    int(dict["width"]), int(dict["height"]), float(dict["framerate"])
                 )
         )
         self.capsfilter.set_property("caps", caps)
