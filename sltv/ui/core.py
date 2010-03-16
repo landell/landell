@@ -87,7 +87,6 @@ class SltvUI:
         #menu
 
         output_menuitem = self.interface.get_object("output_menuitem")
-        encoding_menuitem = self.interface.get_object("encoding_menuitem")
         sources_menuitem = self.interface.get_object("sources_menuitem")
         self.about_menu = self.interface.get_object("about_menu")
 
@@ -123,7 +122,6 @@ class SltvUI:
         self.overlay_button.connect("clicked", self.on_overlay_change)
         self.main_window.connect("delete_event", self.on_window_closed)
         output_menuitem.connect("activate", self.show_output)
-        encoding_menuitem.connect("activate", self.show_encoding)
         sources_menuitem.connect("activate", self.show_sources)
         self.about_menu.connect("activate", self.show_about)
         self.video_effect_button.connect("clicked", self.effect_changed)

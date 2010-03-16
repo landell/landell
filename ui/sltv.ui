@@ -29,12 +29,6 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="encoding_menuitem">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Encoding</property>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkMenuItem" id="sources_menuitem">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Sources</property>
