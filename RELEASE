@@ -1,27 +1,26 @@
-Release notes for version 0.5 of sltv
+Release notes for version 0.6 of sltv
 =====================================
 
 This software is still under development.
 
 
-Differences between version 0.4 and 0.5:
+Differences between version 0.5 and 0.6:
 ========================================
 
-- sltv is using autotools as build system;
-- Audio sources are independent from video sources;
-- Editting a source in the source menu is implemented;
-- Persistence of source configurations between software executions through
-  configuration file;
-- New audio input types (alsa, pulse);
-- Split of test inputs into audio and video tests.
+- Support for multiple simultaneous outputs;
+- Each output has its own configurations, including encoding configurations;
+- Support for lenny versions of gstreamer and python;
+- Many cosmetic changes in interface;
+- Removed encoding UI, meaning all outputs use ogg theora + vorbis;
+- Changed many defaults in settings.
+
 
 Known issues:
 =============
 
-- Encoding in DV does not work;
 - Switch between effects of different colorspaces might not work;
 - File source might not work with multiple sources;
-- Switching between sources of different video formats produces an output with
-  scrambled video;
-- Stop button doesn't work in some cases (usually use of DV or multiple
-  sources).
+- Stopping the pipeline might loose frames not recorded;
+- The software may have problems loading old configuration files, to fix that
+  remove the sources or edit the file by hand adding the missing
+  configurations.
