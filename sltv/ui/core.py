@@ -37,7 +37,7 @@ def create_effects_combobox(combobox, effect_type):
     combobox.pack_start(cell, True)
     combobox.add_attribute(cell, 'text', 0)
     liststore.append(("none",))
-    for etype in Effect.get_types(effect_type):
+    for etype in Effects.get_types(effect_type):
         liststore.append((etype,))
     combobox.set_active(0)
 

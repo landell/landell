@@ -1,4 +1,4 @@
-SUBDIRS = input ui output encoding
+SUBDIRS = input ui output encoding effect
 
 sltvlibdir = $(libdir)/sltv
 sltvlib_DATA = \

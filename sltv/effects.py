@@ -21,6 +21,7 @@ import pygst
 pygst.require("0.10")
 import gst
 from swap import *
+import effect
 
 def register_filter(feature_list, filter_string):
     type_list = []
@@ -29,16 +30,16 @@ def register_filter(feature_list, filter_string):
             type_list.append(plugin_feature.get_name())
     return type_list
 
-class Effect:
+class Effects:
 
     registry = gst.registry_get_default()
     all_effects = registry.get_feature_list(gst.ElementFactory)
     effects = {}
     effects['video'] = register_filter(all_effects, "Filter/Effect/Video")
     effects['audio'] = register_filter(all_effects, "Filter/Effect/Audio")
-    convertion = {
-            'video': 'ffmpegcolorspace',
-            'audio': 'audioconvert'
+    effect_klass = {
+            'video': effect.video_effect.VideoEffect,
+            'audio': effect.audio_effect.AudioEffect
     }
 
     @classmethod
@@ -47,28 +48,10 @@ class Effect:
 
     @classmethod
     def make_effect(klass, effect_name, effect_type):
-        effect_name = Effect.treat_effect_name(effect_name)
-        effectbin = gst.Bin()
-        convertion_element1 = gst.element_factory_make(
-                klass.convertion[effect_type], "conv1"
-        )
-        convertion_element2 = gst.element_factory_make(
-                klass.convertion[effect_type], "conv2"
-        )
-        effect_queue = gst.element_factory_make("queue", "effect_queue")
-        effect_element = gst.element_factory_make(effect_name, effect_name)
-        effectbin.add(
-                convertion_element1, effect_queue, effect_element,
-                convertion_element2
-        )
-        gst.element_link_many(
-                convertion_element1, effect_queue, effect_element,
-                convertion_element2
-        )
-        sink_pad = gst.GhostPad("sink", convertion_element1.sink_pads().next())
-        src_pad = gst.GhostPad("src", convertion_element2.src_pads().next())
-        effectbin.add_pad(sink_pad)
-        effectbin.add_pad(src_pad)
+        effect_name = Effects.treat_effect_name(effect_name)
+
+        print "effect_type " + effect_type
+        effectbin = klass.effect_klass[effect_type](effect_name)
         return effectbin
 
     @classmethod
@@ -78,15 +61,13 @@ class Effect:
         return effect_name
 
     @classmethod
-    def change(klass, effect_bin, old_effect_name, effect_name):
-        old_effect_name = Effect.treat_effect_name(old_effect_name)
-        effect_name = Effect.treat_effect_name(effect_name)
-        print old_effect_name + " " +  effect_name
+    def change(klass, effect_bin, effect_name):
+        effect_name = Effects.treat_effect_name(effect_name)
+        print effect_bin.effect_element.get_name() + " " + effect_name
+
         new_effect = gst.element_factory_make(effect_name, effect_name)
-        effect_element = effect_bin.get_by_name(old_effect_name)
-        effect_queue = effect_bin.get_by_name("effect_queue")
-        colorspace2 = effect_bin.get_by_name("conv2")
         Swap.swap_element(
-                effect_bin, effect_queue, colorspace2,
-                effect_element, new_effect
+                effect_bin, effect_bin.effect_queue, effect_bin.convertion2,
+                effect_bin.effect_element, new_effect
         )
+        effect_bin.effect_element = new_effect

@@ -121,7 +121,7 @@ class Sltv:
         else:
             self.effect_name['video'] = "identity"
             self.effect_name['audio'] = "identity"
-        self.effect['video'] = Effect.make_effect(
+        self.effect['video'] = Effects.make_effect(
                 self.effect_name['video'], "video"
         )
         self.player.add(self.effect['video'])
@@ -144,7 +144,7 @@ class Sltv:
             self.convert = gst.element_factory_make("audioconvert", "convert")
             self.player.add(self.convert)
 
-            self.effect['audio'] = Effect.make_effect(
+            self.effect['audio'] = Effects.make_effect(
                     self.effect_name['audio'], "audio"
             )
             self.player.add(self.effect['audio'])
@@ -219,9 +219,8 @@ class Sltv:
     def change_effect(self, effect_name, effect_type):
         if self.playing():
             print "PLAYING"
-            Effect.change(
-                    self.effect[effect_type], self.effect_name[effect_type],
-                    effect_name
+            Effects.change(
+                    self.effect[effect_type], effect_name
             )
             self.effect_name[effect_type] = effect_name
 
