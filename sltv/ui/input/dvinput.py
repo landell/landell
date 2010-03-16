@@ -46,6 +46,9 @@ class DVInputUI(InputUI):
         self.port_entry.set_text(self.config["port"])
         self.width_entry.set_text(self.config["width"])
         self.height_entry.set_text(self.config["height"])
+        #  set_filename doesn't accept null values
+        if not self.config["filename"]:
+            self.config["filename"] = ""
         self.filechooserbutton.set_filename(self.config["filename"])
 
     def get_config(self):
