@@ -32,6 +32,7 @@ class OggTheoraVorbisEncodingUI(EncodingUI):
         self.box = self.interface.get_object("theora_box")
         self.quality_entry = self.interface.get_object("quality_entry")
         self.keyframe_entry = self.interface.get_object("keyframe_entry")
+        self.bitrate_entry = self.interface.get_object("bitrate_entry")
 
     def get_widget(self):
         return self.box
@@ -45,8 +46,10 @@ class OggTheoraVorbisEncodingUI(EncodingUI):
     def update_config(self):
         self.quality_entry.set_text(self.config["quality"])
         self.keyframe_entry.set_text(self.config["keyframe"])
+        self.bitrate_entry.set_text(self.config["bitrate"])
 
     def get_config(self):
         self.config["quality"] = self.quality_entry.get_text()
         self.config["keyframe"] = self.keyframe_entry.get_text()
+        self.config["bitrate"] = self.bitrate_entry.get_text()
         return self.config
