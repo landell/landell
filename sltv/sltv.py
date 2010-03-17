@@ -216,6 +216,11 @@ class Sltv:
 
     def change_effect(self, effect_name, effect_type):
 
+        #If that input doesn't exist, then there is no effect to change.
+
+        if not self.input_type & effect_type:
+            return
+
         if self.playing():
             print "PLAYING"
             Effects.change(
