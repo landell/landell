@@ -108,7 +108,7 @@ class SltvUI:
                 "audio_effect_button"
         )
         self.preview_checkbutton = self.interface.get_object(
-            "preview_checkbutton"
+                "preview_checkbutton"
         )
 
 
