@@ -12,16 +12,16 @@ Package: sltv
 Architecture: all
 Depends: ${misc:Depends},
          ${python:Depends},
-         libgstreamer0.10-0,
-         gstreamer0.10-plugins-base,
-         gstreamer0.10-plugins-good,
-         gstreamer0.10-plugins-bad,
-         gstreamer0.10-ffmpeg,
-         gstreamer0.10-alsa,
-         gstreamer0.10-x,
-         python-gst0.10,
-         python-configobj (>= 4.7.1),
-         python-gobject (>= 2.20.0),
+         gstreamer0.10-plugins-base (>= 0.10.19),
+         gstreamer0.10-plugins-good (>= 0.10.8),
+         gstreamer0.10-plugins-bad (>= 0.10.7),
+         gstreamer0.10-ffmpeg (>= 0.10.4),
+         gstreamer0.10-alsa (>= 0.10.19),
+         gstreamer0.10-x (>= 0.10.19),
+         python (>= 2.5),
+         python-gst0.10 (>= 0.10.12),
+         python-configobj (>= 4.5.2),
+         python-gobject (>= 2.14.2),
          python-gtk2 (>= 2.16)
 XB-Python-Version: ${python:Versions}
 Provides: ${python:Provides}
