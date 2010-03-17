@@ -218,10 +218,9 @@ class SltvUI:
         self.set_effects(not self.effect_enabled)
 
     def effect_changed(self, button):
-        print "button clicked"
         if self.effect_enabled:
             print "sending change_effect"
-            if button.get_name() == "video_effect_button":
+            if button is self.video_effect_button:
                 self.sltv.change_effect(
                         self.video_effect_combobox.get_active_text(), MEDIA_VIDEO
                 )
