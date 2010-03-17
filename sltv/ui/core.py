@@ -171,7 +171,10 @@ class SltvUI:
             audio_effect_name = self.audio_effect_combobox.get_active_text()
             self.overlay_button.set_sensitive(True)
             if self.effect_enabled == True:
-                self.audio_effect_button.set_sensitive(True)
+                if self.selected_audio_source() == None:
+                    self.audio_effect_button.set_sensitive(False)
+                else:
+                    self.audio_effect_button.set_sensitive(True)
                 self.video_effect_button.set_sensitive(True)
             self.sltv.play(
                     overlay_text, video_effect_name, audio_effect_name
@@ -205,7 +208,10 @@ class SltvUI:
         self.audio_effect_label.set_sensitive(state)
         if self.sltv.playing() and state == True:
             self.video_effect_button.set_sensitive(True)
-            self.audio_effect_button.set_sensitive(True)
+            if self.selected_audio_source() == None:
+                self.audio_effect_button.set_sensitive(False)
+            else:
+                self.audio_effect_button.set_sensitive(True)
         elif self.sltv.playing() and state == False:
             self.video_effect_button.set_sensitive(False)
             self.audio_effect_button.set_sensitive(False)
