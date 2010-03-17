@@ -52,8 +52,7 @@ class Sltv:
         self.video_source = None
         self.audio_source = None
 
-    def play(self, overlay_text, video_effect_name,
-            audio_effect_name):
+    def play(self, overlay_text, video_effect_name, audio_effect_name):
 
         self.player = gst.Pipeline("player")
 
