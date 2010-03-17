@@ -176,9 +176,10 @@ class SltvUI:
                 else:
                     self.audio_effect_button.set_sensitive(True)
                 self.video_effect_button.set_sensitive(True)
-            self.sltv.play(
-                    overlay_text, video_effect_name, audio_effect_name
-            )
+            self.sltv.set_overlay_text(overlay_text)
+            self.sltv.set_video_effect_name(video_effect_name)
+            self.sltv.set_audio_effect_name(audio_effect_name)
+            self.sltv.play()
         self.audio_sources_combobox.set_sensitive(False)
 
     def on_switch_source(self, combobox):
