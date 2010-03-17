@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=@VERSION@
+Name=SLTV
+Comment=audio and video streams manager
+Exec=sltv
+Terminal=false
+Type=Application
+Icon=sltv
+Categories=AudioVideo;TV;
+StartupNotify=false

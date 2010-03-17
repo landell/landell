@@ -40,6 +40,7 @@ AC_CONFIG_FILES([
     src/Makefile
     src/sltv
     man/Makefile
+    sltv.desktop
 ])
 
 AC_OUTPUT
