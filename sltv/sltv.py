@@ -28,6 +28,9 @@ from swap import *
 
 import medialist
 
+MEDIA_AUDIO = 1
+MEDIA_VIDEO = 2
+
 class Sltv:
 
     def __init__(self, preview_area, ui):
@@ -57,7 +60,7 @@ class Sltv:
         self.queue_video = gst.element_factory_make("queue", "queue_video")
         self.player.add(self.queue_video)
 
-        audio_present = False
+        self.input_type = 0
 
         # Source selection
 
@@ -80,7 +83,7 @@ class Sltv:
                     self.player.add(self.queue_audio)
                     pad = self.queue_audio.get_static_pad("sink")
                     element.audio_pad.link(pad)
-                    audio_present = True
+                    self.input_type |= MEDIA_AUDIO
                 elif element.does_video():
 
                         # If element does audio and video, it will be added.
@@ -94,6 +97,7 @@ class Sltv:
                         element.audio_pad.link(fakesink.get_static_pad("sink"))
 
             if element.does_video():
+                self.input_type |= MEDIA_VIDEO
                 if not element.does_audio():
                     self.player.add(element)
                 self.source_pads[name] = \
@@ -111,22 +115,22 @@ class Sltv:
         )
 
         if self.effect_enabled:
-            self.effect_name['video'] = video_effect_name
-            self.effect_name['audio'] = audio_effect_name
+            self.effect_name[MEDIA_VIDEO] = video_effect_name
+            self.effect_name[MEDIA_AUDIO] = audio_effect_name
         else:
-            self.effect_name['video'] = "identity"
-            self.effect_name['audio'] = "identity"
-        self.effect['video'] = Effects.make_effect(
-                self.effect_name['video'], "video"
+            self.effect_name[MEDIA_VIDEO] = "identity"
+            self.effect_name[MEDIA_AUDIO] = "identity"
+        self.effect[MEDIA_VIDEO] = Effects.make_effect(
+                self.effect_name[MEDIA_VIDEO], "video"
         )
-        self.player.add(self.effect['video'])
+        self.player.add(self.effect[MEDIA_VIDEO])
 
         self.overlay = gst.element_factory_make("textoverlay", "overlay")
         self.overlay.set_property("font-desc", "Sans Bold 14")
         self.player.add(self.overlay)
 
         gst.element_link_many(
-                self.queue_video, self.effect['video'], self.overlay
+                self.queue_video, self.effect[MEDIA_VIDEO], self.overlay
         )
 
         self.preview_tee = gst.element_factory_make("tee", "tee")
@@ -134,21 +138,20 @@ class Sltv:
 
         self.overlay.link(self.preview_tee)
 
-        if audio_present:
-            print "audio_present"
+        if self.input_type & MEDIA_AUDIO:
             self.convert = gst.element_factory_make("audioconvert", "convert")
             self.player.add(self.convert)
 
-            self.effect['audio'] = Effects.make_effect(
-                    self.effect_name['audio'], "audio"
+            self.effect[MEDIA_AUDIO] = Effects.make_effect(
+                    self.effect_name[MEDIA_AUDIO], "audio"
             )
-            self.player.add(self.effect['audio'])
+            self.player.add(self.effect[MEDIA_AUDIO])
 
             self.audio_tee = gst.element_factory_make("tee", "audio_tee")
             self.player.add(self.audio_tee)
 
             gst.element_link_many(
-                    self.queue_audio, self.effect['audio'], self.convert,
+                    self.queue_audio, self.effect[MEDIA_AUDIO], self.convert,
                     self.audio_tee
             )
 
@@ -171,7 +174,7 @@ class Sltv:
                     self.preview_tee, queue_output, converter, encoder, sink
             )
 
-            if audio_present:
+            if self.input_type & MEDIA_AUDIO:
                 audio_queue = gst.element_factory_make("queue", None)
                 self.player.add(audio_queue)
 
@@ -208,10 +211,11 @@ class Sltv:
 
         if not self.effect_enabled:
             if self.playing():
-                self.change_effect("identity", "video")
-                self.change_effect("identity", "audio")
+                self.change_effect("identity", MEDIA_VIDEO)
+                self.change_effect("identity", MEDIA_AUDIO)
 
     def change_effect(self, effect_name, effect_type):
+
         if self.playing():
             print "PLAYING"
             Effects.change(

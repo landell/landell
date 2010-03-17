@@ -223,11 +223,11 @@ class SltvUI:
             print "sending change_effect"
             if button.get_name() == "video_effect_button":
                 self.sltv.change_effect(
-                        self.video_effect_combobox.get_active_text(), "video"
+                        self.video_effect_combobox.get_active_text(), MEDIA_VIDEO
                 )
             else:
                 self.sltv.change_effect(
-                        self.audio_effect_combobox.get_active_text(), "audio"
+                        self.audio_effect_combobox.get_active_text(), MEDIA_AUDIO
                 )
 
     def preview_toggled(self, checkbox):
