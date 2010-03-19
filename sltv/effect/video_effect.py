@@ -40,8 +40,7 @@ class VideoEffect(Effect):
         self.add(self.effect_element)
 
         gst.element_link_many(
-                self.convertion1, self.effect_queue, self.effect_element,
-                self.convertion2
+                self.convertion1, self.effect_element, self.convertion2
         )
 
         self.sink_pad.set_target(self.convertion1.sink_pads().next())

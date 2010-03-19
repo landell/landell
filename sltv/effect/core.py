@@ -26,9 +26,6 @@ class Effect(gst.Bin):
     def __init__(self):
         gst.Bin.__init__(self)
 
-        self.effect_queue = gst.element_factory_make("queue", "effect_queue")
-        self.add(self.effect_queue)
-
         self.src_pad = gst.ghost_pad_new_notarget("src", gst.PAD_SRC)
         self.add_pad(self.src_pad)
         self.sink_pad = gst.ghost_pad_new_notarget("sink", gst.PAD_SINK)

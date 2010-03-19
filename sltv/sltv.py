@@ -24,7 +24,7 @@ import gst
 from audio import *
 from preview import *
 from effects import *
-from swap import *
+from swap import Swap
 
 import medialist
 
@@ -235,9 +235,20 @@ class Sltv:
 
         if self.playing():
             print "PLAYING"
-            Effects.change(
-                    self.effect[effect_type], effect_name
-            )
+            if effect_type == MEDIA_VIDEO:
+                new_effect = Effects.make_effect(effect_name, "video")
+                Swap.swap_element(
+                        self.player, self.queue_video, self.overlay,
+                        self.effect[effect_type], new_effect
+                )
+                self.effect[effect_type] = new_effect
+            else:
+                new_effect = Effects.make_effect(effect_name, "audio")
+                Swap.swap_element(
+                        self.player, self.queue_audio, self.convert,
+                        self.effect[effect_type], new_effect
+                )
+                self.effect[effect_type] = new_effect
             self.effect_name[effect_type] = effect_name
 
     def switch_source(self):

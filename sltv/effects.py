@@ -59,15 +59,3 @@ class Effects:
         if effect_name == "none":
             return "identity"
         return effect_name
-
-    @classmethod
-    def change(klass, effect_bin, effect_name):
-        effect_name = Effects.treat_effect_name(effect_name)
-        print effect_bin.effect_element.get_name() + " " + effect_name
-
-        new_effect = gst.element_factory_make(effect_name, effect_name)
-        Swap.swap_element(
-                effect_bin, effect_bin.effect_queue, effect_bin.convertion2,
-                effect_bin.effect_element, new_effect
-        )
-        effect_bin.effect_element = new_effect
