@@ -23,7 +23,6 @@ pygst.require("0.10")
 import gst
 from audio import *
 from preview import *
-from effects import Effects
 from swap import Swap
 
 import medialist
