@@ -20,7 +20,6 @@ import gobject
 import pygst
 pygst.require("0.10")
 import gst
-from swap import *
 import effect
 
 def register_filter(feature_list, filter_string):
