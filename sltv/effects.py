@@ -21,21 +21,22 @@ import pygst
 pygst.require("0.10")
 import gst
 
-def register_filter(feature_list, filter_string):
-    type_list = []
-    for plugin_feature in feature_list:
-        if plugin_feature.get_klass() == filter_string:
-            type_list.append(plugin_feature.get_name())
-    return type_list
+class EffectRegistry:
 
-class Effects:
+    def __init__(self):
 
-    registry = gst.registry_get_default()
-    all_effects = registry.get_feature_list(gst.ElementFactory)
-    effects = {}
-    effects['video'] = register_filter(all_effects, "Filter/Effect/Video")
-    effects['audio'] = register_filter(all_effects, "Filter/Effect/Audio")
+        self.gst_registry = gst.registry_get_default()
+        all_effects = self.gst_registry.get_feature_list(gst.ElementFactory)
+        self.registry = {}
+        self.registry['video'] = self._register_filter(all_effects, "Filter/Effect/Video")
+        self.registry['audio'] = self._register_filter(all_effects, "Filter/Effect/Audio")
 
-    @classmethod
-    def get_types(klass, effect_type):
-        return klass.effects[effect_type]
+    def get_types(self, effect_type):
+        return self.registry[effect_type]
+
+    def _register_filter(self, feature_list, filter_string):
+        type_list = []
+        for plugin_feature in feature_list:
+            if plugin_feature.get_klass() == filter_string:
+                type_list.append(plugin_feature.get_name())
+        return type_list
