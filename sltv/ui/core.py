@@ -31,16 +31,7 @@ import message
 import outputs
 import sltv.effects
 
-def create_effects_combobox(combobox, effect_type, registry):
-    liststore = gtk.ListStore(gobject.TYPE_STRING)
-    combobox.set_model(liststore)
-    cell = gtk.CellRendererText()
-    combobox.pack_start(cell, True)
-    combobox.add_attribute(cell, 'text', 0)
-    liststore.append(("none",))
-    for etype in registry.get_types(effect_type):
-        liststore.append((etype,))
-    combobox.set_active(0)
+
 
 class SltvUI:
 
@@ -98,8 +89,8 @@ class SltvUI:
                 "audio_effect_combobox"
         )
         self.effect_registry = sltv.effects.EffectRegistry()
-        create_effects_combobox(self.video_effect_combobox, "video", self.effect_registry)
-        create_effects_combobox(self.audio_effect_combobox, "audio", self.effect_registry)
+        self._create_effects_combobox(self.video_effect_combobox, "video")
+        self._create_effects_combobox(self.audio_effect_combobox, "audio")
         self.effect_checkbutton = self.interface.get_object(
             "effect_checkbutton"
         )
@@ -134,6 +125,17 @@ class SltvUI:
         self.sltv.set_preview(False)
         self.overlay_textview = self.interface.get_object("overlay_textview")
         self.effect_enabled = False
+
+    def _create_effects_combobox(self, combobox, effect_type):
+        liststore = gtk.ListStore(gobject.TYPE_STRING)
+        combobox.set_model(liststore)
+        cell = gtk.CellRendererText()
+        combobox.pack_start(cell, True)
+        combobox.add_attribute(cell, 'text', 0)
+        liststore.append(("none",))
+        for etype in self.effect_registry.get_types(effect_type):
+            liststore.append((etype,))
+        combobox.set_active(0)
 
     def selected_video_source(self):
         model = self.source_combobox.get_model()
