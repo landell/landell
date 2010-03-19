@@ -23,10 +23,11 @@ pygst.require("0.10")
 import gst
 from audio import *
 from preview import *
-from effects import *
+from effects import Effects
 from swap import Swap
 
 import medialist
+import effect
 
 MEDIA_AUDIO = 1
 MEDIA_VIDEO = 2
@@ -132,8 +133,8 @@ class Sltv:
         else:
             self.effect_name[MEDIA_VIDEO] = "identity"
             self.effect_name[MEDIA_AUDIO] = "identity"
-        self.effect[MEDIA_VIDEO] = Effects.make_effect(
-                self.effect_name[MEDIA_VIDEO], "video"
+        self.effect[MEDIA_VIDEO] = effect.video_effect.VideoEffect(
+                self.effect_name[MEDIA_VIDEO]
         )
         self.player.add(self.effect[MEDIA_VIDEO])
 
@@ -154,8 +155,8 @@ class Sltv:
             self.convert = gst.element_factory_make("audioconvert", "convert")
             self.player.add(self.convert)
 
-            self.effect[MEDIA_AUDIO] = Effects.make_effect(
-                    self.effect_name[MEDIA_AUDIO], "audio"
+            self.effect[MEDIA_AUDIO] = effect.audio_effect.AudioEffect(
+                    self.effect_name[MEDIA_AUDIO]
             )
             self.player.add(self.effect[MEDIA_AUDIO])
 
@@ -232,18 +233,24 @@ class Sltv:
 
         if not self.input_type & effect_type:
             return
+        if effect_name == "none":
+            effect_name = "identity"
 
         if self.playing():
             print "PLAYING"
             if effect_type == MEDIA_VIDEO:
-                new_effect = Effects.make_effect(effect_name, "video")
+                new_effect = effect.video_effect.VideoEffect(
+                        effect_name
+                )
                 Swap.swap_element(
                         self.player, self.queue_video, self.overlay,
                         self.effect[effect_type], new_effect
                 )
                 self.effect[effect_type] = new_effect
             else:
-                new_effect = Effects.make_effect(effect_name, "audio")
+                new_effect = effect.audio_effect.AudioEffect(
+                        effect_name
+                )
                 Swap.swap_element(
                         self.player, self.queue_audio, self.convert,
                         self.effect[effect_type], new_effect

@@ -20,7 +20,6 @@ import gobject
 import pygst
 pygst.require("0.10")
 import gst
-import effect
 
 def register_filter(feature_list, filter_string):
     type_list = []
@@ -36,25 +35,7 @@ class Effects:
     effects = {}
     effects['video'] = register_filter(all_effects, "Filter/Effect/Video")
     effects['audio'] = register_filter(all_effects, "Filter/Effect/Audio")
-    effect_klass = {
-            'video': effect.video_effect.VideoEffect,
-            'audio': effect.audio_effect.AudioEffect
-    }
 
     @classmethod
     def get_types(klass, effect_type):
         return klass.effects[effect_type]
-
-    @classmethod
-    def make_effect(klass, effect_name, effect_type):
-        effect_name = Effects.treat_effect_name(effect_name)
-
-        print "effect_type " + effect_type
-        effectbin = klass.effect_klass[effect_type](effect_name)
-        return effectbin
-
-    @classmethod
-    def treat_effect_name(klass, effect_name):
-        if effect_name == "none":
-            return "identity"
-        return effect_name
