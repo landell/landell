@@ -36,7 +36,7 @@ class Config:
         self.save()
 
     def set_item(self, section, item_name, item_value):
-        if section not in self.config.keys():
+        if not self.has_section(section):
             self.insert_section(section)
         self.config[section][item_name] = item_value
         self.save()
