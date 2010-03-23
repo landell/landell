@@ -1,3 +1,11 @@
+sltv (0.6.1-1) UNRELEASED; urgency=low
+
+  * New upstream release
+    - Removed debian/sltv.desktop, because was applied in upstream version.
+    - Removed libgtk2.0-dev and libgstreamer0.10-dev from Build-Depends field.
+
+ -- Marcelo Jorge Vieira (metal) <metal@holoscopio.com>  Tue, 23 Mar 2010 16:16:14 -0300
+
 sltv (0.6-2) UNRELEASED; urgency=low
 
   * Added SLTV icon menu
