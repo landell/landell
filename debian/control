@@ -3,8 +3,7 @@ Section: video
 Priority: optional
 Maintainer: Marcelo Jorge Vieira (metal) <metal@holoscopio.com>
 Build-Depends: debhelper (>= 7),
-               python (>= 2.5),
-               libgstreamer0.10-dev (>= 0.10.19)
+               python (>= 2.5)
 Standards-Version: 3.8.4
 Homepage: http://wiki.softwarelivre.org/TV/SltvProject
 Vcs-Git: http://git.holoscopio.com/git/sltv.git
