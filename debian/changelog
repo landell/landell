@@ -1,3 +1,9 @@
+sltv (0.6-2) UNRELEASED; urgency=low
+
+  * Added SLTV icon menu
+
+ -- Marcelo Jorge Vieira (metal) <metal@holoscopio.com>  Wed, 17 Mar 2010 14:21:03 -0300
+
 sltv (0.6-1) UNRELEASED; urgency=low
 
   * New upstream release
