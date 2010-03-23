@@ -1,10 +1,17 @@
-Release notes for version 0.6 of sltv
+Release notes for version 0.6.1 of sltv
 =====================================
 
 This software is still under development.
 
+Differences between version 0.6 and 0.6.1:
+=======================================
 
-Differences between version 0.5 and 0.6:
+- Created desktop file to allow some desktop environments to show
+  an entry in the menu for SLTV.
+- Fixed bug #6 (Changing to effects that have a different colorspace
+  than the current doesn't work)
+
+Difference between version 0.5 and 0.6:
 ========================================
 
 - Support for multiple simultaneous outputs;
