@@ -45,7 +45,6 @@ class SltvUI:
         preview_area = self.interface.get_object("preview_area")
         self.sltv = Sltv(preview_area, self)
 
-        file_location_entry = self.interface.get_object("file_location_entry")
         self.play_button = self.interface.get_object("play_button")
         self.stop_button = self.interface.get_object("stop_button")
         self.overlay_button = self.interface.get_object("overlay_button")
