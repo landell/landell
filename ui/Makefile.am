@@ -6,6 +6,7 @@ ui_DATA = edit.ui \
 	medialist.ui \
 	output_setting.ui \
 	preview.ui \
-	overlay.ui
+	overlay.ui \
+	effects.ui
 
 EXTRA_DIST = $(ui_DATA)

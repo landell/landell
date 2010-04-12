@@ -29,10 +29,10 @@ import about
 import sources
 import message
 import outputs
-import sltv.effects
 
 
 import preview
+import effects
 import overlay
 
 class SltvUI:
@@ -49,8 +49,10 @@ class SltvUI:
 
         self.settings_box = self.interface.get_object("vbox4")
         self.preview = preview.PreviewUI(self.sltv)
+        self.effects = effects.EffectsUI(self.sltv)
         self.overlay = overlay.OverlayUI(self.sltv)
         self.settings_box.add(self.preview.get_widget())
+        self.settings_box.add(self.effects.get_widget())
         self.settings_box.add(self.overlay.get_widget())
 
         self.play_button = self.interface.get_object("play_button")
@@ -88,52 +90,12 @@ class SltvUI:
         sources_menuitem = self.interface.get_object("sources_menuitem")
         self.about_menu = self.interface.get_object("about_menu")
 
-        self.video_effect_combobox = self.interface.get_object(
-                "video_effect_combobox"
-        )
-        self.audio_effect_combobox = self.interface.get_object(
-                "audio_effect_combobox"
-        )
-        self.effect_registry = sltv.effects.EffectRegistry()
-        self._create_effects_combobox(self.video_effect_combobox, "video")
-        self._create_effects_combobox(self.audio_effect_combobox, "audio")
-        self.effect_checkbutton = self.interface.get_object(
-            "effect_checkbutton"
-        )
-        self.video_effect_button = self.interface.get_object(
-                "video_effect_button"
-        )
-        self.audio_effect_button = self.interface.get_object(
-                "audio_effect_button"
-        )
-
-
-        self.video_effect_label = self.interface.get_object("video_effect_label")
-        self.audio_effect_label = self.interface.get_object("audio_effect_label")
-
-        self.effect_checkbutton.connect("toggled", self.effect_toggled)
         self.play_button.connect("clicked", self.on_play_press)
         self.stop_button.connect("clicked", self.on_stop_press)
         self.main_window.connect("delete_event", self.on_window_closed)
         output_menuitem.connect("activate", self.show_output)
         sources_menuitem.connect("activate", self.show_sources)
         self.about_menu.connect("activate", self.show_about)
-        self.video_effect_button.connect("clicked", self.effect_changed)
-        self.audio_effect_button.connect("clicked", self.effect_changed)
-
-        self.set_effects(False)
-        self.effect_enabled = False
-
-    def _create_effects_combobox(self, combobox, effect_type):
-        liststore = gtk.ListStore(gobject.TYPE_STRING)
-        combobox.set_model(liststore)
-        cell = gtk.CellRendererText()
-        combobox.pack_start(cell, True)
-        combobox.add_attribute(cell, 'text', 0)
-        liststore.append(("none",))
-        for etype in self.effect_registry.get_types(effect_type):
-            liststore.append((etype,))
-        combobox.set_active(0)
 
     def selected_video_source(self):
         model = self.source_combobox.get_model()
@@ -163,17 +125,8 @@ class SltvUI:
 
     def play(self):
         if not self.sltv.playing():
+            self.effects.play()
             self.overlay.play()
-            video_effect_name = self.video_effect_combobox.get_active_text()
-            audio_effect_name = self.audio_effect_combobox.get_active_text()
-            if self.effect_enabled == True:
-                if self.selected_audio_source() == None:
-                    self.audio_effect_button.set_sensitive(False)
-                else:
-                    self.audio_effect_button.set_sensitive(True)
-                self.video_effect_button.set_sensitive(True)
-            self.sltv.set_video_effect_name(video_effect_name)
-            self.sltv.set_audio_effect_name(audio_effect_name)
             self.sltv.play()
         self.audio_sources_combobox.set_sensitive(False)
 
@@ -197,40 +150,6 @@ class SltvUI:
     def show_about(self, menuitem):
         self.about.show_window()
 
-    def set_effects(self, state):
-        self.video_effect_combobox.set_sensitive(state)
-        self.audio_effect_combobox.set_sensitive(state)
-        self.video_effect_label.set_sensitive(state)
-        self.audio_effect_label.set_sensitive(state)
-        if self.sltv.playing() and state == True:
-            self.video_effect_button.set_sensitive(True)
-            if self.selected_audio_source() == None:
-                self.audio_effect_button.set_sensitive(False)
-            else:
-                self.audio_effect_button.set_sensitive(True)
-        elif self.sltv.playing() and state == False:
-            self.video_effect_button.set_sensitive(False)
-            self.audio_effect_button.set_sensitive(False)
-
-        self.effect_enabled = state
-        self.sltv.set_effects(state)
-        #Send signal
-
-    def effect_toggled(self, checkbox):
-        self.set_effects(not self.effect_enabled)
-
-    def effect_changed(self, button):
-        if self.effect_enabled:
-            print "sending change_effect"
-            if button is self.video_effect_button:
-                self.sltv.change_effect(
-                        self.video_effect_combobox.get_active_text(), MEDIA_VIDEO
-                )
-            else:
-                self.sltv.change_effect(
-                        self.audio_effect_combobox.get_active_text(), MEDIA_AUDIO
-                )
-
     def on_stop_press(self, event):
         self.stop_button.set_sensitive(False)
         self.stop()
@@ -238,9 +157,8 @@ class SltvUI:
 
     def stop(self):
         if self.sltv.playing():
+            self.effects.stop()
             self.overlay.stop()
-            self.audio_effect_button.set_sensitive(False)
-            self.video_effect_button.set_sensitive(False)
             self.audio_sources_combobox.set_sensitive(True)
             self.sltv.stop()
 
