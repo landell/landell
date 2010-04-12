@@ -9,7 +9,6 @@ sltvlib_DATA = \
 	edit_source.py \
 	message.py \
 	edit_output.py \
-	encoding_ui.py \
 	edit.py \
 	medialist.py \
 	outputs.py \
