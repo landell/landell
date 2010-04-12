@@ -32,6 +32,7 @@ import outputs
 import sltv.effects
 
 
+import preview
 
 class SltvUI:
 
@@ -44,6 +45,10 @@ class SltvUI:
 
         preview_area = self.interface.get_object("preview_area")
         self.sltv = Sltv(preview_area, self)
+
+        self.settings_box = self.interface.get_object("vbox4")
+        self.preview = preview.PreviewUI(self.sltv)
+        self.settings_box.add(self.preview.get_widget())
 
         self.play_button = self.interface.get_object("play_button")
         self.stop_button = self.interface.get_object("stop_button")
@@ -99,16 +104,12 @@ class SltvUI:
         self.audio_effect_button = self.interface.get_object(
                 "audio_effect_button"
         )
-        self.preview_checkbutton = self.interface.get_object(
-                "preview_checkbutton"
-        )
 
 
         self.video_effect_label = self.interface.get_object("video_effect_label")
         self.audio_effect_label = self.interface.get_object("audio_effect_label")
 
         self.effect_checkbutton.connect("toggled", self.effect_toggled)
-        self.preview_checkbutton.connect("toggled", self.preview_toggled)
         self.play_button.connect("clicked", self.on_play_press)
         self.stop_button.connect("clicked", self.on_stop_press)
         self.overlay_button.connect("clicked", self.on_overlay_change)
@@ -120,8 +121,6 @@ class SltvUI:
         self.audio_effect_button.connect("clicked", self.effect_changed)
 
         self.set_effects(False)
-        self.preview_state = False
-        self.sltv.set_preview(False)
         self.overlay_textview = self.interface.get_object("overlay_textview")
         self.effect_enabled = False
 
@@ -238,10 +237,6 @@ class SltvUI:
                 self.sltv.change_effect(
                         self.audio_effect_combobox.get_active_text(), MEDIA_AUDIO
                 )
-
-    def preview_toggled(self, checkbox):
-        self.preview_state = not self.preview_state
-        self.sltv.set_preview(self.preview_state)
 
     def on_stop_press(self, event):
         self.stop_button.set_sensitive(False)

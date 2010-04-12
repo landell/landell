@@ -13,6 +13,7 @@ sltvlib_DATA = \
 	edit.py \
 	medialist.py \
 	outputs.py \
-	videoconverter.py
+	videoconverter.py \
+	preview.py
 
 EXTRA_DIST = $(sltvlib_DATA)
