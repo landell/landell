@@ -33,6 +33,7 @@ import sltv.effects
 
 
 import preview
+import overlay
 
 class SltvUI:
 
@@ -48,11 +49,12 @@ class SltvUI:
 
         self.settings_box = self.interface.get_object("vbox4")
         self.preview = preview.PreviewUI(self.sltv)
+        self.overlay = overlay.OverlayUI(self.sltv)
         self.settings_box.add(self.preview.get_widget())
+        self.settings_box.add(self.overlay.get_widget())
 
         self.play_button = self.interface.get_object("play_button")
         self.stop_button = self.interface.get_object("stop_button")
-        self.overlay_button = self.interface.get_object("overlay_button")
 
         self.outputs = self.sltv.outputs
         self.outputs_ui = outputs.Outputs(self, self.outputs)
@@ -112,7 +114,6 @@ class SltvUI:
         self.effect_checkbutton.connect("toggled", self.effect_toggled)
         self.play_button.connect("clicked", self.on_play_press)
         self.stop_button.connect("clicked", self.on_stop_press)
-        self.overlay_button.connect("clicked", self.on_overlay_change)
         self.main_window.connect("delete_event", self.on_window_closed)
         output_menuitem.connect("activate", self.show_output)
         sources_menuitem.connect("activate", self.show_sources)
@@ -121,7 +122,6 @@ class SltvUI:
         self.audio_effect_button.connect("clicked", self.effect_changed)
 
         self.set_effects(False)
-        self.overlay_textview = self.interface.get_object("overlay_textview")
         self.effect_enabled = False
 
     def _create_effects_combobox(self, combobox, effect_type):
@@ -163,22 +163,15 @@ class SltvUI:
 
     def play(self):
         if not self.sltv.playing():
-            overlay_buffer = self.overlay_textview.get_buffer()
-            overlay_text = overlay_buffer.get_text(
-                overlay_buffer.get_start_iter(),
-                overlay_buffer.get_end_iter(),
-                True
-            )
+            self.overlay.play()
             video_effect_name = self.video_effect_combobox.get_active_text()
             audio_effect_name = self.audio_effect_combobox.get_active_text()
-            self.overlay_button.set_sensitive(True)
             if self.effect_enabled == True:
                 if self.selected_audio_source() == None:
                     self.audio_effect_button.set_sensitive(False)
                 else:
                     self.audio_effect_button.set_sensitive(True)
                 self.video_effect_button.set_sensitive(True)
-            self.sltv.set_overlay_text(overlay_text)
             self.sltv.set_video_effect_name(video_effect_name)
             self.sltv.set_audio_effect_name(audio_effect_name)
             self.sltv.play()
@@ -245,7 +238,7 @@ class SltvUI:
 
     def stop(self):
         if self.sltv.playing():
-            self.overlay_button.set_sensitive(False)
+            self.overlay.stop()
             self.audio_effect_button.set_sensitive(False)
             self.video_effect_button.set_sensitive(False)
             self.audio_sources_combobox.set_sensitive(True)
@@ -253,12 +246,3 @@ class SltvUI:
 
     def on_window_closed(self, event, data):
         gtk.main_quit()
-
-    def on_overlay_change(self, event):
-        overlay_buffer = self.overlay_textview.get_buffer()
-        overlay_text = overlay_buffer.get_text(
-            overlay_buffer.get_start_iter(),
-            overlay_buffer.get_end_iter(),
-            True
-        )
-        self.sltv.change_overlay(overlay_text)
