@@ -31,8 +31,17 @@ class DVInputUI(InputUI):
         self.port_entry = self.interface.get_object("port_entry")
         self.width_entry = self.interface.get_object("width_entry")
         self.height_entry = self.interface.get_object("height_entry")
+        self.file_checkbutton = self.interface.get_object("file_checkbutton")
+        self.file_label = self.interface.get_object("file_label")
         self.filechooserbutton = SaveButton()
-        self.box.attach(self.filechooserbutton, 1, 2, 4, 5)
+        self.filechooserbutton.set_sensitive(False)
+        self.box.attach(self.filechooserbutton, 1, 2, 5, 6)
+
+        self.file_checkbutton.connect("toggled", self.file_toggle)
+
+    def file_toggle(self, checkbutton):
+        self.file_label.set_sensitive(checkbutton.get_active())
+        self.filechooserbutton.set_sensitive(checkbutton.get_active())
 
     def get_widget(self):
         return self.box
@@ -48,6 +57,7 @@ class DVInputUI(InputUI):
         self.port_entry.set_text(self.config["port"])
         self.width_entry.set_text(self.config["width"])
         self.height_entry.set_text(self.config["height"])
+        self.file_checkbutton.set_active(bool(self.config["file_enabled"]))
         #  set_filename doesn't accept null values
         if not self.config["filename"]:
             self.config["filename"] = ""
@@ -58,5 +68,6 @@ class DVInputUI(InputUI):
         self.config["port"] = self.port_entry.get_text()
         self.config["width"] = self.width_entry.get_text()
         self.config["height"] = self.height_entry.get_text()
+        self.config["file_enabled"] = self.file_checkbutton.get_active()
         self.config["filename"] = self.filechooserbutton.get_filename()
         return self.config

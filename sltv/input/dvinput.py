@@ -36,12 +36,8 @@ class DVInput(Input):
         self.add(self.capsfilter)
         self.tee = gst.element_factory_make("tee", "dv_tee")
         self.add(self.tee)
-        self.queue_save = gst.element_factory_make("queue", "dv_save_queue")
-        self.add(self.queue_save)
         self.queue_src = gst.element_factory_make("queue", "dv_src_queue")
         self.add(self.queue_src)
-        self.filesink = gst.element_factory_make("filesink", "dvfilesink")
-        self.add(self.filesink)
         self.dvdemux = gst.element_factory_make("dvdemux", "dvdemux")
         self.add(self.dvdemux)
         self.dvdemux.connect("pad-added", self.on_pad_added)
@@ -56,9 +52,7 @@ class DVInput(Input):
         gst.element_link_many(
                 self.dv_src, self.capsfilter, self.tee, self.queue_src, self.dvdemux,
         )
-        gst.element_link_many(
-                self.tee, self.queue_save, self.filesink
-        )
+
         gst.element_link_many(
                 self.video_queue, self.dvdec, self.videoscale
         )
@@ -82,4 +76,13 @@ class DVInput(Input):
             )
         )
         self.capsfilter.set_property("caps", caps)
-        self.filesink.set_property("location", dict["filename"])
+
+        if (bool(dict["file_enabled"])):
+            self.queue_save = gst.element_factory_make("queue", "dv_save_queue")
+            self.add(self.queue_save)
+            self.filesink = gst.element_factory_make("filesink", "dvfilesink")
+            self.add(self.filesink)
+            gst.element_link_many(
+                    self.tee, self.queue_save, self.filesink
+            )
+            self.filesink.set_property("location", dict["filename"])
