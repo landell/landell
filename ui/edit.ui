@@ -76,10 +76,10 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="output_label">
+          <object class="GtkLabel" id="audio_label">
             <property name="no_show_all">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">&lt;b&gt;Output settings&lt;/b&gt;</property>
+            <property name="label" translatable="yes">&lt;b&gt;Audio settings&lt;/b&gt;</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
@@ -88,7 +88,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHSeparator" id="output_separator">
+          <object class="GtkHSeparator" id="audio_separator">
             <property name="no_show_all">True</property>
           </object>
           <packing>
@@ -97,13 +97,13 @@
           </packing>
         </child>
         <child>
-          <object class="GtkAlignment" id="alignment2">
+          <object class="GtkAlignment" id="alignment5">
             <property name="visible">True</property>
-            <property name="bottom_padding">10</property>
             <property name="left_padding">12</property>
             <child>
-              <object class="GtkHBox" id="output_box">
+              <object class="GtkHBox" id="audio_box">
                 <property name="visible">True</property>
+                <property name="no_show_all">True</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -115,10 +115,10 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="encoding_label">
+          <object class="GtkLabel" id="output_label">
             <property name="no_show_all">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">&lt;b&gt;Encoding settings&lt;/b&gt;</property>
+            <property name="label" translatable="yes">&lt;b&gt;Output settings&lt;/b&gt;</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
@@ -127,12 +127,52 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHSeparator" id="encoding_separator">
+          <object class="GtkHSeparator" id="output_separator">
             <property name="no_show_all">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="position">6</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkAlignment" id="alignment2">
+            <property name="visible">True</property>
+            <property name="bottom_padding">10</property>
+            <property name="left_padding">12</property>
+            <child>
+              <object class="GtkHBox" id="output_box">
+                <property name="visible">True</property>
+                <property name="no_show_all">True</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="encoding_label">
+            <property name="no_show_all">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">&lt;b&gt;Encoding settings&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">8</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHSeparator" id="encoding_separator">
+            <property name="no_show_all">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">9</property>
           </packing>
         </child>
         <child>
@@ -143,6 +183,7 @@
             <child>
               <object class="GtkHBox" id="encoding_box">
                 <property name="visible">True</property>
+                <property name="no_show_all">True</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -150,7 +191,7 @@
             </child>
           </object>
           <packing>
-            <property name="position">7</property>
+            <property name="position">10</property>
           </packing>
         </child>
         <child>
@@ -163,7 +204,7 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="position">8</property>
+            <property name="position">11</property>
           </packing>
         </child>
         <child>
@@ -173,7 +214,7 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="position">9</property>
+            <property name="position">12</property>
           </packing>
         </child>
         <child>
@@ -184,6 +225,7 @@
             <child>
               <object class="GtkHBox" id="container_box">
                 <property name="visible">True</property>
+                <property name="no_show_all">True</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -191,7 +233,7 @@
             </child>
           </object>
           <packing>
-            <property name="position">10</property>
+            <property name="position">13</property>
           </packing>
         </child>
         <child internal-child="action_area">

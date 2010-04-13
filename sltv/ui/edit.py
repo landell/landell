@@ -20,6 +20,7 @@ import gobject
 import gtk
 from sltv.settings import UI_DIR
 import sltv.registry
+from sltv.input.core import INPUT_TYPE_AUDIO
 
 class Edit:
     def __init__(self, window, media_list):
@@ -44,6 +45,9 @@ class Edit:
         self.element_setting_separator = self.interface.get_object(
                 "element_setting_separator"
         )
+        self.audio_label = self.interface.get_object("audio_label")
+        self.audio_separator = self.interface.get_object("audio_separator")
+        self.audio_box = self.interface.get_object("audio_box")
 
         self.registry = sltv.registry.registry
         self.factories = {}
@@ -102,12 +106,24 @@ class Edit:
             self.container_box.remove(self.config_box)
         self.config_box = self.factory.get_ui().get_widget()
         if self.config_box:
+            self.container_box.show()
             self.container_box.add(self.config_box)
             self.element_setting_label.show()
             self.element_setting_separator.show()
         else:
             self.element_setting_label.hide()
             self.element_setting_separator.hide()
+            self.container_box.hide()
+
+        if self.factory.get_capabilities() and \
+                self.factory.get_capabilities() & INPUT_TYPE_AUDIO:
+            self.audio_label.show()
+            self.audio_separator.show()
+            self.audio_box.show()
+        else:
+            self.audio_label.hide()
+            self.audio_separator.hide()
+            self.audio_box.hide()
 
     def on_change_media_item(self, button):
         self.set_current_factory()

@@ -8,6 +8,7 @@ ui_DATA = edit.ui \
 	preview.ui \
 	overlay.ui \
 	effects.ui \
-	volume.ui
+	volume.ui \
+	audio_input.ui
 
 EXTRA_DIST = $(ui_DATA)
