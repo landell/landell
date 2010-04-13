@@ -36,14 +36,14 @@ class OggTheoraVorbisEncoder(Encoder):
                 "audioconvert", "audioconvert"
             )
             self.add(audioconvert)
-            vorbisenc = gst.element_factory_make("vorbisenc", "vorbisenc")
-            self.add(vorbisenc)
+            self.vorbisenc = gst.element_factory_make("vorbisenc", "vorbisenc")
+            self.add(self.vorbisenc)
             queue_audio = gst.element_factory_make(
                     "queue", "queue_audio_enc"
             )
             self.add(queue_audio)
             gst.element_link_many(
-                    audioconvert, vorbisenc, queue_audio, self.oggmux
+                    audioconvert, self.vorbisenc, queue_audio, self.oggmux
             )
             self.audio_pad.set_target(audioconvert.sink_pads().next())
         if type & INPUT_TYPE_VIDEO:
@@ -63,6 +63,9 @@ class OggTheoraVorbisEncoder(Encoder):
         self.oggmux.set_property("max-delay", 10000000)
         self.oggmux.set_property("max-page-delay", 10000000)
         if self.theoraenc:
-            self.theoraenc.set_property("quality", int(dict["quality"]))
+            self.theoraenc.set_property("quality", int(dict["theora_quality"]))
             self.theoraenc.set_property("keyframe-force", int(dict["keyframe"]))
-            self.theoraenc.set_property("bitrate", int(dict["bitrate"]))
+            self.theoraenc.set_property("bitrate", int(dict["theora_bitrate"]))
+        if self.vorbisenc:
+            self.vorbisenc.set_property("quality", float(dict["vorbis_quality"]))
+            self.vorbisenc.set_property("bitrate", int(dict["vorbis_bitrate"]))
