@@ -55,6 +55,7 @@ class Sltv:
         self.overlay_text = None
         self.audio_effect_name = None
         self.video_effect_name = None
+        self.volume = None
 
     def set_overlay_text(self, overlay_text):
         self.overlay_text = overlay_text
@@ -162,9 +163,22 @@ class Sltv:
             self.audio_tee = gst.element_factory_make("tee", "audio_tee")
             self.player.add(self.audio_tee)
 
+            self.volume_convert1 = gst.element_factory_make(
+                "audioconvert", "volume_convert1"
+            )
+            self.player.add(self.volume_convert1)
+            self.volume_convert2 = gst.element_factory_make(
+                "audioconvert", "volume_convert2"
+            )
+            self.player.add(self.volume_convert2)
+
+            self.volume = gst.element_factory_make("volume", "volume")
+            self.player.add(self.volume)
+
             gst.element_link_many(
-                    self.queue_audio, self.effect[MEDIA_AUDIO], self.convert,
-                    self.audio_tee
+                    self.queue_audio, self.volume_convert1, self.volume,
+                    self.volume_convert2, self.effect[MEDIA_AUDIO],
+                    self.convert, self.audio_tee
             )
 
         for row in self.outputs.get_store():
@@ -275,6 +289,10 @@ class Sltv:
 
     def change_overlay(self, overlay_text):
         self.overlay.set_property("text", overlay_text)
+
+    def set_volume(self, value):
+        if self.playing():
+            self.volume.set_property("volume", value)
 
     def on_message(self, bus, message):
         t = message.type

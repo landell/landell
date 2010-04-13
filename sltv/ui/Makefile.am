@@ -16,6 +16,7 @@ sltvlib_DATA = \
 	videoconverter.py \
 	preview.py \
 	overlay.py \
-	effects.py
+	effects.py \
+	volume.py
 
 EXTRA_DIST = $(sltvlib_DATA)

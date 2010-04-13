@@ -34,6 +34,7 @@ import outputs
 import preview
 import effects
 import overlay
+import volume
 
 class SltvUI:
 
@@ -51,9 +52,11 @@ class SltvUI:
         self.preview = preview.PreviewUI(self.sltv)
         self.effects = effects.EffectsUI(self.sltv)
         self.overlay = overlay.OverlayUI(self.sltv)
+        self.volume = volume.VolumeUI(self.sltv)
         self.settings_box.add(self.preview.get_widget())
         self.settings_box.add(self.effects.get_widget())
         self.settings_box.add(self.overlay.get_widget())
+        self.settings_box.add(self.volume.get_widget())
 
         self.play_button = self.interface.get_object("play_button")
         self.stop_button = self.interface.get_object("stop_button")
@@ -127,6 +130,7 @@ class SltvUI:
         if not self.sltv.playing():
             self.effects.play()
             self.overlay.play()
+            self.volume.play()
             self.sltv.play()
         self.audio_sources_combobox.set_sensitive(False)
 
@@ -159,6 +163,7 @@ class SltvUI:
         if self.sltv.playing():
             self.effects.stop()
             self.overlay.stop()
+            self.volume.stop()
             self.audio_sources_combobox.set_sensitive(True)
             self.sltv.stop()
 
