@@ -14,15 +14,7 @@
       </object>
     </child>
     <child>
-      <object class="GtkFileChooserButton" id="filechooserbutton1">
-        <property name="visible">True</property>
-        <property name="create_folders">False</property>
-        <property name="do_overwrite_confirmation">True</property>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-      </packing>
+      <placeholder/>
     </child>
   </object>
 </interface>

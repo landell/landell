@@ -20,20 +20,21 @@
 import gobject
 import gtk
 from sltv.settings import UI_DIR
+from sltv.ui.save_button import SaveButton
 from core import InputUI
 
 class FileInputUI(InputUI):
     def __init__(self):
         InputUI.__init__(self)
         self.interface.add_from_file(UI_DIR + "/input/fileinput.ui")
-        self.button = self.interface.get_object("filechooserbutton1")
-        self.button.set_local_only(True)
-        self.button.connect("file_set", self.set_filename)
         self.box = self.interface.get_object("file_box")
         self.config["location"] = ""
+        self.button = SaveButton()
+        self.box.attach(self.button, 1, 2, 0, 1)
 
-    def set_filename(self, button):
-        self.config["location"] = button.get_filename()
+    def get_config(self):
+        self.config["location"] = self.button.get_filename()
+        return self.config
 
     def update_config(self):
         self.button.set_filename(self.config["location"])
