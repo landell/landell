@@ -19,20 +19,22 @@
 import gobject
 import gtk
 from sltv.settings import UI_DIR
+from sltv.ui.save_button import SaveButton
 from core import OutputUI
 
 class FileOutputUI(OutputUI):
     def __init__(self):
         OutputUI.__init__(self)
         self.interface.add_from_file(UI_DIR + "/output/fileoutput.ui")
-        self.button = self.interface.get_object("filechooserbutton1")
-        self.button.set_local_only(True)
-        self.button.connect("file_set", self.set_filename)
         self.box = self.interface.get_object("file_box")
         self.config["location"] = "default.ogg"
+        self.button = SaveButton()
 
-    def set_filename(self, button):
-        self.config["location"] = button.get_filename()
+        self.box.attach(self.button, 1, 2, 0, 1)
+
+    def get_config(self):
+        self.config["location"] = self.button.get_filename()
+        return self.config
 
     def update_config(self):
         self.button.set_filename(self.config["location"])
