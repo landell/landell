@@ -113,15 +113,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkFileChooserButton" id="filechooserbutton">
-        <property name="visible">True</property>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">4</property>
-        <property name="bottom_attach">5</property>
-      </packing>
+      <placeholder/>
     </child>
   </object>
 </interface>

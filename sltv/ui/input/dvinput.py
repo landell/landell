@@ -19,6 +19,7 @@
 import gobject
 import gtk
 from sltv.settings import UI_DIR
+from sltv.ui.save_button import SaveButton
 from core import InputUI
 
 class DVInputUI(InputUI):
@@ -30,7 +31,8 @@ class DVInputUI(InputUI):
         self.port_entry = self.interface.get_object("port_entry")
         self.width_entry = self.interface.get_object("width_entry")
         self.height_entry = self.interface.get_object("height_entry")
-        self.filechooserbutton = self.interface.get_object("filechooserbutton")
+        self.filechooserbutton = SaveButton()
+        self.box.attach(self.filechooserbutton, 1, 2, 4, 5)
 
     def get_widget(self):
         return self.box
