@@ -33,9 +33,6 @@ class Edit:
         self.element_setting_label = self.interface.get_object(
                 "element_setting_label"
         )
-        self.element_setting_separator = self.interface.get_object(
-                "element_setting_separator"
-        )
 
         self.registry = sltv.registry.registry
         self.factories = {}
@@ -100,10 +97,8 @@ class Edit:
             self.container_box.show()
             self.container_box.add(self.config_box)
             self.element_setting_label.show()
-            self.element_setting_separator.show()
         else:
             self.element_setting_label.hide()
-            self.element_setting_separator.hide()
             self.container_box.hide()
 
         if self.factory.get_capabilities() and \

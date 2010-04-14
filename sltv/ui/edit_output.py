@@ -33,8 +33,6 @@ class EditOutput(Edit):
 
         self.encoding_label = self.interface.get_object("encoding_label")
         self.encoding_label.show()
-        self.encoding_separator = self.interface.get_object("encoding_separator")
-        self.encoding_separator.show()
         self.encoding_box = self.interface.get_object("encoding_box")
         self.encoding_box.show()
 
