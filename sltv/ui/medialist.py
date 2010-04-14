@@ -19,6 +19,7 @@
 import gobject
 import gtk
 from sltv.settings import UI_DIR
+import sltv.registry
 
 class MediaListUI:
     def __init__(self, ui, media_list):
@@ -31,15 +32,32 @@ class MediaListUI:
         self.remove_button = self.interface.get_object("remove_button")
         close_button = self.interface.get_object("close_button")
 
+        # Setting combobox for type to be added
+
+        self.registry = sltv.registry.registry
+        self.factories = {}
+
+        self.elements_combobox = self.interface.get_object("elements_combobox")
+
+        self.elements_liststore = gtk.ListStore(str)
+        self.elements_liststore.set_default_sort_func(lambda *args: -1)
+        self.elements_liststore.set_sort_column_id(0, gtk.SORT_ASCENDING)
+        self.elements_combobox.set_model(self.elements_liststore)
+        cell = gtk.CellRendererText()
+        self.elements_combobox.pack_start(cell, True)
+        self.elements_combobox.add_attribute(cell, "text", 0)
+
+        # Setting tree view
+
         self.media_list = media_list
         self.media_list_treeview = self.interface.get_object(
                 "medialist_treeview"
         )
 
-        elements_liststore = self.media_list.get_store()
-        elements_liststore.set_default_sort_func(lambda *args: -1)
-        elements_liststore.set_sort_column_id(0, gtk.SORT_ASCENDING)
-        self.media_list_treeview.set_model(elements_liststore)
+        media_liststore = self.media_list.get_store()
+        media_liststore.set_default_sort_func(lambda *args: -1)
+        media_liststore.set_sort_column_id(0, gtk.SORT_ASCENDING)
+        self.media_list_treeview.set_model(media_liststore)
         cell = gtk.CellRendererText()
         column =  gtk.TreeViewColumn('Items', cell, text=0)
         self.media_list_treeview.append_column(column)
@@ -55,6 +73,11 @@ class MediaListUI:
         self.remove_button.connect("clicked", self.on_remove_item)
         close_button.connect("clicked", self.close_dialog)
         self.dialog.connect("delete_event", self.close_dialog)
+        self.elements_combobox.connect("changed", self.on_change_element)
+
+    def on_change_element(self, button):
+        selection = self.elements_combobox.get_active_text()
+        self.factory = self.factories[selection]
 
     def block_buttons(self, selection):
         (model, iter) = selection.get_selected()
@@ -77,6 +100,7 @@ class MediaListUI:
 
     def on_add_item(self, button):
         self.edit_item.set_media_item(None)
+        self.edit_item.set_factory(self.factory)
         self.edit_item.show_window()
 
     def on_edit_item(self, button):

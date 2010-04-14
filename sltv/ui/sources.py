@@ -46,3 +46,13 @@ class Sources(MediaListUI):
     def __init__(self, ui, sources):
         MediaListUI.__init__(self, ui, sources)
         self.edit_item = edit_source.EditSource(self.dialog, self.media_list)
+
+        # Adding types to combobox
+
+        factories = self.registry.get_factories("input")
+
+        for factory in factories:
+            self.elements_liststore.append((factory.get_name(),))
+            self.factories[factory.get_name()] = factory
+
+        self.elements_combobox.set_active(0)

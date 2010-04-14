@@ -28,15 +28,6 @@ class Edit:
         self.interface.add_from_file(UI_DIR + "/edit.ui")
         self.dialog = self.interface.get_object("edit_dialog")
         self.dialog.set_transient_for(window)
-        self.elements_combobox = self.interface.get_object("elements_combobox")
-
-        self.elements_liststore = gtk.ListStore(str)
-        self.elements_liststore.set_default_sort_func(lambda *args: -1)
-        self.elements_liststore.set_sort_column_id(0, gtk.SORT_ASCENDING)
-        self.elements_combobox.set_model(self.elements_liststore)
-        cell = gtk.CellRendererText()
-        self.elements_combobox.pack_start(cell, True)
-        self.elements_combobox.add_attribute(cell, "text", 0)
         self.name_entry = self.interface.get_object("name_entry")
         self.container_box = self.interface.get_object("container_box")
         self.element_setting_label = self.interface.get_object(
@@ -45,17 +36,19 @@ class Edit:
         self.element_setting_separator = self.interface.get_object(
                 "element_setting_separator"
         )
-        self.audio_label = self.interface.get_object("audio_label")
-        self.audio_separator = self.interface.get_object("audio_separator")
-        self.audio_box = self.interface.get_object("audio_box")
 
         self.registry = sltv.registry.registry
         self.factories = {}
 
-        self.elements_combobox.connect("changed", self.on_change_media_item)
         self.config_box = None
         self.media_list = media_list
         self.media_item = None
+
+        self.audio_box = self.interface.get_object("audio_box")
+        self.audio_interface = gtk.Builder()
+        self.audio_interface.add_from_file(UI_DIR + "/audio_input.ui")
+        self.audio_config = None
+
 
     def set_media_item(self, media_item):
         self.media_item = media_item
@@ -66,7 +59,6 @@ class Edit:
 
     def show_window(self):
         self.name_entry.set_sensitive(self.media_item == None)
-        self.elements_combobox.set_sensitive(self.media_item == None)
         self.dialog.show_all()
         response = self.dialog.run()
         if response == gtk.RESPONSE_ACCEPT:
@@ -101,7 +93,6 @@ class Edit:
 
     def set_factory(self, factory):
         self.factory = factory
-        self.elements_combobox.set_active_iter(self._get_factory_index())
         if self.config_box:
             self.container_box.remove(self.config_box)
         self.config_box = self.factory.get_ui().get_widget()
@@ -117,17 +108,10 @@ class Edit:
 
         if self.factory.get_capabilities() and \
                 self.factory.get_capabilities() & INPUT_TYPE_AUDIO:
-            self.audio_label.show()
-            self.audio_separator.show()
-            self.audio_box.show()
+            if self.audio_config is None:
+                self.audio_config = self.audio_interface.get_object("audio_box")
+                self.audio_box.add(self.audio_config)
         else:
-            self.audio_label.hide()
-            self.audio_separator.hide()
-            self.audio_box.hide()
-
-    def on_change_media_item(self, button):
-        self.set_current_factory()
-
-    def set_current_factory(self):
-        selection = self.elements_combobox.get_active_text()
-        self.set_factory(self.factories[selection])
+            if self.audio_config:
+                self.audio_box.remove(self.audio_config)
+                self.audio_config = None

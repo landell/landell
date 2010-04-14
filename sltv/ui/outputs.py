@@ -27,3 +27,12 @@ class Outputs(MediaListUI):
         MediaListUI.__init__(self, ui, outputs)
         self.dialog.set_title("Outputs")
         self.edit_item = edit_output.EditOutput(self.dialog, self.media_list)
+
+        # Adding types to combobox
+
+        factories = self.registry.get_factories("output")
+
+        for factory in factories:
+            self.elements_liststore.append((factory.get_name(),))
+            self.factories[factory.get_name()] = factory
+        self.elements_combobox.set_active(0)

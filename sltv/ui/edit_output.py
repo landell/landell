@@ -31,29 +31,12 @@ class EditOutput(Edit):
         label.set_label("Output name:")
         self.dialog.set_title("Edit Output")
 
-        self.output_label = self.interface.get_object("output_label")
-        self.output_label.show()
-        self.output_separator = self.interface.get_object("output_separator")
-        self.output_separator.show()
-        self.output_box = self.interface.get_object("output_box")
-        self.output_box.show()
-
         self.encoding_label = self.interface.get_object("encoding_label")
         self.encoding_label.show()
         self.encoding_separator = self.interface.get_object("encoding_separator")
         self.encoding_separator.show()
         self.encoding_box = self.interface.get_object("encoding_box")
         self.encoding_box.show()
-
-
-        factories = self.registry.get_factories("output")
-
-        for factory in factories:
-            self.elements_liststore.append((factory.get_name(),))
-            self.factories[factory.get_name()] = factory
-
-        self.elements_combobox.set_active(0)
-        self.set_current_factory()
 
         self.encoding_factory = self.registry.get_factories("encoding")[0]
         self.converter_factory = self.registry.get_factories("converter")[0]

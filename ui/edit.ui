@@ -20,11 +20,9 @@
           <object class="GtkAlignment" id="alignment3">
             <property name="visible">True</property>
             <property name="bottom_padding">10</property>
-            <property name="left_padding">12</property>
             <child>
               <object class="GtkTable" id="table1">
                 <property name="visible">True</property>
-                <property name="n_rows">2</property>
                 <property name="n_columns">2</property>
                 <property name="column_spacing">5</property>
                 <property name="homogeneous">True</property>
@@ -32,7 +30,7 @@
                   <object class="GtkLabel" id="name_label">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
-                    <property name="label" translatable="yes">name:</property>
+                    <property name="label" translatable="yes">Name:</property>
                   </object>
                 </child>
                 <child>
@@ -46,28 +44,6 @@
                     <property name="right_attach">2</property>
                   </packing>
                 </child>
-                <child>
-                  <object class="GtkComboBox" id="elements_combobox">
-                    <property name="visible">True</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="element_label">
-                    <property name="visible">True</property>
-                    <property name="xalign">0</property>
-                    <property name="label" translatable="yes">Element type:</property>
-                  </object>
-                  <packing>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                  </packing>
-                </child>
               </object>
             </child>
           </object>
@@ -76,82 +52,26 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="audio_label">
-            <property name="no_show_all">True</property>
-            <property name="xalign">0</property>
-            <property name="label" translatable="yes">&lt;b&gt;Audio settings&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+          <object class="GtkHBox" id="audio_box">
+            <property name="visible">True</property>
+            <child>
+              <placeholder/>
+            </child>
           </object>
           <packing>
-            <property name="expand">False</property>
             <property name="position">2</property>
           </packing>
         </child>
         <child>
-          <object class="GtkHSeparator" id="audio_separator">
+          <object class="GtkHBox" id="output_box">
+            <property name="visible">True</property>
             <property name="no_show_all">True</property>
+            <child>
+              <placeholder/>
+            </child>
           </object>
           <packing>
-            <property name="expand">False</property>
             <property name="position">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkAlignment" id="alignment5">
-            <property name="visible">True</property>
-            <property name="left_padding">12</property>
-            <child>
-              <object class="GtkHBox" id="audio_box">
-                <property name="visible">True</property>
-                <property name="no_show_all">True</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="position">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="output_label">
-            <property name="no_show_all">True</property>
-            <property name="xalign">0</property>
-            <property name="label" translatable="yes">&lt;b&gt;Output settings&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">5</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHSeparator" id="output_separator">
-            <property name="no_show_all">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">6</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkAlignment" id="alignment2">
-            <property name="visible">True</property>
-            <property name="bottom_padding">10</property>
-            <property name="left_padding">12</property>
-            <child>
-              <object class="GtkHBox" id="output_box">
-                <property name="visible">True</property>
-                <property name="no_show_all">True</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="position">7</property>
           </packing>
         </child>
         <child>
@@ -163,7 +83,7 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="position">8</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child>
@@ -172,7 +92,7 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="position">9</property>
+            <property name="position">5</property>
           </packing>
         </child>
         <child>
@@ -191,7 +111,7 @@
             </child>
           </object>
           <packing>
-            <property name="position">10</property>
+            <property name="position">6</property>
           </packing>
         </child>
         <child>
@@ -204,7 +124,7 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="position">11</property>
+            <property name="position">7</property>
           </packing>
         </child>
         <child>
@@ -214,7 +134,7 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="position">12</property>
+            <property name="position">8</property>
           </packing>
         </child>
         <child>
@@ -233,7 +153,7 @@
             </child>
           </object>
           <packing>
-            <property name="position">13</property>
+            <property name="position">9</property>
           </packing>
         </child>
         <child internal-child="action_area">
