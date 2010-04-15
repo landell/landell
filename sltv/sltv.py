@@ -59,6 +59,8 @@ class Sltv:
 
     def set_overlay_text(self, overlay_text):
         self.overlay_text = overlay_text
+        if self.playing():
+            self.overlay.set_property("text", overlay_text)
 
     def set_video_effect_name(self, video_effect_name):
         self.video_effect_name = video_effect_name
@@ -286,9 +288,6 @@ class Sltv:
 
     def set_preview(self, state):
         self.preview_enabled = state
-
-    def change_overlay(self, overlay_text):
-        self.overlay.set_property("text", overlay_text)
 
     def set_volume(self, value):
         if self.playing():

@@ -47,6 +47,6 @@ class OverlayUI:
         self.button.set_sensitive(False)
     def on_overlay_change(self, event):
         text = self._get_text()
-        self.sltv.change_overlay(text)
+        self.sltv.set_overlay_text(text)
     def get_widget(self):
         return self.widget
