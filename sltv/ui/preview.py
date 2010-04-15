@@ -24,7 +24,7 @@ from sltv.settings import UI_DIR
 
 class PreviewUI:
 
-    def __init__(self, sltv):
+    def __init__(self, ui, sltv):
         self.sltv = sltv
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/preview.ui")

@@ -26,7 +26,7 @@ from sltv.sltv import MEDIA_VIDEO, MEDIA_AUDIO
 
 class EffectsUI:
 
-    def __init__(self, sltv):
+    def __init__(self, ui, sltv):
         self.sltv = sltv
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/effects.ui")
