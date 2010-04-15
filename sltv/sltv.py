@@ -83,12 +83,30 @@ class Sltv(gobject.GObject):
         self.audio_source = None
 
         self.overlay_text = None
+        self.overlay_font = "Sans Bold 14"
+        self.valign = "baseline"
+        self.halign = "center"
         self.volume = None
         self.volume_value = None
 
         self.pending_state = None
 
         self.input_type = 0
+
+    def set_halign(self, halign):
+        self.halign = halign
+        if self.playing():
+            self.overlay.set_property("halign", halign)
+
+    def set_valign(self, valign):
+        self.valign = valign
+        if self.playing():
+            self.overlay.set_property("valign", valign)
+
+    def set_overlay_font(self, overlay_font):
+        self.overlay_font = overlay_font
+        if self.playing():
+            self.overlay.set_property("font-desc", overlay_font)
 
     def set_overlay_text(self, overlay_text):
         self.overlay_text = overlay_text
@@ -172,7 +190,9 @@ class Sltv(gobject.GObject):
         self.player.add(self.effect[MEDIA_VIDEO])
 
         self.overlay = gst.element_factory_make("textoverlay", "overlay")
-        self.overlay.set_property("font-desc", "Sans Bold 14")
+        self.overlay.set_property("font-desc", self.overlay_font)
+        self.overlay.set_property("halign", self.halign)
+        self.overlay.set_property("valign", self.valign)
         self.player.add(self.overlay)
 
         gst.element_link_many(
