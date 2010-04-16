@@ -27,6 +27,7 @@ from swap import Swap
 
 import medialist
 import effect
+import volume
 
 MEDIA_AUDIO = 1
 MEDIA_VIDEO = 2
@@ -165,21 +166,11 @@ class Sltv:
             self.audio_tee = gst.element_factory_make("tee", "audio_tee")
             self.player.add(self.audio_tee)
 
-            self.volume_convert1 = gst.element_factory_make(
-                "audioconvert", "volume_convert1"
-            )
-            self.player.add(self.volume_convert1)
-            self.volume_convert2 = gst.element_factory_make(
-                "audioconvert", "volume_convert2"
-            )
-            self.player.add(self.volume_convert2)
-
-            self.volume = gst.element_factory_make("volume", "volume")
+            self.volume = volume.Volume()
             self.player.add(self.volume)
 
             gst.element_link_many(
-                    self.queue_audio, self.volume_convert1, self.volume,
-                    self.volume_convert2, self.effect[MEDIA_AUDIO],
+                    self.queue_audio, self.volume, self.effect[MEDIA_AUDIO],
                     self.convert, self.audio_tee
             )
 
