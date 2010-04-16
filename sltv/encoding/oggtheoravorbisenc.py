@@ -31,6 +31,9 @@ class OggTheoraVorbisEncoder(Encoder):
         Encoder.__init__(self, type)
         self.oggmux = gst.element_factory_make("oggmux", "oggmux")
         self.add(self.oggmux)
+        self.theoraenc = None
+        self.vorbisenc = None
+
         if type & INPUT_TYPE_AUDIO:
             audioconvert = gst.element_factory_make(
                 "audioconvert", "audioconvert"
