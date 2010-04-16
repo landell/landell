@@ -281,7 +281,7 @@ class Sltv:
         self.preview_enabled = state
 
     def set_volume(self, value):
-        if self.playing():
+        if self.playing() and self.volume:
             self.volume.set_property("volume", value)
 
     def on_message(self, bus, message):
