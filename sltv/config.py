@@ -72,7 +72,10 @@ class Config:
         return False
 
     def get_item(self, section, item_name):
-        return self.config[section][item_name]
+        if self.has_item(section, item_name):
+            return self.config[section][item_name]
+        else:
+            return None
 
     def save(self):
         self.config.write()
