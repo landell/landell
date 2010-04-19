@@ -18,7 +18,8 @@ sltvlib_DATA = \
 	config.py \
 	videoconverter.py \
 	volume.py \
-	log.py
+	log.py \
+	audioresample.py
 
 EXTRA_DIST = $(sltvlib_DATA)
 
