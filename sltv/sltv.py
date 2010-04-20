@@ -38,6 +38,8 @@ class Sltv(gobject.GObject):
         gobject.GObject.__init__(self)
         gobject.signal_new("stopped", Sltv, gobject.SIGNAL_RUN_LAST,
                            gobject.TYPE_NONE, ())
+        gobject.signal_new("playing", Sltv, gobject.SIGNAL_RUN_LAST,
+                           gobject.TYPE_NONE, ())
 
         self.player = None
         self.preview = Preview(preview_area)
@@ -224,7 +226,11 @@ class Sltv(gobject.GObject):
         bus.enable_sync_message_emission()
         bus.connect("message", self.on_message)
         bus.connect("sync-message::element", self.on_sync_message)
-        self.player.set_state(gst.STATE_PLAYING)
+        cr = self.player.set_state(gst.STATE_PLAYING)
+        if cr == gst.STATE_CHANGE_SUCCESS:
+            self.emit("playing")
+        elif cr == gst.STATE_CHANGE_ASYNC:
+            self.pending_state = gst.STATE_PLAYING
 
     def stop(self):
         cr = self.player.set_state(gst.STATE_NULL)
@@ -312,8 +318,10 @@ class Sltv(gobject.GObject):
             self.player.set_state(gst.STATE_NULL)
         elif t == gst.MESSAGE_ASYNC_DONE:
             if self.pending_state == gst.STATE_NULL:
-                self.pending_state = None
                 self.emit("stopped")
+            elif self.pending_state == gst.STATE_PLAYING:
+                self.emit("playing")
+            self.pending_state = None
 
     def on_sync_message(self, bus, message):
         print "sync_message received"
