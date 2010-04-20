@@ -33,18 +33,26 @@ class OverlayUI:
         self.button = self.interface.get_object("overlay_button")
         self.button.connect("clicked", self.on_overlay_change)
         self.textview = self.interface.get_object("overlay_textview")
+
+        self.sltv.connect("preplay", self._preplay)
+        self.sltv.connect("playing", self._playing)
+        self.sltv.connect("stopped", self._stopped)
+
     def _get_text(self):
         buffer = self.textview.get_buffer()
         start_iter = buffer.get_start_iter()
         end_iter = buffer.get_end_iter()
         text = buffer.get_text(start_iter, end_iter, True)
         return text
-    def play(self):
+
+    def _preplay(self, sltv):
         text = self._get_text()
-        self.button.set_sensitive(True)
         self.sltv.set_overlay_text(text)
-    def stop(self):
+    def _playing(self, sltv):
+        self.button.set_sensitive(True)
+    def _stopped(self, sltv):
         self.button.set_sensitive(False)
+
     def on_overlay_change(self, event):
         text = self._get_text()
         self.sltv.set_overlay_text(text)

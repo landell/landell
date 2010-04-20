@@ -136,7 +136,6 @@ class SltvUI:
 
     def play(self):
         if not self.sltv.playing():
-            self.overlay.play()
             self.sltv.play()
         self.audio_sources_combobox.set_sensitive(False)
 
@@ -166,7 +165,6 @@ class SltvUI:
 
     def stop(self):
         if self.sltv.playing():
-            self.overlay.stop()
             self.audio_sources_combobox.set_sensitive(True)
             self.sltv.stop()
 
