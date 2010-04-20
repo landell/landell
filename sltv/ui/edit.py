@@ -30,9 +30,11 @@ class Edit:
         self.dialog.set_transient_for(window)
         self.name_entry = self.interface.get_object("name_entry")
         self.container_box = self.interface.get_object("container_box")
-        self.element_setting_label = self.interface.get_object(
-                "element_setting_label"
-        )
+
+        self.element_interface = gtk.Builder()
+        self.element_interface.add_from_file(UI_DIR + "/element_setting.ui")
+        self.element_box = self.element_interface.get_object("element_box")
+        self.element_alignment = self.element_interface.get_object("element_alignment")
 
         self.registry = sltv.registry.registry
         self.factories = {}
@@ -41,7 +43,6 @@ class Edit:
         self.media_list = media_list
         self.media_item = None
 
-        self.audio_box = self.interface.get_object("audio_box")
         self.audio_interface = gtk.Builder()
         self.audio_interface.add_from_file(UI_DIR + "/audio_input.ui")
         self.audio_config = None
@@ -91,22 +92,17 @@ class Edit:
     def set_factory(self, factory):
         self.factory = factory
         if self.config_box:
-            self.container_box.remove(self.config_box)
+            self.element_alignment.remove(self.config_box)
+            self.container_box.remove(self.element_box)
         self.config_box = self.factory.get_ui().get_widget()
         if self.config_box:
-            self.container_box.show()
-            self.container_box.add(self.config_box)
-            self.element_setting_label.show()
-        else:
-            self.element_setting_label.hide()
-            self.container_box.hide()
+            self.element_alignment.add(self.config_box)
+            self.container_box.add(self.element_box)
 
+        if self.audio_config:
+            self.container_box.remove(self.audio_config)
+            self.audio_config = None
         if self.factory.get_capabilities() and \
                 self.factory.get_capabilities() & INPUT_TYPE_AUDIO:
-            if self.audio_config is None:
-                self.audio_config = self.audio_interface.get_object("audio_box")
-                self.audio_box.add(self.audio_config)
-        else:
-            if self.audio_config:
-                self.audio_box.remove(self.audio_config)
-                self.audio_config = None
+            self.audio_config = self.audio_interface.get_object("audio_box")
+            self.container_box.add(self.audio_config)

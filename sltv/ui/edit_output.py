@@ -31,21 +31,14 @@ class EditOutput(Edit):
         label.set_label("Output name:")
         self.dialog.set_title("Edit Output")
 
-        self.encoding_label = self.interface.get_object("encoding_label")
-        self.encoding_label.show()
-        self.encoding_box = self.interface.get_object("encoding_box")
-        self.encoding_box.show()
-
         self.encoding_factory = self.registry.get_factories("encoding")[0]
         self.converter_factory = self.registry.get_factories("converter")[0]
 
-        self.encoding_box = self.interface.get_object("encoding_box")
         self.theora_box = self.encoding_factory.get_ui().get_widget()
-        self.encoding_box.add(self.theora_box)
+        self.container_box.add(self.theora_box)
 
-        self.output_box = self.interface.get_object("output_box")
         self.setting_box = self.converter_factory.get_ui().get_widget()
-        self.output_box.add(self.setting_box)
+        self.container_box.add(self.setting_box)
 
     def set_media_item(self, media_item):
         self.media_item = media_item
