@@ -40,6 +40,9 @@ class Sltv(gobject.GObject):
                            gobject.TYPE_NONE, ())
         gobject.signal_new("playing", Sltv, gobject.SIGNAL_RUN_LAST,
                            gobject.TYPE_NONE, ())
+        gobject.signal_new("preplay", Sltv, gobject.SIGNAL_RUN_LAST,
+                           gobject.TYPE_NONE, ())
+
 
         self.player = None
         self.preview = Preview(preview_area)
@@ -79,6 +82,8 @@ class Sltv(gobject.GObject):
         self.audio_effect_name = audio_effect_name
 
     def play(self):
+
+        self.emit("preplay")
 
         self.player = gst.Pipeline("player")
 
