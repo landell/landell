@@ -58,20 +58,28 @@ class EffectsUI:
         self.set_effects(False)
         self.effect_enabled = False
 
-    def play(self):
+        self.sltv.connect("preplay", self._preplay)
+        self.sltv.connect("playing", self._playing)
+        self.sltv.connect("stopped", self._stopped)
+
+    def _preplay(self, sltv):
         video_effect_name = self.video_effect_combobox.get_active_text()
         audio_effect_name = self.audio_effect_combobox.get_active_text()
         self.sltv.set_video_effect_name(video_effect_name)
         self.sltv.set_audio_effect_name(audio_effect_name)
+
+    def _playing(self, sltv):
         if self.effect_enabled == True:
             if self.sltv.audio_source == None:
                 self.audio_effect_button.set_sensitive(False)
             else:
                 self.audio_effect_button.set_sensitive(True)
             self.video_effect_button.set_sensitive(True)
-    def stop(self):
+
+    def _stopped(self, sltv):
         self.audio_effect_button.set_sensitive(False)
         self.video_effect_button.set_sensitive(False)
+
     def _create_effects_combobox(self, combobox, effect_type):
         liststore = gtk.ListStore(gobject.TYPE_STRING)
         combobox.set_model(liststore)
