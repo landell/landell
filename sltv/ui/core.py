@@ -49,6 +49,7 @@ class SltvUI:
         self.sltv.connect("stopped", self.stopped)
         self.sltv.connect("playing", self.playing)
         self.sltv.connect("preplay", self.preplay)
+        self.sltv.connect("error", self.error)
 
         self.settings_box = self.interface.get_object("vbox4")
         self.preview = preview.PreviewUI(self, self.sltv)
@@ -113,6 +114,9 @@ class SltvUI:
 
     def preplay(self, sltv):
         self.audio_sources_combobox.set_sensitive(False)
+
+    def error(self, sltv, msg):
+        message.MessageError(msg, self)
 
     def selected_video_source(self):
         model = self.source_combobox.get_model()

@@ -42,6 +42,8 @@ class Sltv(gobject.GObject):
                            gobject.TYPE_NONE, ())
         gobject.signal_new("preplay", Sltv, gobject.SIGNAL_RUN_LAST,
                            gobject.TYPE_NONE, ())
+        gobject.signal_new("error", Sltv, gobject.SIGNAL_RUN_LAST,
+                           gobject.TYPE_NONE, (gobject.TYPE_STRING,))
 
 
         self.player = None
@@ -311,6 +313,7 @@ class Sltv(gobject.GObject):
                 self.pending_state = gst.STATE_NULL
         elif t == gst.MESSAGE_ERROR:
             (gerror, debug) = message.parse_error()
+            self.emit("error", gerror.message)
             print debug
             cr = self.player.set_state(gst.STATE_NULL)
             if cr == gst.STATE_CHANGE_SUCCESS:
