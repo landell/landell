@@ -312,7 +312,11 @@ class Sltv(gobject.GObject):
         elif t == gst.MESSAGE_ERROR:
             (gerror, debug) = message.parse_error()
             print debug
-            self.player.set_state(gst.STATE_NULL)
+            cr = self.player.set_state(gst.STATE_NULL)
+            if cr == gst.STATE_CHANGE_SUCCESS:
+                self.emit("stopped")
+            elif cr == gst.STATE_CHANGE_ASYNC:
+                self.pending_state = gst.STATE_NULL
         elif t == gst.MESSAGE_ASYNC_DONE:
             if self.pending_state == gst.STATE_NULL:
                 self.emit("stopped")
