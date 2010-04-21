@@ -21,6 +21,8 @@ class MediaItem:
         self.name = name
         self.factory = factory
         self.config = {}
+    def set_parent(self, parent):
+        self.parent = parent
     def get_config(self):
         return self.config
     def set_config(self, config):

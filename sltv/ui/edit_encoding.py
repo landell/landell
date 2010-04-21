@@ -27,6 +27,11 @@ import sltv.factory
 class EditEncoding(Edit):
     def __init__(self, window, encodings, converters):
         Edit.__init__(self, window, encodings)
+        for (name1, encoder) in encodings.liststore:
+            for (name2, converter) in converters.liststore:
+                if name1 == name2:
+                    encoder.set_parent(converter)
+
         label = self.interface.get_object("name_label")
         label.set_label("Encoding name:")
         self.dialog.set_title("Edit Encoding")
@@ -57,7 +62,8 @@ class EditEncoding(Edit):
                 converter = sltv.mediaitem.MediaItem(name, self.converter_factory)
                 media_item.set_config(self.factory.get_ui().get_config())
                 converter.set_config(self.converter_factory.get_ui().get_config())
-                media_item.parent = converter
+                media_item.set_parent(converter)
+                converter.set_parent(None)
                 self.media_list.add_item(name, media_item)
                 self.converter_list.add_item(name, converter)
         else:
