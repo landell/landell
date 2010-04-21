@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkVBox" id="encoder_box">
+    <property name="visible">True</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkLabel" id="encoder_label">
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">&lt;b&gt;Encoder&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
+      </object>
+      <packing>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkAlignment" id="alignment5">
+        <property name="visible">True</property>
+        <property name="left_padding">12</property>
+        <child>
+          <object class="GtkTable" id="encoder_table">
+            <property name="visible">True</property>
+            <property name="n_columns">2</property>
+            <property name="column_spacing">6</property>
+            <property name="homogeneous">True</property>
+            <child>
+              <object class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">Choose encoder:</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="encoder_combobox">
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+</interface>

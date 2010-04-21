@@ -69,13 +69,13 @@ class SltvUI:
         self.play_button = self.interface.get_object("play_button")
         self.stop_button = self.interface.get_object("stop_button")
 
-        self.outputs = self.sltv.outputs
-        self.outputs_ui = outputs.Outputs(self, self.outputs)
         self.encoders = self.sltv.encoders
         self.videoconverters = self.sltv.videoconverters
         self.encoders_ui = encoders.Encoders(
                 self, self.encoders, self.videoconverters
         )
+        self.outputs = self.sltv.outputs
+        self.outputs_ui = outputs.Outputs(self, self.outputs, self.encoders)
 
         #combobox to choose source
 

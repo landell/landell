@@ -25,8 +25,21 @@ from edit import Edit
 import sltv.factory
 
 class EditOutput(Edit):
-    def __init__(self, window, outputs):
+    def __init__(self, window, outputs, encoders):
         Edit.__init__(self, window, outputs)
         label = self.interface.get_object("name_label")
         label.set_label("Output name:")
         self.dialog.set_title("Edit Output")
+
+        self.encoder_interface = gtk.Builder()
+        self.encoder_interface.add_from_file(
+                UI_DIR + "/output_encoder_setting.ui"
+        )
+        self.encoder_box = self.encoder_interface.get_object("encoder_box")
+        self.combobox = self.encoder_interface.get_object("encoder_combobox")
+        self.combobox.set_model(encoders.liststore)
+        cell = gtk.CellRendererText()
+        self.combobox.pack_start(cell, True)
+        self.combobox.add_attribute(cell, "text", 0)
+
+        self.container_box.add(self.encoder_box)
