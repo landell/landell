@@ -72,7 +72,10 @@ class SltvUI:
         self.outputs = self.sltv.outputs
         self.outputs_ui = outputs.Outputs(self, self.outputs)
         self.encoders = self.sltv.encoders
-        self.encoders_ui = encoders.Encoders(self, self.encoders)
+        self.videoconverters = self.sltv.videoconverters
+        self.encoders_ui = encoders.Encoders(
+                self, self.encoders, self.videoconverters
+        )
 
         #combobox to choose source
 

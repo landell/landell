@@ -23,10 +23,14 @@ from sltv.settings import UI_DIR
 import edit_encoding
 
 class Encoders(MediaListUI):
-    def __init__(self, ui, encoders):
+    def __init__(self, ui, encoders, converters):
         MediaListUI.__init__(self, ui, encoders)
+
         self.dialog.set_title("Encoders")
-        self.edit_item = edit_encoding.EditEncoding(self.dialog, self.media_list)
+        self.converters_list = converters
+        self.edit_item = edit_encoding.EditEncoding(
+                self.dialog, self.media_list, self.converters_list
+        )
 
         # Adding types to combobox
 

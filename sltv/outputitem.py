@@ -22,7 +22,7 @@ from mediaitem import MediaItem
 class OutputItem(MediaItem):
     def __init__(self, name, factory):
         MediaItem.__init__(self, name, factory)
-        self.converter = registry.registry.get_factories("converter")[0]
+        self.converter = registry.registry.get_factories("videoconverter")[0]
         self.encoding = registry.registry.get_factories("encoding")[0]
     def create_converter(self):
         item = self.converter.create()

@@ -62,6 +62,11 @@ class Sltv(gobject.GObject):
         self.encoders = medialist.MediaList("Encoders", "encoding")
         self.encoders.load()
 
+        self.videoconverters = medialist.MediaList(
+                "VideoConverters", "videoconverter"
+        )
+        self.videoconverters.load()
+
         self.audio = Audio()
 
         self.effect_enabled = False

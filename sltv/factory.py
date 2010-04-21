@@ -158,7 +158,7 @@ for i in output_factories:
 converter_factories = [VideoConverterFactory()]
 
 for i in converter_factories:
-    registry.registry.register_factory("converter", i)
+    registry.registry.register_factory("videoconverter", i)
 
 encoding_factories = [OggTheoraVorbisEncodingFactory()]
 

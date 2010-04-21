@@ -25,30 +25,27 @@ from edit import Edit
 import sltv.factory
 
 class EditEncoding(Edit):
-    def __init__(self, window, encodings):
+    def __init__(self, window, encodings, converters):
         Edit.__init__(self, window, encodings)
         label = self.interface.get_object("name_label")
         label.set_label("Encoding name:")
         self.dialog.set_title("Edit Encoding")
 
-        self.converter_factory = self.registry.get_factories("converter")[0]
+        self.converter_factory = self.registry.get_factories("videoconverter")[0]
 
         self.setting_box = self.converter_factory.get_ui().get_widget()
         self.container_box.add(self.setting_box)
 
+        self.converter_list = converters
+
     def set_media_item(self, media_item):
         self.media_item = media_item
         if self.media_item:
+            self.converter = media_item.parent
             self.set_factory(self.media_item.factory)
             self.name_entry.set_text(self.media_item.name)
             self.media_item.factory.get_ui().set_config(media_item.get_config())
-            self.media_item.converter.get_ui().set_config(
-                    media_item.get_config()
-            )
-
-    def _merge_dict(self, dict1, dict2):
-        dict1.update(dict2)
-        return dict1
+            self.converter.factory.get_ui().set_config(self.converter.get_config())
 
     def save(self):
         if self.media_item == None:
@@ -56,17 +53,15 @@ class EditEncoding(Edit):
             if name == None or name == "":
                 return False
             if not self.media_list.get_item(name):
-                media_item = sltv.outputitem.OutputItem(name, self.factory)
-                merged_config = self._merge_dict(
-                        self.factory.get_ui().get_config(),
-                        media_item.converter.get_ui().get_config()
-                )
-                media_item.set_config(merged_config)
+                media_item = sltv.mediaitem.MediaItem(name, self.factory)
+                converter = sltv.mediaitem.MediaItem(name, self.converter_factory)
+                media_item.set_config(self.factory.get_ui().get_config())
+                converter.set_config(self.converter_factory.get_ui().get_config())
+                media_item.parent = converter
                 self.media_list.add_item(name, media_item)
+                self.converter_list.add_item(name, converter)
         else:
-            merged_config = self._merge_dict(
-                    self.factory.get_ui().get_config(),
-                    self.media_item.converter.get_ui().get_config()
-            )
-            self.media_item.set_config(merged_config)
+            self.media_item.set_config(self.factory.get_ui().get_config())
+            self.converter.set_config(self.converter_factory.get_ui().get_config())
         self.media_list.save()
+        self.converter_list.save()
