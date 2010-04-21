@@ -34,8 +34,10 @@ class Message():
             self.buttons,
             self.message
         )
+        dialog.connect("response", self.destroy_dialog)
         dialog.show_all()
-        dialog.run()
+
+    def destroy_dialog(self, dialog, rid):
         dialog.destroy()
 
     def set_message(self, message):
