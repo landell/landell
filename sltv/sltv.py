@@ -34,7 +34,7 @@ MEDIA_VIDEO = 2
 
 class Sltv(gobject.GObject):
 
-    def __init__(self, preview_area):
+    def __init__(self):
         gobject.GObject.__init__(self)
         gobject.signal_new("stopped", Sltv, gobject.SIGNAL_RUN_LAST,
                            gobject.TYPE_NONE, ())
@@ -50,7 +50,7 @@ class Sltv(gobject.GObject):
 
 
         self.player = None
-        self.preview = Preview(self, preview_area)
+        self.preview = Preview(self)
         self.preview_enabled = False
 
         self.outputs = medialist.MediaList("Outputs", "output")

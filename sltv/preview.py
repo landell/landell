@@ -23,19 +23,13 @@ pygst.require("0.10")
 import gst
 import gtk
 
-class Preview:
+class Preview(gobject.GObject):
 
-    def __init__(self, sltv, widget):
-        self.window_id = widget.window.xid
+    def __init__(self, sltv):
+        gobject.GObject.__init__(self)
+        gobject.signal_new("prepare-xwindow-id", Preview, gobject.SIGNAL_RUN_LAST,
+                           gobject.TYPE_NONE, (gobject.type_from_name("GstElement"),))
         sltv.connect("sync-message", self.on_sync_message)
-
-    def set_display(self, element):
-        #Setting preview to be displayed at preview_area
-        print "Setting display\n"
-
-        gtk.gdk.threads_enter()
-        element.set_xwindow_id(self.window_id)
-        gtk.gdk.threads_leave()
 
     def get_preview(self):
         self.preview = gst.Bin()
@@ -56,6 +50,6 @@ class Preview:
         message_name = message.structure.get_name()
         if message_name == "prepare-xwindow-id":
             previewsink = message.src
-            self.set_display(previewsink)
             previewsink.set_property("sync", "false")
             previewsink.set_property("force-aspect-ratio", "true")
+            self.emit("prepare-xwindow-id", previewsink)

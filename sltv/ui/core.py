@@ -44,12 +44,14 @@ class SltvUI:
         self.main_window.show_all()
         self.about = about.About(self)
 
-        preview_area = self.interface.get_object("preview_area")
-        self.sltv = Sltv(preview_area)
+        self.preview_area = self.interface.get_object("preview_area")
+        self.sltv = Sltv()
         self.sltv.connect("stopped", self.stopped)
         self.sltv.connect("playing", self.playing)
         self.sltv.connect("preplay", self.preplay)
         self.sltv.connect("error", self.error)
+        self.sltv.preview.connect("prepare-xwindow-id",
+                                  self.on_prepare_xwindow_id)
 
         self.settings_box = self.interface.get_object("vbox4")
         self.preview = preview.PreviewUI(self, self.sltv)
@@ -177,3 +179,9 @@ class SltvUI:
 
     def on_window_closed(self, event, data):
         gtk.main_quit()
+
+    def on_prepare_xwindow_id(self, preview, element):
+        # Setting preview to be displayed at preview_area
+        gtk.gdk.threads_enter()
+        element.set_xwindow_id(self.preview_area.window.xid)
+        gtk.gdk.threads_leave()
