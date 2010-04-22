@@ -57,7 +57,7 @@ class Sltv(gobject.GObject):
 
         self.audio = Audio()
 
-        self.effect_enabled = "False"
+        self.effect_enabled = False
         self.effect = {}
         self.effect_name = {MEDIA_VIDEO: "identity", MEDIA_AUDIO: "identity"}
 
