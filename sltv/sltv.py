@@ -44,10 +44,13 @@ class Sltv(gobject.GObject):
                            gobject.TYPE_NONE, ())
         gobject.signal_new("error", Sltv, gobject.SIGNAL_RUN_LAST,
                            gobject.TYPE_NONE, (gobject.TYPE_STRING,))
+        gobject.signal_new("sync-message", Sltv, gobject.SIGNAL_RUN_LAST,
+                           gobject.TYPE_NONE, (gobject.type_from_name("GstBus"),
+                                               gobject.type_from_name("GstMessage")))
 
 
         self.player = None
-        self.preview = Preview(preview_area)
+        self.preview = Preview(self, preview_area)
         self.preview_enabled = False
 
         self.outputs = medialist.MediaList("Outputs", "output")
@@ -329,12 +332,4 @@ class Sltv(gobject.GObject):
             self.pending_state = None
 
     def on_sync_message(self, bus, message):
-        print "sync_message received"
-        if message.structure is None:
-            return
-        message_name = message.structure.get_name()
-        if message_name == "prepare-xwindow-id":
-            previewsink = message.src
-            self.preview.set_display(previewsink)
-            previewsink.set_property("sync", "false")
-            previewsink.set_property("force-aspect-ratio", "true")
+        self.emit("sync-message", bus, message)

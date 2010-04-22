@@ -25,8 +25,9 @@ import gtk
 
 class Preview:
 
-    def __init__(self, widget):
+    def __init__(self, sltv, widget):
         self.window_id = widget.window.xid
+        sltv.connect("sync-message", self.on_sync_message)
 
     def set_display(self, element):
         #Setting preview to be displayed at preview_area
@@ -48,3 +49,13 @@ class Preview:
         )
         self.preview.add_pad(sink_pad)
         return self.preview
+
+    def on_sync_message(self, sltv, bus, message):
+        if message.structure is None:
+            return
+        message_name = message.structure.get_name()
+        if message_name == "prepare-xwindow-id":
+            previewsink = message.src
+            self.set_display(previewsink)
+            previewsink.set_property("sync", "false")
+            previewsink.set_property("force-aspect-ratio", "true")
