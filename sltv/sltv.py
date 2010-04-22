@@ -48,6 +48,7 @@ class Sltv(gobject.GObject):
 
         self.player = None
         self.preview = Preview(preview_area)
+        self.preview_enabled = False
 
         self.outputs = medialist.MediaList("Outputs", "output")
         self.outputs.load()
