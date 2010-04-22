@@ -34,7 +34,7 @@ MEDIA_VIDEO = 2
 
 class Sltv(gobject.GObject):
 
-    def __init__(self, preview_area, ui):
+    def __init__(self, preview_area):
         gobject.GObject.__init__(self)
         gobject.signal_new("stopped", Sltv, gobject.SIGNAL_RUN_LAST,
                            gobject.TYPE_NONE, ())

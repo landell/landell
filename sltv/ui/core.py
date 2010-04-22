@@ -45,7 +45,7 @@ class SltvUI:
         self.about = about.About(self)
 
         preview_area = self.interface.get_object("preview_area")
-        self.sltv = Sltv(preview_area, self)
+        self.sltv = Sltv(preview_area)
         self.sltv.connect("stopped", self.stopped)
         self.sltv.connect("playing", self.playing)
         self.sltv.connect("preplay", self.preplay)
