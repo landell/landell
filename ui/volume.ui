@@ -9,7 +9,6 @@
       <object class="GtkVolumeButton" id="volume_button">
         <property name="label" translatable="yes">Volume</property>
         <property name="visible">True</property>
-        <property name="sensitive">False</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
         <property name="relief">none</property>

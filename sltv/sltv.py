@@ -57,6 +57,7 @@ class Sltv:
         self.audio_effect_name = None
         self.video_effect_name = None
         self.volume = None
+        self.volume_value = None
 
     def set_overlay_text(self, overlay_text):
         self.overlay_text = overlay_text
@@ -209,6 +210,8 @@ class Sltv:
                 print "Error conecting preview"
 
         self.overlay.set_property("text", self.overlay_text)
+        if self.volume_value is not None:
+            self.volume.set_property("volume", self.volume_value)
 
         bus = self.player.get_bus()
         bus.add_signal_watch()
@@ -281,7 +284,8 @@ class Sltv:
         self.preview_enabled = state
 
     def set_volume(self, value):
-        if self.playing() and self.volume:
+        self.volume_value = value
+        if self.volume:
             self.volume.set_property("volume", value)
 
     def on_message(self, bus, message):

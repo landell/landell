@@ -32,14 +32,7 @@ class VolumeUI:
         self.button.connect("value-changed", self.set_volume)
 
     def set_volume(self, value, user_data):
-        if self.sltv.playing():
-            self.sltv.set_volume(value.get_value())
-
-    def play(self):
-        self.button.set_sensitive(True)
-
-    def stop(self):
-        self.button.set_sensitive(False)
+        self.sltv.set_volume(value.get_value())
 
     def get_widget(self):
         return self.widget
