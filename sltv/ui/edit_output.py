@@ -30,16 +30,13 @@ class EditOutput(Edit):
         label = self.interface.get_object("name_label")
         label.set_label("Output name:")
         self.dialog.set_title("Edit Output")
+        self.encoders = encoders
+        self.encoder_box = None
 
-        self.encoder_interface = gtk.Builder()
-        self.encoder_interface.add_from_file(
-                UI_DIR + "/output_encoder_setting.ui"
-        )
-        self.encoder_box = self.encoder_interface.get_object("encoder_box")
-        self.combobox = self.encoder_interface.get_object("encoder_combobox")
-        self.combobox.set_model(encoders.liststore)
-        cell = gtk.CellRendererText()
-        self.combobox.pack_start(cell, True)
-        self.combobox.add_attribute(cell, "text", 0)
-
+    def set_factory(self, factory):
+        Edit.set_factory(self, factory)
+        if self.encoder_box:
+            self.container_box.remove(self.encoder_box)
+        self.encoder_box = factory.get_ui().get_encoder_widget()
         self.container_box.add(self.encoder_box)
+        factory.get_ui().set_encoder_model(self.encoders.liststore)

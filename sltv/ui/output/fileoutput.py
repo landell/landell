@@ -34,10 +34,12 @@ class FileOutputUI(OutputUI):
 
     def get_config(self):
         self.config["location"] = self.button.get_filename()
+        OutputUI.get_config(self)
         return self.config
 
     def update_config(self):
         self.button.set_filename(self.config["location"])
+        OutputUI.update_config(self)
 
     def get_widget(self):
         return self.box
