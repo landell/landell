@@ -192,31 +192,54 @@ class Sltv(gobject.GObject):
                     self.queue_audio, self.volume, self.effect[MEDIA_AUDIO],
                     self.convert, self.audio_tee
             )
+        added_encoders = {}
 
         for row in self.outputs.get_store():
             (name, output) = row
 
-            queue_output = gst.element_factory_make("queue", None)
-            self.player.add(queue_output)
-
-            converter = output.create_converter()
-            self.player.add(converter)
-
-            encoder = output.create_encoding(type)
-            self.player.add(encoder)
-
             sink = output.create()
             self.player.add(sink)
 
-            gst.element_link_many(
-                    self.preview_tee, queue_output, converter, encoder, sink
-            )
+            encoder_name = output.get_config()["parent"]
+            encoder_item = self.encoders.get_item(encoder_name)
+            if encoder_item is None:
+                pass
 
-            if self.input_type & MEDIA_AUDIO:
-                audio_queue = gst.element_factory_make("queue", None)
-                self.player.add(audio_queue)
+            if added_encoders.has_key(encoder_name):
+                tee = added_encoders[encoder_name]
 
-                gst.element_link_many(self.audio_tee, audio_queue, encoder)
+                tee_queue = gst.element_factory_make("queue", None)
+                self.player.add(tee_queue)
+
+                gst.element_link_many(tee, tee_queue, sink)
+            else:
+                queue_output = gst.element_factory_make("queue", None)
+                self.player.add(queue_output)
+
+                tee = gst.element_factory_make("tee", None)
+                self.player.add(tee)
+
+                converter = encoder_item.parent.create()
+                self.player.add(converter)
+
+                encoder = encoder_item.factory.create(type)
+                encoder.config(encoder_item.config)
+                self.player.add(encoder)
+
+                tee_queue = gst.element_factory_make("queue", None)
+                self.player.add(tee_queue)
+
+                added_encoders[encoder_name] = tee
+                gst.element_link_many(
+                        self.preview_tee, queue_output, converter, encoder, tee,
+                        tee_queue, sink
+                )
+
+                if self.input_type & MEDIA_AUDIO:
+                    audio_queue = gst.element_factory_make("queue", None)
+                    self.player.add(audio_queue)
+
+                    gst.element_link_many(self.audio_tee, audio_queue, encoder)
 
         if self.preview_enabled:
             queue_preview = gst.element_factory_make("queue", "queue_preview")
