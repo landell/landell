@@ -223,7 +223,9 @@ class Sltv(gobject.GObject):
             self.player.add(queue_preview)
             self.preview_element = self.preview.get_preview()
             self.player.add(self.preview_element)
-            err = gst.element_link_many(self.preview_tee, queue_preview, self.preview_element)
+            err = gst.element_link_many(
+                    self.preview_tee, queue_preview, self.preview_element
+            )
             if err == False:
                 print "Error conecting preview"
 
