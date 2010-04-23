@@ -57,14 +57,12 @@ class Sltv(gobject.GObject):
 
         self.effect_enabled = "False"
         self.effect = {}
-        self.effect_name = {}
+        self.effect_name = {MEDIA_VIDEO: "identity", MEDIA_AUDIO: "identity"}
 
         self.video_source = None
         self.audio_source = None
 
         self.overlay_text = None
-        self.audio_effect_name = None
-        self.video_effect_name = None
         self.volume = None
         self.volume_value = None
 
@@ -75,11 +73,10 @@ class Sltv(gobject.GObject):
         if self.playing():
             self.overlay.set_property("text", overlay_text)
 
-    def set_video_effect_name(self, video_effect_name):
-        self.video_effect_name = video_effect_name
-
-    def set_audio_effect_name(self, audio_effect_name):
-        self.audio_effect_name = audio_effect_name
+    def set_effect_name(self, effect_type, effect_name):
+        if effect_name == "none":
+            effect_name = "identity"
+        self.effect_name[effect_type] = effect_name
 
     def play(self):
 
@@ -144,12 +141,6 @@ class Sltv(gobject.GObject):
                 "active_pad", self.source_pads[self.video_source]
         )
 
-        if self.effect_enabled:
-            self.effect_name[MEDIA_VIDEO] = self.video_effect_name
-            self.effect_name[MEDIA_AUDIO] = self.audio_effect_name
-        else:
-            self.effect_name[MEDIA_VIDEO] = "identity"
-            self.effect_name[MEDIA_AUDIO] = "identity"
         self.effect[MEDIA_VIDEO] = effect.video_effect.VideoEffect(
                 self.effect_name[MEDIA_VIDEO]
         )
@@ -247,7 +238,28 @@ class Sltv(gobject.GObject):
     def playing(self):
         return self.player and self.player.get_state()[1] == gst.STATE_PLAYING
 
+    def _swap_effect(self, effect_type):
+            if effect_type == MEDIA_VIDEO:
+                new_effect = effect.video_effect.VideoEffect(
+                        self.effect_name[effect_type]
+                )
+                Swap.swap_element(
+                        self.player, self.queue_video, self.overlay,
+                        self.effect[effect_type], new_effect
+                )
+                self.effect[effect_type] = new_effect
+            else:
+                new_effect = effect.audio_effect.AudioEffect(
+                        self.effect_name[effect_type]
+                )
+                Swap.swap_element(
+                        self.player, self.volume, self.convert,
+                        self.effect[effect_type], new_effect
+                )
+                self.effect[effect_type] = new_effect
+
     def set_effects(self, state):
+
         self.effect_enabled = state
 
         # If state is disabled and pipeline is playing, disable effects now
@@ -259,34 +271,14 @@ class Sltv(gobject.GObject):
 
     def change_effect(self, effect_name, effect_type):
 
-        #If that input doesn't exist, then there is no effect to change.
+        # If that input doesn't exist, then there is no effect to change.
 
         if not self.input_type & effect_type:
             return
-        if effect_name == "none":
-            effect_name = "identity"
 
         if self.playing():
-            print "PLAYING"
-            if effect_type == MEDIA_VIDEO:
-                new_effect = effect.video_effect.VideoEffect(
-                        effect_name
-                )
-                Swap.swap_element(
-                        self.player, self.queue_video, self.overlay,
-                        self.effect[effect_type], new_effect
-                )
-                self.effect[effect_type] = new_effect
-            else:
-                new_effect = effect.audio_effect.AudioEffect(
-                        effect_name
-                )
-                Swap.swap_element(
-                        self.player, self.volume, self.convert,
-                        self.effect[effect_type], new_effect
-                )
-                self.effect[effect_type] = new_effect
-            self.effect_name[effect_type] = effect_name
+            self.set_effect_name(effect_type, effect_name)
+            self._swap_effect(effect_type)
 
     def switch_source(self):
         self.video_input_selector.set_property(

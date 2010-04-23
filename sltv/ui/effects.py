@@ -65,8 +65,8 @@ class EffectsUI:
     def _preplay(self, sltv):
         video_effect_name = self.video_effect_combobox.get_active_text()
         audio_effect_name = self.audio_effect_combobox.get_active_text()
-        self.sltv.set_video_effect_name(video_effect_name)
-        self.sltv.set_audio_effect_name(audio_effect_name)
+        self.sltv.set_effect_name(MEDIA_VIDEO, video_effect_name)
+        self.sltv.set_effect_name(MEDIA_AUDIO, audio_effect_name)
 
     def _playing(self, sltv):
         if self.effect_enabled == True:
