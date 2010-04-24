@@ -55,7 +55,7 @@ class SaveButton(gtk.HBox):
         self.file_chooser.hide()
 
     def get_filename(self):
-        return self.file_chooser.get_filename()
+        return self.entry.get_text()
 
     def set_filename(self, filename):
         self.file_chooser.set_filename(filename)
