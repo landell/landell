@@ -282,7 +282,7 @@ class Sltv(gobject.GObject):
                         effect_name
                 )
                 Swap.swap_element(
-                        self.player, self.queue_audio, self.convert,
+                        self.player, self.volume, self.convert,
                         self.effect[effect_type], new_effect
                 )
                 self.effect[effect_type] = new_effect
