@@ -35,6 +35,7 @@ import preview
 import effects
 import overlay
 import volume
+import settings as settings
 
 class SltvUI:
 
@@ -56,15 +57,12 @@ class SltvUI:
         preview_frame.add(preview_area)
         preview_area.show()
 
+        self.box = self.interface.get_object("vbox1")
+        self.settings = settings.SettingsUI(self, self.sltv)
+        self.box.add(self.settings.get_widget())
         self.settings_box = self.interface.get_object("vbox4")
         self.preview = preview.PreviewUI(self, self.sltv)
-        self.effects = effects.EffectsUI(self, self.sltv)
-        self.overlay = overlay.OverlayUI(self, self.sltv)
-        self.volume = volume.VolumeUI(self, self.sltv)
         self.settings_box.add(self.preview.get_widget())
-        self.settings_box.add(self.effects.get_widget())
-        self.settings_box.add(self.overlay.get_widget())
-        self.settings_box.add(self.volume.get_widget())
 
         self.play_button = self.interface.get_object("play_button")
         self.stop_button = self.interface.get_object("stop_button")

@@ -148,18 +148,6 @@
                         <property name="position">3</property>
                       </packing>
                     </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -247,6 +235,9 @@
           <packing>
             <property name="position">1</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>

@@ -20,6 +20,7 @@ sltvlib_DATA = \
 	save_button.py \
 	previewarea.py \
 	encoders.py \
-	edit_encoding.py
+	edit_encoding.py \
+	settings.py
 
 EXTRA_DIST = $(sltvlib_DATA)
