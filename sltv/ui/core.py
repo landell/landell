@@ -60,9 +60,9 @@ class SltvUI:
         self.box = self.interface.get_object("vbox1")
         self.settings = settings.SettingsUI(self, self.sltv)
         self.box.add(self.settings.get_widget())
-        self.settings_box = self.interface.get_object("vbox4")
+        self.preview_box = self.interface.get_object("preview_vbox")
         self.preview = preview.PreviewUI(self, self.sltv)
-        self.settings_box.add(self.preview.get_widget())
+        self.preview_box.pack_start(self.preview.get_widget(), False, False)
 
         self.play_button = self.interface.get_object("play_button")
         self.stop_button = self.interface.get_object("stop_button")
