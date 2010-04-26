@@ -98,7 +98,7 @@ class EffectsUI:
         self.audio_effect_label.set_sensitive(state)
         if self.sltv.playing() and state == True:
             self.video_effect_button.set_sensitive(True)
-            if self.selected_audio_source() == None:
+            if self.sltv.audio_source == None:
                 self.audio_effect_button.set_sensitive(False)
             else:
                 self.audio_effect_button.set_sensitive(True)
