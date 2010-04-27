@@ -12,6 +12,7 @@ ui_DATA = edit.ui \
 	audio_input.ui \
 	element_setting.ui \
 	output_encoder_setting.ui \
-	settings.ui
+	settings.ui \
+	source.ui
 
 EXTRA_DIST = $(ui_DATA)

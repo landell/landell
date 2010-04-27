@@ -29,6 +29,7 @@ import sources
 import message
 import outputs
 import encoders
+import sources_view
 
 from previewarea import PreviewArea
 import preview
@@ -75,21 +76,17 @@ class SltvUI:
         self.outputs = self.sltv.outputs
         self.outputs_ui = outputs.Outputs(self, self.outputs, self.encoders)
 
-        #combobox to choose source
+        # sources
 
-        self.source_combobox = self.interface.get_object("sources_combobox")
         self.sources = self.sltv.sources
         self.sources_ui = sources.Sources(self, self.sources)
-        self.source_combobox.set_model(sources.VideoModel(self.sources).model)
-        cell = gtk.CellRendererText()
-        self.source_combobox.pack_start(cell, True)
-        self.source_combobox.add_attribute(cell, "text", 0)
-        self.source_combobox.set_active(0)
-        self.source_combobox.connect("changed",self.on_switch_source)
-
-        self.on_switch_source(self.source_combobox)
+        self.video_source_box = self.interface.get_object("video_source_box")
+        self.sources_view = sources_view.SourcesView(self.sltv, self.sources)
+        self.sources_view.show_all()
+        self.video_source_box.pack_start(self.sources_view, False, False)
 
         # audio combobox
+
         self.audio_sources_combobox = self.interface.get_object("audio_sources_combobox")
         self.audio_sources_combobox.set_model(sources.AudioModel(self.sources).model)
         cell = gtk.CellRendererText()
@@ -128,13 +125,6 @@ class SltvUI:
     def error(self, sltv, msg):
         message.MessageError(msg, self)
 
-    def selected_video_source(self):
-        model = self.source_combobox.get_model()
-        iter = self.source_combobox.get_active_iter()
-        if iter == None:
-            return None
-        return model.get_value(iter, 0)
-
     def selected_audio_source(self):
         model = self.audio_sources_combobox.get_model()
         iter = self.audio_sources_combobox.get_active_iter()
@@ -142,11 +132,14 @@ class SltvUI:
             return None
         return model.get_value(iter, 0)
 
+    def on_select_audio_source(self, combobox):
+        source_name = self.selected_audio_source()
+        self.sltv.set_audio_source(source_name)
+
     def on_play_press(self, event):
-        if self.selected_video_source() == None:
+        if not self.sources_view.has_item_a_selected():
             message.MessageInfo(
-                "Please, choose or add a video source.",
-                self
+                "Please, choose or add a video source.", self
             )
             return False
 
@@ -156,14 +149,6 @@ class SltvUI:
     def play(self):
         if not self.sltv.playing():
             self.sltv.play()
-
-    def on_switch_source(self, combobox):
-        source_name = self.selected_video_source()
-        self.sltv.set_video_source(source_name)
-
-    def on_select_audio_source(self, combobox):
-        source_name = self.selected_audio_source()
-        self.sltv.set_audio_source(source_name)
 
     def show_encoding(self, menuitem):
         self.sltv.show_encoding()
