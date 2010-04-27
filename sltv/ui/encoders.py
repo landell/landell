@@ -18,15 +18,21 @@
 
 import gobject
 import gtk
+from medialist import MediaListUI
 from sltv.settings import UI_DIR
-import sltv.registry
-import sltv.outputitem
-from edit import Edit
-import sltv.factory
+import edit_encoding
 
-class EditOutput(Edit):
-    def __init__(self, window, outputs):
-        Edit.__init__(self, window, outputs)
-        label = self.interface.get_object("name_label")
-        label.set_label("Output name:")
-        self.dialog.set_title("Edit Output")
+class Encoders(MediaListUI):
+    def __init__(self, ui, encoders):
+        MediaListUI.__init__(self, ui, encoders)
+        self.dialog.set_title("Encoders")
+        self.edit_item = edit_encoding.EditEncoding(self.dialog, self.media_list)
+
+        # Adding types to combobox
+
+        factories = self.registry.get_factories("encoding")
+
+        for factory in factories:
+            self.elements_liststore.append((factory.get_name(),))
+            self.factories[factory.get_name()] = factory
+        self.elements_combobox.set_active(0)

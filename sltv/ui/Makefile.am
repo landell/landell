@@ -18,6 +18,8 @@ sltvlib_DATA = \
 	effects.py \
 	volume.py \
 	save_button.py \
-	previewarea.py
+	previewarea.py \
+	encoders.py \
+	edit_encoding.py
 
 EXTRA_DIST = $(sltvlib_DATA)

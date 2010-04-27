@@ -34,6 +34,12 @@
                         <property name="label" translatable="yes">Sources</property>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkMenuItem" id="encoding_menuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Encoders</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

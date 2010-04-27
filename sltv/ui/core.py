@@ -28,9 +28,9 @@ import about
 import sources
 import message
 import outputs
+import encoders
 
 from previewarea import PreviewArea
-
 import preview
 import effects
 import overlay
@@ -71,6 +71,8 @@ class SltvUI:
 
         self.outputs = self.sltv.outputs
         self.outputs_ui = outputs.Outputs(self, self.outputs)
+        self.encoders = self.sltv.encoders
+        self.encoders_ui = encoders.Encoders(self, self.encoders)
 
         #combobox to choose source
 
@@ -99,6 +101,7 @@ class SltvUI:
 
         output_menuitem = self.interface.get_object("output_menuitem")
         sources_menuitem = self.interface.get_object("sources_menuitem")
+        encoding_menuitem = self.interface.get_object("encoding_menuitem")
         self.about_menu = self.interface.get_object("about_menu")
 
         self.play_button.connect("clicked", self.on_play_press)
@@ -106,6 +109,7 @@ class SltvUI:
         self.main_window.connect("delete_event", self.on_window_closed)
         output_menuitem.connect("activate", self.show_output)
         sources_menuitem.connect("activate", self.show_sources)
+        encoding_menuitem.connect("activate", self.show_encoders)
         self.about_menu.connect("activate", self.show_about)
 
     def stopped(self, sltv):
@@ -168,6 +172,9 @@ class SltvUI:
 
     def show_sources(self, menuitem):
         self.sources_ui.show_window()
+
+    def show_encoders(self, menuitem):
+        self.encoders_ui.show_window()
 
     def show_about(self, menuitem):
         self.about.show_window()
