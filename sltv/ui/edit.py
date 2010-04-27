@@ -34,7 +34,9 @@ class Edit:
         self.element_interface = gtk.Builder()
         self.element_interface.add_from_file(UI_DIR + "/element_setting.ui")
         self.element_box = self.element_interface.get_object("element_box")
-        self.element_alignment = self.element_interface.get_object("element_alignment")
+        self.element_alignment = self.element_interface.get_object(
+                "element_alignment"
+        )
 
         self.registry = sltv.registry.registry
         self.factories = {}
