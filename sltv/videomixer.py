@@ -42,14 +42,13 @@ class PictureInPicture(gst.Bin):
                         gobject.PARAM_READWRITE)          # flags
     }
 
-    def __init__(self, colorspace):
+    def __init__(self):
         gst.Bin.__init__(self)
 
         self.width = 320
         self.height = 240
-        self.colorspace = colorspace
 
-        self.caps = self.make_caps(colorspace, self.width, self.height)
+        self.caps = self.make_caps(self.width, self.height)
         self.videomixer = gst.element_factory_make("videomixer", "videomixer")
         self.add(self.videomixer)
         self.inside_videoscale = gst.element_factory_make(
@@ -78,6 +77,7 @@ class PictureInPicture(gst.Bin):
         self.add(self.outside_capsfilter)
         self.inside_capsfilter.set_property("caps", self.caps['inside'])
         self.outside_capsfilter.set_property("caps", self.caps['outside'])
+
         self.inside_csp = gst.element_factory_make(
                 "ffmpegcolorspace", "inside_csp"
         )
@@ -91,24 +91,24 @@ class PictureInPicture(gst.Bin):
 
         gst.element_link_many(
                 self.inside_videoscale, self.inside_videorate,
-                self.inside_capsfilter, self.inside_csp
+                self.inside_csp, self.inside_capsfilter
         )
         gst.element_link_many(
                 self.outside_videoscale, self.outside_videorate,
-                self.outside_capsfilter, self.outside_csp
+                self.outside_csp, self.outside_capsfilter
         )
 
         videomixer_sink_1 = self.videomixer.get_pad("sink_1")
         videomixer_sink_1.set_property("zorder",1)
         videomixer_sink_1.set_property("xpos",0)
         videomixer_sink_1.set_property("ypos",0)
-        self.inside_csp.get_static_pad("src").link(videomixer_sink_1)
+        self.inside_capsfilter.get_static_pad("src").link(videomixer_sink_1)
 
         videomixer_sink_2 = self.videomixer.get_pad("sink_2")
         videomixer_sink_2.set_property("zorder",0)
         videomixer_sink_2.set_property("xpos",0)
         videomixer_sink_2.set_property("ypos",0)
-        self.outside_csp.get_static_pad("src").link(videomixer_sink_2)
+        self.outside_capsfilter.get_static_pad("src").link(videomixer_sink_2)
 
         self.videomixer.link(self.csp)
         src_pad = gst.GhostPad("src", self.csp.src_pads().next())
@@ -151,7 +151,7 @@ class PictureInPicture(gst.Bin):
             self.height = value
         else:
             Log.warning('PictureInPicture unknown property %s' % property.name)
-        self.caps = self.make_caps(self.colospace, self.width, self.height)
+        self.caps = self.make_caps(self.width, self.height)
         self.inside_capsfilter.set_property("caps", self.caps['inside'])
         self.outside_capsfilter.set_property("caps", self.caps['outside'])
 
