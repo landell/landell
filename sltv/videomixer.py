@@ -88,14 +88,12 @@ class PictureInPicture(gst.Bin):
         self.outside_csp.get_static_pad("src").link(videomixer_sink_2)
 
         self.videomixer.link(self.csp)
-        src_pad = gst.GhostPad(
-                "src", self.find_unlinked_pad(gst.PAD_SRC)
-        )
+        src_pad = gst.GhostPad("src", self.csp.src_pads().next())
         sink_pad1 = gst.GhostPad(
-                "sink_1", self.inside_videoscale.get_static_pad("sink")
+                "sink_1", self.inside_videoscale.sink_pads().next()
         )
         sink_pad2 = gst.GhostPad(
-                "sink_2", self.outside_videoscale.get_static_pad("sink")
+                "sink_2", self.outside_videoscale.sink_pads().next()
         )
         self.add_pad(src_pad)
         self.add_pad(sink_pad1)
