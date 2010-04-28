@@ -175,11 +175,6 @@
                   <object class="GtkFrame" id="preview_frame">
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">in</property>
-                    <child>
-                      <object class="GtkDrawingArea" id="preview_area">
-                        <property name="visible">True</property>
-                      </object>
-                    </child>
                   </object>
                   <packing>
                     <property name="position">0</property>

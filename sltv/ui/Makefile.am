@@ -17,6 +17,7 @@ sltvlib_DATA = \
 	overlay.py \
 	effects.py \
 	volume.py \
-	save_button.py
+	save_button.py \
+	previewarea.py
 
 EXTRA_DIST = $(sltvlib_DATA)
