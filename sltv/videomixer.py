@@ -39,6 +39,22 @@ class PictureInPicture(gst.Bin):
                         0,                                # minimum value
                         32767,                            # maximum value
                         240,                              # default value
+                        gobject.PARAM_READWRITE),         # flags
+
+            'xposition' : (gobject.TYPE_INT,              # type
+                        'Position X',                     # nick name
+                        'PIP X coordinate',               # description
+                        0,                                # minimum value
+                        32767,                            # maximum value
+                        0,                                # default value
+                        gobject.PARAM_READWRITE),         # flags
+
+            'yposition' : (gobject.TYPE_INT,              # type
+                        'Position Y',                     # nick name
+                        'PIP Y coordinate',               # description
+                        0,                                # minimum value
+                        32767,                            # maximum value
+                        0,                                # default value
                         gobject.PARAM_READWRITE)          # flags
     }
 
@@ -47,6 +63,8 @@ class PictureInPicture(gst.Bin):
 
         self.width = 320
         self.height = 240
+        self.x_position = 0
+        self.y_position = 0
 
         self.caps = self.make_caps(self.width, self.height)
         self.videomixer = gst.element_factory_make("videomixer", "videomixer")
@@ -98,11 +116,13 @@ class PictureInPicture(gst.Bin):
                 self.outside_csp, self.outside_capsfilter
         )
 
-        videomixer_sink_1 = self.videomixer.get_pad("sink_1")
-        videomixer_sink_1.set_property("zorder",1)
-        videomixer_sink_1.set_property("xpos",0)
-        videomixer_sink_1.set_property("ypos",0)
-        self.inside_capsfilter.get_static_pad("src").link(videomixer_sink_1)
+        self.videomixer_sink_1 = self.videomixer.get_pad("sink_1")
+        self.videomixer_sink_1.set_property("zorder",1)
+        self.videomixer_sink_1.set_property("xpos",0)
+        self.videomixer_sink_1.set_property("ypos",0)
+        self.inside_capsfilter.get_static_pad("src").link(
+                self.videomixer_sink_1
+        )
 
         videomixer_sink_2 = self.videomixer.get_pad("sink_2")
         videomixer_sink_2.set_property("zorder",0)
@@ -141,14 +161,31 @@ class PictureInPicture(gst.Bin):
             return self.width
         elif property.name == "height":
             return self.height
+        elif property.name == "xposition":
+            return self.x_position
+        elif property.name == "yposition":
+            return self.y_position
         else:
             Log.warning('PictureInPicture unknown property %s' % property.name)
+
+    def _set_caps(self):
+        self.caps = self.make_caps(self.width, self.height)
+        self.inside_capsfilter.set_property("caps", self.caps['inside'])
+        self.outside_capsfilter.set_property("caps", self.caps['outside'])
 
     def do_set_property(self, property, value):
         if property.name == "width":
             self.width = value
+            self._set_caps()
         elif property.name == "height":
             self.height = value
+            self._set_caps()
+        elif property.name == "xposition":
+            self.x_position = value
+            self.videomixer_sink_1.set_property("xpos",self.x_position)
+        elif property.name == "yposition":
+            self.y_position = value
+            self.videomixer_sink_1.set_property("ypos",self.y_position)
         else:
             Log.warning('PictureInPicture unknown property %s' % property.name)
         self.caps = self.make_caps(self.width, self.height)
