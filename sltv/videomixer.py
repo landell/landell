@@ -16,17 +16,40 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 import gobject
 import pygst
 pygst.require("0.10")
 import gst
+from log import Log
 
 class PictureInPicture(gst.Bin):
 
-    def __init__(self, colorspace, width, height):
+    __gproperties__ = {
+            'width' : (gobject.TYPE_INT,                  # type
+                        'width',                          # nick name
+                        'Width of bigger video',          # description
+                        0,                                # minimum value
+                        32767,                            # maximum value
+                        320,                              # default value
+                        gobject.PARAM_READWRITE),         # flags
+
+            'height' : (gobject.TYPE_INT,                 # type
+                        'height',                         # nick name
+                        'height of bigger video',         # description
+                        0,                                # minimum value
+                        32767,                            # maximum value
+                        240,                              # default value
+                        gobject.PARAM_READWRITE)          # flags
+    }
+
+    def __init__(self, colorspace):
         gst.Bin.__init__(self)
-        self.caps = self.make_caps(colorspace, width, height)
+
+        self.width = 320
+        self.height = 240
+        self.colorspace = colorspace
+
+        self.caps = self.make_caps(colorspace, self.width, self.height)
         self.videomixer = gst.element_factory_make("videomixer", "videomixer")
         self.add(self.videomixer)
         self.inside_videoscale = gst.element_factory_make(
@@ -99,16 +122,37 @@ class PictureInPicture(gst.Bin):
         self.add_pad(sink_pad1)
         self.add_pad(sink_pad2)
 
-    def make_caps(self, colorspace, width, height):
+    def make_caps(self, width, height):
         caps = {}
         inside_width = width/2
         inside_height = height/2
         resolution = ",width=" + str(inside_width) + ",height=" + str(inside_height)
-        caps_string_inside = "video/x-raw-" + colorspace + resolution
+        caps_string_inside = "video/x-raw-yuv" + resolution
         resolution = ",width=" + str(width) + ",height=" + str(height)
-        caps_string_outside = "video/x-raw-" + colorspace + resolution
+        caps_string_outside = "video/x-raw-yuv" + resolution
         caps['inside'] = gst.caps_from_string(caps_string_inside)
         print caps['inside']
         caps['outside'] = gst.caps_from_string(caps_string_outside)
         print caps['outside']
         return caps
+
+    def do_get_property(self, property):
+        if property.name == "width":
+            return self.width
+        elif property.name == "height":
+            return self.height
+        else:
+            Log.warning('PictureInPicture unknown property %s' % property.name)
+
+    def do_set_property(self, property, value):
+        if property.name == "width":
+            self.width = value
+        elif property.name == "height":
+            self.height = value
+        else:
+            Log.warning('PictureInPicture unknown property %s' % property.name)
+        self.caps = self.make_caps(self.colospace, self.width, self.height)
+        self.inside_capsfilter.set_property("caps", self.caps['inside'])
+        self.outside_capsfilter.set_property("caps", self.caps['outside'])
+
+gobject.type_register(PictureInPicture)
