@@ -58,7 +58,7 @@ class SltvUI:
         preview_frame.add(preview_area)
         preview_area.show()
 
-        self.box = self.interface.get_object("vbox1")
+        self.box = self.interface.get_object("paned")
         self.settings = settings.SettingsUI(self, self.sltv)
         self.box.add(self.settings.get_widget())
         self.preview_box = self.interface.get_object("preview_vbox")
