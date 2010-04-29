@@ -16,11 +16,17 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+REGISTRY_INPUT = "input"
+REGISTRY_OUTPUT = "output"
+REGISTRY_VIDEO_CONVERTER = "videoconverter"
+REGISTRY_ENCODING = "encoding"
+
 class Registry:
 
     def __init__(self):
         self.factories = {
-                "input": [], "output": [], "videoconverter": [], "encoding": []
+            REGISTRY_INPUT: [], REGISTRY_OUTPUT: [],
+            REGISTRY_VIDEO_CONVERTER: [], REGISTRY_ENCODING: []
         }
 
     def get_factory_by_id(self, type, id):
