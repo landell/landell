@@ -30,6 +30,7 @@ import message
 import outputs
 import encoders
 import sources_view
+import outputs_view
 
 from previewarea import PreviewArea
 import preview
@@ -73,8 +74,6 @@ class SltvUI:
         self.encoders_ui = encoders.Encoders(
                 self, self.encoders, self.videoconverters
         )
-        self.outputs = self.sltv.outputs
-        self.outputs_ui = outputs.Outputs(self, self.outputs, self.encoders)
 
         # sources
 
@@ -94,6 +93,15 @@ class SltvUI:
         self.audio_sources_combobox.add_attribute(cell, "text", 0)
         self.audio_sources_combobox.connect("changed", self.on_select_audio_source)
         self.audio_sources_combobox.set_active(0)
+
+        # outputs
+
+        self.outputs = self.sltv.outputs
+        self.outputs_ui = outputs.Outputs(self, self.outputs, self.encoders)
+        self.outputs_box = self.interface.get_object("outputs_box")
+        self.outputs_view = outputs_view.OutputsView( self.sltv, self.outputs)
+        self.outputs_view.show_all()
+        self.outputs_box.pack_start(self.outputs_view, False, False)
 
         #menu
 

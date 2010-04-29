@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkHBox" id="output_box">
+    <property name="visible">True</property>
+    <property name="homogeneous">True</property>
+    <child>
+      <object class="GtkLabel" id="output_label">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">File</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="output_button">
+        <property name="label" translatable="yes">Stop</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+</interface>
