@@ -29,8 +29,12 @@ class EffectRegistry:
         self.gst_registry = gst.registry_get_default()
         all_effects = self.gst_registry.get_feature_list(gst.ElementFactory)
         self.registry = {}
-        self.registry[MEDIA_VIDEO] = self._register_filter(all_effects, "Filter/Effect/Video")
-        self.registry[MEDIA_AUDIO] = self._register_filter(all_effects, "Filter/Effect/Audio")
+        self.registry[MEDIA_VIDEO] = self._register_filter(
+            all_effects, "Filter/Effect/Video"
+        )
+        self.registry[MEDIA_AUDIO] = self._register_filter(
+            all_effects, "Filter/Effect/Audio"
+        )
 
     def get_types(self, effect_type):
         return self.registry[effect_type]
