@@ -62,6 +62,9 @@ class Sltv(gobject.GObject):
         self.sources = medialist.MediaList("Sources", "input")
         self.sources.load()
 
+        self.audioconvs = medialist.MediaList("AudioConverters", "audio")
+        self.audioconvs.load()
+
         self.encoders = medialist.MediaList("Encoders", "encoding")
         self.encoders.load()
 

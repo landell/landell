@@ -44,9 +44,12 @@ class AudioModel:
             source.factory.get_capabilities() & INPUT_TYPE_AUDIO > 0
 
 class Sources(MediaListUI):
-    def __init__(self, ui, sources):
+    def __init__(self, ui, sources, audioconvs):
         MediaListUI.__init__(self, ui, sources)
-        self.edit_item = edit_source.EditSource(self.dialog, self.media_list)
+        self.audioconvs = audioconvs
+        self.edit_item = edit_source.EditSource(
+                self.dialog, self.media_list, self.audioconvs
+        )
 
         # Adding types to combobox
 

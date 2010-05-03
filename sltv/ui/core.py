@@ -78,7 +78,8 @@ class SltvUI:
         # sources
 
         self.sources = self.sltv.sources
-        self.sources_ui = sources.Sources(self, self.sources)
+        self.audioconvs = self.sltv.audioconvs
+        self.sources_ui = sources.Sources(self, self.sources, self.audioconvs)
         self.video_source_box = self.interface.get_object("video_source_box")
         self.sources_view = sources_view.SourcesView(self.sltv, self.sources)
         self.sources_view.show_all()
