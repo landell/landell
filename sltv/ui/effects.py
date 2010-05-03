@@ -38,8 +38,8 @@ class EffectsUI:
         self.audio_effect_combobox = self.interface.get_object(
                 "audio_effect_combobox"
         )
-        self._create_effects_combobox(self.video_effect_combobox, "video")
-        self._create_effects_combobox(self.audio_effect_combobox, "audio")
+        self._create_effects_combobox(self.video_effect_combobox, MEDIA_VIDEO)
+        self._create_effects_combobox(self.audio_effect_combobox, MEDIA_AUDIO)
         self.effect_checkbutton = self.interface.get_object(
             "effect_checkbutton"
         )
