@@ -82,6 +82,8 @@ class Sltv(gobject.GObject):
 
         self.pending_state = None
 
+        self.input_type = 0
+
     def set_overlay_text(self, overlay_text):
         self.overlay_text = overlay_text
         if self.playing():
