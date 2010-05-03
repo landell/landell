@@ -41,12 +41,13 @@ class Edit:
         self.registry = sltv.registry.registry
         self.factories = {}
 
+        self.audio_factory = \
+                self.registry.get_factories(sltv.registry.REGISTRY_AUDIO)[0]
+
         self.config_box = None
         self.media_list = media_list
         self.media_item = None
 
-        self.audio_interface = gtk.Builder()
-        self.audio_interface.add_from_file(UI_DIR + "/audio_input.ui")
         self.audio_config = None
 
 
@@ -106,5 +107,5 @@ class Edit:
             self.audio_config = None
         if self.factory.get_capabilities() and \
                 self.factory.get_capabilities() & INPUT_TYPE_AUDIO:
-            self.audio_config = self.audio_interface.get_object("audio_box")
+            self.audio_config = self.audio_factory.get_ui().get_widget()
             self.container_box.add(self.audio_config)

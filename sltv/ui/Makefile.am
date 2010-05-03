@@ -23,6 +23,7 @@ sltvlib_DATA = \
 	edit_encoding.py \
 	settings.py \
 	sources_view.py \
-	outputs_view.py
+	outputs_view.py \
+	audiosetting.py
 
 EXTRA_DIST = $(sltvlib_DATA)

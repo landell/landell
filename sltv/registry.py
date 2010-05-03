@@ -20,13 +20,15 @@ REGISTRY_INPUT = "input"
 REGISTRY_OUTPUT = "output"
 REGISTRY_VIDEO_CONVERTER = "videoconverter"
 REGISTRY_ENCODING = "encoding"
+REGISTRY_AUDIO = "audio"
 
 class Registry:
 
     def __init__(self):
         self.factories = {
             REGISTRY_INPUT: [], REGISTRY_OUTPUT: [],
-            REGISTRY_VIDEO_CONVERTER: [], REGISTRY_ENCODING: []
+            REGISTRY_VIDEO_CONVERTER: [], REGISTRY_ENCODING: [],
+            REGISTRY_AUDIO: []
         }
 
     def get_factory_by_id(self, type, id):

@@ -27,7 +27,9 @@ import ui.encoding
 import ui.videoconverter
 import registry
 from registry import REGISTRY_INPUT, REGISTRY_OUTPUT, \
-  REGISTRY_VIDEO_CONVERTER, REGISTRY_ENCODING
+  REGISTRY_VIDEO_CONVERTER, REGISTRY_ENCODING, REGISTRY_AUDIO
+import ui.audiosetting
+import audioresample
 
 class SltvFactory:
     def __init__(self, id):
@@ -141,6 +143,12 @@ class OggTheoraVorbisEncodingFactory(SltvFactory):
     def create(self, type):
         return self.factory_class(type)
 
+class AudioConfigFactory(SltvFactory):
+    def __init__(self):
+        SltvFactory.__init__(self, "audio")
+        self.ui = ui.audiosetting.AudioUI()
+        self.factory_class = audioresample.AudioResample
+
 input_factories = [
         AudioTestInputFactory(), XInputFactory(), V4L2InputFactory(),
         FileInputFactory(), DVInputFactory(), ALSAInputFactory(),
@@ -166,3 +174,8 @@ encoding_factories = [OggTheoraVorbisEncodingFactory()]
 
 for i in encoding_factories:
     registry.registry.register_factory(REGISTRY_ENCODING, i)
+
+audio_factories = [AudioConfigFactory()]
+
+for i in audio_factories:
+    registry.registry.register_factory(REGISTRY_AUDIO, i)
