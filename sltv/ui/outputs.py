@@ -21,6 +21,7 @@ import gtk
 from medialist import MediaListUI
 from sltv.settings import UI_DIR
 import edit_output
+from sltv.registry import REGISTRY_OUTPUT
 
 class Outputs(MediaListUI):
     def __init__(self, ui, outputs, encoders):
@@ -30,7 +31,7 @@ class Outputs(MediaListUI):
 
         # Adding types to combobox
 
-        factories = self.registry.get_factories("output")
+        factories = self.registry.get_factories(REGISTRY_OUTPUT)
 
         for factory in factories:
             self.elements_liststore.append((factory.get_name(),))

@@ -20,6 +20,7 @@ import gobject
 import gtk
 from sltv.settings import UI_DIR
 import sltv.registry
+from sltv.registry import REGISTRY_VIDEO_CONVERTER
 import sltv.outputitem
 from edit import Edit
 import sltv.factory
@@ -36,7 +37,9 @@ class EditEncoding(Edit):
         label.set_label("Encoding name:")
         self.dialog.set_title("Edit Encoding")
 
-        self.converter_factory = self.registry.get_factories("videoconverter")[0]
+        self.converter_factory = self.registry.get_factories(
+            REGISTRY_VIDEO_CONVERTER
+        )[0]
 
         self.setting_box = self.converter_factory.get_ui().get_widget()
         self.container_box.add(self.setting_box)

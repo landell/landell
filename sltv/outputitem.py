@@ -17,13 +17,16 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import registry
+from registry import REGISTRY_VIDEO_CONVERTER, REGISTRY_ENCODING
 from mediaitem import MediaItem
 
 class OutputItem(MediaItem):
     def __init__(self, name, factory):
         MediaItem.__init__(self, name, factory)
-        self.converter = registry.registry.get_factories("videoconverter")[0]
-        self.encoding = registry.registry.get_factories("encoding")[0]
+        self.converter = registry.registry.get_factories(
+            REGISTRY_VIDEO_CONVERTER
+        )[0]
+        self.encoding = registry.registry.get_factories(REGISTRY_ENCODING)[0]
     def create_converter(self):
         item = self.converter.create()
         item.config(self.config)

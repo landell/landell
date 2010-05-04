@@ -26,6 +26,8 @@ import ui.output
 import ui.encoding
 import ui.videoconverter
 import registry
+from registry import REGISTRY_INPUT, REGISTRY_OUTPUT, \
+  REGISTRY_VIDEO_CONVERTER, REGISTRY_ENCODING
 
 class SltvFactory:
     def __init__(self, id):
@@ -146,21 +148,21 @@ input_factories = [
 ]
 
 for i in input_factories:
-    registry.registry.register_factory("input", i)
+    registry.registry.register_factory(REGISTRY_INPUT, i)
 
 output_factories = [
         IcecastOutputFactory(), FileOutputFactory(), FakeOutputFactory()
 ]
 
 for i in output_factories:
-    registry.registry.register_factory("output", i)
+    registry.registry.register_factory(REGISTRY_OUTPUT, i)
 
 converter_factories = [VideoConverterFactory()]
 
 for i in converter_factories:
-    registry.registry.register_factory("videoconverter", i)
+    registry.registry.register_factory(REGISTRY_VIDEO_CONVERTER, i)
 
 encoding_factories = [OggTheoraVorbisEncodingFactory()]
 
 for i in encoding_factories:
-    registry.registry.register_factory("encoding", i)
+    registry.registry.register_factory(REGISTRY_ENCODING, i)

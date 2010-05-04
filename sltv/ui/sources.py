@@ -23,6 +23,7 @@ from sltv.settings import UI_DIR
 import edit_source
 
 from sltv.input.core import INPUT_TYPE_VIDEO, INPUT_TYPE_AUDIO
+from sltv.registry import REGISTRY_INPUT
 
 class VideoModel:
     def __init__(self, sources):
@@ -49,7 +50,7 @@ class Sources(MediaListUI):
 
         # Adding types to combobox
 
-        factories = self.registry.get_factories("input")
+        factories = self.registry.get_factories(REGISTRY_INPUT)
 
         for factory in factories:
             self.elements_liststore.append((factory.get_name(),))

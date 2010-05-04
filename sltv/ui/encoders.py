@@ -21,6 +21,7 @@ import gtk
 from medialist import MediaListUI
 from sltv.settings import UI_DIR
 import edit_encoding
+from sltv.registry import REGISTRY_VIDEO_CONVERTER, REGISTRY_ENCODING
 
 class Encoders(MediaListUI):
     def __init__(self, ui, encoders, converters):
@@ -34,7 +35,7 @@ class Encoders(MediaListUI):
 
         # Adding types to combobox
 
-        factories = self.registry.get_factories("encoding")
+        factories = self.registry.get_factories(REGISTRY_ENCODING)
 
         for factory in factories:
             self.elements_liststore.append((factory.get_name(),))
