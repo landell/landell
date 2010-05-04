@@ -59,6 +59,9 @@ class AudioResample(gst.Bin):
         self.add_pad(self.src_pad)
         self.audiorate_property = -1
 
+    def config(self, config):
+        self.set_property("audiorate", int(config["audiorate"]))
+
     def do_get_property(self, property):
         if property.name == "audiorate":
             return self.audiorate_property

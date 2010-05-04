@@ -133,6 +133,7 @@ class Sltv(gobject.GObject):
                     pad = self.queue_audio.get_static_pad("sink")
                     element.audio_pad.link(pad)
                     self.input_type |= MEDIA_AUDIO
+                    self.audio_input_item = source
                 elif element.does_video():
 
                         # If element does audio and video, it will be added.
@@ -193,7 +194,8 @@ class Sltv(gobject.GObject):
             self.audio_tee = gst.element_factory_make("tee", "audio_tee")
             self.player.add(self.audio_tee)
 
-            self.audioresample = audioresample.AudioResample()
+            self.audioresample = self.audio_input_item.parent.create()
+
             self.player.add(self.audioresample)
             self.volume = volume.Volume()
             self.player.add(self.volume)
