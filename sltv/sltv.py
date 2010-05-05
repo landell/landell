@@ -33,21 +33,23 @@ MEDIA_AUDIO = 1
 MEDIA_VIDEO = 2
 
 class Sltv(gobject.GObject):
+    __gsignals__ = {
+            "stopped": ( gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ()),
+            "playing": ( gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ()),
+            "preplay": ( gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ()),
+            "error": (
+                gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                (gobject.TYPE_STRING,)
+            ),
+            "sync-message": (
+                gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                (gobject.type_from_name("GstBus"),
+                    gobject.type_from_name("GstMessage"))
+            )
+    }
 
     def __init__(self):
         gobject.GObject.__init__(self)
-        gobject.signal_new("stopped", Sltv, gobject.SIGNAL_RUN_LAST,
-                           gobject.TYPE_NONE, ())
-        gobject.signal_new("playing", Sltv, gobject.SIGNAL_RUN_LAST,
-                           gobject.TYPE_NONE, ())
-        gobject.signal_new("preplay", Sltv, gobject.SIGNAL_RUN_LAST,
-                           gobject.TYPE_NONE, ())
-        gobject.signal_new("error", Sltv, gobject.SIGNAL_RUN_LAST,
-                           gobject.TYPE_NONE, (gobject.TYPE_STRING,))
-        gobject.signal_new("sync-message", Sltv, gobject.SIGNAL_RUN_LAST,
-                           gobject.TYPE_NONE, (gobject.type_from_name("GstBus"),
-                                               gobject.type_from_name("GstMessage")))
-
 
         self.player = None
         self.preview = Preview(self)
