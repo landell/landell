@@ -63,14 +63,20 @@ class EditEncoding(Edit):
             if not self.media_list.get_item(name):
                 media_item = sltv.mediaitem.MediaItem(name, self.factory)
                 converter = sltv.mediaitem.MediaItem(name, self.converter_factory)
-                media_item.set_config(self.factory.get_ui().get_config())
-                converter.set_config(self.converter_factory.get_ui().get_config())
+                media_item.set_config(self.factory.get_ui().get_config().copy())
+                converter.set_config(
+                        self.converter_factory.get_ui().get_config().copy()
+                )
                 media_item.set_parent(converter)
                 converter.set_parent(None)
                 self.media_list.add_item(name, media_item)
                 self.converter_list.add_item(name, converter)
         else:
-            self.media_item.set_config(self.factory.get_ui().get_config())
-            self.converter.set_config(self.converter_factory.get_ui().get_config())
+            self.media_item.set_config(
+                    self.factory.get_ui().get_config().copy()
+            )
+            self.converter.set_config(
+                    self.converter_factory.get_ui().get_config().copy()
+            )
         self.media_list.save()
         self.converter_list.save()

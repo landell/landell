@@ -66,7 +66,7 @@ class Edit:
         self.dialog.hide_all()
 
     def save(self):
-        config = self.factory.get_ui().get_config()
+        config = self.factory.get_ui().get_config().copy()
         if self.media_item == None:
             name = self.name_entry.get_text()
             if name == None or name == "":
