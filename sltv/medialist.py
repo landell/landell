@@ -18,14 +18,31 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gtk
+import gobject
 import registry
 import config
 import mediaitem
 import outputitem
 import factory
 
-class MediaList:
+class MediaList(gobject.GObject):
+    __gsignals__ =  {
+        "remove-item": (
+            gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, (
+                gobject.TYPE_STRING,
+                mediaitem.MediaItem
+            )
+        ),
+        "add-item": (
+            gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, (
+                gobject.TYPE_STRING,
+                mediaitem.MediaItem
+            )
+        )
+    }
+
     def __init__(self, section, type):
+        gobject.GObject.__init__(self)
         self.liststore = gtk.ListStore(str, object)
         self.config = config.config
         self.registry = registry.registry
@@ -47,7 +64,9 @@ class MediaList:
     def remove_item(self, name):
         row = self._find_item(name)
         if row != None:
+            item = row[1]
             self.liststore.remove(row.iter)
+            self.emit("remove-item", name, item)
 
     def _save_item(self, name, item):
         factory = item.get_factory()
@@ -56,6 +75,7 @@ class MediaList:
         self.config.set_item(self.section, name, items)
 
     def add_item(self, name, item):
+        self.emit("add-item", name, item)
         self.liststore.append((name, item))
 
     def get_store(self):
@@ -82,3 +102,5 @@ class MediaList:
         self.config.remove_section(self.section)
         for row in self.liststore:
             self._save_item(row[0], row[1])
+
+gobject.type_register(MediaList)
