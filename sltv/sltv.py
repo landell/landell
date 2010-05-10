@@ -128,7 +128,9 @@ class Sltv(gobject.GObject):
             if element.does_audio():
                 if name == self.audio_source:
                     self.player.add(element)
-                    self.queue_audio = gst.element_factory_make("queue", "queue_audio")
+                    self.queue_audio = gst.element_factory_make(
+                            "queue", "queue_audio"
+                    )
                     self.player.add(self.queue_audio)
                     pad = self.queue_audio.get_static_pad("sink")
                     element.audio_pad.link(pad)
@@ -136,15 +138,15 @@ class Sltv(gobject.GObject):
                     self.audio_input_item = source
                 elif element.does_video():
 
-                        # If element does audio and video, it will be added.
-                        # If audio is not chosen, it should be dropped
+                    # If element does audio and video, it will be added.
+                    # If audio is not chosen, it should be dropped
 
-                        self.player.add(element)
-                        fakesink = gst.element_factory_make("fakesink", None)
-                        fakesink.set_property("silent", True)
-                        fakesink.set_property("sync", False)
-                        self.player.add(fakesink)
-                        element.audio_pad.link(fakesink.get_static_pad("sink"))
+                    self.player.add(element)
+                    fakesink = gst.element_factory_make("fakesink", None)
+                    fakesink.set_property("silent", True)
+                    fakesink.set_property("sync", False)
+                    self.player.add(fakesink)
+                    element.audio_pad.link(fakesink.get_static_pad("sink"))
 
             if element.does_video():
                 self.input_type |= MEDIA_VIDEO
