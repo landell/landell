@@ -32,9 +32,9 @@ class SettingsUI:
         self.widget = self.interface.get_object("vbox")
         self.content = self.interface.get_object("content_viewport")
 
-        self.effects = effects.EffectsUI(self, self.sltv)
-        self.overlay = overlay.OverlayUI(self, self.sltv)
-        self.volume = volume.VolumeUI(self, self.sltv)
+        self.effects = effects.EffectsUI(self.ui, self.sltv)
+        self.overlay = overlay.OverlayUI(self.ui, self.sltv)
+        self.volume = volume.VolumeUI(self.ui, self.sltv)
 
         self.effects_button = self.interface.get_object("effects_toolbutton")
         self.overlay_button = self.interface.get_object("overlay_toolbutton")
