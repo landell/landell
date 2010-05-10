@@ -53,7 +53,9 @@ class EditEncoding(Edit):
             self.set_factory(self.media_item.factory)
             self.name_entry.set_text(self.media_item.name)
             self.media_item.factory.get_ui().set_config(media_item.get_config())
-            self.converter.factory.get_ui().set_config(self.converter.get_config())
+            self.converter.factory.get_ui().set_config(
+                    self.converter.get_config()
+            )
 
     def save(self):
         if self.media_item == None:
@@ -62,7 +64,9 @@ class EditEncoding(Edit):
                 return False
             if not self.media_list.get_item(name):
                 media_item = sltv.mediaitem.MediaItem(name, self.factory)
-                converter = sltv.mediaitem.MediaItem(name, self.converter_factory)
+                converter = sltv.mediaitem.MediaItem(
+                        name, self.converter_factory
+                )
                 media_item.set_config(self.factory.get_ui().get_config().copy())
                 converter.set_config(
                         self.converter_factory.get_ui().get_config().copy()
