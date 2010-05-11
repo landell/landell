@@ -383,7 +383,7 @@ class Sltv(gobject.GObject):
             self.set_effect_name(effect_type, effect_name)
             self._swap_effect(effect_type)
 
-    def switch_source(self):
+    def _switch_source(self):
         self.video_input_selector.set_property(
                 "active-pad", self.source_pads[self.video_source]
         )
@@ -391,7 +391,7 @@ class Sltv(gobject.GObject):
     def set_video_source(self, source_name):
         self.video_source = source_name
         if self.playing():
-            self.switch_source()
+            self._switch_source()
 
     def set_audio_source(self, source_name):
         self.audio_source = source_name
