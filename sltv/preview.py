@@ -25,10 +25,16 @@ import gtk
 
 class Preview(gobject.GObject):
 
+    __gsignals__ = {
+        "prepare-xwindow-id" : (
+            gobject.SIGNAL_RUN_LAST,
+            gobject.TYPE_NONE,
+            (gobject.type_from_name("GstElement"),)
+        )
+    }
+
     def __init__(self, sltv):
         gobject.GObject.__init__(self)
-        gobject.signal_new("prepare-xwindow-id", Preview, gobject.SIGNAL_RUN_LAST,
-                           gobject.TYPE_NONE, (gobject.type_from_name("GstElement"),))
         sltv.connect("sync-message", self.on_sync_message)
 
     def get_preview(self):
@@ -53,3 +59,5 @@ class Preview(gobject.GObject):
             previewsink.set_property("sync", "false")
             previewsink.set_property("force-aspect-ratio", "true")
             self.emit("prepare-xwindow-id", previewsink)
+
+gobject.type_register(Preview)
