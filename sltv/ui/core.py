@@ -81,6 +81,7 @@ class SltvUI:
 
         pip_box = self.interface.get_object("pip_box")
         self.pip_selector = pip_widget.PIPSelector()
+        self.pip_selector.connect("changed", self.on_pip_changed)
         pip_box.add(self.pip_selector)
         pip_box.show_all()
 
@@ -169,6 +170,9 @@ class SltvUI:
     def on_select_audio_source(self, combobox):
         source_name = self.selected_audio_source()
         self.sltv.set_audio_source(source_name)
+
+    def on_pip_changed(self, widget, selected):
+        self.sltv.set_pip_position(selected)
 
     def on_play_press(self, event):
         if not self.sources_view.has_item_a_selected():

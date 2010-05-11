@@ -128,9 +128,18 @@ class SourceItem:
 
     def _on_b_press(self, event):
         if event.get_active():
+            self.sltv.set_pip_source(self.name)
             for action in self.b_group.list_actions():
                 if action != event:
                     action.set_active(False)
+        else:
+            active = False
+            for action in self.b_group.list_actions():
+                if action.get_active():
+                    active = True
+            if not active:
+                self.sltv.set_pip_source(None)
+
 
     def set_label(self, label):
         self.label.set_text(label)

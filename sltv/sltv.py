@@ -24,6 +24,7 @@ import gst
 from audio import *
 from preview import *
 from swap import Swap
+from videomixer import PictureInPicture
 
 from registry import REGISTRY_INPUT, REGISTRY_OUTPUT, \
   REGISTRY_VIDEO_CONVERTER, REGISTRY_ENCODING, REGISTRY_AUDIO
@@ -87,6 +88,8 @@ class Sltv(gobject.GObject):
         self.effect_name = {MEDIA_VIDEO: "identity", MEDIA_AUDIO: "identity"}
 
         self.video_source = None
+        self.pip_source = None
+        self.pip_position = None
         self.audio_source = None
 
         self.overlay_text = None
@@ -141,13 +144,17 @@ class Sltv(gobject.GObject):
 
         # Source selection
 
-        self.video_input_selector = gst.element_factory_make(
-                "input-selector", "video_input_selector"
-        )
-        self.player.add(self.video_input_selector)
         self.source_pads = {}
+        self.pip_pads = {}
 
         type = 0
+        source_number = 0
+        pip_number = 0
+
+        self.pip = PictureInPicture()
+        self.pip.set_property("width", 320)
+        self.pip.set_property("height", 240)
+        self.player.add(self.pip)
 
         for row in self.sources.get_store():
             (name, source) = row
@@ -180,14 +187,15 @@ class Sltv(gobject.GObject):
                 self.input_type |= MEDIA_VIDEO
                 if not element.does_audio():
                     self.player.add(element)
-                self.source_pads[name] = \
-                    self.video_input_selector.get_request_pad("sink%d")
+
+                self.source_pads[name] = source_number
+                source_number = source_number + 1
 
                 # Thumbnail preview
-                thumbnail_tee = gst.element_factory_make("tee", None)
-                self.player.add(thumbnail_tee)
-                element.video_pad.link(thumbnail_tee.get_static_pad("sink"))
-                thumbnail_tee.link(self.video_input_selector)
+
+                tee = gst.element_factory_make("tee", None)
+                self.player.add(tee)
+                element.video_pad.link(tee.sink_pads().next())
 
                 thumbnail_queue = gst.element_factory_make("queue", None)
                 self.player.add(thumbnail_queue)
@@ -195,20 +203,37 @@ class Sltv(gobject.GObject):
                 self.player.add(self.thumbnails[name])
 
                 thumbnail_err = gst.element_link_many(
-                    thumbnail_tee, thumbnail_queue, self.thumbnails[name]
+                    tee, thumbnail_queue, self.thumbnails[name]
                 )
                 if thumbnail_err == False:
                     self.emit("error", "Error conecting thumbnail preview.")
+
+                # Picture in Picture
+
+                self.pip_pads[name] = pip_number
+                pip_number = pip_number + 1
+
+                main_queue = gst.element_factory_make("queue", None)
+                self.player.add(main_queue)
+                pip_queue = gst.element_factory_make("queue", None)
+                self.player.add(pip_queue)
+
+                tee.link(main_queue)
+                tee.link(pip_queue)
+                main_queue.src_pads().next().link(self.pip.get_request_pad_A())
+                pip_queue.src_pads().next().link(self.pip.get_request_pad_B())
 
             if name == self.video_source:
                 type |= element.get_type()
             if name == self.audio_source:
                 type |= element.get_type()
 
-        self.video_input_selector.link(self.queue_video)
-        self.video_input_selector.set_property(
-                "active_pad", self.source_pads[self.video_source]
-        )
+        self.pip.link(self.queue_video)
+        self._switch_source()
+        self._switch_pip()
+
+        if self.pip_position:
+            self.pip.set_property("position", self.pip_position)
 
         self.effect[MEDIA_VIDEO] = effect.video_effect.VideoEffect(
                 self.effect_name[MEDIA_VIDEO]
@@ -384,14 +409,33 @@ class Sltv(gobject.GObject):
             self._swap_effect(effect_type)
 
     def _switch_source(self):
-        self.video_input_selector.set_property(
-                "active-pad", self.source_pads[self.video_source]
+        self.pip.set_property(
+                "a-active", self.source_pads[self.video_source]
         )
 
     def set_video_source(self, source_name):
         self.video_source = source_name
         if self.playing():
             self._switch_source()
+
+    def _switch_pip(self):
+        if self.pip_source:
+            self.pip.set_property("enabled", True)
+            self.pip.set_property(
+                    "b-active", self.pip_pads[self.pip_source]
+            )
+        else:
+            self.pip.set_property("enabled", False)
+
+    def set_pip_source(self, source_name):
+        self.pip_source = source_name
+        if self.playing():
+            self._switch_pip()
+
+    def set_pip_position(self, selected):
+        self.pip_position = selected
+        if self.playing():
+            self.pip.set_property("position", selected)
 
     def set_audio_source(self, source_name):
         self.audio_source = source_name
