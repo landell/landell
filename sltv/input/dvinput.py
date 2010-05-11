@@ -43,7 +43,7 @@ class DVInput(Input):
         self.dvdemux.connect("pad-added", self.on_pad_added)
         self.video_queue = gst.element_factory_make("queue", "video_demux_queue")
         self.add(self.video_queue)
-        self.dvdec = gst.element_factory_make("dvdec", "dvdec")
+        self.dvdec = gst.element_factory_make("ffdec_dvvideo", "ffdec_dvvideo")
         self.add(self.dvdec)
         self.videoscale = gst.element_factory_make(
                 "videoscale", "dv_videoscale"
