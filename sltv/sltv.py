@@ -60,6 +60,8 @@ class Sltv(gobject.GObject):
         self.preview_enabled = False
         self.preview = None
 
+        self.thumbnails = {}
+
         self.outputs = medialist.MediaList("Outputs", REGISTRY_OUTPUT)
         self.outputs.load()
 
@@ -112,6 +114,9 @@ class Sltv(gobject.GObject):
         self.overlay_font = overlay_font
         if self.playing():
             self.overlay.set_property("font-desc", overlay_font)
+
+    def get_thumbnail(self, name):
+        return self.thumbnails[name]
 
     def set_overlay_text(self, overlay_text):
         self.overlay_text = overlay_text
@@ -177,7 +182,23 @@ class Sltv(gobject.GObject):
                     self.player.add(element)
                 self.source_pads[name] = \
                     self.video_input_selector.get_request_pad("sink%d")
-                element.video_pad.link(self.source_pads[name])
+
+                # Thumbnail preview
+                thumbnail_tee = gst.element_factory_make("tee", None)
+                self.player.add(thumbnail_tee)
+                element.video_pad.link(thumbnail_tee.get_static_pad("sink"))
+                thumbnail_tee.link(self.video_input_selector)
+
+                thumbnail_queue = gst.element_factory_make("queue", None)
+                self.player.add(thumbnail_queue)
+                self.thumbnails[name] = Preview(self)
+                self.player.add(self.thumbnails[name])
+
+                thumbnail_err = gst.element_link_many(
+                    thumbnail_tee, thumbnail_queue, self.thumbnails[name]
+                )
+                if thumbnail_err == False:
+                    self.emit("error", "Error conecting thumbnail preview.")
 
             if name == self.video_source:
                 type |= element.get_type()

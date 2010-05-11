@@ -21,6 +21,7 @@ from sltv.settings import UI_DIR
 from sltv.sltv import *
 from sltv.input.core import INPUT_TYPE_VIDEO, INPUT_TYPE_AUDIO
 import sources as video_model
+from previewarea import PreviewArea
 
 A_BUTTON = "A"
 B_BUTTON = "B"
@@ -90,6 +91,17 @@ class SourceItem:
 
         self.name = name
         self._create_actions()
+
+        self.preview_frame = self.interface.get_object("preview_frame")
+        self.preview_area = PreviewArea()
+        self.preview_area.show()
+        self.preview_frame.add(self.preview_area)
+
+        sltv.connect("pipeline-ready", self._on_pipeline_ready)
+
+    def _on_pipeline_ready(self, sltv):
+        thumbnail = self.sltv.get_thumbnail(self.name)
+        self.preview_area.connect(thumbnail)
 
     def _create_actions(self):
         self._create_action(self.a_group, A_BUTTON)
