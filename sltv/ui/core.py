@@ -88,12 +88,18 @@ class SltvUI:
 
         # audio combobox
 
-        self.audio_sources_combobox = self.interface.get_object("audio_sources_combobox")
-        self.audio_sources_combobox.set_model(sources.AudioModel(self.sources).model)
+        self.audio_sources_combobox = self.interface.get_object(
+                "audio_sources_combobox"
+        )
+        self.audio_sources_combobox.set_model(
+                sources.AudioModel(self.sources).model
+        )
         cell = gtk.CellRendererText()
         self.audio_sources_combobox.pack_start(cell, True)
         self.audio_sources_combobox.add_attribute(cell, "text", 0)
-        self.audio_sources_combobox.connect("changed", self.on_select_audio_source)
+        self.audio_sources_combobox.connect(
+                "changed", self.on_select_audio_source
+        )
         self.audio_sources_combobox.set_active(0)
 
         # outputs
