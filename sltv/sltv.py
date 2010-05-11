@@ -25,6 +25,9 @@ from audio import *
 from preview import *
 from swap import Swap
 
+from registry import REGISTRY_INPUT, REGISTRY_OUTPUT, \
+  REGISTRY_VIDEO_CONVERTER, REGISTRY_ENCODING, REGISTRY_AUDIO
+
 import medialist
 import effect
 import volume
@@ -56,20 +59,21 @@ class Sltv(gobject.GObject):
         self.preview = Preview(self)
         self.preview_enabled = False
 
-        self.outputs = medialist.MediaList("Outputs", "output")
+        self.outputs = medialist.MediaList("Outputs", REGISTRY_OUTPUT)
         self.outputs.load()
 
-        self.sources = medialist.MediaList("Sources", "input")
+        self.sources = medialist.MediaList("Sources", REGISTRY_INPUT)
         self.sources.load()
 
-        self.audioconvs = medialist.MediaList("AudioConverters", "audio")
+        self.audioconvs = medialist.MediaList("AudioConverters", REGISTRY_AUDIO)
+
         self.audioconvs.load()
 
-        self.encoders = medialist.MediaList("Encoders", "encoding")
+        self.encoders = medialist.MediaList("Encoders", REGISTRY_ENCODING)
         self.encoders.load()
 
         self.videoconverters = medialist.MediaList(
-                "VideoConverters", "videoconverter"
+                "VideoConverters", REGISTRY_VIDEO_CONVERTER
         )
         self.videoconverters.load()
 
