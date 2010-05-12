@@ -38,6 +38,7 @@ import effects
 import overlay
 import volume
 import settings as settings
+import pip_widget
 
 class SltvUI:
 
@@ -75,6 +76,13 @@ class SltvUI:
         self.encoders_ui = encoders.Encoders(
                 self, self.encoders, self.videoconverters
         )
+
+        # pip
+
+        pip_box = self.interface.get_object("pip_box")
+        self.pip_selector = pip_widget.PIPSelector()
+        pip_box.add(self.pip_selector)
+        pip_box.show_all()
 
         # sources
 

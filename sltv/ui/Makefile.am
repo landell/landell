@@ -24,6 +24,7 @@ sltvlib_DATA = \
 	settings.py \
 	sources_view.py \
 	outputs_view.py \
-	audiosetting.py
+	audiosetting.py \
+	pip_widget.py
 
 EXTRA_DIST = $(sltvlib_DATA)
