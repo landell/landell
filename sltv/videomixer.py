@@ -55,7 +55,12 @@ class PictureInPicture(gst.Bin):
                         0,                                # minimum value
                         32767,                            # maximum value
                         0,                                # default value
-                        gobject.PARAM_READWRITE)          # flags
+                        gobject.PARAM_READWRITE),         # flags
+            'enabled' : (gobject.TYPE_BOOLEAN,            # type
+                        'status',                         # nick name
+                        'Status of pip',                  # description
+                        True,                             # default value
+                        gobject.PARAM_READWRITE),         # flags
     }
 
     def __init__(self):
@@ -65,6 +70,7 @@ class PictureInPicture(gst.Bin):
         self.height = 240
         self.x_position = 0
         self.y_position = 0
+        self.enabled = True
 
         self.caps = self.make_caps(self.width, self.height)
         self.videomixer = gst.element_factory_make("videomixer", "videomixer")
@@ -117,7 +123,7 @@ class PictureInPicture(gst.Bin):
         )
 
         self.videomixer_sink_1 = self.videomixer.get_pad("sink_1")
-        self.videomixer_sink_1.set_property("zorder",1)
+        self.videomixer_sink_1.set_property("zorder",2)
         self.videomixer_sink_1.set_property("xpos",0)
         self.videomixer_sink_1.set_property("ypos",0)
         self.inside_capsfilter.get_static_pad("src").link(
@@ -125,7 +131,7 @@ class PictureInPicture(gst.Bin):
         )
 
         videomixer_sink_2 = self.videomixer.get_pad("sink_2")
-        videomixer_sink_2.set_property("zorder",0)
+        videomixer_sink_2.set_property("zorder",1)
         videomixer_sink_2.set_property("xpos",0)
         videomixer_sink_2.set_property("ypos",0)
         self.outside_capsfilter.get_static_pad("src").link(videomixer_sink_2)
@@ -165,6 +171,8 @@ class PictureInPicture(gst.Bin):
             return self.x_position
         elif property.name == "yposition":
             return self.y_position
+        elif property.name == "enabled":
+            return self.enabled
         else:
             Log.warning('PictureInPicture unknown property %s' % property.name)
 
@@ -186,6 +194,12 @@ class PictureInPicture(gst.Bin):
         elif property.name == "yposition":
             self.y_position = value
             self.videomixer_sink_1.set_property("ypos",self.y_position)
+        elif property.name == "enabled":
+            self.enabled = value
+            if self.enabled:
+                self.videomixer_sink_1.set_property("zorder",2)
+            else:
+                self.videomixer_sink_1.set_property("zorder",0)
         else:
             Log.warning('PictureInPicture unknown property %s' % property.name)
         self.caps = self.make_caps(self.width, self.height)
