@@ -106,27 +106,33 @@ class SltvUI:
 
         #menu
 
-        output_menuitem = self.interface.get_object("output_menuitem")
-        sources_menuitem = self.interface.get_object("sources_menuitem")
-        encoding_menuitem = self.interface.get_object("encoding_menuitem")
+        self.output_menuitem = self.interface.get_object("output_menuitem")
+        self.sources_menuitem = self.interface.get_object("sources_menuitem")
+        self.encoding_menuitem = self.interface.get_object("encoding_menuitem")
         self.about_menu = self.interface.get_object("about_menu")
 
         self.play_button.connect("clicked", self.on_play_press)
         self.stop_button.connect("clicked", self.on_stop_press)
         self.main_window.connect("delete_event", self.on_window_closed)
-        output_menuitem.connect("activate", self.show_output)
-        sources_menuitem.connect("activate", self.show_sources)
-        encoding_menuitem.connect("activate", self.show_encoders)
+        self.output_menuitem.connect("activate", self.show_output)
+        self.sources_menuitem.connect("activate", self.show_sources)
+        self.encoding_menuitem.connect("activate", self.show_encoders)
         self.about_menu.connect("activate", self.show_about)
 
     def stopped(self, sltv):
         self.stop_button.set_sensitive(False)
         self.play_button.set_sensitive(True)
         self.audio_sources_combobox.set_sensitive(True)
+        self.output_menuitem.set_sensitive(True)
+        self.sources_menuitem.set_sensitive(True)
+        self.encoding_menuitem.set_sensitive(True)
 
     def playing(self, sltv):
         self.play_button.set_sensitive(False)
         self.stop_button.set_sensitive(True)
+        self.output_menuitem.set_sensitive(False)
+        self.sources_menuitem.set_sensitive(False)
+        self.encoding_menuitem.set_sensitive(False)
 
     def preplay(self, sltv):
         self.audio_sources_combobox.set_sensitive(False)
