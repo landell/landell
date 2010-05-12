@@ -157,9 +157,7 @@ class PictureInPicture(gst.Bin):
         resolution = ",width=" + str(width) + ",height=" + str(height)
         caps_string_outside = "video/x-raw-yuv" + resolution
         caps['inside'] = gst.caps_from_string(caps_string_inside)
-        print caps['inside']
         caps['outside'] = gst.caps_from_string(caps_string_outside)
-        print caps['outside']
         return caps
 
     def do_get_property(self, property):
