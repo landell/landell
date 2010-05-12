@@ -34,6 +34,13 @@ class PIPSelector(gtk.DrawingArea):
                         gobject.PARAM_READWRITE)          # flags
     }
 
+    __gsignals__ = {
+            'changed' : (
+                gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                (gobject.TYPE_INT,)
+            )
+    }
+
     def __init__(self):
         gtk.DrawingArea.__init__(self)
         self.connect("expose-event", self.on_expose_event)
@@ -99,6 +106,7 @@ class PIPSelector(gtk.DrawingArea):
         else:
             self.selected = 3
 
+        self.emit("changed", self.selected)
         self.queue_draw()
 
     def on_size_request(self, widget, requisition):
