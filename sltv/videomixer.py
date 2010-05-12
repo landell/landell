@@ -61,6 +61,13 @@ class PictureInPicture(gst.Bin):
                         'Status of pip',                  # description
                         True,                             # default value
                         gobject.PARAM_READWRITE),         # flags
+            'position' : (gobject.TYPE_INT,               # type
+                        'position',                       # nick name
+                        'Selected position',              # description
+                        0,                                # minimum value
+                        3,                                # maximum value
+                        0,                                # default value
+                        gobject.PARAM_READWRITE)          # flags
     }
 
     def __init__(self):
@@ -171,6 +178,8 @@ class PictureInPicture(gst.Bin):
             return self.y_position
         elif property.name == "enabled":
             return self.enabled
+        elif property.name == "position":
+            return self.position
         else:
             Log.warning('PictureInPicture unknown property %s' % property.name)
 
@@ -178,6 +187,21 @@ class PictureInPicture(gst.Bin):
         self.caps = self.make_caps(self.width, self.height)
         self.inside_capsfilter.set_property("caps", self.caps['inside'])
         self.outside_capsfilter.set_property("caps", self.caps['outside'])
+
+    def set_selected_position(self, selected):
+        self.position = selected
+        if selected == 0:
+            self.set_property("xposition", 0)
+            self.set_property("yposition", 0)
+        elif selected == 1:
+            self.set_property("xposition", self.width/2)
+            self.set_property("yposition", 0)
+        elif selected == 2:
+            self.set_property("xposition", 0)
+            self.set_property("yposition", self.height/2)
+        elif selected == 3:
+            self.set_property("xposition", self.width/2)
+            self.set_property("yposition", self.height/2)
 
     def do_set_property(self, property, value):
         if property.name == "width":
@@ -198,6 +222,8 @@ class PictureInPicture(gst.Bin):
                 self.videomixer_sink_1.set_property("zorder",2)
             else:
                 self.videomixer_sink_1.set_property("zorder",0)
+        elif property.name == "position":
+            self.set_selected_position(value)
         else:
             Log.warning('PictureInPicture unknown property %s' % property.name)
         self.caps = self.make_caps(self.width, self.height)
