@@ -22,6 +22,7 @@ import pygst
 pygst.require("0.10")
 import gst
 from core import Input, INPUT_TYPE_VIDEO
+from sltv.utils import Fract
 
 CAPABILITIES = INPUT_TYPE_VIDEO
 
@@ -48,7 +49,8 @@ class XInput(Input):
         self.video_pad.set_target(self.capsfilter.src_pads().next())
 
     def config(self, dict):
+        num, den = Fract.fromdecimal(dict["framerate"])
         caps = gst.caps_from_string(
-            "video/x-raw-rgb, framerate=%d/1" % int(dict["framerate"])
+            "video/x-raw-rgb, framerate=%d/%d" % (num, den)
         )
         self.capsfilter.set_property("caps", caps)
