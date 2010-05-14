@@ -57,13 +57,13 @@ class EditSource(Edit):
                 return False
             if not self.media_list.get_item(name):
                 media_item = sltv.mediaitem.MediaItem(name, self.factory)
-                media_item.set_config(self.factory.get_ui().get_config())
+                media_item.set_config(self.factory.get_ui().get_config().copy())
                 if self.audio_config:
                     audio = sltv.mediaitem.MediaItem(
                             name, self.audio_factory
                     )
                     audio.set_config(
-                            self.audio_factory.get_ui().get_config()
+                            self.audio_factory.get_ui().get_config().copy()
                     )
 
                     media_item.set_parent(audio)
@@ -73,10 +73,12 @@ class EditSource(Edit):
                     media_item.set_parent(None)
                 self.media_list.add_item(name, media_item)
         else:
-            self.media_item.set_config(self.factory.get_ui().get_config())
+            self.media_item.set_config(
+                    self.factory.get_ui().get_config().copy()
+            )
             if self.audio_config:
                 self.audio.set_config(
-                        self.audio_factory.get_ui().get_config()
+                        self.audio_factory.get_ui().get_config().copy()
                 )
         self.media_list.save()
         if self.audio_config:
