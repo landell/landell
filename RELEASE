@@ -1,33 +1,27 @@
-Release notes for version 0.6.1 of sltv
+Release notes for version 0.7 of sltv
 =====================================
 
 This software is still under development.
 
-Differences between version 0.6 and 0.6.1:
-=======================================
+Differences between version 0.6.1 and 0.7:
+==========================================
 
-- Created desktop file to allow some desktop environments to show
-  an entry in the menu for SLTV.
-- Fixed bug #6 (Changing to effects that have a different colorspace
-  than the current doesn't work)
-
-Difference between version 0.5 and 0.6:
-========================================
-
-- Support for multiple simultaneous outputs;
-- Each output has its own configurations, including encoding configurations;
-- Support for lenny versions of gstreamer and python;
-- Many cosmetic changes in interface;
-- Removed encoding UI, meaning all outputs use ogg theora + vorbis;
-- Changed many defaults in settings.
-
+- Volume setting
+- Audiorate configuration
+- Audio encoding configuration (bitrate and quality)
+- Improved main UI
+- Optional recording of raw DV file
+- Split between encoding and output, allowing one encoding to be used for
+  several outputs
+- Font and position config for text overlay
+- Accepting decimals in framerate and converting them to a proper fraction
+  (fixes bug #21)
 
 Known issues:
 =============
 
-- Switch between effects of different colorspaces might not work;
 - File source might not work with multiple sources;
 - Stopping the pipeline might loose frames not recorded;
-- The software may have problems loading old configuration files, to fix that
+- The software may have problems loading old configuration files. To fix that,
   remove the sources or edit the file by hand adding the missing
   configurations.
