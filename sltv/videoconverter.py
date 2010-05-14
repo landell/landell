@@ -20,6 +20,7 @@ import gobject
 import pygst
 pygst.require("0.10")
 import gst
+from utils import Fract
 
 class VideoConverter(gst.Bin):
 
@@ -61,9 +62,10 @@ class VideoConverter(gst.Bin):
         self.add_pad(self.sink_pad)
 
     def config(self, dict):
+        num, den = Fract.fromdecimal(dict["framerate"])
         caps = gst.caps_from_string(
-                "video/x-raw-yuv, width=%d, height=%d, framerate=%f/1" % (
-                    int(dict["width"]), int(dict["height"]), float(dict["framerate"])
+                "video/x-raw-yuv, width=%d, height=%d, framerate=%d/%d" % (
+                    int(dict["width"]), int(dict["height"]), num, den
                 )
         )
         self.capsfilter.set_property("caps", caps)
