@@ -37,23 +37,16 @@ class OverlayUI:
         self.widget = self.interface.get_object("vbox")
 
         self.button = self.interface.get_object("apply_button")
-        self.button.connect("clicked", self.on_apply_clicked)
         self.textview = self.interface.get_object("overlay_textview")
-
-        self.sltv.connect("preplay", self._preplay)
-        self.sltv.connect("playing", self._playing)
-        self.sltv.connect("stopped", self._stopped)
 
         self.font_selector = gtk.FontSelectionDialog("Select a font name")
 
         self.font_selector_button = self.interface.get_object(
             "font_selector_button"
         )
-        self.font_selector_button.connect("clicked", self.on_font_change)
 
         self.font_selector.set_transient_for(self.ui.main_window)
         self.font_selector.set_destroy_with_parent(True)
-        self.font_selector.connect("response", self.on_close_dialog)
 
         self.font_selector_entry = self.interface.get_object(
             "font_selector_entry"
@@ -74,7 +67,7 @@ class OverlayUI:
                 "Right", 2)
         ]
         self.horizontal_group.add_radio_actions(
-                horizontal_actions, 0, self.on_horizontal_changed, None
+                horizontal_actions, 0, None, None
         )
         self.left_radioaction = self.horizontal_group.get_action("left_radioaction")
         self.left_radioaction.connect_proxy(self.left_button)
@@ -102,7 +95,7 @@ class OverlayUI:
                 "Bottom", 2)
         ]
         self.vertical_group.add_radio_actions(
-                vertical_actions, 0, self.on_vertical_changed, None
+                vertical_actions, 0, None, None
         )
 
         self.top_radioaction = self.vertical_group.get_action("top_radioaction")
@@ -122,6 +115,15 @@ class OverlayUI:
 
         self._set_config()
         self._load_config()
+
+        self.button.connect("clicked", self.on_apply_clicked)
+        self.sltv.connect("preplay", self._preplay)
+        self.sltv.connect("playing", self._playing)
+        self.sltv.connect("stopped", self._stopped)
+        self.font_selector_button.connect("clicked", self.on_font_change)
+        self.font_selector.connect("response", self.on_close_dialog)
+        self.left_radioaction.connect("changed", self.on_horizontal_changed)
+        self.top_radioaction.connect("changed", self.on_vertical_changed)
 
     def _set_config(self):
         self.config = config.config
