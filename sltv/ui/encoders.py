@@ -41,3 +41,9 @@ class Encoders(MediaListUI):
             self.elements_liststore.append((factory.get_name(),))
             self.factories[factory.get_name()] = factory
         self.elements_combobox.set_active(0)
+
+        encoders.connect("remove-item", self._remove_encoder)
+
+    def _remove_encoder(self, medialist, name, item):
+        self.converters_list.remove_item(name)
+        self.converters_list.save()
