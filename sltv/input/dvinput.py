@@ -86,7 +86,7 @@ class DVInput(Input):
         )
         self.capsfilter.set_property("caps", caps)
 
-        if (bool(dict["file_enabled"])):
+        if dict["file_enabled"] == 'True':
             self.queue_save = gst.element_factory_make("queue", "dv_save_queue")
             self.add(self.queue_save)
             self.filesink = gst.element_factory_make("filesink", "dvfilesink")

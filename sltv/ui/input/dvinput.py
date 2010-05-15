@@ -57,9 +57,9 @@ class DVInputUI(InputUI):
         self.port_entry.set_text(self.config["port"])
         self.width_entry.set_text(self.config["width"])
         self.height_entry.set_text(self.config["height"])
-        self.file_checkbutton.set_active(bool(self.config["file_enabled"]))
+        self.file_checkbutton.set_active(self.config["file_enabled"] == 'True')
         #  set_filename doesn't accept null values
-        if not self.config["filename"]:
+        if self.config["file_enabled"] == 'False':
             self.config["filename"] = ""
         self.filechooserbutton.set_filename(self.config["filename"])
 
@@ -68,6 +68,9 @@ class DVInputUI(InputUI):
         self.config["port"] = self.port_entry.get_text()
         self.config["width"] = self.width_entry.get_text()
         self.config["height"] = self.height_entry.get_text()
-        self.config["file_enabled"] = self.file_checkbutton.get_active()
+        if self.file_checkbutton.get_active() is True:
+            self.config["file_enabled"] = 'True'
+        else:
+            self.config["file_enabled"] = 'False'
         self.config["filename"] = self.filechooserbutton.get_filename()
         return self.config
