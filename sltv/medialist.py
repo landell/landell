@@ -91,10 +91,7 @@ class MediaList(gobject.GObject):
                     current_factory = self.registry.get_factory_by_id(
                             self.type, value["type"]
                     )
-                    if "output" in self.type:
-                        src = outputitem.OutputItem(key, current_factory)
-                    else:
-                        src = mediaitem.MediaItem(key, current_factory)
+                    src = mediaitem.MediaItem(key, current_factory)
                     src.set_config(value)
                     self.add_item(key, src)
 

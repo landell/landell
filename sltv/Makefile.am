@@ -13,7 +13,6 @@ sltvlib_DATA = \
 	registry.py \
 	factory.py \
 	mediaitem.py \
-	outputitem.py \
 	medialist.py \
 	config.py \
 	videoconverter.py \
