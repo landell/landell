@@ -92,14 +92,14 @@ class SourceItem:
         self._create_actions()
 
     def _create_actions(self):
-        self._create_action(self.a_group, A_BUTTON, self.name)
-        self._create_action(self.b_group, B_BUTTON, self.name)
+        self._create_action(self.a_group, A_BUTTON)
+        self._create_action(self.b_group, B_BUTTON)
         self.set_label(self.name)
 
-    def _create_action(self, group, type, name):
-        action = [(name, "gtk-missing-image", type, None),]
+    def _create_action(self, group, type):
+        action = [(self.name, "gtk-missing-image", type, None),]
         group.add_toggle_actions(action)
-        radioaction = group.get_action(name)
+        radioaction = group.get_action(self.name)
         if type == A_BUTTON:
             radioaction.connect_proxy(self.a_button)
             radioaction.connect("toggled", self._on_a_press)
