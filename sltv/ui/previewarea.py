@@ -22,9 +22,15 @@ import gtk
 
 class PreviewArea(gtk.DrawingArea):
 
-    def __init__(self, preview):
+    def __init__(self):
         gtk.DrawingArea.__init__(self)
-        preview.connect("prepare-xwindow-id", self.on_prepare_xwindow_id)
+
+    def connect(self, preview):
+        self.preview = preview
+        if not self.preview is None:
+            self.preview.connect(
+                    "prepare-xwindow-id", self.on_prepare_xwindow_id
+            )
 
     def on_prepare_xwindow_id(self, preview, element):
         # Setting preview to be displayed at preview_area
