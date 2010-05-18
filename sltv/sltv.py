@@ -376,6 +376,9 @@ class Sltv(gobject.GObject):
     def set_preview(self, state):
         self.preview_enabled = state
 
+    def get_preview(self):
+        return self.preview
+
     def set_volume(self, value):
         self.volume_value = value
         if self.volume:
