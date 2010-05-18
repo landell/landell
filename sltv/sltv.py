@@ -261,9 +261,11 @@ class Sltv(gobject.GObject):
             self.player.add(sink)
 
             encoder_name = output.get_config()["parent"]
+
             encoder_item = self.encoders.get_item(encoder_name)
             if encoder_item is None:
-                pass
+                self.emit("error", "Please, add an encoder.")
+                break
 
             if added_encoders.has_key(encoder_name):
                 tee = added_encoders[encoder_name]
