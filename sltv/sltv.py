@@ -57,8 +57,8 @@ class Sltv(gobject.GObject):
         gobject.GObject.__init__(self)
 
         self.player = None
-        self.preview = Preview(self)
         self.preview_enabled = False
+        self.preview = None
 
         self.outputs = medialist.MediaList("Outputs", REGISTRY_OUTPUT)
         self.outputs.load()
@@ -283,10 +283,10 @@ class Sltv(gobject.GObject):
         if self.preview_enabled:
             queue_preview = gst.element_factory_make("queue", "queue_preview")
             self.player.add(queue_preview)
-            self.preview_element = self.preview.get_preview()
-            self.player.add(self.preview_element)
+            self.preview = Preview(self)
+            self.player.add(self.preview)
             err = gst.element_link_many(
-                    self.preview_tee, queue_preview, self.preview_element
+                    self.preview_tee, queue_preview, self.preview
             )
             if err == False:
                 print "Error conecting preview"
