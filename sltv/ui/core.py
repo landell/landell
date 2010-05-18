@@ -53,18 +53,19 @@ class SltvUI:
         self.sltv.connect("playing", self.playing)
         self.sltv.connect("preplay", self.preplay)
         self.sltv.connect("error", self.error)
+        self.sltv.connect("pipeline-ready", self.on_pipeline_ready)
 
-        preview_frame = self.interface.get_object("preview_frame")
-        preview_area = PreviewArea(self.sltv.preview)
-        preview_frame.add(preview_area)
-        preview_area.show()
+        self.preview_frame = self.interface.get_object("preview_frame")
+        self.preview_box = self.interface.get_object("preview_vbox")
+        self.preview = preview.PreviewUI(self, self.sltv)
+        self.preview_box.pack_start(self.preview.get_widget(), False, False)
+        self.preview_area = PreviewArea()
+        self.preview_frame.add(self.preview_area)
+        self.preview_area.show()
 
         self.box = self.interface.get_object("paned")
         self.settings = settings.SettingsUI(self, self.sltv)
         self.box.add(self.settings.get_widget())
-        self.preview_box = self.interface.get_object("preview_vbox")
-        self.preview = preview.PreviewUI(self, self.sltv)
-        self.preview_box.pack_start(self.preview.get_widget(), False, False)
 
         self.play_button = self.interface.get_object("play_button")
         self.stop_button = self.interface.get_object("stop_button")
@@ -118,6 +119,10 @@ class SltvUI:
         self.sources_menuitem.connect("activate", self.show_sources)
         self.encoding_menuitem.connect("activate", self.show_encoders)
         self.about_menu.connect("activate", self.show_about)
+
+    def on_pipeline_ready(self, sltv):
+        sltv_preview = self.sltv.get_preview()
+        self.preview_area.connect(sltv_preview)
 
     def stopped(self, sltv):
         self.stop_button.set_sensitive(False)
