@@ -23,7 +23,7 @@ pygst.require("0.10")
 import gst
 import gtk
 
-class Preview(gobject.GObject):
+class Preview(gst.Bin):
 
     __gsignals__ = {
         "prepare-xwindow-id" : (
@@ -36,19 +36,19 @@ class Preview(gobject.GObject):
     def __init__(self, sltv):
         gobject.GObject.__init__(self)
         sltv.connect("sync-message", self.on_sync_message)
-
-    def get_preview(self):
-        self.preview = gst.Bin()
-        sink = gst.element_factory_make("autovideosink", "sink")
-        colorspace = gst.element_factory_make("ffmpegcolorspace", "colorspace")
-        videoscale = gst.element_factory_make("videoscale")
-        self.preview.add(colorspace, sink, videoscale)
-        gst.element_link_many(colorspace, videoscale, sink)
-        sink_pad = gst.GhostPad(
-            "sink_ghost_pad", colorspace.sink_pads().next()
+        self.sink = gst.element_factory_make("autovideosink", "sink")
+        self.add(self.sink)
+        self.colorspace = gst.element_factory_make(
+            "ffmpegcolorspace", "colorspace"
         )
-        self.preview.add_pad(sink_pad)
-        return self.preview
+        self.add(self.colorspace)
+        self.videoscale = gst.element_factory_make("videoscale")
+        self.add(self.videoscale)
+        gst.element_link_many(self.colorspace, self.videoscale, self.sink)
+        sink_pad = gst.GhostPad(
+            "sink_ghost_pad", self.colorspace.sink_pads().next()
+        )
+        self.add_pad(sink_pad)
 
     def on_sync_message(self, sltv, bus, message):
         if message.structure is None:
