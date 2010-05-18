@@ -49,7 +49,8 @@ class Sltv(gobject.GObject):
                 gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
                 (gobject.type_from_name("GstBus"),
                     gobject.type_from_name("GstMessage"))
-            )
+            ),
+            "pipeline-ready": (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ())
     }
 
     def __init__(self):
@@ -293,6 +294,8 @@ class Sltv(gobject.GObject):
         self.overlay.set_property("text", self.overlay_text)
         if self.volume_value is not None:
             self.volume.set_property("volume", self.volume_value)
+
+        self.emit("pipeline-ready")
 
         bus = self.player.get_bus()
         bus.add_signal_watch()
