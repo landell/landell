@@ -137,7 +137,7 @@ class VideoConverterFactory(SltvFactory):
 
 class OggTheoraVorbisEncodingFactory(SltvFactory):
     def __init__(self):
-        SltvFactory.__init__(self, "encoding")
+        SltvFactory.__init__(self, "oggtheora")
         self.ui = ui.encoding.oggtheoravorbisenc.OggTheoraVorbisEncodingUI()
         self.factory_class = encoding.oggtheoravorbisenc.OggTheoraVorbisEncoder
     def create(self, type):
@@ -148,6 +148,14 @@ class AudioConfigFactory(SltvFactory):
         SltvFactory.__init__(self, "audio")
         self.ui = ui.audiosetting.AudioUI()
         self.factory_class = audioresample.AudioResample
+
+class VP8EncodingFactory(SltvFactory):
+    def __init__(self):
+        SltvFactory.__init__(self, "vp8")
+        self.ui = ui.encoding.vp8enc.VP8EncodingUI()
+        self.factory_class = encoding.vp8enc.VP8Encoder
+    def create(self, type):
+        return self.factory_class(type)
 
 input_factories = [
         AudioTestInputFactory(), XInputFactory(), V4L2InputFactory(),
@@ -170,7 +178,7 @@ converter_factories = [VideoConverterFactory()]
 for i in converter_factories:
     registry.registry.register_factory(REGISTRY_VIDEO_CONVERTER, i)
 
-encoding_factories = [OggTheoraVorbisEncodingFactory()]
+encoding_factories = [OggTheoraVorbisEncodingFactory(), VP8EncodingFactory()]
 
 for i in encoding_factories:
     registry.registry.register_factory(REGISTRY_ENCODING, i)
