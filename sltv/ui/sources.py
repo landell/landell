@@ -48,7 +48,7 @@ class Sources(MediaListUI):
         MediaListUI.__init__(self, ui, sources)
         self.audioconvs = audioconvs
         self.edit_item = edit_source.EditSource(
-                self.dialog, self.media_list, self.audioconvs
+                ui.settings_dialog, self.media_list, self.audioconvs
         )
 
         # Adding types to combobox

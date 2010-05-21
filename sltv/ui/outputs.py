@@ -26,8 +26,7 @@ from sltv.registry import REGISTRY_OUTPUT
 class Outputs(MediaListUI):
     def __init__(self, ui, outputs, encoders):
         MediaListUI.__init__(self, ui, outputs)
-        self.dialog.set_title("Outputs")
-        self.edit_item = edit_output.EditOutput(self.dialog, self.media_list, encoders)
+        self.edit_item = edit_output.EditOutput(ui.settings_dialog, self.media_list, encoders)
 
         # Adding types to combobox
 

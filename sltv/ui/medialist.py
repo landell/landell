@@ -25,12 +25,10 @@ class MediaListUI:
     def __init__(self, ui, media_list):
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/medialist.ui")
-        self.dialog = self.interface.get_object("medialist_dialog")
-        self.dialog.set_transient_for(ui.main_window)
+        self.content_area = self.interface.get_object("content-area")
         add_button = self.interface.get_object("add_button")
         self.edit_button = self.interface.get_object("edit_button")
         self.remove_button = self.interface.get_object("remove_button")
-        close_button = self.interface.get_object("close_button")
 
         # Setting combobox for type to be added
 
@@ -71,8 +69,6 @@ class MediaListUI:
         add_button.connect("clicked", self.on_add_item)
         self.edit_button.connect("clicked", self.on_edit_item)
         self.remove_button.connect("clicked", self.on_remove_item)
-        close_button.connect("clicked", self.close_dialog)
-        self.dialog.connect("delete_event", self.close_dialog)
         self.elements_combobox.connect("changed", self.on_change_element)
 
     def on_change_element(self, button):
@@ -91,12 +87,8 @@ class MediaListUI:
     def on_treeview_changed(self, selection):
         self.block_buttons(selection)
 
-    def show_window(self):
-        self.dialog.show_all()
-        self.dialog.run()
-
-    def close_dialog(self, widget, data= None):
-        self.dialog.hide_all()
+    def get_widget(self):
+        return self.content_area
 
     def on_add_item(self, button):
         self.edit_item.set_media_item(None)

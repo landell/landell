@@ -71,6 +71,9 @@ class SltvUI:
         self.play_button = self.interface.get_object("play_button")
         self.stop_button = self.interface.get_object("stop_button")
 
+        self.settings_dialog = gtk.Dialog('Settings', self.main_window)
+        self.settings_dialog.set_default_size(400, 400)
+
         self.encoders = self.sltv.encoders
         self.videoconverters = self.sltv.videoconverters
         self.encoders_ui = encoders.Encoders(
@@ -120,19 +123,47 @@ class SltvUI:
         self.outputs_view.show_all()
         self.outputs_box.pack_start(self.outputs_view, False, False)
 
+        # settings dialog
+
+        self.settings_dialog.set_has_separator(False)
+        self.settings_dialog.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+        self.settings_dialog.connect('delete-event', self.hide_settings)
+        self.settings_dialog.connect('response', self.hide_settings)
+
+        vbox = self.settings_dialog.get_content_area()
+        vbox.set_border_width(12)
+
+        notebook = gtk.Notebook()
+        self.settings_notebook = notebook
+        vbox.add(notebook)
+
+        vbox = gtk.VBox()
+        vbox.set_border_width(12)
+        vbox.pack_start(self.sources_ui.get_widget())
+        notebook.append_page(vbox, gtk.Label('Sources'))
+
+        vbox = gtk.VBox()
+        vbox.set_border_width(12)
+        vbox.pack_start(self.encoders_ui.get_widget())
+        notebook.append_page(vbox, gtk.Label('Encoders'))
+
+        vbox = gtk.VBox()
+        vbox.set_border_width(12)
+        vbox.pack_start(self.outputs_ui.get_widget())
+        notebook.append_page(vbox, gtk.Label('Outputs'))
+
         #menu
 
-        self.output_menuitem = self.interface.get_object("output_menuitem")
-        self.sources_menuitem = self.interface.get_object("sources_menuitem")
-        self.encoding_menuitem = self.interface.get_object("encoding_menuitem")
+        self.settings_menuitem = self.interface.get_object("settings_menuitem")
+        self.quit_menuitem = self.interface.get_object("quit_menuitem")
         self.about_menu = self.interface.get_object("about_menu")
 
         self.play_button.connect("clicked", self.on_play_press)
         self.stop_button.connect("clicked", self.on_stop_press)
         self.main_window.connect("delete_event", self.on_window_closed)
-        self.output_menuitem.connect("activate", self.show_output)
-        self.sources_menuitem.connect("activate", self.show_sources)
-        self.encoding_menuitem.connect("activate", self.show_encoders)
+
+        self.settings_menuitem.connect("activate", self.show_settings)
+        self.quit_menuitem.connect("activate", gtk.main_quit)
         self.about_menu.connect("activate", self.show_about)
 
     def on_pipeline_ready(self, sltv):
@@ -143,16 +174,12 @@ class SltvUI:
         self.stop_button.set_sensitive(False)
         self.play_button.set_sensitive(True)
         self.audio_sources_combobox.set_sensitive(True)
-        self.output_menuitem.set_sensitive(True)
-        self.sources_menuitem.set_sensitive(True)
-        self.encoding_menuitem.set_sensitive(True)
+        self.settings_menuitem.set_sensitive(True)
 
     def playing(self, sltv):
         self.play_button.set_sensitive(False)
         self.stop_button.set_sensitive(True)
-        self.output_menuitem.set_sensitive(False)
-        self.sources_menuitem.set_sensitive(False)
-        self.encoding_menuitem.set_sensitive(False)
+        self.settings_menuitem.set_sensitive(False)
 
     def preplay(self, sltv):
         self.audio_sources_combobox.set_sensitive(False)
@@ -188,17 +215,13 @@ class SltvUI:
         if not self.sltv.playing():
             self.sltv.play()
 
-    def show_encoding(self, menuitem):
-        self.sltv.show_encoding()
+    def show_settings(self, menuitem = None):
+        self.settings_dialog.show_all()
 
-    def show_output(self, menuitem):
-        self.outputs_ui.show_window()
-
-    def show_sources(self, menuitem):
-        self.sources_ui.show_window()
-
-    def show_encoders(self, menuitem):
-        self.encoders_ui.show_window()
+    def hide_settings(self, *args):
+        self.settings_dialog.hide()
+        self.settings_notebook.set_current_page(0)
+        return True
 
     def show_about(self, menuitem):
         self.about.show_window()
