@@ -22,7 +22,6 @@ import gobject
 import registry
 import config
 import mediaitem
-import outputitem
 import factory
 
 class MediaList(gobject.GObject):

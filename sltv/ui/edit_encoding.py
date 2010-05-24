@@ -21,7 +21,6 @@ import gtk
 from sltv.settings import UI_DIR
 import sltv.registry
 from sltv.registry import REGISTRY_VIDEO_CONVERTER
-import sltv.outputitem
 from edit import Edit
 import sltv.factory
 

@@ -20,7 +20,6 @@ import gobject
 import gtk
 from sltv.settings import UI_DIR
 import sltv.registry
-import sltv.outputitem
 from edit import Edit
 import sltv.factory
 
