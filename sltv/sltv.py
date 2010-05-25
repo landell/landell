@@ -152,8 +152,7 @@ class Sltv(gobject.GObject):
         pip_number = 0
 
         self.pip = PictureInPicture()
-        self.pip.set_property("width", 320)
-        self.pip.set_property("height", 240)
+
         self.player.add(self.pip)
 
         for row in self.sources.get_store():
@@ -279,6 +278,9 @@ class Sltv(gobject.GObject):
             )
         added_encoders = {}
 
+        pip_width = 0
+        pip_height = 0
+
         for row in self.outputs.get_store():
             (name, output) = row
 
@@ -306,7 +308,12 @@ class Sltv(gobject.GObject):
                 tee = gst.element_factory_make("tee", None)
                 self.player.add(tee)
 
-                converter = encoder_item.parent.create()
+                converter_item = encoder_item.parent
+                converter = converter_item.create()
+                if converter_item.config["width"] > pip_width:
+                    pip_width = converter_item.config["width"]
+                if converter_item.config["height"] > pip_height:
+                    pip_height = converter_item.config["height"]
                 self.player.add(converter)
 
                 encoder = encoder_item.factory.create(type)
@@ -338,6 +345,9 @@ class Sltv(gobject.GObject):
             )
             if err == False:
                 print "Error conecting preview"
+
+        self.pip.set_property("width", int(pip_width))
+        self.pip.set_property("height", int(pip_height))
 
         self.overlay.set_property("text", self.overlay_text)
         if self.volume_value is not None:
