@@ -80,7 +80,7 @@ class SltvUI:
         self.encoders_ui = encoders.Encoders(
                 self, self.encoders, self.videoconverters
         )
-        self.metadata_ui = metadata.MetadataUI(self, self.sltv)
+        self.metadata_ui = metadata.MetadataUI(self.sltv, self.settings_dialog)
 
         # pip
 
