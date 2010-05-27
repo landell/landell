@@ -33,6 +33,7 @@ import medialist
 import effect
 import volume
 import audioresample
+import metadata
 
 MEDIA_AUDIO = 1
 MEDIA_VIDEO = 2
@@ -117,6 +118,9 @@ class Sltv(gobject.GObject):
         self.overlay_font = overlay_font
         if self.playing():
             self.overlay.set_property("font-desc", overlay_font)
+
+    def set_metadata(self, taglist):
+        self.taglist = taglist
 
     def get_thumbnail(self, name):
         return self.thumbnails[name]
@@ -317,6 +321,9 @@ class Sltv(gobject.GObject):
                 self.player.add(converter)
 
                 encoder = encoder_item.factory.create(type)
+                if encoder.vorbisenc:
+                    self.metadata = metadata.Metadata(encoder.vorbisenc)
+                    self.metadata.set_tags(self.taglist)
                 encoder.config(encoder_item.config)
                 self.player.add(encoder)
 

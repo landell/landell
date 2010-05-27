@@ -19,7 +19,8 @@ sltvlib_DATA = \
 	volume.py \
 	log.py \
 	audioresample.py \
-	utils.py
+	utils.py \
+	metadata.py
 
 EXTRA_DIST = $(sltvlib_DATA)
 

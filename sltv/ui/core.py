@@ -39,6 +39,7 @@ import overlay
 import volume
 import settings as settings
 import pip_widget
+import metadata
 
 class SltvUI:
 
@@ -79,6 +80,7 @@ class SltvUI:
         self.encoders_ui = encoders.Encoders(
                 self, self.encoders, self.videoconverters
         )
+        self.metadata_ui = metadata.MetadataUI(self, self.sltv)
 
         # pip
 
@@ -151,6 +153,11 @@ class SltvUI:
         vbox.set_border_width(12)
         vbox.pack_start(self.outputs_ui.get_widget())
         notebook.append_page(vbox, gtk.Label('Outputs'))
+
+        vbox = gtk.VBox()
+        vbox.set_border_width(12)
+        vbox.pack_start(self.metadata_ui.get_widget())
+        notebook.append_page(vbox, gtk.Label('Metadata'))
 
         #menu
 

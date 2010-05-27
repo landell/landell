@@ -14,6 +14,7 @@ ui_DATA = edit.ui \
 	output_encoder_setting.ui \
 	settings.ui \
 	source.ui \
-	output.ui
+	output.ui \
+	metadata.ui
 
 EXTRA_DIST = $(ui_DATA)
