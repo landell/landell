@@ -25,7 +25,7 @@ from sltv.registry import REGISTRY_VIDEO_CONVERTER, REGISTRY_ENCODING
 
 class Encoders(MediaListUI):
     def __init__(self, ui, encoders, converters):
-        MediaListUI.__init__(self, ui, encoders)
+        MediaListUI.__init__(self, encoders)
 
         self.converters_list = converters
         self.edit_item = edit_encoding.EditEncoding(

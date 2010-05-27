@@ -22,7 +22,7 @@ from sltv.settings import UI_DIR
 import sltv.registry
 
 class MediaListUI:
-    def __init__(self, ui, media_list):
+    def __init__(self, media_list):
         self.interface = gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/medialist.ui")
         self.content_area = self.interface.get_object("content-area")

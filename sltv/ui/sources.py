@@ -45,7 +45,7 @@ class AudioModel:
 
 class Sources(MediaListUI):
     def __init__(self, ui, sources, audioconvs):
-        MediaListUI.__init__(self, ui, sources)
+        MediaListUI.__init__(self, sources)
         self.audioconvs = audioconvs
         self.edit_item = edit_source.EditSource(
                 ui.settings_dialog, self.media_list, self.audioconvs
