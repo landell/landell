@@ -2,90 +2,241 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkVBox" id="content_area">
+  <object class="GtkHBox" id="content_area">
     <property name="visible">True</property>
-    <property name="orientation">vertical</property>
-    <property name="spacing">6</property>
+    <property name="spacing">20</property>
     <child>
-      <object class="GtkLabel" id="label1">
+      <object class="GtkVBox" id="content_area1">
         <property name="visible">True</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">&lt;b&gt;Title&lt;/b&gt;</property>
-        <property name="use_markup">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">3</property>
+        <child>
+          <object class="GtkLabel" id="label1">
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">&lt;b&gt;Title&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="title_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">&#x25CF;</property>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label4">
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">&lt;b&gt;Artist&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="artist_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">&#x25CF;</property>
+          </object>
+          <packing>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label5">
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">&lt;b&gt;Genre&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="genre_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">&#x25CF;</property>
+          </object>
+          <packing>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label6">
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">&lt;b&gt;Location&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="position">8</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="location_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">&#x25CF;</property>
+          </object>
+          <packing>
+            <property name="position">9</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label7">
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">&lt;b&gt;Organization&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="position">10</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="organization_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">&#x25CF;</property>
+          </object>
+          <packing>
+            <property name="position">11</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label8">
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">&lt;b&gt;Copyright&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="position">12</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="copyright_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">&#x25CF;</property>
+          </object>
+          <packing>
+            <property name="position">13</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="position">0</property>
       </packing>
     </child>
     <child>
-      <object class="GtkEntry" id="title_entry">
+      <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">5</property>
+        <child>
+          <object class="GtkLabel" id="contact_label">
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">&lt;b&gt;Contact&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="contact_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">&#x25CF;</property>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="date_label">
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">&lt;b&gt;Date&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCalendar" id="calendar">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="year">2010</property>
+            <property name="month">4</property>
+            <property name="day">27</property>
+          </object>
+          <packing>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="description_label">
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">&lt;b&gt;Description&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame1">
+            <property name="visible">True</property>
+            <property name="label_xalign">0</property>
+            <child>
+              <object class="GtkScrolledWindow" id="scrolledwindow1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <child>
+                  <object class="GtkTextView" id="description_textview">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="wrap_mode">word-char</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label_item">
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="position">5</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="position">1</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="label2">
-        <property name="visible">True</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">&lt;b&gt;Date&lt;/b&gt;</property>
-        <property name="use_markup">True</property>
-      </object>
-      <packing>
-        <property name="position">2</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkCalendar" id="calendar">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="year">2010</property>
-        <property name="month">4</property>
-        <property name="day">26</property>
-      </object>
-      <packing>
-        <property name="position">3</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="label3">
-        <property name="visible">True</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">&lt;b&gt;Description&lt;/b&gt;</property>
-        <property name="use_markup">True</property>
-      </object>
-      <packing>
-        <property name="position">4</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkFrame" id="frame1">
-        <property name="visible">True</property>
-        <property name="label_xalign">0</property>
-        <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow1">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
-            <child>
-              <object class="GtkTextView" id="description_textview">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="wrap_mode">word-char</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child type="label_item">
-          <placeholder/>
-        </child>
-      </object>
-      <packing>
-        <property name="position">5</property>
       </packing>
     </child>
   </object>
