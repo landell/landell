@@ -198,8 +198,8 @@ class PictureInPicture(gst.Bin):
 
     def make_caps(self, width, height):
         caps = {}
-        inside_width = width/2
-        inside_height = height/2
+        inside_width = width/3
+        inside_height = height/3
         resolution = ",width=" + str(inside_width) + ",height=" + str(inside_height)
         caps_string_inside = "video/x-raw-yuv" + resolution
         resolution = ",width=" + str(width) + ",height=" + str(height)
@@ -259,14 +259,14 @@ class PictureInPicture(gst.Bin):
             self.set_property("xposition", 0)
             self.set_property("yposition", 0)
         elif selected == 1:
-            self.set_property("xposition", self.width/2)
+            self.set_property("xposition", (self.width - self.width/3))
             self.set_property("yposition", 0)
         elif selected == 2:
             self.set_property("xposition", 0)
-            self.set_property("yposition", self.height/2)
+            self.set_property("yposition", (self.height - self.height/3))
         elif selected == 3:
-            self.set_property("xposition", self.width/2)
-            self.set_property("yposition", self.height/2)
+            self.set_property("xposition", (self.width - self.width/3))
+            self.set_property("yposition", (self.height - self.height/3))
 
     def do_set_property(self, property, value):
         if property.name == "width":
