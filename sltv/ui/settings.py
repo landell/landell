@@ -20,7 +20,6 @@ import gtk
 from sltv.settings import UI_DIR
 import effects
 import overlay
-import volume
 
 class SettingsUI:
 
@@ -34,11 +33,9 @@ class SettingsUI:
 
         self.effects = effects.EffectsUI(self.ui, self.sltv)
         self.overlay = overlay.OverlayUI(self.ui, self.sltv)
-        self.volume = volume.VolumeUI(self.ui, self.sltv)
 
         self.effects_button = self.interface.get_object("effects_toolbutton")
         self.overlay_button = self.interface.get_object("overlay_toolbutton")
-        self.volume_button = self.interface.get_object("volume_toolbutton")
 
         settings_group = gtk.ActionGroup("settings_group")
         settings_actions = [
@@ -46,8 +43,6 @@ class SettingsUI:
                 "Effects", 0),
             ("overlay_radioaction", "gtk-missing-image", "Overlay", None,
                 "Overlay", 1),
-            ("volume_radioaction", "gtk-missing-image", "Volume", None,
-                "Volume", 2)
         ]
         settings_group.add_radio_actions(
                 settings_actions, 0, self.on_settings_changed, None
@@ -63,11 +58,6 @@ class SettingsUI:
         )
         self.overlay_radioaction.connect_proxy(self.overlay_button)
 
-        self.volume_radioaction = settings_group.get_action(
-            "volume_radioaction"
-        )
-        self.volume_radioaction.connect_proxy(self.volume_button)
-
         self.selected_box = self.effects.get_widget()
         self.content.add(self.effects.get_widget())
 
@@ -81,8 +71,6 @@ class SettingsUI:
             self.selected_box = self.effects.get_widget()
         elif name == "overlay_radioaction":
             self.selected_box = self.overlay.get_widget()
-        elif name == "volume_radioaction":
-            self.selected_box =  self.volume.get_widget()
         else:
             self.selected_box = None
 

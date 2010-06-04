@@ -8,7 +8,6 @@ ui_DATA = edit.ui \
 	preview.ui \
 	overlay.ui \
 	effects.ui \
-	volume.ui \
 	audio_input.ui \
 	element_setting.ui \
 	output_encoder_setting.ui \

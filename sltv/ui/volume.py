@@ -18,21 +18,18 @@
 
 import gobject
 import gtk
-from sltv.settings import UI_DIR
 
 class VolumeUI:
 
     def __init__(self, ui, sltv):
         self.sltv = sltv
-        self.interface = gtk.Builder()
-        self.interface.add_from_file(UI_DIR + "/volume.ui")
-        self.widget = self.interface.get_object("vbox")
 
-        self.button = self.interface.get_object("volume_button")
+        self.button = gtk.VolumeButton()
+        self.button.set_value(0.5)
         self.button.connect("value-changed", self.set_volume)
 
     def set_volume(self, value, user_data):
         self.sltv.set_volume(value.get_value())
 
     def get_widget(self):
-        return self.widget
+        return self.button

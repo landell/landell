@@ -82,6 +82,12 @@ class SltvUI:
         )
         self.metadata_ui = metadata.MetadataUI(self.sltv, self.settings_dialog)
 
+        self.hbuttonbox = self.interface.get_object("hbuttonbox1")
+        self.volume = volume.VolumeUI(self, self.sltv)
+        self.volume_button = self.volume.get_widget()
+        self.volume_button.show()
+        self.hbuttonbox.pack_start(self.volume_button)
+
         # pip
 
         pip_box = self.interface.get_object("pip_box")
