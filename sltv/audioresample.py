@@ -43,14 +43,21 @@ class AudioResample(gst.Bin):
         )
         self.add(self.audioresample)
 
+        self.audiorate = gst.element_factory_make(
+                "audiorate", "audiorate"
+        )
+        self.add(self.audiorate)
+
         self.capsfilter = gst.element_factory_make(
                 "capsfilter", "audioresample_capsfilter"
         )
         self.add(self.capsfilter)
+
+        self.audiorate.link(self.audioresample)
         self.audioresample.link(self.capsfilter)
 
         self.sink_pad = gst.GhostPad(
-                "sink", self.audioresample.sink_pads().next()
+                "sink", self.audiorate.sink_pads().next()
         )
         self.add_pad(self.sink_pad)
         self.src_pad = gst.GhostPad(
@@ -70,9 +77,14 @@ class AudioResample(gst.Bin):
 
     def do_set_property(self, property, value):
         if property.name == "audiorate":
+            #caps = gst.caps_from_string(
+            #        "audio/x-raw-int, rate=%d; audio/x-raw-float, rate=%d" %(
+            #            value, value
+            #        )
+            #)
             caps = gst.caps_from_string(
-                    "audio/x-raw-int, rate=%d; audio/x-raw-float, rate=%d" %(
-                        value, value
+                    "audio/x-raw-int, rate=%d" %(
+                        value
                     )
             )
             self.capsfilter.set_property("caps", caps)
