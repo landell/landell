@@ -114,6 +114,11 @@ class PictureInPicture(gst.Bin):
         self.A_number = 0
         self.B_number = 0
 
+        self.a_active = 0
+        self._set_active_a(self.a_active)
+        self.b_active = 0
+        self._set_active_b(self.b_active)
+
     def get_request_pad_A(self):
         return self._create_A_input()
 
