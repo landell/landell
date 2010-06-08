@@ -77,11 +77,6 @@ class AudioResample(gst.Bin):
 
     def do_set_property(self, property, value):
         if property.name == "audiorate":
-            #caps = gst.caps_from_string(
-            #        "audio/x-raw-int, rate=%d; audio/x-raw-float, rate=%d" %(
-            #            value, value
-            #        )
-            #)
             caps = gst.caps_from_string(
                     "audio/x-raw-int, rate=%d" %(
                         value
