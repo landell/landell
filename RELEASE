@@ -1,26 +1,23 @@
-Release notes for version 0.7 of sltv
+Release notes for version 0.8 of sltv
 =====================================
 
 This software is still under development.
 
-Differences between version 0.6.1 and 0.7:
+Differences between version 0.7 and 0.8:
 ==========================================
 
-- Volume setting
-- Audiorate configuration
-- Audio encoding configuration (bitrate and quality)
-- Improved main UI
-- Optional recording of raw DV file
-- Split between encoding and output, allowing one encoding to be used for
-  several outputs
-- Font and position config for text overlay
-- Accepting decimals in framerate and converting them to a proper fraction
-  (fixes bug #21)
+- Thumbnails for the video inputs
+- Picture in picture
+- Improved UI to pipeline settings
+- Metadata support
+- Better performance in DV video
+- Support for VP8 encoding
+- Filechooser selecting the right file path: (fixes bug #20)
+- Fixed audio syncronization problems (fixes bug #23)
 
 Known issues:
 =============
 
-- File source might not work with multiple sources;
 - Stopping the pipeline might loose frames not recorded;
 - The software may have problems loading old configuration files. To fix that,
   remove the sources or edit the file by hand adding the missing
