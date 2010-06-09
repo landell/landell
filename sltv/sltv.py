@@ -353,6 +353,9 @@ class Sltv(gobject.GObject):
             if err == False:
                 print "Error conecting preview"
 
+        if pip_width == 0:
+            pip_width = 320
+            pip_height = 240
         self.pip.set_property("width", int(pip_width))
         self.pip.set_property("height", int(pip_height))
 
