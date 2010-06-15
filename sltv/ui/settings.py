@@ -20,6 +20,7 @@ import gtk
 from sltv.settings import UI_DIR
 import effects
 import overlay
+import watermark
 
 class SettingsUI:
 
@@ -33,9 +34,11 @@ class SettingsUI:
 
         self.effects = effects.EffectsUI(self.ui, self.sltv)
         self.overlay = overlay.OverlayUI(self.ui, self.sltv)
+        self.watermark = watermark.WaterMarkUI(self.ui, self.sltv)
 
         self.effects_button = self.interface.get_object("effects_toolbutton")
         self.overlay_button = self.interface.get_object("overlay_toolbutton")
+        self.watermark_button = self.interface.get_object("watermark_toolbutton")
 
         settings_group = gtk.ActionGroup("settings_group")
         settings_actions = [
@@ -43,6 +46,8 @@ class SettingsUI:
                 "Effects", 0),
             ("overlay_radioaction", "gtk-missing-image", "Overlay", None,
                 "Overlay", 1),
+            ("watermark_radioaction", "gtk-missing-image", "Watermark", None,
+                "Watermark", 2),
         ]
         settings_group.add_radio_actions(
                 settings_actions, 0, self.on_settings_changed, None
@@ -58,6 +63,11 @@ class SettingsUI:
         )
         self.overlay_radioaction.connect_proxy(self.overlay_button)
 
+        self.watermark_radioaction = settings_group.get_action(
+            "watermark_radioaction"
+        )
+        self.watermark_radioaction.connect_proxy(self.watermark_button)
+
         self.selected_box = self.effects.get_widget()
         self.content.add(self.effects.get_widget())
 
@@ -71,6 +81,8 @@ class SettingsUI:
             self.selected_box = self.effects.get_widget()
         elif name == "overlay_radioaction":
             self.selected_box = self.overlay.get_widget()
+        elif name == "watermark_radioaction":
+            self.selected_box = self.watermark.get_widget()
         else:
             self.selected_box = None
 

@@ -101,6 +101,8 @@ class Sltv(gobject.GObject):
         self.volume_value = None
 
         self.pending_state = None
+        self.watermark_location = None
+        self.watermark_size = None
 
         self.input_type = 0
 
@@ -129,6 +131,28 @@ class Sltv(gobject.GObject):
         self.overlay_text = overlay_text
         if self.playing():
             self.overlay.set_property("text", overlay_text)
+
+    def set_watermark_location(self, location):
+        self.watermark_location = location
+        if self.playing():
+            self.watermark.set_property("location", location)
+
+    def set_watermark_size(self, size):
+        self.watermark_size = size
+
+    def _set_watermark(self, video_width, video_height):
+        if self.watermark_location:
+            self.watermark.set_property("location", self.watermark_location)
+
+        print self.watermark_size
+
+        wm_width = self.watermark_size * video_width
+        wm_height = self.watermark_size * video_height
+
+        self.watermark.set_property("window_left", 0)
+        self.watermark.set_property("window_right", 0 + wm_width)
+        self.watermark.set_property("window_top", 0)
+        self.watermark.set_property("window_bottom", 0 + wm_height)
 
     def set_effect_name(self, effect_type, effect_name):
         if effect_name == "none":
@@ -231,7 +255,15 @@ class Sltv(gobject.GObject):
             if name == self.audio_source:
                 type |= element.get_type()
 
-        self.pip.link(self.queue_video)
+        self.watermark = gst.element_factory_make(
+                "cairoimageoverlay", "cairoimageoverlay"
+        )
+        self.player.add(self.watermark)
+        gst.element_link_many(self.pip, self.watermark, self.queue_video)
+
+
+
+
         self._switch_source()
         self._switch_pip()
 
@@ -358,6 +390,8 @@ class Sltv(gobject.GObject):
             pip_height = 240
         self.pip.set_property("width", int(pip_width))
         self.pip.set_property("height", int(pip_height))
+
+        self._set_watermark(int(pip_width), int(pip_height))
 
         self.overlay.set_property("text", self.overlay_text)
         if self.volume_value is not None:
