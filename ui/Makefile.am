@@ -14,6 +14,7 @@ ui_DATA = edit.ui \
 	settings.ui \
 	source.ui \
 	output.ui \
-	metadata.ui
+	metadata.ui \
+	watermark.ui
 
 EXTRA_DIST = $(ui_DATA)
