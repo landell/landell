@@ -110,8 +110,8 @@ class PIPSelector(gtk.DrawingArea):
         self.queue_draw()
 
     def on_size_request(self, widget, requisition):
-        requisition.width = 100
-        requisition.height = 100
+        requisition.width = 50
+        requisition.height = 50
 
     def do_get_property(self, property):
         if property.name == "selected":
