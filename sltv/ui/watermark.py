@@ -20,6 +20,7 @@ import gobject
 import gtk
 import save_button
 from sltv.settings import UI_DIR
+import pip_widget
 
 class WaterMarkUI:
 
@@ -37,16 +38,24 @@ class WaterMarkUI:
 
         self.location = None
         self.sltv.set_watermark_size(0.5)
+
+        self.position_selector = pip_widget.PIPSelector()
+        self.widget.attach(self.position_selector, 1, 2, 2, 3)
+
         self.widget.show_all()
 
-        self.button.connect("file-set", self.on_file_set)
-        self.scale.connect("value-changed", self.on_size_changed)
+        self.button.connect("file-set", self._on_file_set)
+        self.scale.connect("value-changed", self._on_size_changed)
+        self.position_selector.connect("changed", self._on_position_changed)
 
-    def on_file_set(self, button):
+    def _on_file_set(self, button):
         self.sltv.set_watermark_location(self.button.get_filename())
 
-    def on_size_changed(self, adjustment):
+    def _on_size_changed(self, adjustment):
         self.sltv.set_watermark_size(self.scale.get_value())
+
+    def _on_position_changed(self, widget, selected):
+        self.sltv.set_watermark_position(selected)
 
     def get_widget(self):
         return self.widget

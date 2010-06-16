@@ -103,6 +103,7 @@ class Sltv(gobject.GObject):
         self.pending_state = None
         self.watermark_location = None
         self.watermark_size = None
+        self.watermark_selected = 0
 
         self.input_type = 0
 
@@ -140,6 +141,9 @@ class Sltv(gobject.GObject):
     def set_watermark_size(self, size):
         self.watermark_size = size
 
+    def set_watermark_position(self, selected):
+        self.watermark_selected = selected
+
     def _set_watermark(self, video_width, video_height):
         if self.watermark_location:
             self.watermark.set_property("location", self.watermark_location)
@@ -149,10 +153,26 @@ class Sltv(gobject.GObject):
         wm_width = self.watermark_size * video_width
         wm_height = self.watermark_size * video_height
 
-        self.watermark.set_property("window_left", 0)
-        self.watermark.set_property("window_right", 0 + wm_width)
-        self.watermark.set_property("window_top", 0)
-        self.watermark.set_property("window_bottom", 0 + wm_height)
+        if self.watermark_selected == 0:
+            self.watermark.set_property("window_left", 0)
+            self.watermark.set_property("window_right", 0 + wm_width)
+            self.watermark.set_property("window_top", 0)
+            self.watermark.set_property("window_bottom", 0 + wm_height)
+        elif self.watermark_selected == 1:
+            self.watermark.set_property("window_left", video_width - wm_width)
+            self.watermark.set_property("window_right", video_width)
+            self.watermark.set_property("window_top", 0)
+            self.watermark.set_property("window_bottom", 0 + wm_height)
+        elif self.watermark_selected == 2:
+            self.watermark.set_property("window_left", 0)
+            self.watermark.set_property("window_right", 0 + wm_width)
+            self.watermark.set_property("window_top", video_height - wm_height)
+            self.watermark.set_property("window_bottom", video_height)
+        elif self.watermark_selected == 3:
+            self.watermark.set_property("window_left", video_width - wm_width)
+            self.watermark.set_property("window_right", video_width)
+            self.watermark.set_property("window_top", video_height - wm_height)
+            self.watermark.set_property("window_bottom", video_height)
 
     def set_effect_name(self, effect_type, effect_name):
         if effect_name == "none":
