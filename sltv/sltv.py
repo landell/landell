@@ -153,26 +153,20 @@ class Sltv(gobject.GObject):
         wm_width = self.watermark_size * video_width
         wm_height = self.watermark_size * video_height
 
+        self.watermark.set_property("image-width", wm_width)
+
         if self.watermark_selected == 0:
-            self.watermark.set_property("window_left", 0)
-            self.watermark.set_property("window_right", 0 + wm_width)
-            self.watermark.set_property("window_top", 0)
-            self.watermark.set_property("window_bottom", 0 + wm_height)
+            self.watermark.set_property("x", 0)
+            self.watermark.set_property("y", 0)
         elif self.watermark_selected == 1:
-            self.watermark.set_property("window_left", video_width - wm_width)
-            self.watermark.set_property("window_right", video_width)
-            self.watermark.set_property("window_top", 0)
-            self.watermark.set_property("window_bottom", 0 + wm_height)
+            self.watermark.set_property("x", video_width - wm_width)
+            self.watermark.set_property("y", 0)
         elif self.watermark_selected == 2:
-            self.watermark.set_property("window_left", 0)
-            self.watermark.set_property("window_right", 0 + wm_width)
-            self.watermark.set_property("window_top", video_height - wm_height)
-            self.watermark.set_property("window_bottom", video_height)
+            self.watermark.set_property("x", 0)
+            self.watermark.set_property("y", video_height - wm_height)
         elif self.watermark_selected == 3:
-            self.watermark.set_property("window_left", video_width - wm_width)
-            self.watermark.set_property("window_right", video_width)
-            self.watermark.set_property("window_top", video_height - wm_height)
-            self.watermark.set_property("window_bottom", video_height)
+            self.watermark.set_property("x", video_width - wm_width)
+            self.watermark.set_property("y", video_height - wm_height)
 
     def set_effect_name(self, effect_type, effect_name):
         if effect_name == "none":
