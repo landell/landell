@@ -102,7 +102,7 @@ class Sltv(gobject.GObject):
 
         self.pending_state = None
         self.watermark_location = None
-        self.watermark_size = None
+        self.watermark_size = 0.5
         self.watermark_selected = 0
 
         self.input_type = 0
@@ -148,7 +148,6 @@ class Sltv(gobject.GObject):
         if self.watermark_location:
             self.watermark.set_property("location", self.watermark_location)
 
-        print self.watermark_size
 
         wm_width = self.watermark_size * video_width
         wm_height = self.watermark_size * video_height
