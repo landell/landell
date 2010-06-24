@@ -34,6 +34,7 @@ class WaterMarkUI:
         self.button = self.interface.get_object("filechooserbutton")
         self.adjustment = gtk.Adjustment(0.5, 0, 0.5, 0.05)
         self.scale = gtk.HScale(self.adjustment)
+        self.scale.set_property("digits", 2)
         self.widget.attach(self.scale, 1, 2, 1, 2)
 
         self.location = None
