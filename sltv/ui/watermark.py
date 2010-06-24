@@ -44,7 +44,7 @@ class WaterMarkUI:
         self.sltv.set_watermark_size(0.5)
 
         self.position_selector = pip_widget.PIPSelector()
-        self.widget.attach(self.position_selector, 1, 2, 2, 3)
+        self.widget.attach(self.position_selector, 0, 1, 3, 4)
 
         self.widget.show_all()
 
