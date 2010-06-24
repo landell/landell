@@ -103,6 +103,7 @@ class Sltv(gobject.GObject):
         self.pending_state = None
         self.watermark_location = None
         self.watermark_size = 0.5
+        self.watermark_alpha = None
         self.watermark_selected = 0
 
         self.input_type = 0
@@ -141,6 +142,9 @@ class Sltv(gobject.GObject):
     def set_watermark_size(self, size):
         self.watermark_size = size
 
+    def set_watermark_alpha(self, alpha):
+        self.watermark_alpha = alpha
+
     def set_watermark_position(self, selected):
         self.watermark_selected = selected
 
@@ -148,6 +152,8 @@ class Sltv(gobject.GObject):
         if self.watermark_location:
             self.watermark.set_property("location", self.watermark_location)
 
+        if self.watermark_alpha:
+            self.watermark.set_property("image-alpha", self.watermark_alpha)
 
         wm_width = self.watermark_size * video_width
         wm_height = self.watermark_size * video_height

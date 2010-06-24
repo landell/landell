@@ -50,6 +50,7 @@ class WaterMarkUI:
 
         self.button.connect("file-set", self._on_file_set)
         self.size_scale.connect("value-changed", self._on_size_changed)
+        self.alpha_scale.connect("value-changed", self._on_alpha_changed)
         self.position_selector.connect("changed", self._on_position_changed)
 
     def _on_file_set(self, button):
@@ -57,6 +58,9 @@ class WaterMarkUI:
 
     def _on_size_changed(self, adjustment):
         self.sltv.set_watermark_size(self.size_scale.get_value())
+
+    def _on_alpha_changed(self, adjustment):
+        self.sltv.set_watermark_alpha(self.alpha_scale.get_value())
 
     def _on_position_changed(self, widget, selected):
         self.sltv.set_watermark_position(selected)
