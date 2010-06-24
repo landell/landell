@@ -32,10 +32,13 @@ class WaterMarkUI:
         self.interface.add_from_file(UI_DIR + "/watermark.ui")
         self.widget = self.interface.get_object("table1")
         self.button = self.interface.get_object("filechooserbutton")
-        self.adjustment = gtk.Adjustment(0.5, 0, 0.5, 0.05)
-        self.scale = gtk.HScale(self.adjustment)
-        self.scale.set_property("digits", 2)
-        self.widget.attach(self.scale, 1, 2, 1, 2)
+        self.size_adjustment = gtk.Adjustment(0.5, 0, 0.5, 0.05)
+        self.size_scale = gtk.HScale(self.size_adjustment)
+        self.size_scale.set_property("digits", 2)
+        self.widget.attach(self.size_scale, 1, 2, 1, 2)
+        self.alpha_adjustment = gtk.Adjustment(1.0, 0, 1.0, 0.05)
+        self.alpha_scale = gtk.HScale(self.alpha_adjustment)
+        self.widget.attach(self.alpha_scale, 1, 2, 3, 4)
 
         self.location = None
         self.sltv.set_watermark_size(0.5)
@@ -46,14 +49,14 @@ class WaterMarkUI:
         self.widget.show_all()
 
         self.button.connect("file-set", self._on_file_set)
-        self.scale.connect("value-changed", self._on_size_changed)
+        self.size_scale.connect("value-changed", self._on_size_changed)
         self.position_selector.connect("changed", self._on_position_changed)
 
     def _on_file_set(self, button):
         self.sltv.set_watermark_location(self.button.get_filename())
 
     def _on_size_changed(self, adjustment):
-        self.sltv.set_watermark_size(self.scale.get_value())
+        self.sltv.set_watermark_size(self.size_scale.get_value())
 
     def _on_position_changed(self, widget, selected):
         self.sltv.set_watermark_position(selected)
