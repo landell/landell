@@ -27,6 +27,7 @@ sltvlib_DATA = \
 	audiosetting.py \
 	pip_widget.py \
 	metadata.py \
-	watermark.py
+	watermark.py \
+	videobalance.py
 
 EXTRA_DIST = $(sltvlib_DATA)

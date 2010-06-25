@@ -10,14 +10,15 @@
         <property name="width_request">150</property>
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
+        <property name="toolbar_style">text</property>
         <property name="show_arrow">False</property>
-        <property name="icon_size">2</property>
+        <property name="icon_size">0</property>
         <child>
           <object class="GtkRadioToolButton" id="effects_toolbutton">
             <property name="visible">True</property>
             <property name="label" translatable="yes">Effects</property>
             <property name="use_underline">True</property>
-            <property name="stock_id">gtk-missing-image</property>
+            <property name="stock_id">gtk-select-color</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -29,7 +30,7 @@
             <property name="visible">True</property>
             <property name="label" translatable="yes">Overlay</property>
             <property name="use_underline">True</property>
-            <property name="stock_id">gtk-missing-image</property>
+            <property name="stock_id">gtk-italic</property>
             <property name="group">effects_toolbutton</property>
           </object>
           <packing>
@@ -39,6 +40,19 @@
         </child>
         <child>
           <object class="GtkRadioToolButton" id="watermark_toolbutton">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">WaterMark</property>
+            <property name="use_underline">True</property>
+            <property name="stock_id">gtk-orientation-landscape</property>
+            <property name="group">effects_toolbutton</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioToolButton" id="videobalance_toolbutton">
             <property name="visible">True</property>
             <property name="label" translatable="yes">WaterMark</property>
             <property name="use_underline">True</property>

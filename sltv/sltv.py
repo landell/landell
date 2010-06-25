@@ -106,6 +106,11 @@ class Sltv(gobject.GObject):
         self.watermark_alpha = None
         self.watermark_selected = 0
 
+        self.videobalance_contrast = None
+        self.videobalance_brightness = None
+        self.videobalance_hue = None
+        self.videobalance_saturation = None
+
         self.input_type = 0
 
     def set_halign(self, halign):
@@ -182,6 +187,26 @@ class Sltv(gobject.GObject):
         self.watermark.set_property("image-height", wm_height)
 
         self._set_watermark_position(self.watermark_selected)
+
+    def set_videobalance_contrast(self, value):
+        self.videobalance_contrast = value
+        if self.playing():
+            self.videobalance.set_property("contrast", value)
+
+    def set_videobalance_brightness(self, value):
+        self.videobalance_brightness = value
+        if self.playing():
+            self.videobalance.set_property("brightness", value)
+
+    def set_videobalance_hue(self, value):
+        self.videobalance_hue = value
+        if self.playing():
+            self.videobalance.set_property("hue", value)
+
+    def set_videobalance_saturation(self, value):
+        self.videobalance_saturation = value
+        if self.playing():
+            self.videobalance.set_property("saturation", value)
 
     def set_effect_name(self, effect_type, effect_name):
         if effect_name == "none":
@@ -288,7 +313,31 @@ class Sltv(gobject.GObject):
                 "cairoimageoverlay", "cairoimageoverlay"
         )
         self.player.add(self.watermark)
-        gst.element_link_many(self.pip, self.watermark, self.queue_video)
+
+        self.videobalance = gst.element_factory_make(
+                "videobalance", "videobalance"
+        )
+        self.player.add(self.videobalance)
+        if self.videobalance_contrast:
+            self.videobalance.set_property(
+                    "contrast", self.videobalance_contrast
+            )
+        if self.videobalance_brightness:
+            self.videobalance.set_property(
+                    "brightness", self.videobalance_brightness
+            )
+        if self.videobalance_hue:
+            self.videobalance.set_property(
+                    "hue", self.videobalance_hue
+            )
+        if self.videobalance_saturation:
+            self.videobalance.set_property(
+                    "saturation", self.videobalance_saturation
+            )
+
+        gst.element_link_many(
+                self.pip, self.watermark, self.videobalance, self.queue_video
+        )
 
         self._switch_source()
         self._switch_pip()
