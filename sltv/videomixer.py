@@ -143,10 +143,14 @@ class PictureInPicture(gst.Bin):
                 "ffmpegcolorspace", None
         )
         self.add(A_csp)
+        A_alpha = gst.element_factory_make(
+                "alpha", None
+        )
+        self.add(A_alpha)
         A_capsfilter.set_property("caps", self.caps['A'])
 
         gst.element_link_many(
-                A_videoscale, A_videorate, A_csp, A_capsfilter
+                A_videoscale, A_videorate, A_csp, A_alpha, A_capsfilter
         )
 
         pad = self.videomixer.get_pad("sink_%d")
@@ -181,10 +185,12 @@ class PictureInPicture(gst.Bin):
         B_csp = gst.element_factory_make(
                 "ffmpegcolorspace", None
         )
+        B_alpha = gst.element_factory_make("alpha", None)
+        self.add(B_alpha)
         self.add(B_csp)
 
         gst.element_link_many(
-                B_videoscale, B_videorate, B_csp, B_capsfilter
+                B_videoscale, B_videorate, B_csp, B_alpha, B_capsfilter
         )
 
         pad = self.videomixer.get_pad("sink_%d")
