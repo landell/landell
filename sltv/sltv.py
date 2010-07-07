@@ -144,9 +144,29 @@ class Sltv(gobject.GObject):
 
     def set_watermark_alpha(self, alpha):
         self.watermark_alpha = alpha
+        if self.playing():
+            self.watermark.set_property("image-alpha", alpha)
+
+    def _set_watermark_position(self, selected):
+        wm_width = self.watermark_size * self.video_width
+        wm_height = self.watermark_size * self.video_height
+        if selected == 0:
+            self.watermark.set_property("x", 0)
+            self.watermark.set_property("y", 0)
+        elif selected == 1:
+            self.watermark.set_property("x", self.video_width - wm_width)
+            self.watermark.set_property("y", 0)
+        elif selected == 2:
+            self.watermark.set_property("x", 0)
+            self.watermark.set_property("y", self.video_height - wm_height)
+        elif selected == 3:
+            self.watermark.set_property("x", self.video_width - wm_width)
+            self.watermark.set_property("y", self.video_height - wm_height)
 
     def set_watermark_position(self, selected):
         self.watermark_selected = selected
+        if self.playing():
+            self._set_watermark_position(selected)
 
     def _set_watermark(self, video_width, video_height):
         if self.watermark_location:
@@ -161,18 +181,7 @@ class Sltv(gobject.GObject):
         self.watermark.set_property("image-width", wm_width)
         self.watermark.set_property("image-height", wm_height)
 
-        if self.watermark_selected == 0:
-            self.watermark.set_property("x", 0)
-            self.watermark.set_property("y", 0)
-        elif self.watermark_selected == 1:
-            self.watermark.set_property("x", video_width - wm_width)
-            self.watermark.set_property("y", 0)
-        elif self.watermark_selected == 2:
-            self.watermark.set_property("x", 0)
-            self.watermark.set_property("y", video_height - wm_height)
-        elif self.watermark_selected == 3:
-            self.watermark.set_property("x", video_width - wm_width)
-            self.watermark.set_property("y", video_height - wm_height)
+        self._set_watermark_position(self.watermark_selected)
 
     def set_effect_name(self, effect_type, effect_name):
         if effect_name == "none":
@@ -280,9 +289,6 @@ class Sltv(gobject.GObject):
         )
         self.player.add(self.watermark)
         gst.element_link_many(self.pip, self.watermark, self.queue_video)
-
-
-
 
         self._switch_source()
         self._switch_pip()
