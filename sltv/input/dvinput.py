@@ -38,9 +38,13 @@ class DVInput(Input):
         self.add(self.tee)
         self.queue_src = gst.element_factory_make("queue", "dv_src_queue")
         self.add(self.queue_src)
-        self.decodebin = gst.element_factory_make("decodebin2", "decodebin2")
-        self.add(self.decodebin)
-        self.decodebin.connect("new-decoded-pad", self.on_pad_added)
+        self.dvdemux = gst.element_factory_make("ffdemux_dv", "dvdemux")
+        self.add(self.dvdemux)
+        self.dvdemux.connect("pad-added", self.on_pad_added)
+        self.video_queue = gst.element_factory_make(
+                "multiqueue", "video_demux_queue"
+        )
+        self.add(self.video_queue)
 
         self.colorspc = gst.element_factory_make(
                 "ffmpegcolorspace", "video_dv_colorspace"
@@ -48,27 +52,36 @@ class DVInput(Input):
 
         self.add(self.colorspc)
 
+        self.dvdec = gst.element_factory_make("dvdec", "dvdec")
+        self.add(self.dvdec)
         self.videoscale = gst.element_factory_make(
                 "videoscale", "dv_videoscale"
         )
         self.add(self.videoscale)
         gst.element_link_many(
                 self.dv_src, self.capsfilter, self.tee, self.queue_src,
-                self.decodebin
+                self.dvdemux
         )
         gst.element_link_many(
-                self.colorspc, self.videoscale
+                self.dvdec, self.colorspc, self.videoscale
         )
         self.video_pad.set_target(self.videoscale.src_pads().next())
+        index = 1
 
-    def on_pad_added(self, dbin, pad, islast):
+    def on_pad_added(self, element, pad):
         name = pad.get_caps()[0].get_name()
 
         if "video" in name:
-            pad.link(self.colorspc.get_static_pad("sink"))
+            request_pad = self.video_queue.get_request_pad("sink%d")
+            pad.link(request_pad)
+            src_pad = request_pad.iterate_internal_links().next()
+            src_pad.link(self.dvdec.get_static_pad("sink"))
 
         if "audio" in name:
-            self.audio_pad.set_target(pad)
+            request_pad = self.video_queue.get_request_pad("sink%d")
+            pad.link(request_pad)
+            src_pad = request_pad.iterate_internal_links().next()
+            self.audio_pad.set_target(src_pad)
 
     def config(self, dict):
         self.dv_src.set_property("channel", int(dict["channel"]))
