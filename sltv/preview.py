@@ -57,8 +57,8 @@ class Preview(gst.Bin):
         if message_name == "prepare-xwindow-id":
             previewsink = message.src
             if previewsink.get_parent() == self.sink:
-                previewsink.set_property("sync", "false")
-                previewsink.set_property("force-aspect-ratio", "true")
+                previewsink.set_property("sync", False)
+                previewsink.set_property("force-aspect-ratio", True)
                 self.emit("prepare-xwindow-id", previewsink)
 
 gobject.type_register(Preview)
