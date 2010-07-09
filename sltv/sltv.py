@@ -159,6 +159,7 @@ class Sltv(gobject.GObject):
         wm_height = self.watermark_size * video_height
 
         self.watermark.set_property("image-width", wm_width)
+        self.watermark.set_property("image-height", wm_height)
 
         if self.watermark_selected == 0:
             self.watermark.set_property("x", 0)
@@ -410,7 +411,9 @@ class Sltv(gobject.GObject):
         self.pip.set_property("width", int(pip_width))
         self.pip.set_property("height", int(pip_height))
 
-        self._set_watermark(int(pip_width), int(pip_height))
+        self.video_width = int(pip_width)
+        self.video_height = int(pip_height)
+        self._set_watermark(self.video_width, self.video_height)
 
         self.overlay.set_property("text", self.overlay_text)
         if self.volume_value is not None:
