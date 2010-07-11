@@ -314,6 +314,11 @@ class Sltv(gobject.GObject):
         )
         self.player.add(self.watermark)
 
+        self.colorspace = gst.element_factory_make(
+                "ffmpegcolorspace", "colorspace-imageoverlay-videobalance"
+        )
+        self.player.add(self.colorspace)
+
         self.videobalance = gst.element_factory_make(
                 "videobalance", "videobalance"
         )
@@ -336,7 +341,8 @@ class Sltv(gobject.GObject):
             )
 
         gst.element_link_many(
-                self.pip, self.watermark, self.videobalance, self.queue_video
+                self.pip, self.watermark, self.colorspace, self.videobalance,
+                self.queue_video
         )
 
         self._switch_source()
