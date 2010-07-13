@@ -104,27 +104,37 @@ class SourceItem:
         self.preview_area.connect(thumbnail)
 
     def _create_actions(self):
-        self._create_action(self.a_group, A_BUTTON)
-        self._create_action(self.b_group, B_BUTTON)
+        self._create_action_a(self.a_group, A_BUTTON)
+        self._create_action_b(self.b_group, B_BUTTON)
         self.set_label(self.name)
 
-    def _create_action(self, group, type):
-        action = [(self.name, "gtk-missing-image", type, None),]
+    def _create_action_b(self, group, type):
+        action = [(self.name, None, type, None),]
         group.add_toggle_actions(action)
         radioaction = group.get_action(self.name)
-        if type == A_BUTTON:
-            radioaction.connect_proxy(self.a_button)
-            radioaction.connect("toggled", self._on_a_press)
         if type == B_BUTTON:
             radioaction.connect_proxy(self.b_button)
             radioaction.connect("toggled", self._on_b_press)
 
-    def _on_a_press(self, event):
-        if event.get_active():
+    def _create_action_a(self, group, type):
+        actions = group.list_actions()
+        if actions:
+            radioaction = gtk.RadioAction(
+                    self.name, "A", type, None, len(actions)
+            )
+            radioaction.set_group(actions[0])
+        else:
+            radioaction = gtk.RadioAction(self.name, "A", type, None, 0)
+            radioaction.activate()
             self.sltv.set_video_source(self.name)
-            for action in self.a_group.list_actions():
-                if action != event:
-                    action.set_active(False)
+        group.add_action(radioaction)
+        if type == A_BUTTON:
+            radioaction.connect_proxy(self.a_button)
+            radioaction.connect("changed", self._on_a_press)
+
+    def _on_a_press(self, radioaction, current):
+        if radioaction.get_active():
+            self.sltv.set_video_source(self.name)
 
     def _on_b_press(self, event):
         if event.get_active():
