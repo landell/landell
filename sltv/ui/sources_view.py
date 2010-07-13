@@ -40,6 +40,8 @@ class SourcesView(gtk.VBox):
         self.sources.connect("add-item", self._add_source)
         self.sources.connect("remove-item", self._remove_source)
 
+        self.source_items = []
+
         self._create_items()
 
     def _create_items(self):
@@ -51,6 +53,7 @@ class SourcesView(gtk.VBox):
 
     def _add_item(self, name):
         source_item = SourceItem(self.sltv, name, self.a_group, self.b_group)
+        self.source_items.append(source_item)
         self.pack_start(source_item.get_widget(), False, False)
 
     def has_item_a_selected(self):
@@ -67,6 +70,9 @@ class SourcesView(gtk.VBox):
     def _remove_source(self, medialist, name, item):
         type = item.factory.get_capabilities()
         if item != None and type & INPUT_TYPE_VIDEO > 0:
+            for source_item in self.source_items:
+                source_item.source_destroy()
+                self.source_items.remove(source_item)
             self.foreach(self._remove_source_item)
             self._create_items()
 
@@ -97,7 +103,10 @@ class SourceItem:
         self.preview_area.show()
         self.preview_frame.add(self.preview_area)
 
-        sltv.connect("pipeline-ready", self._on_pipeline_ready)
+        self.sltv.connect("pipeline-ready", self._on_pipeline_ready)
+
+    def source_destroy(self):
+        self.sltv.disconnect_by_func(self._on_pipeline_ready)
 
     def _on_pipeline_ready(self, sltv):
         thumbnail = self.sltv.get_thumbnail(self.name)
