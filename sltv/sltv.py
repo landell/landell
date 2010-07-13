@@ -550,7 +550,7 @@ class Sltv(gobject.GObject):
             self._switch_source()
 
     def _switch_pip(self):
-        if self.pip_source:
+        if self.pip_source and self.pip_pads.has_key(self.pip_source):
             self.pip.set_property("enabled", True)
             self.pip.set_property(
                     "b-active", self.pip_pads[self.pip_source]
