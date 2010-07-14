@@ -38,9 +38,9 @@ class DVInput(Input):
         self.add(self.tee)
         self.queue_src = gst.element_factory_make("queue", "dv_src_queue")
         self.add(self.queue_src)
-        self.dvdemux = gst.element_factory_make("ffdemux_dv", "ffdemux_dv")
-        self.add(self.dvdemux)
-        self.dvdemux.connect("pad-added", self.on_pad_added)
+        self.decodebin = gst.element_factory_make("decodebin2", "decodebin2")
+        self.add(self.decodebin)
+        self.decodebin.connect("new-decoded-pad", self.on_pad_added)
         self.video_queue = gst.element_factory_make(
                 "queue", "video_demux_queue"
         )
@@ -51,23 +51,21 @@ class DVInput(Input):
 
         self.add(self.video_queue, self.colorspc)
 
-        self.dvdec = gst.element_factory_make("ffdec_dvvideo", "ffdec_dvvideo")
-        self.add(self.dvdec)
         self.videoscale = gst.element_factory_make(
                 "videoscale", "dv_videoscale"
         )
         self.add(self.videoscale)
         gst.element_link_many(
                 self.dv_src, self.capsfilter, self.tee, self.queue_src,
-                self.dvdemux
+                self.decodebin
         )
 
         gst.element_link_many(
-                self.video_queue, self.dvdec, self.colorspc, self.videoscale
+                self.video_queue, self.colorspc, self.videoscale
         )
         self.video_pad.set_target(self.videoscale.src_pads().next())
 
-    def on_pad_added(self, element, pad):
+    def on_pad_added(self, dbin, pad, islast):
         name = pad.get_caps()[0].get_name()
 
         if "video" in name:
