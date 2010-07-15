@@ -32,6 +32,9 @@ class EffectRegistry:
         self.registry[MEDIA_VIDEO] = self._register_filter(
             all_effects, "Filter/Effect/Video"
         )
+        self.registry[MEDIA_VIDEO] += self._register_filter(
+            all_effects, "Filter/Video"
+        )
         self.registry[MEDIA_AUDIO] = self._register_filter(
             all_effects, "Filter/Effect/Audio"
         )
