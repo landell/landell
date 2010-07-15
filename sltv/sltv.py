@@ -255,14 +255,8 @@ class Sltv(gobject.GObject):
                 elif element.does_video():
 
                     # If element does audio and video, it will be added.
-                    # If audio is not chosen, it should be dropped
 
                     self.player.add(element)
-                    fakesink = gst.element_factory_make("fakesink", None)
-                    fakesink.set_property("silent", True)
-                    fakesink.set_property("sync", False)
-                    self.player.add(fakesink)
-                    element.audio_pad.link(fakesink.get_static_pad("sink"))
 
             if element.does_video():
                 self.input_type |= MEDIA_VIDEO
