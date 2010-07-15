@@ -46,7 +46,7 @@ class DVInput(Input):
                 "ffmpegcolorspace", "video_dv_colorspace"
         )
 
-        self.add(self.video_queue, self.colorspc)
+        self.add(self.colorspc)
 
         self.videoscale = gst.element_factory_make(
                 "videoscale", "dv_videoscale"
