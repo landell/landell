@@ -41,9 +41,6 @@ class DVInput(Input):
         self.decodebin = gst.element_factory_make("decodebin2", "decodebin2")
         self.add(self.decodebin)
         self.decodebin.connect("new-decoded-pad", self.on_pad_added)
-        self.video_queue = gst.element_factory_make(
-                "queue", "video_demux_queue"
-        )
 
         self.colorspc = gst.element_factory_make(
                 "ffmpegcolorspace", "video_dv_colorspace"
@@ -59,9 +56,8 @@ class DVInput(Input):
                 self.dv_src, self.capsfilter, self.tee, self.queue_src,
                 self.decodebin
         )
-
         gst.element_link_many(
-                self.video_queue, self.colorspc, self.videoscale
+                self.colorspc, self.videoscale
         )
         self.video_pad.set_target(self.videoscale.src_pads().next())
 
@@ -69,7 +65,7 @@ class DVInput(Input):
         name = pad.get_caps()[0].get_name()
 
         if "video" in name:
-            pad.link(self.video_queue.get_static_pad("sink"))
+            pad.link(self.colorspc.get_static_pad("sink"))
 
         if "audio" in name:
             self.audio_pad.set_target(pad)
