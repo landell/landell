@@ -34,6 +34,7 @@ import effect
 import volume
 import audioresample
 import metadata
+import multeequeue
 
 MEDIA_AUDIO = 1
 MEDIA_VIDEO = 2
@@ -360,7 +361,7 @@ class Sltv(gobject.GObject):
                 self.queue_video, self.effect[MEDIA_VIDEO], self.overlay
         )
 
-        self.preview_tee = gst.element_factory_make("tee", "tee")
+        self.preview_tee = multeequeue.MulTeeQueue()
         self.player.add(self.preview_tee)
 
         self.overlay.link(self.preview_tee)
@@ -413,9 +414,6 @@ class Sltv(gobject.GObject):
 
                 gst.element_link_many(tee, tee_queue, sink)
             else:
-                queue_output = gst.element_factory_make("queue", None)
-                self.player.add(queue_output)
-
                 tee = gst.element_factory_make("tee", None)
                 self.player.add(tee)
 
@@ -438,9 +436,11 @@ class Sltv(gobject.GObject):
                 self.player.add(tee_queue)
 
                 added_encoders[encoder_name] = tee
+                self.preview_tee.get_src_pad().link(
+                        converter.sink_pads().next()
+                )
                 gst.element_link_many(
-                        self.preview_tee, queue_output, converter, encoder, tee,
-                        tee_queue, sink
+                        converter, encoder, tee, tee_queue, sink
                 )
 
                 if self.input_type & MEDIA_AUDIO:
@@ -450,15 +450,9 @@ class Sltv(gobject.GObject):
                     gst.element_link_many(self.audio_tee, audio_queue, encoder)
 
         if self.preview_enabled:
-            queue_preview = gst.element_factory_make("queue", "queue_preview")
-            self.player.add(queue_preview)
             self.preview = Preview(self)
             self.player.add(self.preview)
-            err = gst.element_link_many(
-                    self.preview_tee, queue_preview, self.preview
-            )
-            if err == False:
-                print "Error conecting preview"
+            self.preview_tee.get_src_pad().link(self.preview.sink_pads().next())
 
         if pip_width == 0:
             pip_width = 320
