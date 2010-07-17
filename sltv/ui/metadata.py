@@ -57,6 +57,7 @@ class MetadataUI:
         taglist[gst.TAG_ARTIST] = self.artist_entry.get_text()
         taglist[gst.TAG_GENRE] = self.genre_entry.get_text()
         (year, month, day) = self.calendar.get_date()
+        month +=1
         date = "%d-%d-%d" % (year, month, day)
         taglist[gst.TAG_DATE] = date
         taglist[gst.TAG_LOCATION] = self.location_entry.get_text()
