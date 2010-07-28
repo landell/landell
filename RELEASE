@@ -1,19 +1,21 @@
-Release notes for version 0.8 of sltv
+Release notes for version 0.9 of sltv
 =====================================
 
 This software is still under development.
 
-Differences between version 0.7 and 0.8:
+Differences between version 0.8 and 0.9:
 ==========================================
 
-- Thumbnails for the video inputs
-- Picture in picture
-- Improved UI to pipeline settings
-- Metadata support
-- Better performance in DV video
-- Support for VP8 encoding
-- Filechooser selecting the right file path: (fixes bug #20)
-- Fixed audio syncronization problems (fixes bug #23)
+- Watermark support
+- Videobalance setting support
+- Filters of class "Filter/Video" are now available as effects
+- Solved lock problems with DV using multiqueue after dv demuxing
+- Solved more lock problems using multiqueue in the preview_tee
+- Fixed error that occurred after a source was removed
+- Previews are set to sync=False
+- Working again without output if there is no audio source (fixes bug #29)
+- Fixed month in metadata
+- Changed sensitivity of output stop button to reflect it's not implemented
 
 Known issues:
 =============
