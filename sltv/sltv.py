@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2009 Holoscópio Tecnologia
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
+# Author: Marcelo Jorge Vieira <metal@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

@@ -2,6 +2,7 @@
 # Copyright (C) 2010 Holoscópio Tecnologia
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
 # Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
+# Author: Marcelo Jorge Vieira <metal@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
