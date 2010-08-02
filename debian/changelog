@@ -1,3 +1,10 @@
+sltv (0.9-1) UNRELEASED; urgency=low
+
+  * New upstream release
+  * Added gstreamer-hplugins as dependency
+
+ -- Marcelo Jorge Vieira (metal) <metal@holoscopio.com>  Sat, 31 Jul 2010 13:35:40 -0300
+
 sltv (0.8-1) UNRELEASED; urgency=low
 
   * New upstream release
