@@ -105,7 +105,8 @@ class Sltv(gobject.GObject):
 
         self.pending_state = None
         self.watermark_location = None
-        self.watermark_size = 0.5
+        self.watermark_resize = False
+        self.watermark_size = 1.0
         self.watermark_alpha = None
         self.watermark_selected = 0
 
@@ -148,6 +149,9 @@ class Sltv(gobject.GObject):
         if self.playing():
             self.watermark.set_property("location", location)
 
+    def set_watermark_resize(self, enabled):
+        self.watermark_resize = enabled
+
     def set_watermark_size(self, size):
         self.watermark_size = size
 
@@ -156,27 +160,6 @@ class Sltv(gobject.GObject):
         if self.playing():
             self.watermark.set_property("image-alpha", alpha)
 
-    def _set_watermark_position(self, selected):
-        wm_width = self.watermark_size * self.video_width
-        wm_height = self.watermark_size * self.video_height
-        if selected == 0:
-            self.watermark.set_property("x", 0)
-            self.watermark.set_property("y", 0)
-        elif selected == 1:
-            self.watermark.set_property("x", self.video_width - wm_width)
-            self.watermark.set_property("y", 0)
-        elif selected == 2:
-            self.watermark.set_property("x", 0)
-            self.watermark.set_property("y", self.video_height - wm_height)
-        elif selected == 3:
-            self.watermark.set_property("x", self.video_width - wm_width)
-            self.watermark.set_property("y", self.video_height - wm_height)
-
-    def set_watermark_position(self, selected):
-        self.watermark_selected = selected
-        if self.playing():
-            self._set_watermark_position(selected)
-
     def _set_watermark(self, video_width, video_height):
         if self.watermark_location:
             self.watermark.set_property("location", self.watermark_location)
@@ -184,13 +167,11 @@ class Sltv(gobject.GObject):
         if self.watermark_alpha:
             self.watermark.set_property("image-alpha", self.watermark_alpha)
 
-        wm_width = self.watermark_size * video_width
-        wm_height = self.watermark_size * video_height
-
-        self.watermark.set_property("image-width", wm_width)
-        self.watermark.set_property("image-height", wm_height)
-
-        self._set_watermark_position(self.watermark_selected)
+        if self.watermark_resize:
+            wm_width = self.watermark_size * video_width
+            wm_height = self.watermark_size * video_height
+            self.watermark.set_property("image-width", wm_width)
+            self.watermark.set_property("image-height", wm_height)
 
     def set_videobalance_contrast(self, value):
         self.videobalance_contrast = value
