@@ -30,23 +30,32 @@ class OutputsView(gtk.VBox):
         self.outputs.connect("add-item", self._add_output)
         self.outputs.connect("remove-item", self._remove_output)
 
+        self.output_items = {}
         self._create_items()
+        self._add_items()
 
     def _create_items(self):
         for row in self.model:
             (name, source) = row
-            self._add_item(name)
+            self._create_item(name)
 
-    def _add_item(self, name):
+    def _create_item(self, name):
         output_item = OutputItem(name)
-        self.pack_start(output_item.get_widget(), False, False)
+        self.output_items[name] = output_item
 
     def _add_output(self, medialist, name, item):
-        self._add_item(name)
+        self._create_item(name)
+        self.foreach(self._remove_output_item)
+        self._add_items()
 
     def _remove_output(self, medialist, name, item):
         self.foreach(self._remove_output_item)
-        self._create_items()
+        self.output_items.pop(name)
+        self._add_items()
+
+    def _add_items(self):
+        for name in sorted(self.output_items.keys()):
+            self.pack_start(self.output_items[name].get_widget(), False, False)
 
     def _remove_output_item(self, widget):
         self.remove(widget)
@@ -62,11 +71,7 @@ class OutputItem:
 
         self.widget = self.interface.get_object("output_box")
         self.label = self.interface.get_object("output_label")
-
-        self.set_label(self.name)
-
-    def set_label(self, label):
-        self.label.set_text(label)
+        self.label.set_text(self.name)
 
     def get_widget(self):
         return self.widget
