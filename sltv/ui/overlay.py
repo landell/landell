@@ -38,6 +38,7 @@ class OverlayUI:
         self.widget = self.interface.get_object("vbox")
 
         self.button = self.interface.get_object("apply_button")
+        self.clear_button = self.interface.get_object("clear_button")
         self.textview = self.interface.get_object("overlay_textview")
 
         self.font_selector = gtk.FontSelectionDialog("Select a font name")
@@ -118,6 +119,7 @@ class OverlayUI:
         self._load_config()
 
         self.button.connect("clicked", self.on_apply_clicked)
+        self.clear_button.connect("clicked", self.on_clear_clicked)
         self.sltv.connect("preplay", self._preplay)
         self.sltv.connect("playing", self._playing)
         self.sltv.connect("stopped", self._stopped)
@@ -233,6 +235,11 @@ class OverlayUI:
         self.button.set_sensitive(False)
 
     def on_apply_clicked(self, event):
+        self.apply_settings()
+
+    def on_clear_clicked(self, event):
+        buffer = self.textview.get_buffer()
+        buffer.set_text("")
         self.apply_settings()
 
     def get_widget(self):

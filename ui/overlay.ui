@@ -187,7 +187,6 @@
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
@@ -224,6 +223,17 @@
           </object>
           <packing>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="clear_button">
+            <property name="label" translatable="yes">clear</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
