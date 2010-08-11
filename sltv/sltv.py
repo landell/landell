@@ -36,6 +36,7 @@ import volume
 import audioresample
 import metadata
 import multeequeue
+import outputbin
 
 MEDIA_AUDIO = 1
 MEDIA_VIDEO = 2
@@ -397,8 +398,8 @@ class Sltv(gobject.GObject):
         for row in self.outputs.get_store():
             (name, output) = row
 
-            sink = output.create()
-            self.player.add(sink)
+            output_bin = outputbin.OutputBin(output)
+            self.player.add(output_bin)
 
             encoder_name = output.get_config()["parent"]
 
@@ -410,10 +411,7 @@ class Sltv(gobject.GObject):
             if added_encoders.has_key(encoder_name):
                 tee = added_encoders[encoder_name]
 
-                tee_queue = gst.element_factory_make("queue", None)
-                self.player.add(tee_queue)
-
-                gst.element_link_many(tee, tee_queue, sink)
+                tee.link(output_bin)
             else:
                 tee = gst.element_factory_make("tee", None)
                 self.player.add(tee)
@@ -441,7 +439,7 @@ class Sltv(gobject.GObject):
                         converter.sink_pads().next()
                 )
                 gst.element_link_many(
-                        converter, encoder, tee, tee_queue, sink
+                        converter, encoder, tee, output_bin
                 )
 
                 if self.input_type & MEDIA_AUDIO:
