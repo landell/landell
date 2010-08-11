@@ -21,7 +21,8 @@ sltvlib_DATA = \
 	audioresample.py \
 	utils.py \
 	metadata.py \
-	multeequeue.py
+	multeequeue.py \
+	outputbin.py
 
 EXTRA_DIST = $(sltvlib_DATA)
 
