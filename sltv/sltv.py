@@ -115,6 +115,7 @@ class Sltv(gobject.GObject):
         self.videobalance_saturation = None
 
         self.input_type = 0
+        self.output_bins = None
 
     def set_halign(self, halign):
         self.halign = halign
@@ -216,6 +217,10 @@ class Sltv(gobject.GObject):
             effect_name = "identity"
         self.effect_name[effect_type] = effect_name
 
+    def stop_output(self, name):
+        if not self.output_bins is None and self.output_bins.has_key(name):
+            self.output_bins[name].stop()
+
     def play(self):
 
         self.emit("preplay")
@@ -232,6 +237,7 @@ class Sltv(gobject.GObject):
         self.source_pads = {}
         self.pip_pads = {}
 
+        self.output_bins = {}
         type = 0
         source_number = 0
         pip_number = 0
@@ -399,6 +405,7 @@ class Sltv(gobject.GObject):
             (name, output) = row
 
             output_bin = outputbin.OutputBin(output)
+            self.output_bins[name] = output_bin
             self.player.add(output_bin)
 
             encoder_name = output.get_config()["parent"]
