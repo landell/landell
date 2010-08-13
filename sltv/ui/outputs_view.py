@@ -35,6 +35,10 @@ class OutputsView(gtk.VBox):
         self._create_items()
         self._add_items()
 
+        self._on_stop()
+        self.sltv.connect("playing", self._on_playing)
+        self.sltv.connect("stopped", self._on_stop)
+
     def _create_items(self):
         for row in self.model:
             (name, source) = row
@@ -64,4 +68,13 @@ class OutputsView(gtk.VBox):
         self.remove(widget)
 
     def _on_output_stopped(self, output_item):
-        self.sltv.stop_output(output_item.name)
+        if self.sltv.stop_output(output_item.name):
+            output_item.set_stopped(True)
+
+    def _on_playing(self, sltv):
+        for output_item in sorted(self.output_items.values()):
+            output_item.set_stopped(False)
+
+    def _on_stop(self, sltv=None):
+        for output_item in sorted(self.output_items.values()):
+            output_item.set_stopped(True)

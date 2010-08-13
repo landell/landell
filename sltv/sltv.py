@@ -220,6 +220,9 @@ class Sltv(gobject.GObject):
     def stop_output(self, name):
         if not self.output_bins is None and self.output_bins.has_key(name):
             self.output_bins[name].stop()
+            return True
+        else:
+            return False
 
     def play(self):
 

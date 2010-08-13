@@ -47,4 +47,7 @@ class OutputItem(gobject.GObject):
     def get_widget(self):
         return self.widget
 
+    def set_stopped(self, state):
+        self.button.set_sensitive(not state)
+
 gobject.type_register(OutputItem)
