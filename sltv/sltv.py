@@ -441,9 +441,6 @@ class Sltv(gobject.GObject):
                 encoder.config(encoder_item.config)
                 self.player.add(encoder)
 
-                tee_queue = gst.element_factory_make("queue", None)
-                self.player.add(tee_queue)
-
                 added_encoders[encoder_name] = tee
                 self.preview_tee.get_src_pad().link(
                         converter.sink_pads().next()
