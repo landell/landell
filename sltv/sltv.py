@@ -33,10 +33,10 @@ from registry import REGISTRY_INPUT, REGISTRY_OUTPUT, \
 import medialist
 import effect
 import volume
-import audioresample
 import metadata
 import multeequeue
 import outputbin
+import audioinputbin
 
 MEDIA_AUDIO = 1
 MEDIA_VIDEO = 2
@@ -219,6 +219,7 @@ class Sltv(gobject.GObject):
         # Source selection
 
         self.source_pads = {}
+        self.audio_pads = {}
         self.pip_pads = {}
 
         self.output_bins = {}
@@ -233,28 +234,26 @@ class Sltv(gobject.GObject):
         for row in self.sources.get_store():
             (name, source) = row
             element = source.create()
+            self.player.add(element)
 
             if element.does_audio():
-                if name == self.audio_source:
-                    self.player.add(element)
-                    self.queue_audio = gst.element_factory_make(
-                            "queue", "queue_audio"
-                    )
-                    self.player.add(self.queue_audio)
-                    pad = self.queue_audio.get_static_pad("sink")
-                    element.audio_pad.link(pad)
+                if not self.input_type & MEDIA_AUDIO:
                     self.input_type |= MEDIA_AUDIO
-                    self.audio_input_item = source
-                elif element.does_video():
+                    self.input_selector = gst.element_factory_make(
+                            "input-selector", "audio-selector"
+                    )
+                    self.player.add(self.input_selector)
 
-                    # If element does audio and video, it will be added.
+                audiobin = audioinputbin.AudioInputBin(source)
+                self.player.add(audiobin)
 
-                    self.player.add(element)
+                element.audio_pad.link(audiobin.get_static_pad("sink"))
+                self.audio_pads[name] = \
+                        self.input_selector.get_request_pad("sink%d")
+                audiobin.src_pad.link(self.audio_pads[name])
 
             if element.does_video():
                 self.input_type |= MEDIA_VIDEO
-                if not element.does_audio():
-                    self.player.add(element)
 
                 self.source_pads[name] = source_number
                 source_number = source_number + 1
@@ -370,15 +369,15 @@ class Sltv(gobject.GObject):
             self.audio_tee = gst.element_factory_make("tee", "audio_tee")
             self.player.add(self.audio_tee)
 
-            self.audioresample = self.audio_input_item.parent.create()
-
-            self.player.add(self.audioresample)
             self.volume = volume.Volume()
             self.player.add(self.volume)
 
             gst.element_link_many(
-                    self.queue_audio, self.audioresample, self.volume,
+                    self.input_selector, self.volume,
                     self.effect[MEDIA_AUDIO], self.convert, self.audio_tee
+            )
+            self.input_selector.set_property(
+                    "active-pad", self.audio_pads[self.audio_source]
             )
         added_encoders = {}
 
