@@ -53,7 +53,6 @@ class SltvUI:
         self.sltv = Sltv()
         self.sltv.connect("stopped", self.stopped)
         self.sltv.connect("playing", self.playing)
-        self.sltv.connect("preplay", self.preplay)
         self.sltv.connect("error", self.error)
         self.sltv.connect("pipeline-ready", self.on_pipeline_ready)
 
@@ -186,16 +185,12 @@ class SltvUI:
     def stopped(self, sltv):
         self.stop_button.set_sensitive(False)
         self.play_button.set_sensitive(True)
-        self.audio_sources_combobox.set_sensitive(True)
         self.settings_menuitem.set_sensitive(True)
 
     def playing(self, sltv):
         self.play_button.set_sensitive(False)
         self.stop_button.set_sensitive(True)
         self.settings_menuitem.set_sensitive(False)
-
-    def preplay(self, sltv):
-        self.audio_sources_combobox.set_sensitive(False)
 
     def error(self, sltv, msg):
         message.MessageError(msg, self)

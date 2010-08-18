@@ -550,6 +550,10 @@ class Sltv(gobject.GObject):
 
     def set_audio_source(self, source_name):
         self.audio_source = source_name
+        if self.playing():
+            self.input_selector.set_property(
+                    "active-pad", self.audio_pads[source_name]
+            )
 
     def set_preview(self, state):
         self.preview_enabled = state
