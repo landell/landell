@@ -22,7 +22,8 @@ sltvlib_DATA = \
 	utils.py \
 	metadata.py \
 	multeequeue.py \
-	outputbin.py
+	outputbin.py \
+	audioinputbin.py
 
 EXTRA_DIST = $(sltvlib_DATA)
 
