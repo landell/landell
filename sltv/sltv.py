@@ -476,8 +476,6 @@ class Sltv(gobject.GObject):
 
         self.emit("pipeline-ready")
 
-        gst.DEBUG_BIN_TO_DOT_FILE_WITH_TS(self.player, gst.DEBUG_GRAPH_SHOW_MEDIA_TYPE, "debug")
-
         bus = self.player.get_bus()
         bus.add_signal_watch()
         bus.enable_sync_message_emission()
