@@ -198,7 +198,7 @@ class SltvUI:
     def selected_audio_source(self):
         model = self.audio_sources_combobox.get_model()
         iter = self.audio_sources_combobox.get_active_iter()
-        if iter == None:
+        if iter is None:
             return None
         return model.get_value(iter, 0)
 

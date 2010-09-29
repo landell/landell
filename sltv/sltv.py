@@ -238,6 +238,14 @@ class Sltv(gobject.GObject):
 
             if element.does_audio():
                 if not self.input_type & MEDIA_AUDIO:
+
+                    # The pipeline has audio sources, and this is the first
+                    # audio source we add
+
+                    if self.audio_source is None:
+                        self.emit("error", "You need to select an audio source")
+                        self.emit("stopped")
+                        return
                     self.input_type |= MEDIA_AUDIO
                     self.input_selector = gst.element_factory_make(
                             "input-selector", "audio-selector"
