@@ -39,6 +39,8 @@ class XInput(Input):
 
         self.video_src.set_format(gst.FORMAT_TIME)
         self.video_src.set_property("use-damage", False)
+        self.video_src.set_property("endx", 800)
+        self.video_src.set_property("endy", 600)
 
         self.add(self.video_src)
         self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
