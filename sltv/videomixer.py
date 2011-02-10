@@ -144,7 +144,7 @@ class PictureInPicture(gst.Bin):
         )
         self.add(A_csp)
         A_alpha = gst.element_factory_make(
-                "alpha", None
+                "identity", None
         )
         self.add(A_alpha)
         A_capsfilter.set_property("caps", self.caps['A'])
@@ -185,7 +185,7 @@ class PictureInPicture(gst.Bin):
         B_csp = gst.element_factory_make(
                 "ffmpegcolorspace", None
         )
-        B_alpha = gst.element_factory_make("alpha", None)
+        B_alpha = gst.element_factory_make("identity", None)
         self.add(B_alpha)
         self.add(B_csp)
 
@@ -209,8 +209,8 @@ class PictureInPicture(gst.Bin):
 
     def make_caps(self, width, height):
         caps = {}
-        inside_width = width/3
-        inside_height = height/3
+        inside_width = width/2
+        inside_height = height/2
         resolution = ",width=" + str(inside_width) + ",height=" + str(inside_height)
         caps_string_inside = "video/x-raw-yuv" + resolution
         resolution = ",width=" + str(width) + ",height=" + str(height)
@@ -270,14 +270,14 @@ class PictureInPicture(gst.Bin):
             self.set_property("xposition", 0)
             self.set_property("yposition", 0)
         elif selected == 1:
-            self.set_property("xposition", (self.width - self.width/3))
+            self.set_property("xposition", (self.width - self.width/2))
             self.set_property("yposition", 0)
         elif selected == 2:
             self.set_property("xposition", 0)
-            self.set_property("yposition", (self.height - self.height/3))
+            self.set_property("yposition", (self.height - self.height/2))
         elif selected == 3:
-            self.set_property("xposition", (self.width - self.width/3))
-            self.set_property("yposition", (self.height - self.height/3))
+            self.set_property("xposition", (self.width - self.width/2))
+            self.set_property("yposition", (self.height - self.height/2))
 
     def do_set_property(self, property, value):
         if property.name == "width":
