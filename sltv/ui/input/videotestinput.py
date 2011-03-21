@@ -29,6 +29,8 @@ class VideoTestInputUI(InputUI):
         self.interface.add_from_file(UI_DIR + "/input/videotestinput.ui")
         self.box = self.interface.get_object("videotest_box")
         self.pattern_entry = self.interface.get_object("pattern_entry")
+        self.width_entry = self.interface.get_object("width_entry")
+        self.height_entry = self.interface.get_object("height_entry")
 
     def get_widget(self):
         return self.box
@@ -41,7 +43,11 @@ class VideoTestInputUI(InputUI):
 
     def update_config(self):
         self.pattern_entry.set_text(self.config["pattern"])
+        self.width_entry.set_text(self.config["width"])
+        self.height_entry.set_text(self.config["height"])
 
     def get_config(self):
         self.config["pattern"] = self.pattern_entry.get_text()
+        self.config["width"] = self.width_entry.get_text()
+        self.config["height"] = self.height_entry.get_text()
         return self.config

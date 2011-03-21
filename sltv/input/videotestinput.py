@@ -29,10 +29,25 @@ class VideoTestInput(Input):
 
     def __init__(self):
         Input.__init__(self, CAPABILITIES)
+
         self.video_src = gst.element_factory_make("videotestsrc", "video_src")
         self.video_src.set_property("is-live", True)
         self.add(self.video_src)
-        self.video_pad.set_target(self.video_src.src_pads().next())
+
+        self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
+        self.add(self.capsfilter)
+
+        gst.element_link_many(self.video_src, self.capsfilter)
+
+        self.video_pad.set_target(self.capsfilter.src_pads().next())
 
     def config(self, dict):
         self.video_src.set_property("pattern", int(dict["pattern"]))
+        caps = gst.caps_from_string(
+            "video/x-raw-yuv, width=%d, height=%d;"
+            "video/x-raw-rgb, width=%d, height=%d" % (
+                int(dict["width"]), int(dict["height"]),
+                int(dict["width"]), int(dict["height"])
+            )
+        )
+        self.capsfilter.set_property("caps", caps)
