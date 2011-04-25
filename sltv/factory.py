@@ -55,6 +55,13 @@ class FileInputFactory(SltvFactory):
         self.ui = ui.input.fileinput.FileInputUI()
         self.factory_class = input.fileinput.FileInput
 
+class HTTPInputFactory(SltvFactory):
+    def __init__(self):
+        SltvFactory.__init__(self, "http")
+        self.capabilities = input.httpinput.CAPABILITIES
+        self.ui = ui.input.httpinput.HTTPInputUI()
+        self.factory_class = input.httpinput.HTTPInput
+
 class V4L2InputFactory(SltvFactory):
     def __init__(self):
         SltvFactory.__init__(self, "v4l2")
@@ -160,7 +167,8 @@ class VP8EncodingFactory(SltvFactory):
 input_factories = [
         AudioTestInputFactory(), XInputFactory(), V4L2InputFactory(),
         FileInputFactory(), DVInputFactory(), ALSAInputFactory(),
-        VideoTestInputFactory(), PulseInputFactory(), AutoAudioInputFactory()
+        VideoTestInputFactory(), PulseInputFactory(),
+        AutoAudioInputFactory(), HTTPInputFactory(),
 ]
 
 for i in input_factories:

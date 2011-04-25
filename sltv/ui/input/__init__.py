@@ -20,6 +20,7 @@
 import alsainput
 import dvinput
 import fileinput
+import httpinput
 import videotestinput
 import audiotestinput
 import v4l2input

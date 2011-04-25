@@ -5,6 +5,7 @@ sltvlib_DATA = \
 	alsainput.py \
 	dvinput.py \
 	fileinput.py \
+	httpinput.py \
 	videotestinput.py \
 	v4l2input.py \
 	xinput.py \
