@@ -43,8 +43,8 @@ class V4L2Input(Input):
     def config(self, dict):
         self.video_src.set_property("device", dict["v4l2_device"])
         caps = gst.caps_from_string(
-            "video/x-raw-yuv, width=%d, height=%d;"
-            "video/x-raw-rgb, width=%d, height=%d" % (
+            "video/x-raw-yuv, pixel-aspect-ratio=1/1, width=%d, height=%d;"
+            "video/x-raw-rgb, pixel-aspect-ratio=1/1, width=%d, height=%d" % (
                 int(dict["width"]), int(dict["height"]),
                 int(dict["width"]), int(dict["height"])
             )
