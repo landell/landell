@@ -94,7 +94,7 @@ class PictureInPicture(gst.Bin):
         self.enabled = True
         self.position = 0
 
-        self.videomixer = gst.element_factory_make("videomixer", "videomixer")
+        self.videomixer = gst.element_factory_make("videomixer2", "videomixer")
         self.add(self.videomixer)
         self.caps = self.make_caps(self.width, self.height)
 
