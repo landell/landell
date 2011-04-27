@@ -38,6 +38,11 @@ class AudioResample(gst.Bin):
     def __init__(self):
         gst.Bin.__init__(self)
 
+        self.audioconvert = gst.element_factory_make(
+                "audioconvert", "audioconvert"
+        )
+        self.add(self.audioconvert)
+
         self.audioresample = gst.element_factory_make(
                 "audioresample", "audioresample"
         )
@@ -53,11 +58,12 @@ class AudioResample(gst.Bin):
         )
         self.add(self.capsfilter)
 
+        self.audioconvert.link(self.audiorate)
         self.audiorate.link(self.audioresample)
         self.audioresample.link(self.capsfilter)
 
         self.sink_pad = gst.GhostPad(
-                "sink", self.audiorate.sink_pads().next()
+                "sink", self.audioconvert.sink_pads().next()
         )
         self.add_pad(self.sink_pad)
         self.src_pad = gst.GhostPad(
