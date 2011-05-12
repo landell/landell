@@ -1,21 +1,17 @@
-Release notes for version 0.9 of sltv
-=====================================
+Release notes for version 0.90 of landell
+=========================================
 
 This software is still under development.
 
-Differences between version 0.8 and 0.9:
-==========================================
+Differences between version 0.9 and 0.90:
+=========================================
 
-- Watermark support
-- Videobalance setting support
-- Filters of class "Filter/Video" are now available as effects
-- Solved lock problems with DV using multiqueue after dv demuxing
-- Solved more lock problems using multiqueue in the preview_tee
-- Fixed error that occurred after a source was removed
-- Previews are set to sync=False
-- Working again without output if there is no audio source (fixes bug #29)
-- Fixed month in metadata
-- Changed sensitivity of output stop button to reflect it's not implemented
+-- It is possible to stop a single output at a time.
+-- Audio source may be changed while playing.
+-- Videotest sources may have its size configured for test purposes. :-)
+-- v4l2src element PAR fixup.
+-- Uses videomixer2. This requires gst-plugins-good 0.10.26 or later.
+-- HTTP sources support. This will allow Landell to be distributed.
 
 Known issues:
 =============
