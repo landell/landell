@@ -1,6 +1,6 @@
 AC_PREREQ([2.61])
 
-AC_INIT([sltv], [0.9], [sltv-dev@listas.softwarelivre.org])
+AC_INIT([sltv], [0.90], [sltv-dev@listas.softwarelivre.org])
 
 AC_CONFIG_MACRO_DIR([m4])
 
