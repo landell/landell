@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Marcelo Jorge Vieira (metal) <metal@holoscopio.com>
 Build-Depends: debhelper (>= 7),
                python (>= 2.5)
-Standards-Version: 3.8.4
+Standards-Version: 3.9.1
 Homepage: http://wiki.softwarelivre.org/TV/SltvProject
 Vcs-Git: http://git.holoscopio.com/git/sltv.git
 Vcs-Browser: http://git.holoscopio.com/?p=sltv.git;a=summary
