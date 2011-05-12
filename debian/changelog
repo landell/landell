@@ -1,3 +1,10 @@
+sltv (0.91-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+  * Requires latest gstreamer0.10-hplugins.
+
+ -- Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>  Mon, 23 May 2011 23:10:09 -0300
+
 sltv (0.90-1) UNRELEASED; urgency=low
 
   * New upstream release.
