@@ -1,7 +1,7 @@
 Source: sltv
 Section: video
 Priority: optional
-Maintainer: Marcelo Jorge Vieira (metal) <metal@holoscopio.com>
+Maintainer: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
 Build-Depends: debhelper (>= 7),
                python (>= 2.5)
 Standards-Version: 3.9.1
