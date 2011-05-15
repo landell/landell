@@ -35,16 +35,24 @@ class HTTPInput(Input):
         self.decode_bin = gst.element_factory_make("decodebin2", "decoder")
         self.add(self.decode_bin)
         self.decode_bin.connect("new-decoded-pad", self.on_dynamic_pad)
+        self.lkv = gst.element_factory_make("livekeeper", "lkv")
+        self.add(self.lkv)
+        self.lka = gst.element_factory_make("livekeeper", "lka")
+        self.add(self.lka)
         gst.element_link_many(self.http_src, self.decode_bin)
+        self.video_pad.set_target(self.lkv.src_pads().next())
+        self.audio_pad.set_target(self.lka.src_pads().next())
 
     def on_dynamic_pad(self, dbin, pad, islast):
         name = pad.get_caps()[0].get_name()
 
         if "audio" in name:
-            self.audio_pad.set_target(pad)
+            sink = self.lka.sink_pads().next()
+            pad.link(sink)
 
         if "video" in name:
-            self.video_pad.set_target(pad)
+            sink = self.lkv.sink_pads().next()
+            pad.link(sink)
 
     def config(self, dict):
         self.http_src.set_property("location", dict["location"])
