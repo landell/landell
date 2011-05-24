@@ -1,17 +1,15 @@
-Release notes for version 0.90 of landell
+Release notes for version 0.91 of landell
 =========================================
 
 This software is still under development.
 
-Differences between version 0.9 and 0.90:
+Differences between version 0.90 and 0.91:
 =========================================
 
--- It is possible to stop a single output at a time.
--- Audio source may be changed while playing.
--- Videotest sources may have its size configured for test purposes. :-)
--- v4l2src element PAR fixup.
--- Uses videomixer2. This requires gst-plugins-good 0.10.26 or later.
--- HTTP sources support. This will allow Landell to be distributed.
+-- Distributes scalable icon.
+-- Uses decodebin2 for HTTP input source.
+-- Uses livekeeper element for HTTP input, so it does not lock the
+pipeline when it disconnects.
 
 Known issues:
 =============
