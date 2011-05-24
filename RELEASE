@@ -1,21 +1,15 @@
-Release notes for version 0.9 of sltv
-=====================================
+Release notes for version 0.91 of landell
+=========================================
 
 This software is still under development.
 
-Differences between version 0.8 and 0.9:
-==========================================
+Differences between version 0.90 and 0.91:
+=========================================
 
-- Watermark support
-- Videobalance setting support
-- Filters of class "Filter/Video" are now available as effects
-- Solved lock problems with DV using multiqueue after dv demuxing
-- Solved more lock problems using multiqueue in the preview_tee
-- Fixed error that occurred after a source was removed
-- Previews are set to sync=False
-- Working again without output if there is no audio source (fixes bug #29)
-- Fixed month in metadata
-- Changed sensitivity of output stop button to reflect it's not implemented
+-- Distributes scalable icon.
+-- Uses decodebin2 for HTTP input source.
+-- Uses livekeeper element for HTTP input, so it does not lock the
+pipeline when it disconnects.
 
 Known issues:
 =============
