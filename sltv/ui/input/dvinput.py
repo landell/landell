@@ -32,6 +32,7 @@ class DVInputUI(InputUI):
         self.width_entry = self.interface.get_object("width_entry")
         self.height_entry = self.interface.get_object("height_entry")
         self.file_checkbutton = self.interface.get_object("file_checkbutton")
+        self.avc_checkbutton = self.interface.get_object("avc_checkbutton")
         self.file_label = self.interface.get_object("file_label")
         self.filechooserbutton = SaveButton()
         self.filechooserbutton.set_sensitive(False)
@@ -58,6 +59,7 @@ class DVInputUI(InputUI):
         self.width_entry.set_text(self.config["width"])
         self.height_entry.set_text(self.config["height"])
         self.file_checkbutton.set_active(self.config["file_enabled"] == 'True')
+        self.avc_checkbutton.set_active(self.config["use-avc"] == 'True')
         #  set_filename doesn't accept null values
         if self.config["file_enabled"] == 'False':
             self.config["filename"] = ""
@@ -72,5 +74,9 @@ class DVInputUI(InputUI):
             self.config["file_enabled"] = 'True'
         else:
             self.config["file_enabled"] = 'False'
+        if self.avc_checkbutton.get_active() is True:
+            self.config["use-avc"] = 'True'
+        else:
+            self.config["use-avc"] = 'False'
         self.config["filename"] = self.filechooserbutton.get_filename()
         return self.config

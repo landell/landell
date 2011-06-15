@@ -4,7 +4,7 @@
   <!-- interface-naming-policy project-wide -->
   <object class="GtkTable" id="dv_box">
     <property name="visible">True</property>
-    <property name="n_rows">6</property>
+    <property name="n_rows">7</property>
     <property name="n_columns">2</property>
     <property name="homogeneous">True</property>
     <child>
@@ -130,6 +130,20 @@
       <packing>
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkCheckButton" id="avc_checkbutton">
+        <property name="label" translatable="yes">Control device using AV/C (like a VCR)</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="draw_indicator">True</property>
+        <property name="active">True</property>
+      </object>
+      <packing>
+        <property name="top_attach">6</property>
+        <property name="bottom_attach">7</property>
       </packing>
     </child>
   </object>
