@@ -139,7 +139,7 @@
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
         <property name="draw_indicator">True</property>
-        <property name="active">True</property>
+        <property name="active">False</property>
       </object>
       <packing>
         <property name="top_attach">6</property>
