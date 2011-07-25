@@ -1,15 +1,15 @@
-Release notes for version 0.91 of landell
+Release notes for version 0.92 of landell
 =========================================
 
 This software is still under development.
 
-Differences between version 0.90 and 0.91:
+Differences between version 0.91 and 0.92:
 =========================================
 
--- Distributes scalable icon.
--- Uses decodebin2 for HTTP input source.
--- Uses livekeeper element for HTTP input, so it does not lock the
-pipeline when it disconnects.
+-- Added use-avc option to DV input
+-- Renamed SLTV binary to Landell
+-- Use icon in the interface
+-- Updated About dialog
 
 Known issues:
 =============
