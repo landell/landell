@@ -21,3 +21,5 @@ import os
 UI_DIR = '@DATADIR@/sltv'
 
 VERSION = '@VERSION@'
+
+ICON = '@DATADIR@/icons/hicolor/scalable/apps/landell.svg'

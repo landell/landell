@@ -17,7 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gtk
-from sltv.settings import VERSION
+from sltv.settings import VERSION, ICON
 
 class About:
 
@@ -33,6 +33,7 @@ class About:
         self.about.set_name("Landell")
         self.about.set_copyright("Copyright (c) 2010 Holoscópio Tecnologia")
         self.about.set_version(VERSION)
+        self.about.set_logo(gtk.gdk.pixbuf_new_from_file(ICON))
         self.about.set_website("http://wiki.softwarelivre.org/TV/SltvProject")
         self.about.set_wrap_license(False)
         self.about.set_license(
