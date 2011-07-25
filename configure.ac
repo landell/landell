@@ -34,9 +34,9 @@ AC_CONFIG_FILES([
     sltv/Makefile
     sltv/settings.py
     src/Makefile
-    src/sltv
+    src/landell
     man/Makefile
-    sltv.desktop
+    landell.desktop
 ])
 
 AC_OUTPUT

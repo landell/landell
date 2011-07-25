@@ -30,7 +30,7 @@ class About:
         self.create_about()
 
     def create_about(self):
-        self.about.set_name("SLTV")
+        self.about.set_name("Landell")
         self.about.set_copyright("Copyright (c) 2010 Holoscópio Tecnologia")
         self.about.set_version(VERSION)
         self.about.set_website("http://wiki.softwarelivre.org/TV/SltvProject")

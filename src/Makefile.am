@@ -1,5 +1,5 @@
-bin_SCRIPTS = sltv
+bin_SCRIPTS = landell
 
 EXTRA_DIST = $(bin_SCRIPTS)
 
-DISTCLEANFILES = sltv
+DISTCLEANFILES = landell
