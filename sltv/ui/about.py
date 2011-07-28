@@ -57,6 +57,10 @@ class About:
             "Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>"
         ]
         self.about.set_authors(authors)
+        artists = [
+            "Valessio Brito <contato@valessiobrito.info>"
+        ]
+        self.about.set_artists(artists)
 
     def show_window(self):
         self.about.show_all()
