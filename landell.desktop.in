@@ -1,11 +1,11 @@
 [Desktop Entry]
 Encoding=UTF-8
 Version=@VERSION@
-Name=SLTV
-Comment=audio and video streams manager
-Exec=sltv
+Name=Landell
+Comment=Audio and video streams manager
+Exec=landell
 Terminal=false
 Type=Application
-Icon=sltv
+Icon=landell
 Categories=AudioVideo;TV;
 StartupNotify=false

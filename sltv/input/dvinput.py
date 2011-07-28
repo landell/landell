@@ -29,6 +29,7 @@ class DVInput(Input):
     def __init__(self):
         Input.__init__(self, CAPABILITIES)
         self.dv_src = gst.element_factory_make("dv1394src", "video_src")
+        self.dv_src.set_property("use-avc", False)
         self.add(self.dv_src)
         self.capsfilter = gst.element_factory_make(
                 "capsfilter", "dv_capsfilter"
@@ -86,6 +87,7 @@ class DVInput(Input):
     def config(self, dict):
         self.dv_src.set_property("channel", int(dict["channel"]))
         self.dv_src.set_property("port", int(dict["port"]))
+        self.dv_src.set_property("use-avc", bool(dict["use-avc"]))
         caps = gst.caps_from_string(
             "video/x-dv, width=%d, height=%d" % (
                 int(dict["width"]), int(dict["height"])

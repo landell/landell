@@ -1,1 +1,1 @@
-dist_man_MANS = sltv.1
+dist_man_MANS = landell.1

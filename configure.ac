@@ -1,6 +1,6 @@
 AC_PREREQ([2.61])
 
-AC_INIT([sltv], [0.91], [sltv-dev@listas.softwarelivre.org])
+AC_INIT([landell], [0.92.1], [sltv-dev@listas.softwarelivre.org])
 
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -34,9 +34,9 @@ AC_CONFIG_FILES([
     sltv/Makefile
     sltv/settings.py
     src/Makefile
-    src/sltv
+    src/landell
     man/Makefile
-    sltv.desktop
+    landell.desktop
 ])
 
 AC_OUTPUT
