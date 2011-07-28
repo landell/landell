@@ -1,10 +1,10 @@
-Release notes for version 0.92 of landell
-=========================================
+Release notes for version 0.92.1 of landell
+===========================================
 
 This software is still under development.
 
-Differences between version 0.91 and 0.92:
-=========================================
+Differences between version 0.91 and 0.92.1:
+============================================
 
 -- Added use-avc option to DV input
 -- Renamed SLTV binary to Landell

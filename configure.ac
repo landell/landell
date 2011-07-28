@@ -1,6 +1,6 @@
 AC_PREREQ([2.61])
 
-AC_INIT([landell], [0.92], [sltv-dev@listas.softwarelivre.org])
+AC_INIT([landell], [0.92.1], [sltv-dev@listas.softwarelivre.org])
 
 AC_CONFIG_MACRO_DIR([m4])
 
