@@ -1,7 +1,7 @@
 Format-Specification: http://wiki.debian.org/Proposals/CopyrightFormat
-Upstream-Name: sltv
+Upstream-Name: landell
 Upstream-Maintainer: Holoscópio Tecnologia
-Upstream-Source: http://sltv.holoscopio.com
+Upstream-Source: http://landell.holoscopio.com
 
 Files: *
 Copyright: (c) 2010 Holoscópio Tecnologia

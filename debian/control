@@ -1,4 +1,4 @@
-Source: sltv
+Source: landell
 Section: video
 Priority: optional
 Maintainer: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
@@ -9,7 +9,7 @@ Homepage: http://wiki.softwarelivre.org/TV/SltvProject
 Vcs-Git: http://git.holoscopio.com/git/sltv.git
 Vcs-Browser: http://git.holoscopio.com/?p=sltv.git;a=summary
 
-Package: sltv
+Package: landell
 Architecture: all
 Depends: ${misc:Depends},
          ${python:Depends},
@@ -29,6 +29,6 @@ Depends: ${misc:Depends},
 XB-Python-Version: ${python:Versions}
 Provides: ${python:Provides}
 Description: audio and video streams manager
- sltv is an audio and video streamer that receives streams from sources
+ Landell is an audio and video streamer that receives streams from sources
  and sends a stream using icecast. It has a graphical interface that
  shows preview and allows applying dynamic effects and configuring stream.
