@@ -1,3 +1,14 @@
+landell (0.92.1-1) unstable; urgency=low
+
+  * New Upstream Release
+    + Replaced 'sltv' with 'landell':
+      Renamed binary, source and descriptions.
+  * Changing homepage
+  * Updated Standards-Version to 3.9.1 (no changes)
+  * Added myself as Uploader
+
+ -- Marcelo Jorge Vieira (metal) <metal@debian.org>  Thu, 28 Jul 2011 20:59:11 -0300
+
 sltv (0.91-1) UNRELEASED; urgency=low
 
   * New upstream release.
