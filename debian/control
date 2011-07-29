@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
 Build-Depends: debhelper (>= 7),
                python (>= 2.5)
-Standards-Version: 3.9.1
+Standards-Version: 3.9.2
 Homepage: http://landell.holoscopio.com
 Vcs-Git: http://git.holoscopio.com/git/sltv.git
 Vcs-Browser: http://git.holoscopio.com/?p=sltv.git;a=summary
