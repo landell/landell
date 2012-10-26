@@ -16,6 +16,6 @@ autoscan.log
 config.status
 install-sh
 stamp-h1
-/src/sltv
-/sltv/settings.py
+/src/landell
+/landell/settings.py
 landell.desktop

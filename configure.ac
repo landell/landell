@@ -1,6 +1,6 @@
 AC_PREREQ([2.61])
 
-AC_INIT([sltv], [0.92], [sltv-dev@listas.softwarelivre.org])
+AC_INIT([landell], [0.92], [sltv-dev@listas.softwarelivre.org])
 
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -23,16 +23,16 @@ AC_CONFIG_FILES([
     ui/input/Makefile
     ui/output/Makefile
     ui/encoding/Makefile
-    sltv/input/Makefile
-    sltv/output/Makefile
-    sltv/encoding/Makefile
-    sltv/effect/Makefile
-    sltv/ui/Makefile
-    sltv/ui/input/Makefile
-    sltv/ui/output/Makefile
-    sltv/ui/encoding/Makefile
-    sltv/Makefile
-    sltv/settings.py
+    landell/input/Makefile
+    landell/output/Makefile
+    landell/encoding/Makefile
+    landell/effect/Makefile
+    landell/ui/Makefile
+    landell/ui/input/Makefile
+    landell/ui/output/Makefile
+    landell/ui/encoding/Makefile
+    landell/Makefile
+    landell/settings.py
     src/Makefile
     src/landell
     man/Makefile

@@ -1,6 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
+# Author: Marcelo Jorge Vieira <metal@holoscopio.com>
+# Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -17,18 +18,20 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import sys
-sys.path.append("@LIBDIR@")
-
 import gobject
 import gtk
-import landell.ui
+from landell.settings import UI_DIR
+from core import InputUI
 
-def main():
-    landell.ui.SltvUI()
-    gobject.threads_init()
-    gtk.gdk.threads_init()
-    gtk.main()
+class AudioTestInputUI(InputUI):
+    def __init__(self):
+        InputUI.__init__(self)
 
-if __name__ == '__main__':
-    main()
+    def get_widget(self):
+        return None
+
+    def get_name(self):
+        return "Audio Test"
+
+    def get_description(self):
+        return "Audio from test source"

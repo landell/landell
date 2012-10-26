@@ -1,7 +1,6 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010 Holoscópio Tecnologia
-# Author: Luciana Fujii Pontello <luciana@holoscopio.com>
+# Copyright (C) 2010 Holoscopio Tecnologia
+# Copyright (C) 2010 Gustavo Noronha Silva <gns@gnome.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,18 +16,21 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import sys
-sys.path.append("@LIBDIR@")
-
 import gobject
-import gtk
-import landell.ui
+import pygst
+pygst.require("0.10")
+import gst
 
-def main():
-    landell.ui.SltvUI()
-    gobject.threads_init()
-    gtk.gdk.threads_init()
-    gtk.main()
+from core import EncodingUI
+from landell.settings import UI_DIR
 
-if __name__ == '__main__':
-    main()
+class VP8EncodingUI(EncodingUI):
+
+    def get_widget(self):
+        return None
+
+    def get_name(self):
+        return "vp8"
+
+    def get_description(self):
+        return "VP8 encoding"

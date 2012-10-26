@@ -1,8 +1,8 @@
 SUBDIRS = input output encoding
 
-uidir = $(datadir)/sltv
+uidir = $(datadir)/landell
 ui_DATA = edit.ui \
-	sltv.ui \
+	landell.ui \
 	medialist.ui \
 	output_setting.ui \
 	preview.ui \

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
@@ -17,18 +16,26 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import sys
-sys.path.append("@LIBDIR@")
-
 import gobject
 import gtk
-import landell.ui
+from landell.settings import UI_DIR
+import landell.registry
+from edit import Edit
+import landell.factory
 
-def main():
-    landell.ui.SltvUI()
-    gobject.threads_init()
-    gtk.gdk.threads_init()
-    gtk.main()
+class EditOutput(Edit):
+    def __init__(self, window, outputs, encoders):
+        Edit.__init__(self, window, outputs)
+        label = self.interface.get_object("name_label")
+        label.set_label("Output name:")
+        self.dialog.set_title("Edit Output")
+        self.encoders = encoders
+        self.encoder_box = None
 
-if __name__ == '__main__':
-    main()
+    def set_factory(self, factory):
+        Edit.set_factory(self, factory)
+        if self.encoder_box:
+            self.container_box.remove(self.encoder_box)
+        self.encoder_box = factory.get_ui().get_encoder_widget()
+        self.container_box.add(self.encoder_box)
+        factory.get_ui().set_encoder_model(self.encoders.liststore)

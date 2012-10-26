@@ -1,4 +1,4 @@
-SUBDIRS = sltv ui src man
+SUBDIRS = landell ui src man
 
 ACLOCAL_AMFLAGS = -I m4
 

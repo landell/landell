@@ -1,4 +1,4 @@
-uidir = $(datadir)/sltv/encoding
+uidir = $(datadir)/landell/encoding
 ui_DATA = \
 	theora.ui
 

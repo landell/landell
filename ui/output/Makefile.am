@@ -1,4 +1,4 @@
-uidir = $(datadir)/sltv/output
+uidir = $(datadir)/landell/output
 ui_DATA = \
 	fileoutput.ui \
 	icecastoutput.ui

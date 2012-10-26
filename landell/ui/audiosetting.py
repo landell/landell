@@ -1,7 +1,6 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
-# Author: Luciana Fujii Pontello <luciana@holoscopio.com>
+# Author: Luciana Fujii Pontello
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,18 +16,31 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import sys
-sys.path.append("@LIBDIR@")
-
 import gobject
 import gtk
-import landell.ui
+from landell.settings import UI_DIR
 
-def main():
-    landell.ui.SltvUI()
-    gobject.threads_init()
-    gtk.gdk.threads_init()
-    gtk.main()
+class AudioUI:
+    def __init__(self):
+        self.interface = gtk.Builder()
+        self.interface.add_from_file(UI_DIR + "/audio_input.ui")
+        self.config = {}
+        self.box = self.interface.get_object("audio_box")
+        self.audiorate_entry = self.interface.get_object("audiorate_entry")
 
-if __name__ == '__main__':
-    main()
+    def get_widget(self):
+        return self.box
+
+    def get_name(self):
+        return "Audio configuration"
+
+    def get_config(self):
+        self.config["audiorate"] = self.audiorate_entry.get_text()
+        return self.config
+
+    def update_config(self):
+        self.audiorate_entry.set_text(self.config["audiorate"])
+
+    def set_config(self, config):
+        self.config = config
+        self.update_config()

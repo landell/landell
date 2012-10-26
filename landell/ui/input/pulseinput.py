@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
@@ -17,18 +16,20 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import sys
-sys.path.append("@LIBDIR@")
-
 import gobject
 import gtk
-import landell.ui
+from landell.settings import UI_DIR
+from core import InputUI
 
-def main():
-    landell.ui.SltvUI()
-    gobject.threads_init()
-    gtk.gdk.threads_init()
-    gtk.main()
+class PulseInputUI(InputUI):
+    def __init__(self):
+        InputUI.__init__(self)
 
-if __name__ == '__main__':
-    main()
+    def get_widget(self):
+        return None
+
+    def get_name(self):
+        return "Pulse"
+
+    def get_description(self):
+        return "Pulse Audio Source"

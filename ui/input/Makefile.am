@@ -1,4 +1,4 @@
-uidir = $(datadir)/sltv/input
+uidir = $(datadir)/landell/input
 ui_DATA = \
 	dvinput.ui \
 	fileinput.ui \

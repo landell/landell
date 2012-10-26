@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
@@ -17,18 +16,23 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import sys
-sys.path.append("@LIBDIR@")
-
 import gobject
 import gtk
-import landell.ui
+from medialist import MediaListUI
+from landell.settings import UI_DIR
+import edit_output
+from landell.registry import REGISTRY_OUTPUT
 
-def main():
-    landell.ui.SltvUI()
-    gobject.threads_init()
-    gtk.gdk.threads_init()
-    gtk.main()
+class Outputs(MediaListUI):
+    def __init__(self, ui, outputs, encoders):
+        MediaListUI.__init__(self, outputs)
+        self.edit_item = edit_output.EditOutput(ui.settings_dialog, self.media_list, encoders)
 
-if __name__ == '__main__':
-    main()
+        # Adding types to combobox
+
+        factories = self.registry.get_factories(REGISTRY_OUTPUT)
+
+        for factory in factories:
+            self.elements_liststore.append((factory.get_name(),))
+            self.factories[factory.get_name()] = factory
+        self.elements_combobox.set_active(0)
