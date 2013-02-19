@@ -32,7 +32,6 @@ Dependencies:
   gstreamer0.10-ffmpeg (>= 0.10.4)
   gstreamer0.10-alsa (>= 0.10.19)
   gstreamer0.10-x (>= 0.10.19)
-  gstreamer0.10-hplugins (>= 0.2.0)
   python (>= 2.5)
   python-gst0.10 (>= 0.10.12)
   python-configobj (>= 4.5.2)

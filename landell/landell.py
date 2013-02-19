@@ -171,8 +171,8 @@ class Sltv(gobject.GObject):
         if self.watermark_resize:
             wm_width = self.watermark_size * video_width
             wm_height = self.watermark_size * video_height
-            self.watermark.set_property("image-width", wm_width)
-            self.watermark.set_property("image-height", wm_height)
+            self.watermark.set_property("width", wm_width)
+            self.watermark.set_property("height", wm_height)
 
     def set_videobalance_contrast(self, value):
         self.videobalance_contrast = value
@@ -305,7 +305,7 @@ class Sltv(gobject.GObject):
                 type |= element.get_type()
 
         self.watermark = gst.element_factory_make(
-                "cairoimageoverlay", "cairoimageoverlay"
+                "rsvgoverlay", "rsvgoverlay"
         )
         self.player.add(self.watermark)
 
