@@ -27,7 +27,7 @@ class VideoConverter(gst.Bin):
     def __init__(self):
         gst.Bin.__init__(self)
         self.colorspace = gst.element_factory_make(
-                "ffmpegcolorspace", "videoconvert_colorspace"
+                "colorspace", "videoconvert_colorspace"
         )
         self.add(self.colorspace)
 
