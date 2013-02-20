@@ -16,11 +16,11 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
+import gi
 
-class MediaItem(gobject.GObject):
+class MediaItem(GObject.GObject):
     def __init__(self, name, factory):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         self.name = name
         self.factory = factory
         self.config = {}

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2009 Holoscópio Tecnologia
-# Author: Luciana Fujii Pontello <luciana@holoscopio.com>
+# Copyright (C) 2013 Collabora Ltda
+# Author: Luciana Fujii Pontello <luciana@fujii.eti.br>
 # Author: Marcelo Jorge Vieira <metal@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,10 +19,9 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import GObject, Gst
 from audio import *
 from preview import *
 from swap import Swap
@@ -41,25 +41,25 @@ import audioinputbin
 MEDIA_AUDIO = 1
 MEDIA_VIDEO = 2
 
-class Sltv(gobject.GObject):
+class Sltv(GObject.GObject):
     __gsignals__ = {
-            "stopped": ( gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ()),
-            "playing": ( gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ()),
-            "preplay": ( gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ()),
+            "stopped": ( GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),
+            "playing": ( GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),
+            "preplay": ( GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),
             "error": (
-                gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                (gobject.TYPE_STRING,)
+                GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE,
+                (GObject.TYPE_STRING,)
             ),
             "sync-message": (
-                gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                (gobject.type_from_name("GstBus"),
-                    gobject.type_from_name("GstMessage"))
+                GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE,
+                (GObject.type_from_name("GstBus"),
+                    GObject.type_from_name("GstMessage"))
             ),
-            "pipeline-ready": (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ())
+            "pipeline-ready": (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ())
     }
 
     def __init__(self):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
         self.player = None
         self.is_playing = False
@@ -201,9 +201,9 @@ class Sltv(gobject.GObject):
 
         self.emit("preplay")
 
-        self.player = gst.Pipeline("player")
+        self.player = Gst.Pipeline("player")
 
-        self.queue_video = gst.element_factory_make("queue", "queue_video")
+        self.queue_video = Gst.ElementFactory.make("queue", "queue_video")
         self.player.add(self.queue_video)
 
         self.input_type = 0
@@ -239,7 +239,7 @@ class Sltv(gobject.GObject):
                         self.emit("stopped")
                         return
                     self.input_type |= MEDIA_AUDIO
-                    self.input_selector = gst.element_factory_make(
+                    self.input_selector = Gst.ElementFactory.make(
                             "input-selector", "audio-selector"
                     )
                     self.player.add(self.input_selector)
@@ -260,11 +260,11 @@ class Sltv(gobject.GObject):
 
                 # Thumbnail preview
 
-                tee = gst.element_factory_make("tee", None)
+                tee = Gst.ElementFactory.make("tee", None)
                 self.player.add(tee)
                 element.video_pad.link(tee.sink_pads().next())
 
-                thumbnail_queue = gst.element_factory_make("queue", None)
+                thumbnail_queue = Gst.ElementFactory.make("queue", None)
                 self.player.add(thumbnail_queue)
                 self.thumbnails[name] = Preview(self)
                 self.player.add(self.thumbnails[name])
@@ -279,9 +279,9 @@ class Sltv(gobject.GObject):
                 self.pip_pads[name] = pip_number
                 pip_number = pip_number + 1
 
-                main_queue = gst.element_factory_make("queue", None)
+                main_queue = Gst.ElementFactory.make("queue", None)
                 self.player.add(main_queue)
-                pip_queue = gst.element_factory_make("queue", None)
+                pip_queue = Gst.ElementFactory.make("queue", None)
                 self.player.add(pip_queue)
 
                 tee.link(main_queue)
@@ -294,17 +294,17 @@ class Sltv(gobject.GObject):
             if name == self.audio_source:
                 type |= element.get_type()
 
-        self.watermark = gst.element_factory_make(
+        self.watermark = Gst.ElementFactory.make(
                 "rsvgoverlay", "rsvgoverlay"
         )
         self.player.add(self.watermark)
 
-        self.colorspace = gst.element_factory_make(
+        self.colorspace = Gst.ElementFactory.make(
                 "ffmpegcolorspace", "colorspace-imageoverlay-videobalance"
         )
         self.player.add(self.colorspace)
 
-        self.videobalance = gst.element_factory_make(
+        self.videobalance = Gst.ElementFactory.make(
                 "videobalance", "videobalance"
         )
         self.player.add(self.videobalance)
@@ -341,7 +341,7 @@ class Sltv(gobject.GObject):
         )
         self.player.add(self.effect[MEDIA_VIDEO])
 
-        self.overlay = gst.element_factory_make("textoverlay", "overlay")
+        self.overlay = Gst.ElementFactory.make("textoverlay", "overlay")
         self.overlay.set_property("font-desc", self.overlay_font)
         self.overlay.set_property("halign", self.halign)
         self.overlay.set_property("valign", self.valign)
@@ -356,7 +356,7 @@ class Sltv(gobject.GObject):
         self.overlay.link(self.preview_tee)
 
         if self.input_type & MEDIA_AUDIO:
-            self.convert = gst.element_factory_make("audioconvert", "convert")
+            self.convert = Gst.ElementFactory.make("audioconvert", "convert")
             self.player.add(self.convert)
 
             self.effect[MEDIA_AUDIO] = effect.audio_effect.AudioEffect(
@@ -364,7 +364,7 @@ class Sltv(gobject.GObject):
             )
             self.player.add(self.effect[MEDIA_AUDIO])
 
-            self.audio_tee = gst.element_factory_make("tee", "audio_tee")
+            self.audio_tee = Gst.ElementFactory.make("tee", "audio_tee")
             self.player.add(self.audio_tee)
 
             self.volume = volume.Volume()
@@ -402,7 +402,7 @@ class Sltv(gobject.GObject):
 
                 tee.link(output_bin)
             else:
-                tee = gst.element_factory_make("tee", None)
+                tee = Gst.ElementFactory.make("tee", None)
                 self.player.add(tee)
 
                 converter_item = encoder_item.parent
@@ -430,7 +430,7 @@ class Sltv(gobject.GObject):
                 tee.link(output_bin)
 
                 if self.input_type & MEDIA_AUDIO:
-                    audio_queue = gst.element_factory_make("queue", None)
+                    audio_queue = Gst.ElementFactory.make("queue", None)
                     self.player.add(audio_queue)
 
                     self.audio_tee.link(audio_queue)
@@ -462,20 +462,20 @@ class Sltv(gobject.GObject):
         bus.enable_sync_message_emission()
         bus.connect("message", self.on_message)
         bus.connect("sync-message::element", self.on_sync_message)
-        cr = self.player.set_state(gst.STATE_PLAYING)
-        if cr == gst.STATE_CHANGE_SUCCESS:
+        cr = self.player.set_state(Gst.STATE_PLAYING)
+        if cr == Gst.STATE_CHANGE_SUCCESS:
             self.emit("playing")
             self.is_playing = True
-        elif cr == gst.STATE_CHANGE_ASYNC:
-            self.pending_state = gst.STATE_PLAYING
+        elif cr == Gst.STATE_CHANGE_ASYNC:
+            self.pending_state = Gst.STATE_PLAYING
 
     def stop(self):
-        cr = self.player.set_state(gst.STATE_NULL)
-        if cr == gst.STATE_CHANGE_SUCCESS:
+        cr = self.player.set_state(Gst.STATE_NULL)
+        if cr == Gst.STATE_CHANGE_SUCCESS:
             self.emit("stopped")
             self.is_playing = False
-        elif cr == gst.STATE_CHANGE_ASYNC:
-            self.pending_state = gst.STATE_NULL
+        elif cr == Gst.STATE_CHANGE_ASYNC:
+            self.pending_state = Gst.STATE_NULL
 
     def playing(self):
         return self.is_playing
@@ -572,30 +572,30 @@ class Sltv(gobject.GObject):
     def on_message(self, bus, message):
         #print message
         t = message.type
-        if t == gst.MESSAGE_EOS:
+        if t == Gst.MESSAGE_EOS:
             print "EOS"
-            cr = self.player.set_state(gst.STATE_NULL)
-            if cr == gst.STATE_CHANGE_SUCCESS:
+            cr = self.player.set_state(Gst.STATE_NULL)
+            if cr == Gst.STATE_CHANGE_SUCCESS:
                 self.emit("stopped")
                 self.is_playing = False
-            elif cr == gst.STATE_CHANGE_ASYNC:
-                self.pending_state = gst.STATE_NULL
-        elif t == gst.MESSAGE_ERROR:
+            elif cr == Gst.STATE_CHANGE_ASYNC:
+                self.pending_state = Gst.STATE_NULL
+        elif t == Gst.MESSAGE_ERROR:
             print "ERROR"
             (gerror, debug) = message.parse_error()
             self.emit("error", gerror.message)
             print debug
-            cr = self.player.set_state(gst.STATE_NULL)
-            if cr == gst.STATE_CHANGE_SUCCESS:
+            cr = self.player.set_state(Gst.STATE_NULL)
+            if cr == Gst.STATE_CHANGE_SUCCESS:
                 self.emit("stopped")
                 self.is_playing = False
-            elif cr == gst.STATE_CHANGE_ASYNC:
-                self.pending_state = gst.STATE_NULL
-        elif t == gst.MESSAGE_ASYNC_DONE:
-            if self.pending_state == gst.STATE_NULL:
+            elif cr == Gst.STATE_CHANGE_ASYNC:
+                self.pending_state = Gst.STATE_NULL
+        elif t == Gst.MESSAGE_ASYNC_DONE:
+            if self.pending_state == Gst.STATE_NULL:
                 self.emit("stopped")
                 self.is_playing = False
-            elif self.pending_state == gst.STATE_PLAYING:
+            elif self.pending_state == Gst.STATE_PLAYING:
                 self.emit("playing")
                 self.is_playing = True
             self.pending_state = None

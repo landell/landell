@@ -16,10 +16,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 from core import Input, INPUT_TYPE_AUDIO
 
 CAPABILITIES = INPUT_TYPE_AUDIO
@@ -28,7 +27,7 @@ class PulseInput(Input):
 
     def __init__(self):
         Input.__init__(self, CAPABILITIES)
-        self.audio_src = gst.element_factory_make("pulsesrc", "audio_src")
+        self.audio_src = Gst.ElementFactory.make("pulsesrc", "audio_src")
         self.add(self.audio_src)
         self.audio_pad.set_target(self.audio_src.src_pads().next())
 

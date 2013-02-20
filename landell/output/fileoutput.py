@@ -16,17 +16,16 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 from core import Output
 
 class FileOutput(Output):
 
     def __init__(self):
         Output.__init__(self)
-        self.file_sink = gst.element_factory_make("filesink", "filesink")
+        self.file_sink = Gst.ElementFactory.make("filesink", "filesink")
         self.add(self.file_sink)
         self.sink_pad.set_target(self.file_sink.sink_pads().next())
 

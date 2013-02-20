@@ -17,24 +17,23 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 
 INPUT_TYPE_AUDIO = 1
 INPUT_TYPE_VIDEO = 2
 
-class Input(gst.Bin):
+class Input(Gst.Bin):
 
     def __init__(self, type):
-        gst.Bin.__init__(self)
+        Gst.Bin.__init__(self)
         self.type = type
         if (type & INPUT_TYPE_AUDIO):
-            self.audio_pad = gst.ghost_pad_new_notarget("audio_pad", gst.PAD_SRC)
+            self.audio_pad = Gst.ghost_pad_new_notarget("audio_pad", Gst.PAD_SRC)
             self.add_pad(self.audio_pad)
         if (type & INPUT_TYPE_VIDEO):
-            self.video_pad = gst.ghost_pad_new_notarget("video_pad", gst.PAD_SRC)
+            self.video_pad = Gst.ghost_pad_new_notarget("video_pad", Gst.PAD_SRC)
             self.add_pad(self.video_pad)
 
     def get_type(self):

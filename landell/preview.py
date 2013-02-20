@@ -17,32 +17,30 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
-import gtk
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst, GObject
 
-class Preview(gst.Bin):
+class Preview(Gst.Bin):
 
     __gsignals__ = {
         "prepare-xwindow-id" : (
-            gobject.SIGNAL_RUN_LAST,
-            gobject.TYPE_NONE,
-            (gobject.type_from_name("GstElement"),)
+            GObject.SIGNAL_RUN_LAST,
+            GObject.TYPE_NONE,
+            (GObject.type_from_name("GstElement"),)
         )
     }
 
     def __init__(self, sltv):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         sltv.connect("sync-message", self.on_sync_message)
-        self.sink = gst.element_factory_make("autovideosink", "sink")
+        self.sink = Gst.ElementFactory.make("autovideosink", "sink")
         self.add(self.sink)
-        self.colorspace = gst.element_factory_make(
+        self.colorspace = Gst.ElementFactory.make(
             "ffmpegcolorspace", "colorspace"
         )
         self.add(self.colorspace)
-        self.videoscale = gst.element_factory_make("videoscale")
+        self.videoscale = Gst.ElementFactory.make("videoscale")
         self.add(self.videoscale)
         self.colorspace.link(self.videoscale)
         self.videoscale.link(self.sink)
@@ -62,4 +60,4 @@ class Preview(gst.Bin):
                 previewsink.set_property("force-aspect-ratio", True)
                 self.emit("prepare-xwindow-id", previewsink)
 
-gobject.type_register(Preview)
+GObject.type_register(Preview)

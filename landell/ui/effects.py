@@ -19,7 +19,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-import gobject
+import gi
 import gtk
 from landell.settings import UI_DIR
 import landell.effects as effects
@@ -71,7 +71,7 @@ class EffectsUI:
         self.apply_button.set_sensitive(False)
 
     def _create_effects_combobox(self, combobox, effect_type):
-        liststore = gtk.ListStore(gobject.TYPE_STRING)
+        liststore = gtk.ListStore(GObject.TYPE_STRING)
         combobox.set_model(liststore)
         cell = gtk.CellRendererText()
         combobox.pack_start(cell, True)

@@ -20,15 +20,17 @@
 import sys
 sys.path.append("@LIBDIR@")
 
-import gobject
-import gtk
+import gi
+from gi.repository import GObject, Gtk, Gst
 import landell.ui
 
 def main():
     landell.ui.SltvUI()
-    gobject.threads_init()
-    gtk.gdk.threads_init()
-    gtk.main()
+    GObject.threads_init()
+    Gst.init(None)
+
+    Gtk.gdk.threads_init()
+    Gtk.main()
 
 if __name__ == '__main__':
     main()

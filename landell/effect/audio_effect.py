@@ -16,27 +16,26 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 from core import Effect
 
 class AudioEffect(Effect):
 
     def __init__(self, effect_name):
         Effect.__init__(self)
-        self.convertion1 = gst.element_factory_make(
+        self.convertion1 = Gst.ElementFactory.make(
                 "audioconvert", "effect_audioconvert1"
         )
         self.add(self.convertion1)
 
-        self.convertion2 = gst.element_factory_make(
+        self.convertion2 = Gst.ElementFactory.make(
                 "audioconvert", "effect_audioconvert2"
         )
         self.add(self.convertion2)
 
-        self.effect_element = gst.element_factory_make(effect_name, effect_name)
+        self.effect_element = Gst.ElementFactory.make(effect_name, effect_name)
         self.add(self.effect_element)
 
         self.convertion1.link(self.effect_element)

@@ -17,7 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-import gobject
+import gi
 import gtk
 from gtk import gdk
 from landell.log import Log
@@ -25,19 +25,19 @@ from landell.log import Log
 class PIPSelector(gtk.DrawingArea):
 
     __gproperties__ = {
-            'selected' : (gobject.TYPE_INT,               # type
+            'selected' : (GObject.TYPE_INT,               # type
                         'selected',                       # nick name
                         'selected',                       # description
                         0,                                # minimum value
                         3,                                # maximum value
                         0,                                # default value
-                        gobject.PARAM_READWRITE)          # flags
+                        GObject.PARAM_READWRITE)          # flags
     }
 
     __gsignals__ = {
             'changed' : (
-                gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                (gobject.TYPE_INT,)
+                GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE,
+                (GObject.TYPE_INT,)
             )
     }
 
@@ -126,4 +126,4 @@ class PIPSelector(gtk.DrawingArea):
         else:
             Log.warning('PIPSelector unknown property %s' % property.name)
 
-gobject.type_register(PIPSelector)
+GObject.type_register(PIPSelector)

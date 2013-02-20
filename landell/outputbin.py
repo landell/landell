@@ -16,20 +16,20 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 
-class OutputBin(gst.Bin):
+class OutputBin(Gst.Bin):
 
     def __init__(self, output):
-        gst.Bin.__init__(self)
+        Gst.Bin.__init__(self)
 
-        self.queue = gst.element_factory_make(
+        self.queue = Gst.ElementFactory.make(
                 "queue", "tee_queue"
         )
         self.add(self.queue)
-        self.valve = gst.element_factory_make("valve", "valve")
+        self.valve = Gst.ElementFactory.make("valve", "valve")
         self.add(self.valve)
         self.sink = output.create()
         self.add(self.sink)
@@ -37,18 +37,18 @@ class OutputBin(gst.Bin):
         self.queue.link(self.valve)
         self.valve.link(self.sink)
 
-        self.sink_pad = gst.GhostPad(
+        self.sink_pad = Gst.GhostPad(
                 "sink", self.queue.sink_pads().next()
         )
         self.add_pad(self.sink_pad)
 
     def stop(self):
         self.valve.set_property("drop", True)
-        self.sink.set_state(gst.STATE_NULL)
-        self.fakesink = gst.element_factory_make("fakesink", "fakesink")
+        self.sink.set_state(Gst.STATE_NULL)
+        self.fakesink = Gst.ElementFactory.make("fakesink", "fakesink")
         self.valve.unlink(self.sink)
         self.remove(self.sink)
-        self.fakesink.set_state(gst.STATE_PLAYING)
+        self.fakesink.set_state(Gst.STATE_PLAYING)
         self.add(self.fakesink)
         self.valve.link(self.fakesink)
         self.valve.set_property("drop", False)

@@ -16,17 +16,16 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 from core import Output
 
 class IcecastOutput(Output):
 
     def __init__(self):
         Output.__init__(self)
-        self.icecast_sink = gst.element_factory_make(
+        self.icecast_sink = Gst.ElementFactory.make(
                 "shout2send", "icecastsink"
         )
         self.add(self.icecast_sink)

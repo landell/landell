@@ -17,20 +17,19 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst, GObject
 
-class MulTeeQueue(gst.Bin):
+class MulTeeQueue(Gst.Bin):
 
     def __init__(self):
-        gst.Bin.__init__(self)
-        self.tee = gst.element_factory_make("tee", "multeequeue_tee")
+        Gst.Bin.__init__(self)
+        self.tee = Gst.ElementFactory.make("tee", "multeequeue_tee")
         self.add(self.tee)
-        self.multiqueue = gst.element_factory_make("multiqueue", "multiqueue")
+        self.multiqueue = Gst.ElementFactory.make("multiqueue", "multiqueue")
         self.add(self.multiqueue)
-        self.sink_pad = gst.GhostPad("sink", self.tee.sink_pads().next())
+        self.sink_pad = Gst.GhostPad("sink", self.tee.sink_pads().next())
         self.add_pad(self.sink_pad)
         self.pad_index = 0
 
@@ -38,11 +37,11 @@ class MulTeeQueue(gst.Bin):
         request_pad = self.multiqueue.get_request_pad("sink%d")
         self.tee.get_request_pad("src%d").link(request_pad)
         src_pad = request_pad.iterate_internal_links().next()
-        src_ghost_pad = gst.GhostPad(
+        src_ghost_pad = Gst.GhostPad(
                 "src%d" % self.pad_index, src_pad
         )
         self.add_pad(src_ghost_pad)
         self.pad_index += 1
         return src_ghost_pad
 
-gobject.type_register(MulTeeQueue)
+GObject.type_register(MulTeeQueue)

@@ -17,43 +17,42 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 from log import Log
 
-class AudioResample(gst.Bin):
+class AudioResample(Gst.Bin):
 
     __gproperties__ = {
-            'audiorate' : (gobject.TYPE_INT,              # type
+            'audiorate' : (GObject.TYPE_INT,              # type
                         'audiorate',                      # nick name
                         'audiorate',                      # description
                         -1,                               # minimum value
                         2147483647,                       # maximum value
                         -1,                               # default value (not set)
-                        gobject.PARAM_READWRITE)          # flags
+                        GObject.PARAM_READWRITE)          # flags
     }
 
     def __init__(self):
-        gst.Bin.__init__(self)
+        Gst.Bin.__init__(self)
 
-        self.audioconvert = gst.element_factory_make(
+        self.audioconvert = Gst.ElementFactory.make(
                 "audioconvert", "audioconvert"
         )
         self.add(self.audioconvert)
 
-        self.audioresample = gst.element_factory_make(
+        self.audioresample = Gst.ElementFactory.make(
                 "audioresample", "audioresample"
         )
         self.add(self.audioresample)
 
-        self.audiorate = gst.element_factory_make(
+        self.audiorate = Gst.ElementFactory.make(
                 "audiorate", "audiorate"
         )
         self.add(self.audiorate)
 
-        self.capsfilter = gst.element_factory_make(
+        self.capsfilter = Gst.ElementFactory.make(
                 "capsfilter", "audioresample_capsfilter"
         )
         self.add(self.capsfilter)
@@ -62,11 +61,11 @@ class AudioResample(gst.Bin):
         self.audiorate.link(self.audioresample)
         self.audioresample.link(self.capsfilter)
 
-        self.sink_pad = gst.GhostPad(
+        self.sink_pad = Gst.GhostPad(
                 "sink", self.audioconvert.sink_pads().next()
         )
         self.add_pad(self.sink_pad)
-        self.src_pad = gst.GhostPad(
+        self.src_pad = Gst.GhostPad(
                 "src", self.capsfilter.src_pads().next()
         )
         self.add_pad(self.src_pad)
@@ -83,7 +82,7 @@ class AudioResample(gst.Bin):
 
     def do_set_property(self, property, value):
         if property.name == "audiorate":
-            caps = gst.caps_from_string(
+            caps = Gst.caps_from_string(
                     "audio/x-raw-int, rate=%d" %(
                         value
                     )
@@ -93,4 +92,4 @@ class AudioResample(gst.Bin):
         else:
             Log.warning('audioresample unknown property %s' % property.name)
 
-gobject.type_register(AudioResample)
+GObject.type_register(AudioResample)

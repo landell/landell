@@ -17,10 +17,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 
 from core import Encoder
 from landell.input.core import INPUT_TYPE_AUDIO, INPUT_TYPE_VIDEO
@@ -29,19 +28,19 @@ class OggTheoraVorbisEncoder(Encoder):
 
     def __init__(self, type):
         Encoder.__init__(self, type)
-        self.oggmux = gst.element_factory_make("oggmux", "oggmux")
+        self.oggmux = Gst.ElementFactory.make("oggmux", "oggmux")
         self.add(self.oggmux)
         self.theoraenc = None
         self.vorbisenc = None
 
         if type & INPUT_TYPE_AUDIO:
-            audioconvert = gst.element_factory_make(
+            audioconvert = Gst.ElementFactory.make(
                 "audioconvert", "audioconvert"
             )
             self.add(audioconvert)
-            self.vorbisenc = gst.element_factory_make("vorbisenc", "vorbisenc")
+            self.vorbisenc = Gst.ElementFactory.make("vorbisenc", "vorbisenc")
             self.add(self.vorbisenc)
-            queue_audio = gst.element_factory_make(
+            queue_audio = Gst.ElementFactory.make(
                     "queue", "queue_audio_enc"
             )
             self.add(queue_audio)
@@ -50,9 +49,9 @@ class OggTheoraVorbisEncoder(Encoder):
             queue_audio.link(self.oggmux)
             self.audio_pad.set_target(audioconvert.sink_pads().next())
         if type & INPUT_TYPE_VIDEO:
-            self.theoraenc = gst.element_factory_make("theoraenc", "theoraenc")
+            self.theoraenc = Gst.ElementFactory.make("theoraenc", "theoraenc")
             self.add(self.theoraenc)
-            queue_video = gst.element_factory_make(
+            queue_video = Gst.ElementFactory.make(
                     "queue", "queue_video_enc"
             )
             self.add(queue_video)

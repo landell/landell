@@ -16,16 +16,16 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 
-class AudioInputBin(gst.Bin):
+class AudioInputBin(Gst.Bin):
 
     def __init__(self, audio_input):
-        gst.Bin.__init__(self)
+        Gst.Bin.__init__(self)
 
-        self.queue = gst.element_factory_make(
+        self.queue = Gst.ElementFactory.make(
                 "queue", "queue_audio"
         )
         self.add(self.queue)
@@ -35,10 +35,10 @@ class AudioInputBin(gst.Bin):
 
         self.queue.link(self.audioresample)
 
-        self.sink_pad = gst.GhostPad(
+        self.sink_pad = Gst.GhostPad(
                 "sink", self.queue.sink_pads().next()
         )
-        self.src_pad = gst.GhostPad(
+        self.src_pad = Gst.GhostPad(
                 "src", self.audioresample.src_pads().next()
         )
         self.add_pad(self.src_pad)

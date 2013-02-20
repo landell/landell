@@ -16,14 +16,13 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 
-class Output(gst.Bin):
+class Output(Gst.Bin):
 
     def __init__(self):
-        gst.Bin.__init__(self)
-        self.sink_pad = gst.ghost_pad_new_notarget("sink_pad", gst.PAD_SINK)
+        Gst.Bin.__init__(self)
+        self.sink_pad = Gst.ghost_pad_new_notarget("sink_pad", Gst.PAD_SINK)
         self.add_pad(self.sink_pad)

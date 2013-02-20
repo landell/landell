@@ -17,10 +17,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 from core import Input, INPUT_TYPE_VIDEO
 from landell.utils import Fract
 
@@ -30,20 +29,20 @@ class XInput(Input):
 
     def __init__(self):
         Input.__init__(self, CAPABILITIES)
-        self.video_src = gst.element_factory_make("ximagesrc", "video_src")
+        self.video_src = Gst.ElementFactory.make("ximagesrc", "video_src")
 
         # Setting format to time, to work with input-selector, since they're
         # were not working together in version 0.10.18-1 from Debian.
         # This should be fixed in ximagesrc's code and input-selector should
         # also be fixed to work with byte format.
 
-        self.video_src.set_format(gst.FORMAT_TIME)
+        self.video_src.set_format(Gst.FORMAT_TIME)
         self.video_src.set_property("use-damage", False)
         self.video_src.set_property("endx", 800)
         self.video_src.set_property("endy", 600)
 
         self.add(self.video_src)
-        self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
+        self.capsfilter = Gst.ElementFactory.make("capsfilter", "capsfilter")
         self.add(self.capsfilter)
 
         self.video_src.link(self.capsfilter)
@@ -52,7 +51,7 @@ class XInput(Input):
 
     def config(self, dict):
         num, den = Fract.fromdecimal(dict["framerate"])
-        caps = gst.caps_from_string(
+        caps = Gst.caps_from_string(
             "video/x-raw-rgb, framerate=%d/%d" % (num, den)
         )
         self.capsfilter.set_property("caps", caps)

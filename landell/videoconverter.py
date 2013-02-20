@@ -16,33 +16,32 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 from utils import Fract
 
-class VideoConverter(gst.Bin):
+class VideoConverter(Gst.Bin):
 
     def __init__(self):
-        gst.Bin.__init__(self)
-        self.colorspace = gst.element_factory_make(
+        Gst.Bin.__init__(self)
+        self.colorspace = Gst.ElementFactory.make(
                 "colorspace", "videoconvert_colorspace"
         )
         self.add(self.colorspace)
 
-        self.videorate = gst.element_factory_make(
+        self.videorate = Gst.ElementFactory.make(
                 "videorate", "videoconvert_videorate"
         )
         self.add(self.videorate)
 
-        self.videoscale = gst.element_factory_make(
+        self.videoscale = Gst.ElementFactory.make(
                 "videoscale", "videoconvert_videoscale"
         )
         self.add(self.videoscale)
         self.videoscale.set_property("method", 1)
 
-        self.capsfilter = gst.element_factory_make(
+        self.capsfilter = Gst.ElementFactory.make(
                 "capsfilter", "videoconvert_capsfilter"
         )
         self.add(self.capsfilter)
@@ -51,18 +50,18 @@ class VideoConverter(gst.Bin):
         self.videorate.link(self.videoscale)
         self.videoscale.link(self.capsfilter)
 
-        self.source_pad = gst.GhostPad(
+        self.source_pad = Gst.GhostPad(
                 "src", self.capsfilter.src_pads().next()
         )
         self.add_pad(self.source_pad)
-        self.sink_pad = gst.GhostPad(
+        self.sink_pad = Gst.GhostPad(
                 "sink", self.colorspace.sink_pads().next()
         )
         self.add_pad(self.sink_pad)
 
     def config(self, dict):
         num, den = Fract.fromdecimal(dict["framerate"])
-        caps = gst.caps_from_string(
+        caps = Gst.caps_from_string(
                 "video/x-raw-yuv, width=%d, height=%d, framerate=%d/%d" % (
                     int(dict["width"]), int(dict["height"]), num, den
                 )

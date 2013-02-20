@@ -16,76 +16,75 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst, GObject
 from log import Log
 
-class PictureInPicture(gst.Bin):
+class PictureInPicture(Gst.Bin):
 
     __gproperties__ = {
-            'width' : (gobject.TYPE_INT,                  # type
+            'width' : (GObject.TYPE_INT,                  # type
                         'width',                          # nick name
                         'Width of bigger video',          # description
                         0,                                # minimum value
                         32767,                            # maximum value
                         320,                              # default value
-                        gobject.PARAM_READWRITE),         # flags
+                        GObject.PARAM_READWRITE),         # flags
 
-            'height' : (gobject.TYPE_INT,                 # type
+            'height' : (GObject.TYPE_INT,                 # type
                         'height',                         # nick name
                         'height of bigger video',         # description
                         0,                                # minimum value
                         32767,                            # maximum value
                         240,                              # default value
-                        gobject.PARAM_READWRITE),         # flags
+                        GObject.PARAM_READWRITE),         # flags
 
-            'xposition' : (gobject.TYPE_INT,              # type
+            'xposition' : (GObject.TYPE_INT,              # type
                         'Position X',                     # nick name
                         'PIP X coordinate',               # description
                         0,                                # minimum value
                         32767,                            # maximum value
                         0,                                # default value
-                        gobject.PARAM_READWRITE),         # flags
+                        GObject.PARAM_READWRITE),         # flags
 
-            'yposition' : (gobject.TYPE_INT,              # type
+            'yposition' : (GObject.TYPE_INT,              # type
                         'Position Y',                     # nick name
                         'PIP Y coordinate',               # description
                         0,                                # minimum value
                         32767,                            # maximum value
                         0,                                # default value
-                        gobject.PARAM_READWRITE),         # flags
-            'enabled' : (gobject.TYPE_BOOLEAN,            # type
+                        GObject.PARAM_READWRITE),         # flags
+            'enabled' : (GObject.TYPE_BOOLEAN,            # type
                         'status',                         # nick name
                         'Status of pip',                  # description
                         True,                             # default value
-                        gobject.PARAM_READWRITE),         # flags
-            'position' : (gobject.TYPE_INT,               # type
+                        GObject.PARAM_READWRITE),         # flags
+            'position' : (GObject.TYPE_INT,               # type
                         'position',                       # nick name
                         'Selected position',              # description
                         0,                                # minimum value
                         3,                                # maximum value
                         0,                                # default value
-                        gobject.PARAM_READWRITE),         # flags
-            'a-active' : (gobject.TYPE_INT,               # type
+                        GObject.PARAM_READWRITE),         # flags
+            'a-active' : (GObject.TYPE_INT,               # type
                           'Active A',                     # nick name
                           'A Pad to be active',           # description
                           0,                              # minimum value
                           32,                             # maximum value
                           0,                              # default value
-                          gobject.PARAM_READWRITE),       # flags
-            'b-active' : (gobject.TYPE_INT,               # type
+                          GObject.PARAM_READWRITE),       # flags
+            'b-active' : (GObject.TYPE_INT,               # type
                           'Active B',                     # nick name
                           'B Pad to be active',           # description
                           0,                              # minimum value
                           32,                             # maximum value
                           0,                              # default value
-                          gobject.PARAM_READWRITE),       # flags
+                          GObject.PARAM_READWRITE),       # flags
     }
 
     def __init__(self):
-        gst.Bin.__init__(self)
+        Gst.Bin.__init__(self)
 
         self.width = 320
         self.height = 240
@@ -94,11 +93,11 @@ class PictureInPicture(gst.Bin):
         self.enabled = True
         self.position = 0
 
-        self.videomixer = gst.element_factory_make("videomixer2", "videomixer")
+        self.videomixer = Gst.ElementFactory.make("videomixer2", "videomixer")
         self.add(self.videomixer)
         self.caps = self.make_caps(self.width, self.height)
 
-        self.csp = gst.element_factory_make("ffmpegcolorspace", "pip_csp")
+        self.csp = Gst.ElementFactory.make("ffmpegcolorspace", "pip_csp")
         self.add(self.csp)
 
         self.A_capsfilter = []
@@ -108,7 +107,7 @@ class PictureInPicture(gst.Bin):
 
         self.videomixer.link(self.csp)
 
-        src_pad = gst.GhostPad("src", self.csp.src_pads().next())
+        src_pad = Gst.GhostPad("src", self.csp.src_pads().next())
         self.add_pad(src_pad)
 
         self.A_number = 0
@@ -126,24 +125,24 @@ class PictureInPicture(gst.Bin):
         return self._create_B_input()
 
     def _create_A_input(self):
-        A_videoscale = gst.element_factory_make(
+        A_videoscale = Gst.ElementFactory.make(
                 "videoscale", None
         )
         self.add(A_videoscale)
-        A_videorate = gst.element_factory_make(
+        A_videorate = Gst.ElementFactory.make(
                 "videorate", None
         )
         self.add(A_videorate)
-        A_capsfilter = gst.element_factory_make(
+        A_capsfilter = Gst.ElementFactory.make(
                 "capsfilter", None
         )
         self.add(A_capsfilter)
         self.A_capsfilter.append(A_capsfilter)
-        A_csp = gst.element_factory_make(
+        A_csp = Gst.ElementFactory.make(
                 "ffmpegcolorspace", None
         )
         self.add(A_csp)
-        A_alpha = gst.element_factory_make(
+        A_alpha = Gst.ElementFactory.make(
                 "identity", None
         )
         self.add(A_alpha)
@@ -161,7 +160,7 @@ class PictureInPicture(gst.Bin):
         A_capsfilter.src_pads().next().link(pad)
         self.A_pads.append(pad)
 
-        sink_pad = gst.GhostPad(
+        sink_pad = Gst.GhostPad(
                 "sink_a_%d" % self.A_number, A_videoscale.sink_pads().next()
         )
         self.add_pad(sink_pad)
@@ -169,24 +168,24 @@ class PictureInPicture(gst.Bin):
         return sink_pad
 
     def _create_B_input(self):
-        B_videoscale = gst.element_factory_make(
+        B_videoscale = Gst.ElementFactory.make(
                 "videoscale", None
         )
         self.add(B_videoscale)
-        B_videorate = gst.element_factory_make(
+        B_videorate = Gst.ElementFactory.make(
                 "videorate", None
         )
         self.add(B_videorate)
-        B_capsfilter = gst.element_factory_make(
+        B_capsfilter = Gst.ElementFactory.make(
                 "capsfilter", None
         )
         self.add(B_capsfilter)
         self.B_capsfilter.append(B_capsfilter)
         B_capsfilter.set_property("caps", self.caps['B'])
-        B_csp = gst.element_factory_make(
+        B_csp = Gst.ElementFactory.make(
                 "ffmpegcolorspace", None
         )
-        B_alpha = gst.element_factory_make("identity", None)
+        B_alpha = Gst.ElementFactory.make("identity", None)
         self.add(B_alpha)
         self.add(B_csp)
 
@@ -202,7 +201,7 @@ class PictureInPicture(gst.Bin):
         B_capsfilter.src_pads().next().link(pad)
         self.B_pads.append(pad)
 
-        sink_pad = gst.GhostPad(
+        sink_pad = Gst.GhostPad(
                 "sink_b_%d" % self.B_number, B_videoscale.sink_pads().next()
         )
         self.add_pad(sink_pad)
@@ -217,8 +216,8 @@ class PictureInPicture(gst.Bin):
         caps_string_inside = "video/x-raw-yuv" + resolution
         resolution = ",width=" + str(width) + ",height=" + str(height)
         caps_string_outside = "video/x-raw-yuv" + resolution
-        caps['B'] = gst.caps_from_string(caps_string_inside)
-        caps['A'] = gst.caps_from_string(caps_string_outside)
+        caps['B'] = Gst.caps_from_string(caps_string_inside)
+        caps['A'] = Gst.caps_from_string(caps_string_outside)
         return caps
 
     def _set_active_a(self, pad_number):
@@ -311,4 +310,4 @@ class PictureInPicture(gst.Bin):
         else:
             Log.warning('PictureInPicture unknown property %s' % property.name)
 
-gobject.type_register(PictureInPicture)
+GObject.type_register(PictureInPicture)

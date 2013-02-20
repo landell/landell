@@ -17,10 +17,9 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import GObject, Gst
 
 class Audio:
 
@@ -28,7 +27,7 @@ class Audio:
         self.gnu_linux()
 
     def gnu_linux(self):
-        self.audiosrc = gst.element_factory_make("alsasrc", "alsasrc")
+        self.audiosrc = Gst.ElementFactory.make("alsasrc", "alsasrc")
 
     def get_audiosrc(self):
         return self.audiosrc

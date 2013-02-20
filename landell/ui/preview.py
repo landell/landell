@@ -18,7 +18,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-import gobject
+import gi
 import gtk
 from landell.settings import UI_DIR
 

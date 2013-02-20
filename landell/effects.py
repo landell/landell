@@ -16,18 +16,17 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 from landell import MEDIA_VIDEO, MEDIA_AUDIO
 
 class EffectRegistry:
 
     def __init__(self):
 
-        self.gst_registry = gst.registry_get_default()
-        all_effects = self.gst_registry.get_feature_list(gst.ElementFactory)
+        self.Gst_registry = Gst.registry_get_default()
+        all_effects = self.Gst_registry.get_feature_list(Gst.ElementFactory)
         self.registry = {}
         self.registry[MEDIA_VIDEO] = self._register_filter(
             all_effects, "Filter/Effect/Video"

@@ -18,44 +18,43 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst, GObject
 
-class Volume(gst.Bin):
+class Volume(Gst.Bin):
 
     __gproperties__ = {
-            'volume' : (gobject.TYPE_FLOAT,               # type
+            'volume' : (GObject.TYPE_FLOAT,               # type
                         'volume',                         # nick name
                         'volume',                         # description
                         0,                                # minimum value
                         10,                               # maximum value
                         1,                                # default value
-                        gobject.PARAM_READWRITE)          # flags
+                        GObject.PARAM_READWRITE)          # flags
     }
 
     def __init__(self):
-        gst.Bin.__init__(self)
+        Gst.Bin.__init__(self)
 
-        self.volume_convert1 = gst.element_factory_make(
+        self.volume_convert1 = Gst.ElementFactory.make(
                 "audioconvert", "volume_convert1"
         )
         self.add(self.volume_convert1)
-        self.volume_convert2 = gst.element_factory_make(
+        self.volume_convert2 = Gst.ElementFactory.make(
                 "audioconvert", "volume_convert2"
         )
         self.add(self.volume_convert2)
-        self.volume = gst.element_factory_make("volume", "volume")
+        self.volume = Gst.ElementFactory.make("volume", "volume")
         self.add(self.volume)
         self.volume_convert1.link(self.volume)
         self.volume.link(self.volume_convert2)
 
-        self.sink_pad = gst.GhostPad(
+        self.sink_pad = Gst.GhostPad(
                 "sink", self.volume_convert1.sink_pads().next()
         )
         self.add_pad(self.sink_pad)
-        self.src_pad = gst.GhostPad(
+        self.src_pad = Gst.GhostPad(
                 "src", self.volume_convert2.src_pads().next()
         )
         self.add_pad(self.src_pad)
@@ -73,4 +72,4 @@ class Volume(gst.Bin):
         else:
             raise AttributeError, 'unknown property %s' % property.name
 
-gobject.type_register(Volume)
+GObject.type_register(Volume)

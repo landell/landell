@@ -16,10 +16,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 
 def event_received(pad, event):
     print "event_received"
@@ -42,17 +41,17 @@ class Swap:
 
         old_pad = old_element.get_static_pad("src")
         handler_id = old_pad.add_event_probe(event_received)
-        old_element.send_event(gst.event_new_eos())
+        old_element.send_event(Gst.event_new_eos())
         old_pad.remove_event_probe(handler_id)
 
         previous_element.unlink(old_element)
         old_element.unlink(next_element)
-        old_element.set_state(gst.STATE_NULL)
+        old_element.set_state(Gst.STATE_NULL)
         swap_bin.remove(old_element)
         swap_bin.add(new_element)
         new_element.link(next_element)
         previous_element.link(new_element)
-        new_element.set_state(gst.STATE_PLAYING)
+        new_element.set_state(Gst.STATE_PLAYING)
         previous_pad.set_blocked(False)
-        swap_bin.set_state(gst.STATE_PLAYING)
+        swap_bin.set_state(Gst.STATE_PLAYING)
         return

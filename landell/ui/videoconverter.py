@@ -16,16 +16,14 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gobject
-import gtk
-import gst
-import pygst
-pygst.require("0.10")
+import gi
+from gi.repository import Gst, Gtk
+gi.require_version("Gst", "1.0")
 from landell.settings import UI_DIR
 
 class VideoConverterUI:
     def __init__(self):
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/output_setting.ui")
         self.box = self.interface.get_object("setting_box")
         self.width_entry = self.interface.get_object("width_entry")

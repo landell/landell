@@ -17,7 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gtk
-import gst
+from gi.repository import Gst
 from landell.settings import UI_DIR
 import datetime
 from landell.config import config
@@ -52,23 +52,23 @@ class MetadataUI:
         return self.content_area
 
     def _preplay(self, landell):
-        taglist = gst.TagList()
-        taglist[gst.TAG_TITLE] = self.title_entry.get_text()
-        taglist[gst.TAG_ARTIST] = self.artist_entry.get_text()
-        taglist[gst.TAG_GENRE] = self.genre_entry.get_text()
+        taglist = Gst.TagList()
+        taglist[Gst.TAG_TITLE] = self.title_entry.get_text()
+        taglist[Gst.TAG_ARTIST] = self.artist_entry.get_text()
+        taglist[Gst.TAG_GENRE] = self.genre_entry.get_text()
         (year, month, day) = self.calendar.get_date()
         month +=1
         date = "%d-%d-%d" % (year, month, day)
-        taglist[gst.TAG_DATE] = date
-        taglist[gst.TAG_LOCATION] = self.location_entry.get_text()
-        taglist[gst.TAG_ORGANIZATION] = self.organization_entry.get_text()
-        taglist[gst.TAG_COPYRIGHT] = self.copyright_entry.get_text()
-        taglist[gst.TAG_CONTACT] = self.contact_entry.get_text()
+        taglist[Gst.TAG_DATE] = date
+        taglist[Gst.TAG_LOCATION] = self.location_entry.get_text()
+        taglist[Gst.TAG_ORGANIZATION] = self.organization_entry.get_text()
+        taglist[Gst.TAG_COPYRIGHT] = self.copyright_entry.get_text()
+        taglist[Gst.TAG_CONTACT] = self.contact_entry.get_text()
         buffer = self.textview.get_buffer()
         text = buffer.get_text(
                 buffer.get_start_iter(), buffer.get_end_iter(), True
         )
-        taglist[gst.TAG_DESCRIPTION] = text
+        taglist[Gst.TAG_DESCRIPTION] = text
         self.landell.set_metadata(taglist)
 
     def _save(self, *args):

@@ -18,17 +18,17 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gtk
-import gobject
+import gi
 from landell.settings import UI_DIR
 
-class OutputItem(gobject.GObject):
+class OutputItem(GObject.GObject):
     __gsignals__ = {
-        'stopped' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ())
+        'stopped' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ())
     }
 
 
     def __init__(self, name):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         self.name = name
 
         self.interface = gtk.Builder()
@@ -50,4 +50,4 @@ class OutputItem(gobject.GObject):
     def set_stopped(self, state):
         self.button.set_sensitive(not state)
 
-gobject.type_register(OutputItem)
+GObject.type_register(OutputItem)
