@@ -108,7 +108,6 @@ class Sltv(gobject.GObject):
         self.watermark_location = None
         self.watermark_resize = False
         self.watermark_size = 1.0
-        self.watermark_alpha = None
         self.watermark_selected = 0
 
         self.videobalance_contrast = None
@@ -156,17 +155,9 @@ class Sltv(gobject.GObject):
     def set_watermark_size(self, size):
         self.watermark_size = size
 
-    def set_watermark_alpha(self, alpha):
-        self.watermark_alpha = alpha
-        if self.playing():
-            self.watermark.set_property("image-alpha", alpha)
-
     def _set_watermark(self, video_width, video_height):
         if self.watermark_location:
             self.watermark.set_property("location", self.watermark_location)
-
-        if self.watermark_alpha:
-            self.watermark.set_property("image-alpha", self.watermark_alpha)
 
         if self.watermark_resize:
             wm_width = self.watermark_size * video_width

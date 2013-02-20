@@ -38,9 +38,6 @@ class WaterMarkUI:
         self.size_scale = gtk.HScale(self.size_adjustment)
         self.size_scale.set_property("digits", 2)
         self.widget.attach(self.size_scale, 0, 2, 4, 5)
-        self.alpha_adjustment = gtk.Adjustment(1.0, 0, 1.0, 0.05)
-        self.alpha_scale = gtk.HScale(self.alpha_adjustment)
-        self.widget.attach(self.alpha_scale, 1, 2, 1, 2)
 
         self.location = None
         self.landell.set_watermark_size(1.0)
@@ -50,7 +47,6 @@ class WaterMarkUI:
 
         self.button.connect("file-set", self._on_file_set)
         self.size_scale.connect("value-changed", self._on_size_changed)
-        self.alpha_scale.connect("value-changed", self._on_alpha_changed)
         self.resize_checkbutton.connect(
                 "toggled", self._on_resize_check_changed
         )
@@ -82,9 +78,6 @@ class WaterMarkUI:
 
     def _on_size_changed(self, adjustment):
         self.landell.set_watermark_size(self.size_scale.get_value())
-
-    def _on_alpha_changed(self, adjustment):
-        self.landell.set_watermark_alpha(self.alpha_scale.get_value())
 
     def get_widget(self):
         return self.widget
