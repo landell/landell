@@ -17,7 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
-import gtk
+import Gtk
 import save_button
 from landell.settings import UI_DIR
 import pip_widget
@@ -28,14 +28,14 @@ class WaterMarkUI:
         self.ui = ui
         self.landell = landell
 
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/watermark.ui")
         self.widget = self.interface.get_object("table1")
         self.button = self.interface.get_object("filechooserbutton")
         self.resize_checkbutton = self.interface.get_object("resize_checkbutton")
         self.size_label = self.interface.get_object("size_label")
-        self.size_adjustment = gtk.Adjustment(1.0, 0, 1.0, 0.05)
-        self.size_scale = gtk.HScale(self.size_adjustment)
+        self.size_adjustment = Gtk.Adjustment(1.0, 0, 1.0, 0.05)
+        self.size_scale = Gtk.HScale(self.size_adjustment)
         self.size_scale.set_property("digits", 2)
         self.widget.attach(self.size_scale, 0, 2, 4, 5)
 

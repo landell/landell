@@ -18,7 +18,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gtk
+import Gtk
 import gi
 import registry
 import config
@@ -43,7 +43,7 @@ class MediaList(GObject.GObject):
 
     def __init__(self, section, type):
         GObject.GObject.__init__(self)
-        self.liststore = gtk.ListStore(str, object)
+        self.liststore = Gtk.ListStore(str, object)
         self.config = config.config
         self.registry = registry.registry
         self.section = section

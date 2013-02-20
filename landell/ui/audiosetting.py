@@ -17,12 +17,12 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
-import gtk
+import Gtk
 from landell.settings import UI_DIR
 
 class AudioUI:
     def __init__(self):
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/audio_input.ui")
         self.config = {}
         self.box = self.interface.get_object("audio_box")

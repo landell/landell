@@ -16,7 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gtk
+import Gtk
 from gi.repository import Gst
 from landell.settings import UI_DIR
 import datetime
@@ -25,7 +25,7 @@ from landell.config import config
 class MetadataUI:
     def __init__(self, landell, parent_dialog):
         self.landell = landell
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/metadata.ui")
         self.content_area = self.interface.get_object("content_area")
 
@@ -132,6 +132,6 @@ class MetadataUI:
 
         description = self.config.get_item(self.section, "description")
         if description:
-            buffer = gtk.TextBuffer()
+            buffer = Gtk.TextBuffer()
             buffer.set_text(description)
             self.textview.set_buffer(buffer)

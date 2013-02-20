@@ -20,7 +20,7 @@
 
 
 import gi
-import gtk
+import Gtk
 from landell.settings import UI_DIR
 import landell.effects as effects
 from landell.landell import MEDIA_VIDEO, MEDIA_AUDIO
@@ -29,7 +29,7 @@ class EffectsUI:
 
     def __init__(self, ui, landell):
         self.landell = landell
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/effects.ui")
         self.widget = self.interface.get_object("vbox")
         self.effect_registry = effects.EffectRegistry()
@@ -71,9 +71,9 @@ class EffectsUI:
         self.apply_button.set_sensitive(False)
 
     def _create_effects_combobox(self, combobox, effect_type):
-        liststore = gtk.ListStore(GObject.TYPE_STRING)
+        liststore = Gtk.ListStore(GObject.TYPE_STRING)
         combobox.set_model(liststore)
-        cell = gtk.CellRendererText()
+        cell = Gtk.CellRendererText()
         combobox.pack_start(cell, True)
         combobox.add_attribute(cell, 'text', 0)
         liststore.append(("none",))

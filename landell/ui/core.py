@@ -18,7 +18,7 @@
 
 
 import gi
-import gtk
+import Gtk
 from landell.output import *
 from landell.audio import *
 from landell.landell import *
@@ -44,7 +44,7 @@ import metadata
 class SltvUI:
 
     def __init__(self):
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/landell.ui")
         self.main_window = self.interface.get_object("window1")
         self.main_window.show_all()
@@ -71,7 +71,7 @@ class SltvUI:
         self.play_button = self.interface.get_object("play_button")
         self.stop_button = self.interface.get_object("stop_button")
 
-        self.settings_dialog = gtk.Dialog('Settings', self.main_window)
+        self.settings_dialog = Gtk.Dialog('Settings', self.main_window)
         self.settings_dialog.set_default_size(400, 400)
 
         self.encoders = self.landell.encoders
@@ -113,7 +113,7 @@ class SltvUI:
         self.audio_sources_combobox.set_model(
                 sources.AudioModel(self.sources).model
         )
-        cell = gtk.CellRendererText()
+        cell = Gtk.CellRendererText()
         self.audio_sources_combobox.pack_start(cell, True)
         self.audio_sources_combobox.add_attribute(cell, "text", 0)
         self.audio_sources_combobox.connect(
@@ -133,36 +133,36 @@ class SltvUI:
         # settings dialog
 
         self.settings_dialog.set_has_separator(False)
-        self.settings_dialog.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+        self.settings_dialog.add_button(Gtk.STOCK_CLOSE, Gtk.RESPONSE_CLOSE)
         self.settings_dialog.connect('delete-event', self.hide_settings)
         self.settings_dialog.connect('response', self.hide_settings)
 
         vbox = self.settings_dialog.get_content_area()
         vbox.set_border_width(12)
 
-        notebook = gtk.Notebook()
+        notebook = Gtk.Notebook()
         self.settings_notebook = notebook
         vbox.add(notebook)
 
-        vbox = gtk.VBox()
+        vbox = Gtk.VBox()
         vbox.set_border_width(12)
         vbox.pack_start(self.sources_ui.get_widget())
-        notebook.append_page(vbox, gtk.Label('Sources'))
+        notebook.append_page(vbox, Gtk.Label('Sources'))
 
-        vbox = gtk.VBox()
+        vbox = Gtk.VBox()
         vbox.set_border_width(12)
         vbox.pack_start(self.encoders_ui.get_widget())
-        notebook.append_page(vbox, gtk.Label('Encoders'))
+        notebook.append_page(vbox, Gtk.Label('Encoders'))
 
-        vbox = gtk.VBox()
+        vbox = Gtk.VBox()
         vbox.set_border_width(12)
         vbox.pack_start(self.outputs_ui.get_widget())
-        notebook.append_page(vbox, gtk.Label('Outputs'))
+        notebook.append_page(vbox, Gtk.Label('Outputs'))
 
-        vbox = gtk.VBox()
+        vbox = Gtk.VBox()
         vbox.set_border_width(12)
         vbox.pack_start(self.metadata_ui.get_widget())
-        notebook.append_page(vbox, gtk.Label('Metadata'))
+        notebook.append_page(vbox, Gtk.Label('Metadata'))
 
         #menu
 
@@ -175,7 +175,7 @@ class SltvUI:
         self.main_window.connect("delete_event", self.on_window_closed)
 
         self.settings_menuitem.connect("activate", self.show_settings)
-        self.quit_menuitem.connect("activate", gtk.main_quit)
+        self.quit_menuitem.connect("activate", Gtk.main_quit)
         self.about_menu.connect("activate", self.show_about)
 
     def on_pipeline_ready(self, landell):
@@ -243,4 +243,4 @@ class SltvUI:
             self.landell.stop()
 
     def on_window_closed(self, event, data):
-        gtk.main_quit()
+        Gtk.main_quit()

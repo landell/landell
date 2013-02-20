@@ -16,30 +16,30 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gtk
+import Gtk
 
-class SaveButton(gtk.HBox):
+class SaveButton(Gtk.HBox):
 
     def __init__(self):
-        gtk.HBox.__init__(self)
+        Gtk.HBox.__init__(self)
 
-        self.entry = gtk.Entry()
+        self.entry = Gtk.Entry()
         self.entry.set_editable(False)
 
-        self.browse = gtk.Button("Browse")
+        self.browse = Gtk.Button("Browse")
         self.browse.connect("clicked", self.on_browse_press)
 
         self.pack_start(self.entry)
         self.pack_start(self.browse)
 
-        self.file_chooser = gtk.FileChooserDialog(
+        self.file_chooser = Gtk.FileChooserDialog(
             title = "Save",
-            action = gtk.FILE_CHOOSER_ACTION_SAVE,
+            action = Gtk.FILE_CHOOSER_ACTION_SAVE,
             buttons = (
-                gtk.STOCK_CANCEL,
-                gtk.RESPONSE_CANCEL,
-                gtk.STOCK_OPEN,
-                gtk.RESPONSE_OK
+                Gtk.STOCK_CANCEL,
+                Gtk.RESPONSE_CANCEL,
+                Gtk.STOCK_OPEN,
+                Gtk.RESPONSE_OK
             )
         )
         self.file_chooser.set_local_only(True)
@@ -49,7 +49,7 @@ class SaveButton(gtk.HBox):
     def on_browse_press(self, event):
         self.file_chooser.set_current_name(self.entry.get_text())
         response = self.file_chooser.run()
-        if response == gtk.RESPONSE_OK:
+        if response == Gtk.RESPONSE_OK:
             selected = self.file_chooser.get_filename()
             self.entry.set_text(selected)
         self.file_chooser.hide()

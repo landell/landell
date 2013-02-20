@@ -17,13 +17,13 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
-import gtk
+import Gtk
 from landell.settings import UI_DIR
 import landell.registry
 
 class MediaListUI:
     def __init__(self, media_list):
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/medialist.ui")
         self.content_area = self.interface.get_object("content-area")
         add_button = self.interface.get_object("add_button")
@@ -37,11 +37,11 @@ class MediaListUI:
 
         self.elements_combobox = self.interface.get_object("elements_combobox")
 
-        self.elements_liststore = gtk.ListStore(str)
+        self.elements_liststore = Gtk.ListStore(str)
         self.elements_liststore.set_default_sort_func(lambda *args: -1)
-        self.elements_liststore.set_sort_column_id(0, gtk.SORT_ASCENDING)
+        self.elements_liststore.set_sort_column_id(0, Gtk.SORT_ASCENDING)
         self.elements_combobox.set_model(self.elements_liststore)
-        cell = gtk.CellRendererText()
+        cell = Gtk.CellRendererText()
         self.elements_combobox.pack_start(cell, True)
         self.elements_combobox.add_attribute(cell, "text", 0)
 
@@ -54,14 +54,14 @@ class MediaListUI:
 
         media_liststore = self.media_list.get_store()
         media_liststore.set_default_sort_func(lambda *args: -1)
-        media_liststore.set_sort_column_id(0, gtk.SORT_ASCENDING)
+        media_liststore.set_sort_column_id(0, Gtk.SORT_ASCENDING)
         self.media_list_treeview.set_model(media_liststore)
-        cell = gtk.CellRendererText()
-        column =  gtk.TreeViewColumn('Items', cell, text=0)
+        cell = Gtk.CellRendererText()
+        column =  Gtk.TreeViewColumn('Items', cell, text=0)
         self.media_list_treeview.append_column(column)
 
         selection = self.media_list_treeview.get_selection()
-        selection.set_mode(gtk.SELECTION_BROWSE)
+        selection.set_mode(Gtk.SELECTION_BROWSE)
         selection.connect("changed", self.on_treeview_changed)
 
         self.block_buttons(selection)

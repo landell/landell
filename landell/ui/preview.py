@@ -19,14 +19,14 @@
 
 
 import gi
-import gtk
+import Gtk
 from landell.settings import UI_DIR
 
 class PreviewUI:
 
     def __init__(self, ui, landell):
         self.landell = landell
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/preview.ui")
         self.widget = self.interface.get_object("vbox")
         self.button = self.interface.get_object("preview_checkbutton")

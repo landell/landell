@@ -17,21 +17,21 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
-import gtk
+import Gtk
 from landell.settings import UI_DIR
 
 class OutputUI:
     def __init__(self):
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.config = {}
 
-        self.parent_interface = gtk.Builder()
+        self.parent_interface = Gtk.Builder()
         self.parent_interface.add_from_file(
                 UI_DIR + "/output_encoder_setting.ui"
         )
         self.parent_box = self.parent_interface.get_object("encoder_box")
         self.combobox = self.parent_interface.get_object("encoder_combobox")
-        cell = gtk.CellRendererText()
+        cell = Gtk.CellRendererText()
         self.combobox.pack_start(cell, True)
         self.combobox.add_attribute(cell, "text", 0)
 

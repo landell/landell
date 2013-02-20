@@ -18,11 +18,11 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
-import gtk
+import Gtk
 
 class InputUI:
     def __init__(self):
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.config = {}
     def get_config(self):
         return self.config

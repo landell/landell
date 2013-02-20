@@ -17,7 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
-import gtk
+import Gtk
 from medialist import MediaListUI
 from landell.settings import UI_DIR
 import edit_output

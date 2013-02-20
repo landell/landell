@@ -18,7 +18,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
-import gtk
+import Gtk
 from landell.settings import UI_DIR
 from core import InputUI
 
@@ -28,7 +28,7 @@ class HTTPInputUI(InputUI):
         self.interface.add_from_file(UI_DIR + "/input/httpinput.ui")
         self.box = self.interface.get_object("http_box")
         self.config["location"] = ""
-        self.entry = gtk.Entry()
+        self.entry = Gtk.Entry()
         self.box.attach(self.entry, 1, 2, 0, 1)
 
     def get_config(self):

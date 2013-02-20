@@ -18,11 +18,11 @@
 
 
 import gi
-import gtk
-from gtk import gdk
+import Gtk
+from Gtk import gdk
 from landell.log import Log
 
-class PIPSelector(gtk.DrawingArea):
+class PIPSelector(Gtk.DrawingArea):
 
     __gproperties__ = {
             'selected' : (GObject.TYPE_INT,               # type
@@ -42,7 +42,7 @@ class PIPSelector(gtk.DrawingArea):
     }
 
     def __init__(self):
-        gtk.DrawingArea.__init__(self)
+        Gtk.DrawingArea.__init__(self)
         self.connect("expose-event", self.on_expose_event)
         self.connect("realize", self.on_realize)
         self.connect("button-release-event", self.on_button_release)

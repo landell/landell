@@ -18,12 +18,12 @@
 
 
 import gi
-import gtk
+import Gtk
 
-class PreviewArea(gtk.DrawingArea):
+class PreviewArea(Gtk.DrawingArea):
 
     def __init__(self):
-        gtk.DrawingArea.__init__(self)
+        Gtk.DrawingArea.__init__(self)
 
     def connect(self, preview):
         self.preview = preview
@@ -34,6 +34,6 @@ class PreviewArea(gtk.DrawingArea):
 
     def on_prepare_xwindow_id(self, preview, element):
         # Setting preview to be displayed at preview_area
-        gtk.gdk.threads_enter()
+        Gtk.gdk.threads_enter()
         element.set_xwindow_id(self.window.xid)
-        gtk.gdk.threads_leave()
+        Gtk.gdk.threads_leave()

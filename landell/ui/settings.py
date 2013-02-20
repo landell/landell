@@ -16,7 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gtk
+import Gtk
 from landell.settings import UI_DIR
 import effects
 import overlay
@@ -28,7 +28,7 @@ class SettingsUI:
     def __init__(self, ui, landell):
         self.ui = ui
         self.landell = landell
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/settings.ui")
         self.widget = self.interface.get_object("vbox")
         self.content = self.interface.get_object("content_viewport")
@@ -45,15 +45,15 @@ class SettingsUI:
                 "videobalance_toolbutton"
         )
 
-        settings_group = gtk.ActionGroup("settings_group")
+        settings_group = Gtk.ActionGroup("settings_group")
         settings_actions = [
-            ("effects_radioaction", "gtk-missing-image", "Effects", None,
+            ("effects_radioaction", "Gtk-missing-image", "Effects", None,
                 "Effects", 0),
-            ("overlay_radioaction", "gtk-missing-image", "Overlay", None,
+            ("overlay_radioaction", "Gtk-missing-image", "Overlay", None,
                 "Overlay", 1),
-            ("watermark_radioaction", "gtk-missing-image", "Watermark", None,
+            ("watermark_radioaction", "Gtk-missing-image", "Watermark", None,
                 "Watermark", 2),
-            ("videobalance_radioaction", "gtk-missing-image", "VideoBalance", None,
+            ("videobalance_radioaction", "Gtk-missing-image", "VideoBalance", None,
                 "Video Balance", 3),
         ]
         settings_group.add_radio_actions(

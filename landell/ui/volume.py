@@ -17,14 +17,14 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
-import gtk
+import Gtk
 
 class VolumeUI:
 
     def __init__(self, ui, sltv):
         self.sltv = sltv
 
-        self.button = gtk.VolumeButton()
+        self.button = Gtk.VolumeButton()
         self.button.set_value(0.5)
         self.button.connect("value-changed", self.set_volume)
 

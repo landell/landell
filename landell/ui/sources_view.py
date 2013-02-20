@@ -16,7 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gtk
+import Gtk
 from landell.settings import UI_DIR
 from landell.landell import *
 from landell.input.core import INPUT_TYPE_VIDEO, INPUT_TYPE_AUDIO
@@ -26,10 +26,10 @@ from previewarea import PreviewArea
 A_BUTTON = "A"
 B_BUTTON = "B"
 
-class SourcesView(gtk.VBox):
+class SourcesView(Gtk.VBox):
 
     def __init__(self, landell, sources):
-        gtk.VBox.__init__(self)
+        Gtk.VBox.__init__(self)
         self.landell = landell
         self.sources = sources
         self.model = video_model.VideoModel(self.sources).model
@@ -45,8 +45,8 @@ class SourcesView(gtk.VBox):
         self._create_items()
 
     def _create_items(self):
-        self.a_group = gtk.ActionGroup("a_group")
-        self.b_group = gtk.ActionGroup("b_group")
+        self.a_group = Gtk.ActionGroup("a_group")
+        self.b_group = Gtk.ActionGroup("b_group")
         for row in self.model:
             (name, source) = row
             self._add_item(name)
@@ -84,7 +84,7 @@ class SourceItem:
     def __init__(self, landell, name, a_group, b_group):
         self.landell = landell
 
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/source.ui")
 
         self.a_group = a_group
@@ -128,12 +128,12 @@ class SourceItem:
     def _create_action_a(self, group, type):
         actions = group.list_actions()
         if actions:
-            radioaction = gtk.RadioAction(
+            radioaction = Gtk.RadioAction(
                     self.name, "A", type, None, len(actions)
             )
             radioaction.set_group(actions[0])
         else:
-            radioaction = gtk.RadioAction(self.name, "A", type, None, 0)
+            radioaction = Gtk.RadioAction(self.name, "A", type, None, 0)
             radioaction.activate()
             self.landell.set_video_source(self.name)
         group.add_action(radioaction)

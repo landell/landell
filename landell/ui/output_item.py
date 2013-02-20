@@ -17,7 +17,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gtk
+import Gtk
 import gi
 from landell.settings import UI_DIR
 
@@ -31,7 +31,7 @@ class OutputItem(GObject.GObject):
         GObject.GObject.__init__(self)
         self.name = name
 
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/output.ui")
 
         self.widget = self.interface.get_object("output_box")

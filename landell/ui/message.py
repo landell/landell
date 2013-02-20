@@ -16,20 +16,20 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gtk
+import Gtk
 
 class Message():
 
-    def __init__(self, message="", ui=None, message_type=gtk.MESSAGE_INFO):
+    def __init__(self, message="", ui=None, message_type=Gtk.MESSAGE_INFO):
         self.ui = ui
         self.message_type = message_type
         self.message = message
-        self.buttons = gtk.BUTTONS_OK
+        self.buttons = Gtk.BUTTONS_OK
 
     def popup(self):
-        dialog = gtk.MessageDialog(
+        dialog = Gtk.MessageDialog(
             self.ui.main_window,
-            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
             self.message_type,
             self.buttons,
             self.message
@@ -54,20 +54,20 @@ class Message():
 
 class MessageError(Message):
     def __init__(self, message, ui):
-        Message.__init__(self, message, ui, gtk.MESSAGE_ERROR)
+        Message.__init__(self, message, ui, Gtk.MESSAGE_ERROR)
         self.popup()
 
 class MessageWarning(Message):
     def __init__(self, message, ui):
-        Message.__init__(self, message, ui, gtk.MESSAGE_WARNING)
+        Message.__init__(self, message, ui, Gtk.MESSAGE_WARNING)
         self.popup()
 
 class MessageInfo(Message):
     def __init__(self, message, ui):
-        Message.__init__(self, message, ui, gtk.MESSAGE_INFO)
+        Message.__init__(self, message, ui, Gtk.MESSAGE_INFO)
         self.popup()
 
 class MessageQuestion(Message):
     def __init__(self, message, ui):
-        Message.__init__(self, message, ui, gtk.MESSAGE_QUESTION)
+        Message.__init__(self, message, ui, Gtk.MESSAGE_QUESTION)
         self.popup()

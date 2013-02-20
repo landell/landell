@@ -20,7 +20,7 @@
 
 
 import gi
-import gtk
+import Gtk
 from landell.settings import UI_DIR
 import landell.config as config
 
@@ -33,7 +33,7 @@ class OverlayUI:
     def __init__(self, ui, landell):
         self.ui = ui
         self.landell = landell
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/overlay.ui")
         self.widget = self.interface.get_object("vbox")
 
@@ -41,7 +41,7 @@ class OverlayUI:
         self.clear_button = self.interface.get_object("clear_button")
         self.textview = self.interface.get_object("overlay_textview")
 
-        self.font_selector = gtk.FontSelectionDialog("Select a font name")
+        self.font_selector = Gtk.FontSelectionDialog("Select a font name")
 
         self.font_selector_button = self.interface.get_object(
             "font_selector_button"
@@ -59,13 +59,13 @@ class OverlayUI:
         self.center_button = self.interface.get_object("center_toolbutton")
         self.right_button = self.interface.get_object("right_toolbutton")
 
-        self.horizontal_group = gtk.ActionGroup("horizontal_group")
+        self.horizontal_group = Gtk.ActionGroup("horizontal_group")
         horizontal_actions = [
-            ("left_radioaction", "gtk-justify-left", "Left", None,
+            ("left_radioaction", "Gtk-justify-left", "Left", None,
                 "Left", 0),
-            ("center_radioaction", "gtk-justify-center", "Center", None,
+            ("center_radioaction", "Gtk-justify-center", "Center", None,
                 "Center", 1),
-            ("right_radioaction", "gtk-justify-right", "Right", None,
+            ("right_radioaction", "Gtk-justify-right", "Right", None,
                 "Right", 2)
         ]
         self.horizontal_group.add_radio_actions(
@@ -87,13 +87,13 @@ class OverlayUI:
         self.baseline_button = self.interface.get_object("baseline_toolbutton")
         self.bottom_button = self.interface.get_object("bottom_toolbutton")
 
-        self.vertical_group = gtk.ActionGroup("vertical_group")
+        self.vertical_group = Gtk.ActionGroup("vertical_group")
         vertical_actions = [
-            ("top_radioaction", "gtk-goto-top", "Top", None,
+            ("top_radioaction", "Gtk-goto-top", "Top", None,
                 "Top", 0),
-            ("baseline_radioaction", "gtk-missing-image", "Baseline", None,
+            ("baseline_radioaction", "Gtk-missing-image", "Baseline", None,
                 "Baseline", 1),
-            ("bottom_radioaction", "gtk-goto-bottom", "Bottom", None,
+            ("bottom_radioaction", "Gtk-goto-bottom", "Bottom", None,
                 "Bottom", 2)
         ]
         self.vertical_group.add_radio_actions(
@@ -197,17 +197,17 @@ class OverlayUI:
         self.config.set_item(self.section, self.item, self._make_config())
 
     def on_close_dialog(self, dialog, response):
-        if response == gtk.RESPONSE_CANCEL or \
-           response == gtk.RESPONSE_DELETE_EVENT:
+        if response == Gtk.RESPONSE_CANCEL or \
+           response == Gtk.RESPONSE_DELETE_EVENT:
             dialog.hide_all()
 
-        if response == gtk.RESPONSE_OK:
+        if response == Gtk.RESPONSE_OK:
             font = self.font_selector.get_font_name()
             self._set_font(font)
             self.save()
             dialog.hide_all()
 
-        if response == gtk.RESPONSE_APPLY:
+        if response == Gtk.RESPONSE_APPLY:
             font = self.font_selector.get_font_name()
             self._set_font(font)
             self.save()

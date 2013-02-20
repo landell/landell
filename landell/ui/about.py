@@ -16,13 +16,13 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import gtk
+import Gtk
 from landell.settings import VERSION, ICON
 
 class About:
 
     def __init__(self, ui):
-        self.about = gtk.AboutDialog()
+        self.about = Gtk.AboutDialog()
         self.about.set_transient_for(ui.main_window)
         self.about.set_destroy_with_parent(True)
         self.about.connect("response", self.on_close_dialog)
@@ -33,7 +33,7 @@ class About:
         self.about.set_name("Landell")
         self.about.set_copyright("Copyright (c) 2010 Holoscópio Tecnologia")
         self.about.set_version(VERSION)
-        self.about.set_logo(gtk.gdk.pixbuf_new_from_file(ICON))
+        self.about.set_logo(Gtk.gdk.pixbuf_new_from_file(ICON))
         self.about.set_website("http://landell.holoscopio.com/")
         self.about.set_wrap_license(False)
         self.about.set_license(
@@ -67,6 +67,6 @@ class About:
         self.about.run()
 
     def on_close_dialog(self, dialog, response):
-        if response == gtk.RESPONSE_CANCEL or \
-           response == gtk.RESPONSE_DELETE_EVENT:
+        if response == Gtk.RESPONSE_CANCEL or \
+           response == Gtk.RESPONSE_DELETE_EVENT:
             dialog.hide_all()

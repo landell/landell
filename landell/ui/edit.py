@@ -17,21 +17,21 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
-import gtk
+import Gtk
 from landell.settings import UI_DIR
 import landell.registry
 from landell.input.core import INPUT_TYPE_AUDIO
 
 class Edit:
     def __init__(self, window, media_list):
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/edit.ui")
         self.dialog = self.interface.get_object("edit_dialog")
         self.dialog.set_transient_for(window)
         self.name_entry = self.interface.get_object("name_entry")
         self.container_box = self.interface.get_object("container_box")
 
-        self.element_interface = gtk.Builder()
+        self.element_interface = Gtk.Builder()
         self.element_interface.add_from_file(UI_DIR + "/element_setting.ui")
         self.element_box = self.element_interface.get_object("element_box")
         self.element_alignment = self.element_interface.get_object(
@@ -62,7 +62,7 @@ class Edit:
         self.name_entry.set_sensitive(self.media_item == None)
         self.dialog.show_all()
         response = self.dialog.run()
-        if response == gtk.RESPONSE_ACCEPT:
+        if response == Gtk.RESPONSE_ACCEPT:
             self.save()
         self.dialog.hide_all()
 

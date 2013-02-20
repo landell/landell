@@ -23,7 +23,7 @@ gi.require_version("Gst", "1.0")
 class EncodingUI(Gst.Bin):
 
     def __init__(self):
-        self.interface = gtk.Builder()
+        self.interface = Gtk.Builder()
         self.config = {}
     def get_config(self):
         return self.config
