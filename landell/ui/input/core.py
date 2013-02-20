@@ -18,7 +18,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
-import Gtk
+from gi.repository import Gtk
 
 class InputUI:
     def __init__(self):

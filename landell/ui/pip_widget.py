@@ -18,7 +18,7 @@
 
 
 import gi
-import Gtk
+from gi.repository import Gtk, GObject
 from Gtk import gdk
 from landell.log import Log
 

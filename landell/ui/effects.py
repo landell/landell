@@ -20,7 +20,7 @@
 
 
 import gi
-import Gtk
+from gi.repository import Gtk, GObject
 from landell.settings import UI_DIR
 import landell.effects as effects
 from landell.landell import MEDIA_VIDEO, MEDIA_AUDIO

@@ -16,8 +16,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import Gtk
-from gi.repository import Gst
+import gi
+from gi.repository import Gst, Gtk
 from landell.settings import UI_DIR
 import datetime
 from landell.config import config

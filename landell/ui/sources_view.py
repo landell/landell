@@ -16,7 +16,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import Gtk
+import gi
+from gi.repository import Gtk
 from landell.settings import UI_DIR
 from landell.landell import *
 from landell.input.core import INPUT_TYPE_VIDEO, INPUT_TYPE_AUDIO

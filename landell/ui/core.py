@@ -18,7 +18,7 @@
 
 
 import gi
-import Gtk
+from gi.repository import Gtk
 from landell.output import *
 from landell.audio import *
 from landell.landell import *

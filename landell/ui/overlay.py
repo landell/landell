@@ -20,7 +20,7 @@
 
 
 import gi
-import Gtk
+from gi.repository import Gtk
 from landell.settings import UI_DIR
 import landell.config as config
 

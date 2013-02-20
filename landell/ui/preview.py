@@ -19,7 +19,7 @@
 
 
 import gi
-import Gtk
+from gi.repository import Gtk
 from landell.settings import UI_DIR
 
 class PreviewUI:
