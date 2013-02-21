@@ -49,7 +49,7 @@ class Preview(Gst.Bin):
         )
         self.add_pad(sink_pad)
 
-    def on_sync_message(self, sltv, bus, message):
+    def on_sync_message(self, sltv, message):
         if message.structure is None:
             return
         message_name = message.structure.get_name()

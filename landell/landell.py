@@ -41,8 +41,11 @@ import audioinputbin
 MEDIA_AUDIO = 1
 MEDIA_VIDEO = 2
 
+Gst.init(None)
+
 class Sltv(GObject.GObject):
     __gsignals__ = {
+
             "stopped": ( GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),
             "playing": ( GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),
             "preplay": ( GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),
@@ -52,8 +55,7 @@ class Sltv(GObject.GObject):
             ),
             "sync-message": (
                 GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE,
-                (GObject.type_from_name("GstBus"),
-                    GObject.type_from_name("GstMessage"))
+                (GObject.type_from_name('GstMessage'),)
             ),
             "pipeline-ready": (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ())
     }
@@ -601,4 +603,4 @@ class Sltv(GObject.GObject):
             self.pending_state = None
 
     def on_sync_message(self, bus, message):
-        self.emit("sync-message", bus, message)
+        self.emit("sync-message", message)
