@@ -43,7 +43,7 @@ class HTTPInput(Input):
         self.audio_pad.set_target(self.lka.src_pads().next())
 
     def on_dynamic_pad(self, dbin, pad, islast):
-        name = pad.get_caps()[0].get_name()
+        name = pad.query_caps(None).to_string()
 
         if "audio" in name:
             sink = self.lka.sink_pads().next()

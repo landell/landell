@@ -71,7 +71,7 @@ class DVInput(Input):
         index = 1
 
     def on_pad_added(self, element, pad):
-        name = pad.get_caps()[0].get_name()
+        name = pad.query_caps(None).to_string()
 
         if "video" in name:
             request_pad = self.video_queue.get_request_pad("sink%d")

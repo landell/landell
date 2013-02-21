@@ -36,7 +36,7 @@ class FileInput(Input):
         self.file_src.link(self.decode_bin)
 
     def on_dynamic_pad(self, dbin, pad, islast):
-        name = pad.get_caps()[0].get_name()
+        name = pad.query_caps(None).to_string()
 
         if "audio" in name:
             self.audio_pad.set_target(pad)
