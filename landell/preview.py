@@ -44,7 +44,7 @@ class Preview(Gst.Bin):
         self.add(self.videoscale)
         self.colorspace.link(self.videoscale)
         self.videoscale.link(self.sink)
-        sink_pad = gst.GhostPad(
+        sink_pad = Gst.GhostPad.new(
             "sink_ghost_pad", self.colorspace.sink_pads().next()
         )
         self.add_pad(sink_pad)

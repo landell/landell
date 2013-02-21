@@ -61,11 +61,11 @@ class AudioResample(Gst.Bin):
         self.audiorate.link(self.audioresample)
         self.audioresample.link(self.capsfilter)
 
-        self.sink_pad = Gst.GhostPad(
+        self.sink_pad = Gst.GhostPad.new(
                 "sink", self.audioconvert.sink_pads().next()
         )
         self.add_pad(self.sink_pad)
-        self.src_pad = Gst.GhostPad(
+        self.src_pad = Gst.GhostPad.new(
                 "src", self.capsfilter.src_pads().next()
         )
         self.add_pad(self.src_pad)

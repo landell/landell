@@ -29,7 +29,7 @@ class MulTeeQueue(Gst.Bin):
         self.add(self.tee)
         self.multiqueue = Gst.ElementFactory.make("multiqueue", "multiqueue")
         self.add(self.multiqueue)
-        self.sink_pad = Gst.GhostPad("sink", self.tee.sink_pads().next())
+        self.sink_pad = Gst.GhostPad.new("sink", self.tee.sink_pads().next())
         self.add_pad(self.sink_pad)
         self.pad_index = 0
 
@@ -37,7 +37,7 @@ class MulTeeQueue(Gst.Bin):
         request_pad = self.multiqueue.get_request_pad("sink%d")
         self.tee.get_request_pad("src%d").link(request_pad)
         src_pad = request_pad.iterate_internal_links().next()
-        src_ghost_pad = Gst.GhostPad(
+        src_ghost_pad = Gst.GhostPad.new(
                 "src%d" % self.pad_index, src_pad
         )
         self.add_pad(src_ghost_pad)

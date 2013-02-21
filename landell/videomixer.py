@@ -107,7 +107,7 @@ class PictureInPicture(Gst.Bin):
 
         self.videomixer.link(self.csp)
 
-        src_pad = Gst.GhostPad("src", self.csp.src_pads().next())
+        src_pad = Gst.GhostPad.new("src", self.csp.src_pads().next())
         self.add_pad(src_pad)
 
         self.A_number = 0
@@ -160,7 +160,7 @@ class PictureInPicture(Gst.Bin):
         A_capsfilter.src_pads().next().link(pad)
         self.A_pads.append(pad)
 
-        sink_pad = Gst.GhostPad(
+        sink_pad = Gst.GhostPad.new(
                 "sink_a_%d" % self.A_number, A_videoscale.sink_pads().next()
         )
         self.add_pad(sink_pad)
@@ -201,7 +201,7 @@ class PictureInPicture(Gst.Bin):
         B_capsfilter.src_pads().next().link(pad)
         self.B_pads.append(pad)
 
-        sink_pad = Gst.GhostPad(
+        sink_pad = Gst.GhostPad.new(
                 "sink_b_%d" % self.B_number, B_videoscale.sink_pads().next()
         )
         self.add_pad(sink_pad)

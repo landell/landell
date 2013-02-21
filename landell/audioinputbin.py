@@ -35,10 +35,10 @@ class AudioInputBin(Gst.Bin):
 
         self.queue.link(self.audioresample)
 
-        self.sink_pad = Gst.GhostPad(
+        self.sink_pad = Gst.GhostPad.new(
                 "sink", self.queue.sink_pads().next()
         )
-        self.src_pad = Gst.GhostPad(
+        self.src_pad = Gst.GhostPad.new(
                 "src", self.audioresample.src_pads().next()
         )
         self.add_pad(self.src_pad)
