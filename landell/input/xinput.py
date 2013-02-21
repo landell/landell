@@ -36,7 +36,7 @@ class XInput(Input):
         # This should be fixed in ximagesrc's code and input-selector should
         # also be fixed to work with byte format.
 
-        self.video_src.set_format(Gst.FORMAT_TIME)
+        self.video_src.set_format(Gst.Format.TIME)
         self.video_src.set_property("use-damage", False)
         self.video_src.set_property("endx", 800)
         self.video_src.set_property("endy", 600)

@@ -18,7 +18,7 @@
 
 
 import gi
-from gi.repository import Gtk
+from gi.repository import Gtk, GdkX11, GstVideo
 
 class PreviewArea(Gtk.DrawingArea):
 
@@ -27,13 +27,14 @@ class PreviewArea(Gtk.DrawingArea):
 
     def connect(self, preview):
         self.preview = preview
+        self.xid = self.get_property('window').get_xid()
         if not self.preview is None:
             self.preview.connect(
-                    "prepare-xwindow-id", self.on_prepare_xwindow_id
+                    "prepare-window-handle", self.on_prepare_window_handle
             )
 
-    def on_prepare_xwindow_id(self, preview, element):
+    def on_prepare_window_handle(self, preview, element):
         # Setting preview to be displayed at preview_area
         Gtk.gdk.threads_enter()
-        element.set_xwindow_id(self.window.xid)
+        element.set_window_handle(self.xid)
         Gtk.gdk.threads_leave()

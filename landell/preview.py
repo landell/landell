@@ -24,7 +24,7 @@ from gi.repository import Gst, GObject
 class Preview(Gst.Bin):
 
     __gsignals__ = {
-        "prepare-xwindow-id" : (
+        "prepare-window-handle" : (
             GObject.SIGNAL_RUN_LAST,
             GObject.TYPE_NONE,
             (GObject.type_from_name("GstElement"),)
@@ -53,11 +53,11 @@ class Preview(Gst.Bin):
         if message.structure is None:
             return
         message_name = message.structure.get_name()
-        if message_name == "prepare-xwindow-id":
+        if message_name == "prepare-window-handle":
             previewsink = message.src
             if previewsink.get_parent() == self.sink:
                 previewsink.set_property("sync", False)
                 previewsink.set_property("force-aspect-ratio", True)
-                self.emit("prepare-xwindow-id", previewsink)
+                self.emit("prepare-window-handle", previewsink)
 
 GObject.type_register(Preview)
