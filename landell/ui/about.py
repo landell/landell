@@ -34,7 +34,8 @@ class About:
         self.about.set_name("Landell")
         self.about.set_copyright("Copyright (c) 2010 Holoscópio Tecnologia")
         self.about.set_version(VERSION)
-        self.about.set_logo(Gtk.gdk.pixbuf_new_from_file(ICON))
+        image = Gtk.Image.new_from_file(ICON)
+        self.about.set_logo(image.get_pixbuf())
         self.about.set_website("http://landell.holoscopio.com/")
         self.about.set_wrap_license(False)
         self.about.set_license(
