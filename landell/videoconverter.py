@@ -47,10 +47,9 @@ class VideoConverter(gst.Bin):
         )
         self.add(self.capsfilter)
 
-        gst.element_link_many(
-                self.colorspace, self.videorate, self.videoscale,
-                self.capsfilter
-        )
+        self.colorspace.link(self.videorate)
+        self.videorate.link(self.videoscale)
+        self.videoscale.link(self.capsfilter)
 
         self.source_pad = gst.GhostPad(
                 "src", self.capsfilter.src_pads().next()

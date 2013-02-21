@@ -37,7 +37,7 @@ class VideoTestInput(Input):
         self.capsfilter = gst.element_factory_make("capsfilter", "capsfilter")
         self.add(self.capsfilter)
 
-        gst.element_link_many(self.video_src, self.capsfilter)
+        self.video_src.link(self.capsfilter)
 
         self.video_pad.set_target(self.capsfilter.src_pads().next())
 

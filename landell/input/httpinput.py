@@ -39,7 +39,7 @@ class HTTPInput(Input):
         self.add(self.lkv)
         self.lka = gst.element_factory_make("livekeeper", "lka")
         self.add(self.lka)
-        gst.element_link_many(self.http_src, self.decode_bin)
+        self.http_src.link(self.decode_bin)
         self.video_pad.set_target(self.lkv.src_pads().next())
         self.audio_pad.set_target(self.lka.src_pads().next())
 

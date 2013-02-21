@@ -48,9 +48,8 @@ class Volume(gst.Bin):
         self.add(self.volume_convert2)
         self.volume = gst.element_factory_make("volume", "volume")
         self.add(self.volume)
-        gst.element_link_many(
-                self.volume_convert1, self.volume, self.volume_convert2
-        )
+        self.volume_convert1.link(self.volume)
+        self.volume.link(self.volume_convert2)
 
         self.sink_pad = gst.GhostPad(
                 "sink", self.volume_convert1.sink_pads().next()

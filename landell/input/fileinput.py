@@ -34,7 +34,7 @@ class FileInput(Input):
         self.decode_bin = gst.element_factory_make("decodebin", "decoder")
         self.add(self.decode_bin)
         self.decode_bin.connect("new-decoded-pad", self.on_dynamic_pad)
-        gst.element_link_many(self.file_src, self.decode_bin)
+        self.file_src.link(self.decode_bin)
 
     def on_dynamic_pad(self, dbin, pad, islast):
         name = pad.get_caps()[0].get_name()

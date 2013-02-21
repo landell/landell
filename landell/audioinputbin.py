@@ -33,9 +33,7 @@ class AudioInputBin(gst.Bin):
         self.audioresample = audio_input.parent.create()
         self.add(self.audioresample)
 
-        gst.element_link_many(
-                self.queue, self.audioresample
-        )
+        self.queue.link(self.audioresample)
 
         self.sink_pad = gst.GhostPad(
                 "sink", self.queue.sink_pads().next()

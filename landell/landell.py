@@ -269,9 +269,8 @@ class Sltv(gobject.GObject):
                 self.thumbnails[name] = Preview(self)
                 self.player.add(self.thumbnails[name])
 
-                thumbnail_err = gst.element_link_many(
-                    tee, thumbnail_queue, self.thumbnails[name]
-                )
+                thumbnail_err = tee.link(thumbnail_queue)
+                thumbnail_err &= thumbnail_queue.link(self.thumbnails[name])
                 if thumbnail_err == False:
                     self.emit("error", "Error conecting thumbnail preview.")
 
@@ -326,10 +325,10 @@ class Sltv(gobject.GObject):
                     "saturation", self.videobalance_saturation
             )
 
-        gst.element_link_many(
-                self.pip, self.watermark, self.colorspace, self.videobalance,
-                self.queue_video
-        )
+        self.pip.link(self.watermark)
+        self.watermark.link(self.colorspace)
+        self.colorspace.link(self.videobalance)
+        self.videobalance.link(self.queue_video)
 
         self._switch_source()
         self._switch_pip()
@@ -348,9 +347,8 @@ class Sltv(gobject.GObject):
         self.overlay.set_property("valign", self.valign)
         self.player.add(self.overlay)
 
-        gst.element_link_many(
-                self.queue_video, self.effect[MEDIA_VIDEO], self.overlay
-        )
+        self.queue_video.link(self.effect[MEDIA_VIDEO])
+        self.effect[MEDIA_VIDEO].link(self.overlay)
 
         self.preview_tee = multeequeue.MulTeeQueue()
         self.player.add(self.preview_tee)
@@ -372,10 +370,11 @@ class Sltv(gobject.GObject):
             self.volume = volume.Volume()
             self.player.add(self.volume)
 
-            gst.element_link_many(
-                    self.input_selector, self.volume,
-                    self.effect[MEDIA_AUDIO], self.convert, self.audio_tee
-            )
+            self.input_selector.link(self.volume)
+            self.volume.link(self.effect[MEDIA_AUDIO])
+            self.effect[MEDIA_AUDIO].link(self.convert)
+            self.convert.link(self.audio_tee)
+
             self.input_selector.set_property(
                     "active-pad", self.audio_pads[self.audio_source]
             )
@@ -425,15 +424,17 @@ class Sltv(gobject.GObject):
                 self.preview_tee.get_src_pad().link(
                         converter.sink_pads().next()
                 )
-                gst.element_link_many(
-                        converter, encoder, tee, output_bin
-                )
+
+                converter.link(encoder)
+                encoder.link(tee)
+                tee.link(output_bin)
 
                 if self.input_type & MEDIA_AUDIO:
                     audio_queue = gst.element_factory_make("queue", None)
                     self.player.add(audio_queue)
 
-                    gst.element_link_many(self.audio_tee, audio_queue, encoder)
+                    self.audio_tee.link(audio_queue)
+                    audio_queue.link(encoder)
 
         if self.preview_enabled:
             self.preview = Preview(self)

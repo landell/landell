@@ -39,9 +39,8 @@ class AudioEffect(Effect):
         self.effect_element = gst.element_factory_make(effect_name, effect_name)
         self.add(self.effect_element)
 
-        gst.element_link_many(
-                self.convertion1, self.effect_element, self.convertion2
-        )
+        self.convertion1.link(self.effect_element)
+        self.effect_element.link(self.convertion2)
 
         self.sink_pad.set_target(self.convertion1.sink_pads().next())
         self.src_pad.set_target(self.convertion2.src_pads().next())

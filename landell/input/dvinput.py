@@ -59,13 +59,15 @@ class DVInput(Input):
                 "videoscale", "dv_videoscale"
         )
         self.add(self.videoscale)
-        gst.element_link_many(
-                self.dv_src, self.capsfilter, self.tee, self.queue_src,
-                self.dvdemux
-        )
-        gst.element_link_many(
-                self.dvdec, self.colorspc, self.videoscale
-        )
+
+        self.dv_src.link(self.capsfilter)
+        self.capsfilter.link(self.tee)
+        self.tee.link(self.queue_src)
+        self.queue_src.link(self.dvdemux)
+
+        self.dvdec.link(self.colorspc)
+        self.colorspc.link(self.videoscale)
+
         self.video_pad.set_target(self.videoscale.src_pads().next())
         index = 1
 
@@ -100,7 +102,6 @@ class DVInput(Input):
             self.add(self.queue_save)
             self.filesink = gst.element_factory_make("filesink", "dvfilesink")
             self.add(self.filesink)
-            gst.element_link_many(
-                    self.tee, self.queue_save, self.filesink
-            )
+            self.tee.link(self.queue_save)
+            self.queue_save.link(self.filesink)
             self.filesink.set_property("location", dict["filename"])

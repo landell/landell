@@ -149,9 +149,10 @@ class PictureInPicture(gst.Bin):
         self.add(A_alpha)
         A_capsfilter.set_property("caps", self.caps['A'])
 
-        gst.element_link_many(
-                A_videoscale, A_videorate, A_csp, A_alpha, A_capsfilter
-        )
+        A_videoscale.link(A_videorate)
+        A_videorate.link(A_csp)
+        A_csp.link(A_alpha)
+        A_alpha.link(A_capsfilter)
 
         pad = self.videomixer.get_request_pad("sink_%d")
         pad.set_property("zorder",1)
@@ -189,9 +190,10 @@ class PictureInPicture(gst.Bin):
         self.add(B_alpha)
         self.add(B_csp)
 
-        gst.element_link_many(
-                B_videoscale, B_videorate, B_csp, B_alpha, B_capsfilter
-        )
+        B_videoscale.link(B_videorate)
+        B_videorate.link(B_csp)
+        B_csp.link(B_alpha)
+        B_alpha.link(B_capsfilter)
 
         pad = self.videomixer.get_request_pad("sink_%d")
         pad.set_property("zorder", 10)
