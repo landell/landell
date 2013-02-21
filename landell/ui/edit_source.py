@@ -56,10 +56,10 @@ class EditSource(Edit):
             if name == None or name == "":
                 return False
             if not self.media_list.get_item(name):
-                media_item = sltv.mediaitem.MediaItem(name, self.factory)
+                media_item = landell.mediaitem.MediaItem(name, self.factory)
                 media_item.set_config(self.factory.get_ui().get_config().copy())
                 if self.audio_config:
-                    audio = sltv.mediaitem.MediaItem(
+                    audio = landell.mediaitem.MediaItem(
                             name, self.audio_factory
                     )
                     audio.set_config(
