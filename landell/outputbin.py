@@ -44,11 +44,11 @@ class OutputBin(Gst.Bin):
 
     def stop(self):
         self.valve.set_property("drop", True)
-        self.sink.set_state(Gst.STATE_NULL)
+        self.sink.set_state(Gst.State.NULL)
         self.fakesink = Gst.ElementFactory.make("fakesink", "fakesink")
         self.valve.unlink(self.sink)
         self.remove(self.sink)
-        self.fakesink.set_state(Gst.STATE_PLAYING)
+        self.fakesink.set_state(Gst.State.PLAYING)
         self.add(self.fakesink)
         self.valve.link(self.fakesink)
         self.valve.set_property("drop", False)

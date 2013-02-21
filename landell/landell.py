@@ -462,20 +462,20 @@ class Sltv(GObject.GObject):
         bus.enable_sync_message_emission()
         bus.connect("message", self.on_message)
         bus.connect("sync-message::element", self.on_sync_message)
-        cr = self.player.set_state(Gst.STATE_PLAYING)
-        if cr == Gst.STATE_CHANGE_SUCCESS:
+        cr = self.player.set_state(Gst.State.PLAYING)
+        if cr == Gst.State.CHANGE_SUCCESS:
             self.emit("playing")
             self.is_playing = True
-        elif cr == Gst.STATE_CHANGE_ASYNC:
-            self.pending_state = Gst.STATE_PLAYING
+        elif cr == Gst.State.CHANGE_ASYNC:
+            self.pending_state = Gst.State.PLAYING
 
     def stop(self):
-        cr = self.player.set_state(Gst.STATE_NULL)
-        if cr == Gst.STATE_CHANGE_SUCCESS:
+        cr = self.player.set_state(Gst.State.NULL)
+        if cr == Gst.State.CHANGE_SUCCESS:
             self.emit("stopped")
             self.is_playing = False
-        elif cr == Gst.STATE_CHANGE_ASYNC:
-            self.pending_state = Gst.STATE_NULL
+        elif cr == Gst.State.CHANGE_ASYNC:
+            self.pending_state = Gst.State.NULL
 
     def playing(self):
         return self.is_playing
@@ -574,28 +574,28 @@ class Sltv(GObject.GObject):
         t = message.type
         if t == Gst.MESSAGE_EOS:
             print "EOS"
-            cr = self.player.set_state(Gst.STATE_NULL)
-            if cr == Gst.STATE_CHANGE_SUCCESS:
+            cr = self.player.set_state(Gst.State.NULL)
+            if cr == Gst.State.CHANGE_SUCCESS:
                 self.emit("stopped")
                 self.is_playing = False
-            elif cr == Gst.STATE_CHANGE_ASYNC:
-                self.pending_state = Gst.STATE_NULL
+            elif cr == Gst.State.CHANGE_ASYNC:
+                self.pending_state = Gst.State.NULL
         elif t == Gst.MESSAGE_ERROR:
             print "ERROR"
             (gerror, debug) = message.parse_error()
             self.emit("error", gerror.message)
             print debug
-            cr = self.player.set_state(Gst.STATE_NULL)
-            if cr == Gst.STATE_CHANGE_SUCCESS:
+            cr = self.player.set_state(Gst.State.NULL)
+            if cr == Gst.State.CHANGE_SUCCESS:
                 self.emit("stopped")
                 self.is_playing = False
-            elif cr == Gst.STATE_CHANGE_ASYNC:
-                self.pending_state = Gst.STATE_NULL
+            elif cr == Gst.State.CHANGE_ASYNC:
+                self.pending_state = Gst.State.NULL
         elif t == Gst.MESSAGE_ASYNC_DONE:
-            if self.pending_state == Gst.STATE_NULL:
+            if self.pending_state == Gst.State.NULL:
                 self.emit("stopped")
                 self.is_playing = False
-            elif self.pending_state == Gst.STATE_PLAYING:
+            elif self.pending_state == Gst.State.PLAYING:
                 self.emit("playing")
                 self.is_playing = True
             self.pending_state = None

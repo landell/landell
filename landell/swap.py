@@ -46,12 +46,12 @@ class Swap:
 
         previous_element.unlink(old_element)
         old_element.unlink(next_element)
-        old_element.set_state(Gst.STATE_NULL)
+        old_element.set_state(Gst.State.NULL)
         swap_bin.remove(old_element)
         swap_bin.add(new_element)
         new_element.link(next_element)
         previous_element.link(new_element)
-        new_element.set_state(Gst.STATE_PLAYING)
+        new_element.set_state(Gst.State.PLAYING)
         previous_pad.set_blocked(False)
-        swap_bin.set_state(Gst.STATE_PLAYING)
+        swap_bin.set_state(Gst.State.PLAYING)
         return
