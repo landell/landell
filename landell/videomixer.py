@@ -153,7 +153,7 @@ class PictureInPicture(gst.Bin):
                 A_videoscale, A_videorate, A_csp, A_alpha, A_capsfilter
         )
 
-        pad = self.videomixer.get_pad("sink_%d")
+        pad = self.videomixer.get_request_pad("sink_%d")
         pad.set_property("zorder",1)
         pad.set_property("xpos",0)
         pad.set_property("ypos",0)
@@ -193,7 +193,7 @@ class PictureInPicture(gst.Bin):
                 B_videoscale, B_videorate, B_csp, B_alpha, B_capsfilter
         )
 
-        pad = self.videomixer.get_pad("sink_%d")
+        pad = self.videomixer.get_request_pad("sink_%d")
         pad.set_property("zorder", 10)
         pad.set_property("xpos",0)
         pad.set_property("ypos",0)
