@@ -97,7 +97,7 @@ class PictureInPicture(Gst.Bin):
         self.add(self.videomixer)
         self.caps = self.make_caps(self.width, self.height)
 
-        self.csp = Gst.ElementFactory.make("ffmpegcolorspace", "pip_csp")
+        self.csp = Gst.ElementFactory.make("videoconvert", "pip_csp")
         self.add(self.csp)
 
         self.A_capsfilter = []
@@ -139,7 +139,7 @@ class PictureInPicture(Gst.Bin):
         self.add(A_capsfilter)
         self.A_capsfilter.append(A_capsfilter)
         A_csp = Gst.ElementFactory.make(
-                "ffmpegcolorspace", None
+                "videoconvert", None
         )
         self.add(A_csp)
         A_alpha = Gst.ElementFactory.make(
@@ -183,7 +183,7 @@ class PictureInPicture(Gst.Bin):
         self.B_capsfilter.append(B_capsfilter)
         B_capsfilter.set_property("caps", self.caps['B'])
         B_csp = Gst.ElementFactory.make(
-                "ffmpegcolorspace", None
+                "videoconvert", None
         )
         B_alpha = Gst.ElementFactory.make("identity", None)
         self.add(B_alpha)

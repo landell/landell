@@ -31,7 +31,7 @@ class HTTPInput(Input):
         self.http_src = Gst.ElementFactory.make("souphttpsrc", "src")
         self.http_src.set_property("is-live", True)
         self.add(self.http_src)
-        self.decode_bin = Gst.ElementFactory.make("decodebin2", "decoder")
+        self.decode_bin = Gst.ElementFactory.make("decodebin", "decoder")
         self.add(self.decode_bin)
         self.decode_bin.connect("new-decoded-pad", self.on_dynamic_pad)
         self.lkv = Gst.ElementFactory.make("livekeeper", "lkv")

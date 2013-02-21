@@ -36,16 +36,16 @@ class Preview(Gst.Bin):
         sltv.connect("sync-message", self.on_sync_message)
         self.sink = Gst.ElementFactory.make("autovideosink", "sink")
         self.add(self.sink)
-        self.colorspace = Gst.ElementFactory.make(
-            "ffmpegcolorspace", "colorspace"
+        self.videoconvert = Gst.ElementFactory.make(
+            "videoconvert", "videoconvert"
         )
-        self.add(self.colorspace)
+        self.add(self.videoconvert)
         self.videoscale = Gst.ElementFactory.make("videoscale")
         self.add(self.videoscale)
-        self.colorspace.link(self.videoscale)
+        self.videoconvert.link(self.videoscale)
         self.videoscale.link(self.sink)
         sink_pad = Gst.GhostPad.new(
-            "sink_ghost_pad", self.colorspace.sink_pads().next()
+            "sink_ghost_pad", self.videoconvert.sink_pads().next()
         )
         self.add_pad(sink_pad)
 

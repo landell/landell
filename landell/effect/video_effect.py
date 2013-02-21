@@ -26,12 +26,12 @@ class VideoEffect(Effect):
     def __init__(self, effect_name):
         Effect.__init__(self)
         self.convertion1 = Gst.ElementFactory.make(
-                "ffmpegcolorspace", "effect_colorspace1"
+                "videoconvert", "effect_videoconvert1"
         )
         self.add(self.convertion1)
 
         self.convertion2 = Gst.ElementFactory.make(
-                "ffmpegcolorspace", "effect_colorspace2"
+                "videoconvert", "effect_videoconvert2"
         )
         self.add(self.convertion2)
 

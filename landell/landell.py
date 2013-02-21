@@ -300,7 +300,7 @@ class Sltv(GObject.GObject):
         self.player.add(self.watermark)
 
         self.colorspace = Gst.ElementFactory.make(
-                "ffmpegcolorspace", "colorspace-imageoverlay-videobalance"
+                "videoconvert", "colorspace-imageoverlay-videobalance"
         )
         self.player.add(self.colorspace)
 

@@ -46,11 +46,11 @@ class DVInput(Input):
         )
         self.add(self.video_queue)
 
-        self.colorspc = Gst.ElementFactory.make(
-                "ffmpegcolorspace", "video_dv_colorspace"
+        self.videoconvert = Gst.ElementFactory.make(
+                "videoconvert", "video_dv_videoconvert"
         )
 
-        self.add(self.colorspc)
+        self.add(self.videoconvert)
 
         self.dvdec = Gst.ElementFactory.make("dvdec", "dvdec")
         self.add(self.dvdec)
@@ -64,8 +64,8 @@ class DVInput(Input):
         self.tee.link(self.queue_src)
         self.queue_src.link(self.dvdemux)
 
-        self.dvdec.link(self.colorspc)
-        self.colorspc.link(self.videoscale)
+        self.dvdec.link(self.videoconvert)
+        self.videoconvert.link(self.videoscale)
 
         self.video_pad.set_target(self.videoscale.src_pads().next())
         index = 1
