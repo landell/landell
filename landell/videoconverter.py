@@ -62,7 +62,7 @@ class VideoConverter(Gst.Bin):
     def config(self, dict):
         num, den = Fract.fromdecimal(dict["framerate"])
         caps = Gst.caps_from_string(
-                "video/x-raw-yuv, width=%d, height=%d, framerate=%d/%d" % (
+                "video/x-raw, width=%d, height=%d, framerate=%d/%d" % (
                     int(dict["width"]), int(dict["height"]), num, den
                 )
         )

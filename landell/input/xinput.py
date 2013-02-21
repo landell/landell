@@ -52,6 +52,6 @@ class XInput(Input):
     def config(self, dict):
         num, den = Fract.fromdecimal(dict["framerate"])
         caps = Gst.caps_from_string(
-            "video/x-raw-rgb, framerate=%d/%d" % (num, den)
+            "video/x-raw, framerate=%d/%d" % (num, den)
         )
         self.capsfilter.set_property("caps", caps)

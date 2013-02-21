@@ -83,7 +83,7 @@ class AudioResample(Gst.Bin):
     def do_set_property(self, property, value):
         if property.name == "audiorate":
             caps = Gst.caps_from_string(
-                    "audio/x-raw-int, rate=%d" %(
+                    "audio/x-raw, rate=%d" %(
                         value
                     )
             )

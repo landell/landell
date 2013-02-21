@@ -43,9 +43,7 @@ class VideoTestInput(Input):
     def config(self, dict):
         self.video_src.set_property("pattern", int(dict["pattern"]))
         caps = Gst.caps_from_string(
-            "video/x-raw-yuv, width=%d, height=%d;"
-            "video/x-raw-rgb, width=%d, height=%d" % (
-                int(dict["width"]), int(dict["height"]),
+            "video/x-raw, width=%d, height=%d" % (
                 int(dict["width"]), int(dict["height"])
             )
         )
