@@ -18,8 +18,7 @@
 
 
 import gi
-from gi.repository import Gtk, GObject
-from Gtk import gdk
+from gi.repository import Gtk, GObject, Gdk
 from landell.log import Log
 
 class PIPSelector(Gtk.DrawingArea):
@@ -79,7 +78,7 @@ class PIPSelector(Gtk.DrawingArea):
         context.fill()
 
     def on_realize(self, widget):
-        self.add_events(gdk.BUTTON_PRESS_MASK|gdk.BUTTON_RELEASE_MASK);
+        self.add_events(Gdk.BUTTON_PRESS_MASK|Gdk.BUTTON_RELEASE_MASK);
 
     def on_button_release(self, widget, event):
         x, y = event.get_coords()
