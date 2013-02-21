@@ -17,6 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
+from gi.repository import GObject
 
 class MediaItem(GObject.GObject):
     def __init__(self, name, factory):
