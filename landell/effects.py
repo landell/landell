@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
-# Author: Luciana Fujii Pontello <luciana@holoscopio.com>
+# Copyright (C) 2013 Collabora Ltda
+# Author: Luciana Fujii Pontello <luciana@fujii.eti.br>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,8 +26,8 @@ class EffectRegistry:
 
     def __init__(self):
 
-        self.Gst_registry = Gst.registry_get_default()
-        all_effects = self.Gst_registry.get_feature_list(Gst.ElementFactory)
+        self.gst_registry = Gst.Registry.get()
+        all_effects = self.gst_registry.get_feature_list(Gst.ElementFactory)
         self.registry = {}
         self.registry[MEDIA_VIDEO] = self._register_filter(
             all_effects, "Filter/Effect/Video"
@@ -44,6 +45,6 @@ class EffectRegistry:
     def _register_filter(self, feature_list, filter_string):
         type_list = []
         for plugin_feature in feature_list:
-            if plugin_feature.get_klass() == filter_string:
+            if plugin_feature.get_metadata("klass") == filter_string:
                 type_list.append(plugin_feature.get_name())
         return type_list
