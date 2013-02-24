@@ -59,7 +59,7 @@ class SltvUI:
         self.preview_frame = self.interface.get_object("preview_frame")
         self.preview_box = self.interface.get_object("preview_vbox")
         self.preview = preview.PreviewUI(self, self.landell)
-        self.preview_box.pack_start(self.preview.get_widget(), False, False)
+        self.preview_box.pack_start(self.preview.get_widget(), False, False, 0)
         self.preview_area = PreviewArea()
         self.preview_frame.add(self.preview_area)
         self.preview_area.show()

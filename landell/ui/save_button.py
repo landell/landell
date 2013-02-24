@@ -30,17 +30,17 @@ class SaveButton(Gtk.HBox):
         self.browse = Gtk.Button("Browse")
         self.browse.connect("clicked", self.on_browse_press)
 
-        self.pack_start(self.entry)
-        self.pack_start(self.browse)
+        self.pack_start(self.entry, True, True, 0)
+        self.pack_start(self.browse, True, True, 0)
 
         self.file_chooser = Gtk.FileChooserDialog(
             title = "Save",
-            action = Gtk.FILE_CHOOSER_ACTION_SAVE,
+            action = Gtk.FileChooserAction.SAVE,
             buttons = (
                 Gtk.STOCK_CANCEL,
-                Gtk.RESPONSE_CANCEL,
+                Gtk.ResponseType.CANCEL,
                 Gtk.STOCK_OPEN,
-                Gtk.RESPONSE_OK
+                Gtk.ResponseType.OK
             )
         )
         self.file_chooser.set_local_only(True)
@@ -50,7 +50,7 @@ class SaveButton(Gtk.HBox):
     def on_browse_press(self, event):
         self.file_chooser.set_current_name(self.entry.get_text())
         response = self.file_chooser.run()
-        if response == Gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             selected = self.file_chooser.get_filename()
             self.entry.set_text(selected)
         self.file_chooser.hide()

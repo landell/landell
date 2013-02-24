@@ -72,15 +72,15 @@ class OverlayUI:
                 horizontal_actions, 0, None, None
         )
         self.left_radioaction = self.horizontal_group.get_action("left_radioaction")
-        self.left_radioaction.connect_proxy(self.left_button)
+        self.left_button.set_related_action(self.left_radioaction)
         self.center_radioaction = self.horizontal_group.get_action(
                 "center_radioaction"
         )
-        self.center_radioaction.connect_proxy(self.center_button)
+        self.center_button.set_related_action(self.center_radioaction)
         self.right_radioaction = self.horizontal_group.get_action(
                 "right_radioaction"
         )
-        self.right_radioaction.connect_proxy(self.right_button)
+        self.right_button.set_related_action(self.right_radioaction)
 
         # valign
         self.top_button = self.interface.get_object("top_toolbutton")
@@ -101,15 +101,15 @@ class OverlayUI:
         )
 
         self.top_radioaction = self.vertical_group.get_action("top_radioaction")
-        self.top_radioaction.connect_proxy(self.top_button)
+        self.top_button.set_related_action(self.top_radioaction)
         self.baseline_radioaction = self.vertical_group.get_action(
                 "baseline_radioaction"
         )
-        self.baseline_radioaction.connect_proxy(self.baseline_button)
+        self.baseline_button.set_related_action(self.baseline_radioaction)
         self.bottom_radioaction = self.vertical_group.get_action(
                 "bottom_radioaction"
         )
-        self.bottom_radioaction.connect_proxy(self.bottom_button)
+        self.bottom_button.set_related_action(self.bottom_radioaction)
 
         self._set_font(DEFAULT_FONT)
         self._set_halign(DEFAULT_HALIGN)

@@ -21,7 +21,7 @@ from gi.repository import Gtk
 
 class Message():
 
-    def __init__(self, message="", ui=None, message_type=Gtk.MESSAGE_INFO):
+    def __init__(self, message="", ui=None, message_type=Gtk.MessageType.INFO):
         self.ui = ui
         self.message_type = message_type
         self.message = message

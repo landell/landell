@@ -123,7 +123,7 @@ class SourceItem:
         group.add_toggle_actions(action)
         radioaction = group.get_action(self.name)
         if type == B_BUTTON:
-            radioaction.connect_proxy(self.b_button)
+            self.b_button.set_related_action(radioaction)
             radioaction.connect("toggled", self._on_b_press)
 
     def _create_action_a(self, group, type):
@@ -139,7 +139,7 @@ class SourceItem:
             self.landell.set_video_source(self.name)
         group.add_action(radioaction)
         if type == A_BUTTON:
-            radioaction.connect_proxy(self.a_button)
+            self.a_button.set_related_action(radioaction)
             radioaction.connect("changed", self._on_a_press)
 
     def _on_a_press(self, radioaction, current):

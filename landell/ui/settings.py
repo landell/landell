@@ -64,22 +64,22 @@ class SettingsUI:
         self.effects_radioaction = settings_group.get_action(
             "effects_radioaction"
         )
-        self.effects_radioaction.connect_proxy(self.effects_button)
+        self.effects_button.set_related_action(self.effects_radioaction)
 
         self.overlay_radioaction = settings_group.get_action(
             "overlay_radioaction"
         )
-        self.overlay_radioaction.connect_proxy(self.overlay_button)
+        self.overlay_button.set_related_action(self.overlay_radioaction)
 
         self.watermark_radioaction = settings_group.get_action(
             "watermark_radioaction"
         )
-        self.watermark_radioaction.connect_proxy(self.watermark_button)
+        self.watermark_button.set_related_action(self.watermark_radioaction)
 
         self.videobalance_radioaction = settings_group.get_action(
             "videobalance_radioaction"
         )
-        self.videobalance_radioaction.connect_proxy(self.videobalance_button)
+        self.videobalance_button.set_related_action(self.videobalance_radioaction)
 
         self.selected_box = self.effects.get_widget()
         self.content.add(self.effects.get_widget())
