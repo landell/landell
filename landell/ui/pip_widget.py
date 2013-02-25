@@ -42,15 +42,13 @@ class PIPSelector(Gtk.DrawingArea):
 
     def __init__(self):
         Gtk.DrawingArea.__init__(self)
-        self.connect("expose-event", self.on_expose_event)
+        self.connect("draw", self.on_draw)
         self.connect("realize", self.on_realize)
         self.connect("button-release-event", self.on_button_release)
-        self.connect("size-request", self.on_size_request)
 
         self.selected = 0
 
-    def on_expose_event(self, widget, event):
-        context = self.window.cairo_create()
+    def on_draw(self, widget, context):
         context.scale(self.allocation.width, self.allocation.height)
 
         context.set_source_rgb(0.447, 0.623, 0.812)
@@ -108,9 +106,15 @@ class PIPSelector(Gtk.DrawingArea):
         self.emit("changed", self.selected)
         self.queue_draw()
 
-    def on_size_request(self, widget, requisition):
-        requisition.width = 50
-        requisition.height = 50
+    def get_preferred_height(self, minimum_height, natural_height):
+        print "get_preferred_height called"
+        minimun_height = 30
+        natural_height = 50
+
+    def get_preferred_width(self, minimum_width, natural_width):
+        print "get_preferred_width called"
+        minimun_width = 30
+        natural_width = 50
 
     def do_get_property(self, property):
         if property.name == "selected":
