@@ -49,7 +49,7 @@ class PIPSelector(Gtk.DrawingArea):
         self.selected = 0
 
     def on_draw(self, widget, context):
-        context.scale(self.allocation.width, self.allocation.height)
+        context.scale(self.get_allocated_width(), self.get_allocated_height())
 
         context.set_source_rgb(0.447, 0.623, 0.812)
         context.rectangle(0, 0, 1, 1)
@@ -80,8 +80,8 @@ class PIPSelector(Gtk.DrawingArea):
 
     def on_button_release(self, widget, event):
         x, y = event.get_coords()
-        width = self.allocation.width
-        height = self.allocation.height
+        width = self.get_allocated_width()
+        height = self.get_allocated_height()
         TOP = 0
         BOTTOM = 1
         LEFT = 0
