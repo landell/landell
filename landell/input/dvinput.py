@@ -67,7 +67,7 @@ class DVInput(Input):
         self.dvdec.link(self.videoconvert)
         self.videoconvert.link(self.videoscale)
 
-        self.video_pad.set_target(self.videoscale.src_pads().next())
+        self.video_pad.set_target(self.videoscale.get_static_pad("src"))
         index = 1
 
     def on_pad_added(self, element, pad):

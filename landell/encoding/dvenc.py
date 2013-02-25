@@ -44,7 +44,7 @@ class DVEncoder(Encoder):
             audioconvert.link(queue_audio)
             queue_audio.link(ffmux)
 
-            self.audio_pad.set_target(audioconvert.sink_pads().next())
+            self.audio_pad.set_target(audioconvert.get_static_pad("sink"))
         if type & INPUT_TYPE_VIDEO:
             dvenc = Gst.ElementFactory.make("ffenc_dvvideo", "dvenc")
             self.add(dvenc)
@@ -54,5 +54,5 @@ class DVEncoder(Encoder):
             self.add(queue_video)
             dvenc.link(queue_video)
             queue_video.link(ffmux)
-            self.video_pad.set_target(dvenc.sink_pads().next())
-        self.source_pad.set_target(ffmux.src_pads().next())
+            self.video_pad.set_target(dvenc.get_static_pad("sink"))
+        self.source_pad.set_target(ffmux.get_static_pad("src"))

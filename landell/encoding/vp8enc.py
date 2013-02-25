@@ -46,7 +46,7 @@ class VP8Encoder(Encoder):
             audioconvert.link(self.vorbisenc)
             self.vorbisenc.link(queue_audio)
             queue_audio.link(self.mux)
-            self.audio_pad.set_target(audioconvert.sink_pads().next())
+            self.audio_pad.set_target(audioconvert.get_static_pad("sink"))
         if type & INPUT_TYPE_VIDEO:
             self.vp8enc = Gst.ElementFactory.make("vp8enc", "vp8enc")
             self.add(self.vp8enc)
@@ -56,9 +56,9 @@ class VP8Encoder(Encoder):
             self.add(queue_video)
             self.vp8enc.link(queue_video)
             queue_video.link(self.mux)
-            self.video_pad.set_target(self.vp8enc.sink_pads().next())
+            self.video_pad.set_target(self.vp8enc.get_static_pad("sink"))
 
-        self.source_pad.set_target(self.mux.src_pads().next())
+        self.source_pad.set_target(self.mux.get_static_pad("src"))
 
 
     def config(self, dict):

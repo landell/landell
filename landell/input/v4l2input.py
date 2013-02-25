@@ -37,7 +37,7 @@ class V4L2Input(Input):
 
         self.video_src.link(self.capsfilter)
 
-        self.video_pad.set_target(self.capsfilter.src_pads().next())
+        self.video_pad.set_target(self.capsfilter.get_static_pad("src"))
 
     def config(self, dict):
         self.video_src.set_property("device", dict["v4l2_device"])

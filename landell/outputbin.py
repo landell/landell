@@ -38,7 +38,7 @@ class OutputBin(Gst.Bin):
         self.valve.link(self.sink)
 
         self.sink_pad = Gst.GhostPad.new(
-                "sink", self.queue.sink_pads().next()
+                "sink", self.queue.get_static_pad("sink")
         )
         self.add_pad(self.sink_pad)
 

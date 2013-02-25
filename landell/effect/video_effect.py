@@ -41,5 +41,5 @@ class VideoEffect(Effect):
         self.convertion1.link(self.effect_element)
         self.effect_element.link(self.convertion2)
 
-        self.sink_pad.set_target(self.convertion1.sink_pads().next())
-        self.src_pad.set_target(self.convertion2.src_pads().next())
+        self.sink_pad.set_target(self.convertion1.get_static_pad("sink"))
+        self.src_pad.set_target(self.convertion2.get_static_pad("src"))

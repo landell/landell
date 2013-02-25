@@ -47,7 +47,7 @@ class OggTheoraVorbisEncoder(Encoder):
             audioconvert.link(self.vorbisenc)
             self.vorbisenc.link(queue_audio)
             queue_audio.link(self.oggmux)
-            self.audio_pad.set_target(audioconvert.sink_pads().next())
+            self.audio_pad.set_target(audioconvert.get_static_pad("sink"))
         if type & INPUT_TYPE_VIDEO:
             self.theoraenc = Gst.ElementFactory.make("theoraenc", "theoraenc")
             self.add(self.theoraenc)
@@ -57,9 +57,9 @@ class OggTheoraVorbisEncoder(Encoder):
             self.add(queue_video)
             self.theoraenc.link(queue_video)
             queue_video.link(self.oggmux)
-            self.video_pad.set_target(self.theoraenc.sink_pads().next())
+            self.video_pad.set_target(self.theoraenc.get_static_pad("sink"))
 
-        self.source_pad.set_target(self.oggmux.src_pads().next())
+        self.source_pad.set_target(self.oggmux.get_static_pad("src"))
 
 
     def config(self, dict):

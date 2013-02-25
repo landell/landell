@@ -157,11 +157,11 @@ class PictureInPicture(Gst.Bin):
         pad.set_property("zorder",1)
         pad.set_property("xpos",0)
         pad.set_property("ypos",0)
-        A_capsfilter.src_pads().next().link(pad)
+        A_capsfilter.get_static_pad("src").link(pad)
         self.A_pads.append(pad)
 
         sink_pad = Gst.GhostPad.new(
-                "sink_a_%d" % self.A_number, A_videoscale.sink_pads().next()
+                "sink_a_%d" % self.A_number, A_videoscale.get_static_pad("sink")
         )
         self.add_pad(sink_pad)
         self.A_number = self.A_number + 1
@@ -198,11 +198,11 @@ class PictureInPicture(Gst.Bin):
         pad.set_property("zorder", 10)
         pad.set_property("xpos",0)
         pad.set_property("ypos",0)
-        B_capsfilter.src_pads().next().link(pad)
+        B_capsfilter.get_static_pad("src").link(pad)
         self.B_pads.append(pad)
 
         sink_pad = Gst.GhostPad.new(
-                "sink_b_%d" % self.B_number, B_videoscale.sink_pads().next()
+                "sink_b_%d" % self.B_number, B_videoscale.get_static_pad("sink")
         )
         self.add_pad(sink_pad)
         self.B_number = self.B_number + 1

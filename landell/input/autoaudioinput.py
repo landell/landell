@@ -29,7 +29,7 @@ class AutoAudioInput(Input):
         Input.__init__(self, CAPABILITIES)
         self.audio_src = Gst.ElementFactory.make("autoaudiosrc", "audio_src")
         self.add(self.audio_src)
-        self.audio_pad.set_target(self.audio_src.src_pads().next())
+        self.audio_pad.set_target(self.audio_src.get_static_pad("src"))
 
     def config(self, dict):
         pass

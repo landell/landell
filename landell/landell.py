@@ -264,7 +264,7 @@ class Sltv(GObject.GObject):
 
                 tee = Gst.ElementFactory.make("tee", None)
                 self.player.add(tee)
-                element.video_pad.link(tee.sink_pads().next())
+                element.video_pad.link(tee.get_static_pad("sink"))
 
                 thumbnail_queue = Gst.ElementFactory.make("queue", None)
                 self.player.add(thumbnail_queue)
@@ -288,8 +288,8 @@ class Sltv(GObject.GObject):
 
                 tee.link(main_queue)
                 tee.link(pip_queue)
-                main_queue.src_pads().next().link(self.pip.get_request_pad_A())
-                pip_queue.src_pads().next().link(self.pip.get_request_pad_B())
+                main_queue.get_static_pad("src").link(self.pip.get_request_pad_A())
+                pip_queue.get_static_pad("src").link(self.pip.get_request_pad_B())
 
             if name == self.video_source:
                 type |= element.get_type()
@@ -424,7 +424,7 @@ class Sltv(GObject.GObject):
 
                 added_encoders[encoder_name] = tee
                 self.preview_tee.get_src_pad().link(
-                        converter.sink_pads().next()
+                        converter.get_static_pad("sink")
                 )
 
                 converter.link(encoder)
@@ -441,7 +441,7 @@ class Sltv(GObject.GObject):
         if self.preview_enabled:
             self.preview = Preview(self)
             self.player.add(self.preview)
-            self.preview_tee.get_src_pad().link(self.preview.sink_pads().next())
+            self.preview_tee.get_src_pad().link(self.preview.get_static_pad("sink"))
 
         if pip_width == 0:
             pip_width = 320

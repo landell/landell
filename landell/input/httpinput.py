@@ -39,18 +39,18 @@ class HTTPInput(Input):
         self.lka = Gst.ElementFactory.make("livekeeper", "lka")
         self.add(self.lka)
         self.http_src.link(self.decode_bin)
-        self.video_pad.set_target(self.lkv.src_pads().next())
-        self.audio_pad.set_target(self.lka.src_pads().next())
+        self.video_pad.set_target(self.lkv.get_static_pad("src"))
+        self.audio_pad.set_target(self.lka.get_static_pad("src"))
 
     def on_dynamic_pad(self, dbin, pad, islast):
         name = pad.query_caps(None).to_string()
 
         if "audio" in name:
-            sink = self.lka.sink_pads().next()
+            sink = self.lka.get_static_pad("sink")
             pad.link(sink)
 
         if "video" in name:
-            sink = self.lkv.sink_pads().next()
+            sink = self.lkv.get_static_pad("sink")
             pad.link(sink)
 
     def config(self, dict):

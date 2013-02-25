@@ -51,11 +51,11 @@ class Volume(Gst.Bin):
         self.volume.link(self.volume_convert2)
 
         self.sink_pad = Gst.GhostPad.new(
-                "sink", self.volume_convert1.sink_pads().next()
+                "sink", self.volume_convert1.get_static_pad("sink")
         )
         self.add_pad(self.sink_pad)
         self.src_pad = Gst.GhostPad.new(
-                "src", self.volume_convert2.src_pads().next()
+                "src", self.volume_convert2.get_static_pad("src")
         )
         self.add_pad(self.src_pad)
 

@@ -29,7 +29,7 @@ class IcecastOutput(Output):
                 "shout2send", "icecastsink"
         )
         self.add(self.icecast_sink)
-        self.sink_pad.set_target(self.icecast_sink.sink_pads().next())
+        self.sink_pad.set_target(self.icecast_sink.get_static_pad("sink"))
 
     def config(self, dict):
         self.icecast_sink.set_property("ip", dict["ip"])

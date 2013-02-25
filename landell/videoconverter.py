@@ -51,11 +51,11 @@ class VideoConverter(Gst.Bin):
         self.videoscale.link(self.capsfilter)
 
         self.source_pad = Gst.GhostPad.new(
-                "src", self.capsfilter.src_pads().next()
+                "src", self.capsfilter.get_static_pad("src")
         )
         self.add_pad(self.source_pad)
         self.sink_pad = Gst.GhostPad.new(
-                "sink", self.colorspace.sink_pads().next()
+                "sink", self.colorspace.get_static_pad("sink")
         )
         self.add_pad(self.sink_pad)
 

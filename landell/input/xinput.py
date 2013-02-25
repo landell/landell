@@ -47,7 +47,7 @@ class XInput(Input):
 
         self.video_src.link(self.capsfilter)
 
-        self.video_pad.set_target(self.capsfilter.src_pads().next())
+        self.video_pad.set_target(self.capsfilter.get_static_pad("src"))
 
     def config(self, dict):
         num, den = Fract.fromdecimal(dict["framerate"])

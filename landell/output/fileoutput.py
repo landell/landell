@@ -27,7 +27,7 @@ class FileOutput(Output):
         Output.__init__(self)
         self.file_sink = Gst.ElementFactory.make("filesink", "filesink")
         self.add(self.file_sink)
-        self.sink_pad.set_target(self.file_sink.sink_pads().next())
+        self.sink_pad.set_target(self.file_sink.get_static_pad("sink"))
 
     def config(self, dict):
         self.file_sink.set_property("location", dict["location"])

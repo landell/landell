@@ -31,7 +31,7 @@ class AudioTestInput(Input):
         self.audio_src = Gst.ElementFactory.make("audiotestsrc", "audio_src")
         self.audio_src.set_property("is-live", True)
         self.add(self.audio_src)
-        self.audio_pad.set_target(self.audio_src.src_pads().next())
+        self.audio_pad.set_target(self.audio_src.get_static_pad("src"))
 
     def config(self, dict):
         pass

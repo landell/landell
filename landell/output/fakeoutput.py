@@ -27,7 +27,7 @@ class FakeOutput(Output):
         Output.__init__(self)
         self.fake_sink = Gst.ElementFactory.make("fakesink", "fakesink")
         self.add(self.fake_sink)
-        self.sink_pad.set_target(self.fake_sink.sink_pads().next())
+        self.sink_pad.set_target(self.fake_sink.get_static_pad("sink"))
 
     def config(self, dict):
         pass

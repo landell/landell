@@ -45,7 +45,7 @@ class Preview(Gst.Bin):
         self.videoconvert.link(self.videoscale)
         self.videoscale.link(self.sink)
         sink_pad = Gst.GhostPad.new(
-            "sink_ghost_pad", self.videoconvert.sink_pads().next()
+            "sink_ghost_pad", self.videoconvert.get_static_pad("sink")
         )
         self.add_pad(sink_pad)
 
