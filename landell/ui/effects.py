@@ -71,14 +71,8 @@ class EffectsUI:
         self.apply_button.set_sensitive(False)
 
     def _create_effects_combobox(self, combobox, effect_type):
-        liststore = Gtk.ListStore(GObject.TYPE_STRING)
-        combobox.set_model(liststore)
-        cell = Gtk.CellRendererText()
-        combobox.pack_start(cell, True)
-        combobox.add_attribute(cell, 'text', 0)
-        liststore.append(("none",))
         for etype in self.effect_registry.get_types(effect_type):
-            liststore.append((etype,))
+            combobox.append_text(etype)
         combobox.set_active(0)
 
     def set_effects(self, state):
