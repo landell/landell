@@ -37,7 +37,7 @@ class Encoders(MediaListUI):
         factories = self.registry.get_factories(REGISTRY_ENCODING)
 
         for factory in factories:
-            self.elements_liststore.append((factory.get_name(),))
+            self.elements_combobox.append_text(factory.get_name())
             self.factories[factory.get_name()] = factory
         self.elements_combobox.set_active(0)
 

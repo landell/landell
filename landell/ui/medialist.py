@@ -37,13 +37,8 @@ class MediaListUI:
 
         self.elements_combobox = self.interface.get_object("elements_combobox")
 
-        self.elements_liststore = Gtk.ListStore(str)
-        self.elements_liststore.set_default_sort_func(lambda *args: -1)
-        self.elements_liststore.set_sort_column_id(0, Gtk.SortType.ASCENDING)
-        self.elements_combobox.set_model(self.elements_liststore)
-        cell = Gtk.CellRendererText()
-        self.elements_combobox.pack_start(cell, True)
-        self.elements_combobox.add_attribute(cell, "text", 0)
+        #self.elements_liststore.set_default_sort_func(lambda *args: -1)
+        #self.elements_liststore.set_sort_column_id(0, Gtk.SortType.ASCENDING)
 
         # Setting tree view
 
