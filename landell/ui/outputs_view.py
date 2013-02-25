@@ -63,7 +63,7 @@ class OutputsView(Gtk.VBox):
 
     def _add_items(self):
         for name in sorted(self.output_items.keys()):
-            self.pack_start(self.output_items[name].get_widget(), False, False)
+            self.pack_start(self.output_items[name].get_widget(), False, False, 0)
 
     def _remove_output_item(self, widget):
         self.remove(widget)

@@ -69,6 +69,6 @@ class About:
         self.about.run()
 
     def on_close_dialog(self, dialog, response):
-        if response == Gtk.RESPONSE_CANCEL or \
-           response == Gtk.RESPONSE_DELETE_EVENT:
-            dialog.hide_all()
+        if response == Gtk.ResponseType.CANCEL or \
+           response == Gtk.ResponseType.DELETE_EVENT:
+            dialog.hide()

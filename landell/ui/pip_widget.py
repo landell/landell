@@ -76,7 +76,7 @@ class PIPSelector(Gtk.DrawingArea):
         context.fill()
 
     def on_realize(self, widget):
-        self.add_events(Gdk.BUTTON_PRESS_MASK|Gdk.BUTTON_RELEASE_MASK);
+        self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK|Gdk.EventMask.BUTTON_RELEASE_MASK);
 
     def on_button_release(self, widget, event):
         x, y = event.get_coords()

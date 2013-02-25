@@ -85,7 +85,7 @@ class SltvUI:
         self.volume = volume.VolumeUI(self, self.landell)
         self.volume_button = self.volume.get_widget()
         self.volume_button.show()
-        self.hbuttonbox.pack_start(self.volume_button)
+        self.hbuttonbox.pack_start(self.volume_button, False, False, 0)
 
         # pip
 
@@ -103,7 +103,7 @@ class SltvUI:
         self.video_source_box = self.interface.get_object("video_source_box")
         self.sources_view = sources_view.SourcesView(self.landell, self.sources)
         self.sources_view.show_all()
-        self.video_source_box.pack_start(self.sources_view, False, False)
+        self.video_source_box.pack_start(self.sources_view, False, False, 0)
 
         # audio combobox
 
@@ -128,12 +128,11 @@ class SltvUI:
         self.outputs_box = self.interface.get_object("outputs_box")
         self.outputs_view = outputs_view.OutputsView( self.landell, self.outputs)
         self.outputs_view.show_all()
-        self.outputs_box.pack_start(self.outputs_view, False, False)
+        self.outputs_box.pack_start(self.outputs_view, False, False, 0)
 
         # settings dialog
 
-        self.settings_dialog.set_has_separator(False)
-        self.settings_dialog.add_button(Gtk.STOCK_CLOSE, Gtk.RESPONSE_CLOSE)
+        self.settings_dialog.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
         self.settings_dialog.connect('delete-event', self.hide_settings)
         self.settings_dialog.connect('response', self.hide_settings)
 
@@ -146,22 +145,22 @@ class SltvUI:
 
         vbox = Gtk.VBox()
         vbox.set_border_width(12)
-        vbox.pack_start(self.sources_ui.get_widget())
+        vbox.pack_start(self.sources_ui.get_widget(), True, False, 0)
         notebook.append_page(vbox, Gtk.Label('Sources'))
 
         vbox = Gtk.VBox()
         vbox.set_border_width(12)
-        vbox.pack_start(self.encoders_ui.get_widget())
+        vbox.pack_start(self.encoders_ui.get_widget(), True, False, 0)
         notebook.append_page(vbox, Gtk.Label('Encoders'))
 
         vbox = Gtk.VBox()
         vbox.set_border_width(12)
-        vbox.pack_start(self.outputs_ui.get_widget())
+        vbox.pack_start(self.outputs_ui.get_widget(), True, False, 0)
         notebook.append_page(vbox, Gtk.Label('Outputs'))
 
         vbox = Gtk.VBox()
         vbox.set_border_width(12)
-        vbox.pack_start(self.metadata_ui.get_widget())
+        vbox.pack_start(self.metadata_ui.get_widget(), True, False, 0)
         notebook.append_page(vbox, Gtk.Label('Metadata'))
 
         #menu

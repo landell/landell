@@ -55,7 +55,7 @@ class SourcesView(Gtk.VBox):
     def _add_item(self, name):
         source_item = SourceItem(self.landell, name, self.a_group, self.b_group)
         self.source_items.append(source_item)
-        self.pack_start(source_item.get_widget(), False, False)
+        self.pack_start(source_item.get_widget(), False, False, 0)
 
     def has_item_a_selected(self):
         for action in self.a_group.list_actions():

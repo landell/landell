@@ -61,7 +61,7 @@ class MediaListUI:
         self.media_list_treeview.append_column(column)
 
         selection = self.media_list_treeview.get_selection()
-        selection.set_mode(Gtk.SELECTION_BROWSE)
+        selection.set_mode(Gtk.SelectionMode.BROWSE)
         selection.connect("changed", self.on_treeview_changed)
 
         self.block_buttons(selection)

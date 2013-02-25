@@ -21,7 +21,7 @@ import sys
 sys.path.append("@LIBDIR@")
 
 import gi
-from gi.repository import GObject, Gtk, Gst
+from gi.repository import GObject, Gtk, Gst, Gdk
 import landell.ui
 
 def main():
@@ -29,7 +29,7 @@ def main():
     GObject.threads_init()
     Gst.init(None)
 
-    Gtk.gdk.threads_init()
+    Gdk.threads_init()
     Gtk.main()
 
 if __name__ == '__main__':
