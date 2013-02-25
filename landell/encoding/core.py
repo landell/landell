@@ -27,11 +27,11 @@ class Encoder(Gst.Bin):
 
     def __init__(self, type):
         Gst.Bin.__init__(self)
-        self.source_pad = Gst.ghost_pad_new_notarget("source_pad", Gst.PAD_SRC)
+        self.source_pad = Gst.GhostPad.new_no_target("source_pad", Gst.PadDirection.SRC)
         self.add_pad(self.source_pad)
         if (type & INPUT_TYPE_AUDIO):
-            self.audio_pad = Gst.ghost_pad_new_notarget("audio_pad", Gst.PAD_SINK)
+            self.audio_pad = Gst.GhostPad.new_no_target("audio_pad", Gst.PadDirection.SINK)
             self.add_pad(self.audio_pad)
         if (type & INPUT_TYPE_VIDEO):
-            self.video_pad = Gst.ghost_pad_new_notarget("video_pad", Gst.PAD_SINK)
+            self.video_pad = Gst.GhostPad.new_no_target("video_pad", Gst.PadDirection.SINK)
             self.add_pad(self.video_pad)

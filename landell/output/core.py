@@ -24,5 +24,5 @@ class Output(Gst.Bin):
 
     def __init__(self):
         Gst.Bin.__init__(self)
-        self.sink_pad = Gst.ghost_pad_new_notarget("sink_pad", Gst.PAD_SINK)
+        self.sink_pad = Gst.GhostPad.new_no_target("sink_pad", Gst.PadDirection.SINK)
         self.add_pad(self.sink_pad)

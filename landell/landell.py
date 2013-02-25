@@ -203,7 +203,7 @@ class Sltv(GObject.GObject):
 
         self.emit("preplay")
 
-        self.player = Gst.Pipeline("player")
+        self.player = Gst.Pipeline()
 
         self.queue_video = Gst.ElementFactory.make("queue", "queue_video")
         self.player.add(self.queue_video)

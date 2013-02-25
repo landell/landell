@@ -107,7 +107,7 @@ class PictureInPicture(Gst.Bin):
 
         self.videomixer.link(self.csp)
 
-        src_pad = Gst.GhostPad.new("src", self.csp.src_pads().next())
+        src_pad = Gst.GhostPad.new("src", self.csp.get_static_pad("src"))
         self.add_pad(src_pad)
 
         self.A_number = 0

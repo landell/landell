@@ -25,7 +25,7 @@ class Effect(Gst.Bin):
     def __init__(self):
         Gst.Bin.__init__(self)
 
-        self.src_pad = Gst.ghost_pad_new_notarget("src", Gst.PAD_SRC)
+        self.src_pad = Gst.GhostPad.new_no_target("src", Gst.PadDirection.SRC)
         self.add_pad(self.src_pad)
-        self.sink_pad = Gst.ghost_pad_new_notarget("sink", Gst.PAD_SINK)
+        self.sink_pad = Gst.GhostPad.new_no_target("sink", Gst.PadDirection.SINK)
         self.add_pad(self.sink_pad)

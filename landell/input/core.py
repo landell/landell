@@ -30,10 +30,10 @@ class Input(Gst.Bin):
         Gst.Bin.__init__(self)
         self.type = type
         if (type & INPUT_TYPE_AUDIO):
-            self.audio_pad = Gst.ghost_pad_new_notarget("audio_pad", Gst.PAD_SRC)
+            self.audio_pad = Gst.GhostPad.new_no_target("audio_pad", Gst.PadDirection.SRC)
             self.add_pad(self.audio_pad)
         if (type & INPUT_TYPE_VIDEO):
-            self.video_pad = Gst.ghost_pad_new_notarget("video_pad", Gst.PAD_SRC)
+            self.video_pad = Gst.GhostPad.new_no_target("video_pad", Gst.PadDirection.SRC)
             self.add_pad(self.video_pad)
 
     def get_type(self):
