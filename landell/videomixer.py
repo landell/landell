@@ -93,7 +93,7 @@ class PictureInPicture(Gst.Bin):
         self.enabled = True
         self.position = 0
 
-        self.videomixer = Gst.ElementFactory.make("videomixer2", "videomixer")
+        self.videomixer = Gst.ElementFactory.make("videomixer", "videomixer")
         self.add(self.videomixer)
         self.caps = self.make_caps(self.width, self.height)
 
