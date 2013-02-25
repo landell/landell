@@ -30,22 +30,22 @@ class VideoBalanceUI:
         self.interface.add_from_file(UI_DIR + "/videobalance.ui")
         self.widget = self.interface.get_object("table1")
         self.contrast_adjustment = Gtk.Adjustment(1.0, 0, 2.0)
-        self.contrast_scale = Gtk.HScale(self.contrast_adjustment)
+        self.contrast_scale = Gtk.HScale()
         self.contrast_scale.set_property("digits", 2)
         self.widget.attach(self.contrast_scale, 1, 2, 0, 1)
 
         self.brightness_adjustment = Gtk.Adjustment(0, -1.0, 1.0)
-        self.brightness_scale = Gtk.HScale(self.brightness_adjustment)
+        self.brightness_scale = Gtk.HScale()
         self.brightness_scale.set_property("digits", 2)
         self.widget.attach(self.brightness_scale, 1, 2, 1, 2)
 
         self.hue_adjustment = Gtk.Adjustment(0, -1.0, 1.0)
-        self.hue_scale = Gtk.HScale(self.hue_adjustment)
+        self.hue_scale = Gtk.HScale()
         self.hue_scale.set_property("digits", 2)
         self.widget.attach(self.hue_scale, 1, 2, 2, 3)
 
         self.saturation_adjustment = Gtk.Adjustment(1.0, 0, 2.0)
-        self.saturation_scale = Gtk.HScale(self.saturation_adjustment)
+        self.saturation_scale = Gtk.HScale()
         self.saturation_scale.set_property("digits", 2)
         self.widget.attach(self.saturation_scale, 1, 2, 3, 4)
 

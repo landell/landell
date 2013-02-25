@@ -35,7 +35,7 @@ class WaterMarkUI:
         self.resize_checkbutton = self.interface.get_object("resize_checkbutton")
         self.size_label = self.interface.get_object("size_label")
         self.size_adjustment = Gtk.Adjustment(1.0, 0, 1.0, 0.05)
-        self.size_scale = Gtk.HScale(self.size_adjustment)
+        self.size_scale = Gtk.HScale()
         self.size_scale.set_property("digits", 2)
         self.widget.attach(self.size_scale, 0, 2, 4, 5)
 
