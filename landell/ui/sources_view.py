@@ -132,7 +132,7 @@ class SourceItem:
             radioaction = Gtk.RadioAction(
                     self.name, "A", type, None, len(actions)
             )
-            radioaction.set_group(actions[0])
+            radioaction.set_group(actions)
         else:
             radioaction = Gtk.RadioAction(self.name, "A", type, None, 0)
             radioaction.activate()

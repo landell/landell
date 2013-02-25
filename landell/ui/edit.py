@@ -62,7 +62,7 @@ class Edit:
         self.name_entry.set_sensitive(self.media_item == None)
         self.dialog.show_all()
         response = self.dialog.run()
-        if response == Gtk.RESPONSE_ACCEPT:
+        if response == Gtk.ResponseType.ACCEPT:
             self.save()
         self.dialog.hide_all()
 
