@@ -29,7 +29,7 @@ class VideoModel:
     def __init__(self, sources):
         self.model = sources.get_store().filter_new()
         self.model.set_visible_func(self.filter)
-    def filter(self, model, iter):
+    def filter(self, model, iter, destroy):
         source = model.get_value(iter, 1)
         return source != None and \
             source.factory.get_capabilities() & INPUT_TYPE_VIDEO > 0
@@ -38,7 +38,7 @@ class AudioModel:
     def __init__(self, sources):
         self.model = sources.get_store().filter_new()
         self.model.set_visible_func(self.filter)
-    def filter(self, model, iter):
+    def filter(self, model, iter, destroy):
         source = model.get_value(iter, 1)
         return source != None and \
             source.factory.get_capabilities() & INPUT_TYPE_AUDIO > 0
