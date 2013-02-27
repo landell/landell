@@ -64,7 +64,7 @@ class Edit:
         response = self.dialog.run()
         if response == Gtk.ResponseType.ACCEPT:
             self.save()
-        self.dialog.hide_all()
+        self.dialog.hide()
 
     def save(self):
         config = self.factory.get_ui().get_config().copy()

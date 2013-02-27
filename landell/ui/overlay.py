@@ -199,13 +199,13 @@ class OverlayUI:
     def on_close_dialog(self, dialog, response):
         if response == Gtk.ResponseType.CANCEL or \
            response == Gtk.ResponseType.DELETE_EVENT:
-            dialog.hide_all()
+            dialog.hide()
 
         if response == Gtk.ResponseType.OK:
             font = self.font_selector.get_font_name()
             self._set_font(font)
             self.save()
-            dialog.hide_all()
+            dialog.hide()
 
         if response == Gtk.ResponseType.APPLY:
             font = self.font_selector.get_font_name()
