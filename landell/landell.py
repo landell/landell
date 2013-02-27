@@ -107,10 +107,6 @@ class Sltv(GObject.GObject):
         self.volume_value = None
 
         self.pending_state = None
-        self.watermark_location = None
-        self.watermark_resize = False
-        self.watermark_size = 1.0
-        self.watermark_selected = 0
 
         self.videobalance_contrast = None
         self.videobalance_brightness = None
@@ -145,27 +141,6 @@ class Sltv(GObject.GObject):
         self.overlay_text = overlay_text
         if self.playing():
             self.overlay.set_property("text", overlay_text)
-
-    def set_watermark_location(self, location):
-        self.watermark_location = location
-        if self.playing():
-            self.watermark.set_property("location", location)
-
-    def set_watermark_resize(self, enabled):
-        self.watermark_resize = enabled
-
-    def set_watermark_size(self, size):
-        self.watermark_size = size
-
-    def _set_watermark(self, video_width, video_height):
-        if self.watermark_location:
-            self.watermark.set_property("location", self.watermark_location)
-
-        if self.watermark_resize:
-            wm_width = self.watermark_size * video_width
-            wm_height = self.watermark_size * video_height
-            self.watermark.set_property("width", wm_width)
-            self.watermark.set_property("height", wm_height)
 
     def set_videobalance_contrast(self, value):
         self.videobalance_contrast = value
@@ -296,11 +271,6 @@ class Sltv(GObject.GObject):
             if name == self.audio_source:
                 type |= element.get_type()
 
-        self.watermark = Gst.ElementFactory.make(
-                "rsvgoverlay", "rsvgoverlay"
-        )
-        self.player.add(self.watermark)
-
         self.colorspace = Gst.ElementFactory.make(
                 "videoconvert", "colorspace-imageoverlay-videobalance"
         )
@@ -327,8 +297,7 @@ class Sltv(GObject.GObject):
                     "saturation", self.videobalance_saturation
             )
 
-        self.pip.link(self.watermark)
-        self.watermark.link(self.colorspace)
+        self.pip.link(self.colorspace)
         self.colorspace.link(self.videobalance)
         self.videobalance.link(self.queue_video)
 
@@ -451,7 +420,6 @@ class Sltv(GObject.GObject):
 
         self.video_width = int(pip_width)
         self.video_height = int(pip_height)
-        self._set_watermark(self.video_width, self.video_height)
 
         self.overlay.set_property("text", self.overlay_text)
         if self.volume_value is not None:

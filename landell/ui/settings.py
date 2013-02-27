@@ -21,7 +21,6 @@ from gi.repository import Gtk
 from landell.settings import UI_DIR
 import effects
 import overlay
-import watermark
 import videobalance
 
 class SettingsUI:
@@ -36,12 +35,10 @@ class SettingsUI:
 
         self.effects = effects.EffectsUI(self.ui, self.landell)
         self.overlay = overlay.OverlayUI(self.ui, self.landell)
-        self.watermark = watermark.WaterMarkUI(self.ui, self.landell)
         self.videobalance = videobalance.VideoBalanceUI(self.ui, self.landell)
 
         self.effects_button = self.interface.get_object("effects_toolbutton")
         self.overlay_button = self.interface.get_object("overlay_toolbutton")
-        self.watermark_button = self.interface.get_object("watermark_toolbutton")
         self.videobalance_button = self.interface.get_object(
                 "videobalance_toolbutton"
         )
@@ -52,10 +49,8 @@ class SettingsUI:
                 "Effects", 0),
             ("overlay_radioaction", "Gtk-missing-image", "Overlay", None,
                 "Overlay", 1),
-            ("watermark_radioaction", "Gtk-missing-image", "Watermark", None,
-                "Watermark", 2),
             ("videobalance_radioaction", "Gtk-missing-image", "VideoBalance", None,
-                "Video Balance", 3),
+                "Video Balance", 2),
         ]
         settings_group.add_radio_actions(
                 settings_actions, 0, self.on_settings_changed, None
@@ -70,11 +65,6 @@ class SettingsUI:
             "overlay_radioaction"
         )
         self.overlay_button.set_related_action(self.overlay_radioaction)
-
-        self.watermark_radioaction = settings_group.get_action(
-            "watermark_radioaction"
-        )
-        self.watermark_button.set_related_action(self.watermark_radioaction)
 
         self.videobalance_radioaction = settings_group.get_action(
             "videobalance_radioaction"
@@ -94,8 +84,6 @@ class SettingsUI:
             self.selected_box = self.effects.get_widget()
         elif name == "overlay_radioaction":
             self.selected_box = self.overlay.get_widget()
-        elif name == "watermark_radioaction":
-            self.selected_box = self.watermark.get_widget()
         elif name == "videobalance_radioaction":
             self.selected_box = self.videobalance.get_widget()
         else:

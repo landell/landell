@@ -27,7 +27,6 @@ landelllib_DATA = \
 	audiosetting.py \
 	pip_widget.py \
 	metadata.py \
-	watermark.py \
 	videobalance.py \
 	output_item.py
 
