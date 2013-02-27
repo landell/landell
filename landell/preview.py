@@ -40,7 +40,7 @@ class Preview(Gst.Bin):
             "videoconvert", "videoconvert"
         )
         self.add(self.videoconvert)
-        self.videoscale = Gst.ElementFactory.make("videoscale")
+        self.videoscale = Gst.ElementFactory.make("videoscale", "preview_scale")
         self.add(self.videoscale)
         self.videoconvert.link(self.videoscale)
         self.videoscale.link(self.sink)
