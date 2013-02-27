@@ -226,7 +226,7 @@ class Sltv(GObject.GObject):
 
                 element.audio_pad.link(audiobin.get_static_pad("sink"))
                 self.audio_pads[name] = \
-                        self.input_selector.get_request_pad("sink%d")
+                        self.input_selector.get_request_pad("sink_%u")
                 audiobin.src_pad.link(self.audio_pads[name])
 
             if element.does_video():

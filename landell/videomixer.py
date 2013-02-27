@@ -153,7 +153,7 @@ class PictureInPicture(Gst.Bin):
         A_csp.link(A_alpha)
         A_alpha.link(A_capsfilter)
 
-        pad = self.videomixer.get_request_pad("sink_%d")
+        pad = self.videomixer.get_request_pad("sink_%u")
         pad.set_property("zorder",1)
         pad.set_property("xpos",0)
         pad.set_property("ypos",0)
@@ -194,7 +194,7 @@ class PictureInPicture(Gst.Bin):
         B_csp.link(B_alpha)
         B_alpha.link(B_capsfilter)
 
-        pad = self.videomixer.get_request_pad("sink_%d")
+        pad = self.videomixer.get_request_pad("sink_%u")
         pad.set_property("zorder", 10)
         pad.set_property("xpos",0)
         pad.set_property("ypos",0)
