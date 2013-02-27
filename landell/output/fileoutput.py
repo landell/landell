@@ -20,6 +20,7 @@ import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst
 from core import Output
+from landell.log import Log
 
 class FileOutput(Output):
 
@@ -27,7 +28,11 @@ class FileOutput(Output):
         Output.__init__(self)
         self.file_sink = Gst.ElementFactory.make("filesink", "filesink")
         self.add(self.file_sink)
-        self.sink_pad.set_target(self.file_sink.get_static_pad("sink"))
+        pad = self.file_sink.get_static_pad("sink")
+        self.sink_pad = Gst.GhostPad.new("sink_pad", pad)
+        if (self.sink_pad is None):
+            Log.warning("error creating output")
+        self.add_pad(self.sink_pad)
 
     def config(self, dict):
         self.file_sink.set_property("location", dict["location"])

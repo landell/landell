@@ -19,6 +19,7 @@
 import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst
+from log import Log
 
 class OutputBin(Gst.Bin):
 
@@ -40,6 +41,8 @@ class OutputBin(Gst.Bin):
         self.sink_pad = Gst.GhostPad.new(
                 "sink", self.queue.get_static_pad("sink")
         )
+        if (self.sink_pad is None):
+            Log.warning("error creating outputbin")
         self.add_pad(self.sink_pad)
 
     def stop(self):

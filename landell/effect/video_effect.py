@@ -41,5 +41,9 @@ class VideoEffect(Effect):
         self.convertion1.link(self.effect_element)
         self.effect_element.link(self.convertion2)
 
-        self.sink_pad.set_target(self.convertion1.get_static_pad("sink"))
-        self.src_pad.set_target(self.convertion2.get_static_pad("src"))
+        self.src_pad = Gst.GhostPad.new("src", self.convertion2.get_static_pad("src"))
+        self.sink_pad = Gst.GhostPad.new("sink", self.convertion1.get_static_pad("sink"))
+        if (self.src_pad is None or self.sink_pad is None):
+            Log.warning("error creating video effect")
+        self.add_pad(self.src_pad)
+        self.add_pad(self.sink_pad)

@@ -20,6 +20,7 @@
 import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GObject
+from log import Log
 
 class MulTeeQueue(Gst.Bin):
 
@@ -30,6 +31,8 @@ class MulTeeQueue(Gst.Bin):
         self.multiqueue = Gst.ElementFactory.make("multiqueue", "multiqueue")
         self.add(self.multiqueue)
         self.sink_pad = Gst.GhostPad.new("sink", self.tee.get_static_pad("sink"))
+        if (self.sink_pad is None):
+            Log.warning("error creating multeequeue")
         self.add_pad(self.sink_pad)
         self.pad_index = 0
 
@@ -40,6 +43,8 @@ class MulTeeQueue(Gst.Bin):
         src_ghost_pad = Gst.GhostPad.new(
                 "src%d" % self.pad_index, src_pad
         )
+        if (src_ghost_pad is None):
+            Log.warning("error creating multeequeue")
         self.add_pad(src_ghost_pad)
         self.pad_index += 1
         return src_ghost_pad

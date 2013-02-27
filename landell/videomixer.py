@@ -108,6 +108,8 @@ class PictureInPicture(Gst.Bin):
         self.videomixer.link(self.csp)
 
         src_pad = Gst.GhostPad.new("src", self.csp.get_static_pad("src"))
+        if (src_pad is None):
+            Log.warning("error creating videomixer")
         self.add_pad(src_pad)
 
         self.A_number = 0
@@ -163,6 +165,8 @@ class PictureInPicture(Gst.Bin):
         sink_pad = Gst.GhostPad.new(
                 "sink_a_%d" % self.A_number, A_videoscale.get_static_pad("sink")
         )
+        if (sink_pad is None):
+            Log.warning("error creating videomixer")
         self.add_pad(sink_pad)
         self.A_number = self.A_number + 1
         return sink_pad
@@ -204,6 +208,8 @@ class PictureInPicture(Gst.Bin):
         sink_pad = Gst.GhostPad.new(
                 "sink_b_%d" % self.B_number, B_videoscale.get_static_pad("sink")
         )
+        if (sink_pad is None):
+            Log.warning("error creating videomixer")
         self.add_pad(sink_pad)
         self.B_number = self.B_number + 1
         return sink_pad

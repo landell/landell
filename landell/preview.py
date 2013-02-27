@@ -20,6 +20,7 @@
 import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GObject
+from log import Log
 
 class Preview(Gst.Bin):
 
@@ -47,6 +48,8 @@ class Preview(Gst.Bin):
         sink_pad = Gst.GhostPad.new(
             "sink_ghost_pad", self.videoconvert.get_static_pad("sink")
         )
+        if (sink_pad is None):
+            Log.warning("error creating sink_pad")
         self.add_pad(sink_pad)
 
     def on_sync_message(self, sltv, message):

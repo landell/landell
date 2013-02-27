@@ -64,10 +64,12 @@ class AudioResample(Gst.Bin):
         self.sink_pad = Gst.GhostPad.new(
                 "sink", self.audioconvert.get_static_pad("sink")
         )
-        self.add_pad(self.sink_pad)
         self.src_pad = Gst.GhostPad.new(
                 "src", self.capsfilter.get_static_pad("src")
         )
+        if (self.sink_pad is None or self.src_pad is None):
+            Log.warning("error creating audioresample")
+        self.add_pad(self.sink_pad)
         self.add_pad(self.src_pad)
         self.audiorate_property = -1
 

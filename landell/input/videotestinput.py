@@ -38,7 +38,10 @@ class VideoTestInput(Input):
 
         self.video_src.link(self.capsfilter)
 
-        self.video_pad.set_target(self.capsfilter.get_static_pad("src"))
+        self.video_pad = Gst.GhostPad.new("video_pad", self.capsfilter.get_static_pad("src"))
+        if (self.video_pad is None):
+            Log.warning("error creating input")
+        self.add_pad(self.video_pad)
 
     def config(self, dict):
         self.video_src.set_property("pattern", int(dict["pattern"]))

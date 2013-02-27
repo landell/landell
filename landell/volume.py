@@ -21,6 +21,7 @@
 import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GObject
+from log import Log
 
 class Volume(Gst.Bin):
 
@@ -53,10 +54,12 @@ class Volume(Gst.Bin):
         self.sink_pad = Gst.GhostPad.new(
                 "sink", self.volume_convert1.get_static_pad("sink")
         )
-        self.add_pad(self.sink_pad)
         self.src_pad = Gst.GhostPad.new(
                 "src", self.volume_convert2.get_static_pad("src")
         )
+        if (self.sink_pad is None or self.src_pad is None):
+            Log.warning("error creating volume")
+        self.add_pad(self.sink_pad)
         self.add_pad(self.src_pad)
 
     def do_get_property(self, property):

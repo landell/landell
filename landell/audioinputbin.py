@@ -19,6 +19,7 @@
 import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst
+from log import Log
 
 class AudioInputBin(Gst.Bin):
 
@@ -41,5 +42,7 @@ class AudioInputBin(Gst.Bin):
         self.src_pad = Gst.GhostPad.new(
                 "src", self.audioresample.get_static_pad("src")
         )
+        if (self.sink_pad is None or self.src_pad is None):
+            Log.warning("error creating AudioInputBin")
         self.add_pad(self.src_pad)
         self.add_pad(self.sink_pad)

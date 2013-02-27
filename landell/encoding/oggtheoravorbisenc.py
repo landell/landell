@@ -23,6 +23,7 @@ from gi.repository import Gst
 
 from core import Encoder
 from landell.input.core import INPUT_TYPE_AUDIO, INPUT_TYPE_VIDEO
+from landell.log import Log
 
 class OggTheoraVorbisEncoder(Encoder):
 
@@ -47,7 +48,12 @@ class OggTheoraVorbisEncoder(Encoder):
             audioconvert.link(self.vorbisenc)
             self.vorbisenc.link(queue_audio)
             queue_audio.link(self.oggmux)
-            self.audio_pad.set_target(audioconvert.get_static_pad("sink"))
+            pad = audioconvert.get_static_pad("sink")
+            self.audio_pad = Gst.GhostPad.new("audio_pad", pad)
+            if (self.audio_pad is None):
+                Log.warning("error when creating encoder")
+            self.add_pad(self.audio_pad)
+
         if type & INPUT_TYPE_VIDEO:
             self.theoraenc = Gst.ElementFactory.make("theoraenc", "theoraenc")
             self.add(self.theoraenc)
@@ -57,10 +63,17 @@ class OggTheoraVorbisEncoder(Encoder):
             self.add(queue_video)
             self.theoraenc.link(queue_video)
             queue_video.link(self.oggmux)
-            self.video_pad.set_target(self.theoraenc.get_static_pad("sink"))
+            pad = self.theoraenc.get_static_pad("sink")
+            self.video_pad = Gst.GhostPad.new("video_pad", pad)
+            if (self.video_pad is None):
+                Log.warning("error when creating encoder")
+            self.add_pad(self.video_pad)
 
-        self.source_pad.set_target(self.oggmux.get_static_pad("src"))
-
+        pad = self.oggmux.get_static_pad("src")
+        self.source_pad = Gst.GhostPad.new("source_pad", pad)
+        if (self.source_pad is None):
+            Log.warning("error when creating encoder")
+        self.add_pad(self.source_pad)
 
     def config(self, dict):
         self.oggmux.set_property("max-delay", 10000000)

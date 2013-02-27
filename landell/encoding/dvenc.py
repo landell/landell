@@ -23,6 +23,7 @@ from gi.repository import Gst
 
 from core import Encoder
 from landell.input.core import INPUT_TYPE_AUDIO, INPUT_TYPE_VIDEO
+from landell.log import Log
 
 class DVEncoder(Encoder):
 
@@ -44,7 +45,11 @@ class DVEncoder(Encoder):
             audioconvert.link(queue_audio)
             queue_audio.link(ffmux)
 
-            self.audio_pad.set_target(audioconvert.get_static_pad("sink"))
+            self.audio_pad = Gst.GhostPad.new("audio_pad", audioconvert.get_static_pad("sink"))
+            if (self.audio_pad is None):
+                Log.warning("error when creating dvenc")
+            self.add_pad(self.audio_pad)
+
         if type & INPUT_TYPE_VIDEO:
             dvenc = Gst.ElementFactory.make("ffenc_dvvideo", "dvenc")
             self.add(dvenc)
@@ -54,5 +59,13 @@ class DVEncoder(Encoder):
             self.add(queue_video)
             dvenc.link(queue_video)
             queue_video.link(ffmux)
-            self.video_pad.set_target(dvenc.get_static_pad("sink"))
-        self.source_pad.set_target(ffmux.get_static_pad("src"))
+            self.video_pad = Gst.GhostPad.new("video_pad", dvenc.get_static_pad("sink"))
+            if (self.video_pad is None):
+                Log.warning("error when creating dvenc")
+            self.add_pad(self.video_pad)
+
+        pad = ffmux.get_static_pad("src")
+        self.source_pad = Gst.GhostPad.new("source_pad", pad)
+        if (self.source_pad is None):
+            Log.warning("error when creating dvenc")
+        self.add_pad(self.source_pad)

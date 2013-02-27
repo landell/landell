@@ -20,6 +20,7 @@ import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst
 from core import Output
+from landell.log import Log
 
 class IcecastOutput(Output):
 
@@ -29,7 +30,11 @@ class IcecastOutput(Output):
                 "shout2send", "icecastsink"
         )
         self.add(self.icecast_sink)
-        self.sink_pad.set_target(self.icecast_sink.get_static_pad("sink"))
+        pad = self.icecast_sink.get_static_pad("sink")
+        self.sink_pad = Gst.GhostPad.new("sink_pad", pad)
+        if (self.sink_pad is None):
+            Log.warning("error creating output")
+        self.add_pad(self.sink_pad)
 
     def config(self, dict):
         self.icecast_sink.set_property("ip", dict["ip"])

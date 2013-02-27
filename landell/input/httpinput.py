@@ -39,8 +39,16 @@ class HTTPInput(Input):
         self.lka = Gst.ElementFactory.make("livekeeper", "lka")
         self.add(self.lka)
         self.http_src.link(self.decode_bin)
-        self.video_pad.set_target(self.lkv.get_static_pad("src"))
-        self.audio_pad.set_target(self.lka.get_static_pad("src"))
+        self.video_pad = Gst.GhostPad.new("video_pad", self.lkv.get_static_pad("src"))
+        if (self.video_pad is None):
+            Log.warning("error creating input")
+        self.add_pad(self.video_pad)
+
+        pad = self.lka.get_static_pad("src")
+        self.audio_pad = Gst.GhostPad.new("audio_pad", pad)
+        self.add_pad(self.audio_pad)
+        if (self.audio_pad is None):
+            Log.warning("error creating input")
 
     def on_dynamic_pad(self, dbin, pad, islast):
         name = pad.query_caps(None).to_string()

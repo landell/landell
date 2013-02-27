@@ -21,6 +21,7 @@ import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst
 from core import Input, INPUT_TYPE_AUDIO
+from landell.log import Log
 
 CAPABILITIES = INPUT_TYPE_AUDIO
 
@@ -31,7 +32,11 @@ class AudioTestInput(Input):
         self.audio_src = Gst.ElementFactory.make("audiotestsrc", "audio_src")
         self.audio_src.set_property("is-live", True)
         self.add(self.audio_src)
-        self.audio_pad.set_target(self.audio_src.get_static_pad("src"))
+        pad = self.audio_src.get_static_pad("src")
+        self.audio_pad = Gst.GhostPad.new("audio_pad", pad)
+        if (self.audio_pad is None):
+            Log.warning("error creating input")
+        self.add_pad(self.audio_pad)
 
     def config(self, dict):
         pass

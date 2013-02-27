@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscopio Tecnologia
-# Author: Luciana Fujii Pontelloo <luciana@holoscopio.com>
+# Copyright (C) 2013 Collabora Ltda
+# Author: Luciana Fujii Pontello <luciana@collabora.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,6 +21,7 @@ import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst
 from core import Input, INPUT_TYPE_AUDIO
+from landell.log import Log
 
 CAPABILITIES = INPUT_TYPE_AUDIO
 
@@ -29,7 +31,11 @@ class PulseInput(Input):
         Input.__init__(self, CAPABILITIES)
         self.audio_src = Gst.ElementFactory.make("pulsesrc", "audio_src")
         self.add(self.audio_src)
-        self.audio_pad.set_target(self.audio_src.get_static_pad("src"))
+        pad = self.audio_src.get_static_pad("src")
+        self.audio_pad = Gst.GhostPad.new("audio_pad", pad)
+        if (self.audio_pad is None):
+            Log.warning("error creating input")
+        self.add_pad(self.audio_pad)
 
     def config(self, dict):
         pass

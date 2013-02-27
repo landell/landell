@@ -19,13 +19,9 @@
 import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst
+from landell.log import Log
 
 class Effect(Gst.Bin):
 
     def __init__(self):
         Gst.Bin.__init__(self)
-
-        self.src_pad = Gst.GhostPad.new_no_target("src", Gst.PadDirection.SRC)
-        self.add_pad(self.src_pad)
-        self.sink_pad = Gst.GhostPad.new_no_target("sink", Gst.PadDirection.SINK)
-        self.add_pad(self.sink_pad)

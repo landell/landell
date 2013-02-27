@@ -20,6 +20,7 @@ import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst
 from utils import Fract
+from log import Log
 
 class VideoConverter(Gst.Bin):
 
@@ -53,10 +54,12 @@ class VideoConverter(Gst.Bin):
         self.source_pad = Gst.GhostPad.new(
                 "src", self.capsfilter.get_static_pad("src")
         )
-        self.add_pad(self.source_pad)
         self.sink_pad = Gst.GhostPad.new(
                 "sink", self.colorspace.get_static_pad("sink")
         )
+        if (self.source_pad is None or self.sink_pad is None):
+            Log.warning("error creating videoconverter")
+        self.add_pad(self.source_pad)
         self.add_pad(self.sink_pad)
 
     def config(self, dict):

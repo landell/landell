@@ -20,6 +20,7 @@ import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst
 from core import Input, INPUT_TYPE_AUDIO, INPUT_TYPE_VIDEO
+from landell.log import Log
 
 CAPABILITIES = INPUT_TYPE_AUDIO | INPUT_TYPE_VIDEO
 
@@ -67,7 +68,10 @@ class DVInput(Input):
         self.dvdec.link(self.videoconvert)
         self.videoconvert.link(self.videoscale)
 
-        self.video_pad.set_target(self.videoscale.get_static_pad("src"))
+        self.video_pad = Gst.GhostPad.new("video_pad", self.videoscale.get_static_pad("src"))
+        if (self.video_pad is None):
+            Log.warning("error creating input")
+        self.add_pad(self.video_pad)
         index = 1
 
     def on_pad_added(self, element, pad):
@@ -83,7 +87,10 @@ class DVInput(Input):
             request_pad = self.video_queue.get_request_pad("sink%d")
             pad.link(request_pad)
             src_pad = request_pad.iterate_internal_links().next()
-            self.audio_pad.set_target(src_pad)
+            self.audio_pad = Gst.GhostPad.new("audio_pad", src_pad)
+            if (self.audio_pad is None):
+                Log.warning("error creating input")
+            self.add_pad(self.audio_pad)
 
     def config(self, dict):
         self.dv_src.set_property("channel", int(dict["channel"]))

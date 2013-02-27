@@ -39,10 +39,12 @@ class FileInput(Input):
         name = pad.query_caps(None).to_string()
 
         if "audio" in name:
-            self.audio_pad.set_target(pad)
+            self.audio_pad = Gst.GhostPad.new("audio_pad", pad)
+            self.add_pad(self.audio_pad)
 
         if "video" in name:
-            self.video_pad.set_target(pad)
+            self.video_pad = Gst.GhostPad.new("video_pad", pad)
+            self.add_pad(self.video_pad)
 
     def config(self, dict):
         self.file_src.set_property("location", dict["location"])
