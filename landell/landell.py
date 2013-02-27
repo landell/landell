@@ -314,8 +314,8 @@ class Sltv(GObject.GObject):
 
         self.overlay = Gst.ElementFactory.make("textoverlay", "overlay")
         self.overlay.set_property("font-desc", self.overlay_font)
-        self.overlay.set_property("halign", self.halign)
-        self.overlay.set_property("valign", self.valign)
+        self.overlay.set_property("halignment", self.halign)
+        self.overlay.set_property("valignment", self.valign)
         self.player.add(self.overlay)
 
         self.queue_video.link(self.effect[MEDIA_VIDEO])
