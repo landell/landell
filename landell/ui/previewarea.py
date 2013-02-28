@@ -35,6 +35,4 @@ class PreviewArea(Gtk.DrawingArea):
 
     def on_prepare_window_handle(self, preview, element):
         # Setting preview to be displayed at preview_area
-        Gtk.gdk.threads_enter()
         element.set_window_handle(self.xid)
-        Gtk.gdk.threads_leave()
