@@ -25,12 +25,12 @@ class Message():
         self.ui = ui
         self.message_type = message_type
         self.message = message
-        self.buttons = Gtk.BUTTONS_OK
+        self.buttons = Gtk.ButtonsType.OK
 
     def popup(self):
         dialog = Gtk.MessageDialog(
             self.ui.main_window,
-            Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
+            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
             self.message_type,
             self.buttons,
             self.message
@@ -55,20 +55,20 @@ class Message():
 
 class MessageError(Message):
     def __init__(self, message, ui):
-        Message.__init__(self, message, ui, Gtk.MESSAGE_ERROR)
+        Message.__init__(self, message, ui, Gtk.MessageType.ERROR)
         self.popup()
 
 class MessageWarning(Message):
     def __init__(self, message, ui):
-        Message.__init__(self, message, ui, Gtk.MESSAGE_WARNING)
+        Message.__init__(self, message, ui, Gtk.MessageType.WARNING)
         self.popup()
 
 class MessageInfo(Message):
     def __init__(self, message, ui):
-        Message.__init__(self, message, ui, Gtk.MESSAGE_INFO)
+        Message.__init__(self, message, ui, Gtk.MessageType.INFO)
         self.popup()
 
 class MessageQuestion(Message):
     def __init__(self, message, ui):
-        Message.__init__(self, message, ui, Gtk.MESSAGE_QUESTION)
+        Message.__init__(self, message, ui, Gtk.MessageType.QUESTION)
         self.popup()
