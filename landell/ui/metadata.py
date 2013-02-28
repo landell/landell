@@ -17,7 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
-from gi.repository import Gst, Gtk
+from gi.repository import Gst, Gtk, GLib
 from landell.settings import UI_DIR
 import datetime
 from landell.config import config
@@ -58,7 +58,7 @@ class MetadataUI:
         taglist.add_value(Gst.TagMergeMode.REPLACE, Gst.TAG_GENRE, self.genre_entry.get_text())
         (year, month, day) = self.calendar.get_date()
         month +=1
-        date = "%d-%d-%d" % (year, month, day)
+        date = GLib.Date.new_dmy(day, month, year)
         taglist.add_value(Gst.TagMergeMode.REPLACE, Gst.TAG_DATE, date)
         taglist.add_value(Gst.TagMergeMode.REPLACE, Gst.TAG_LOCATION, self.location_entry.get_text())
         taglist.add_value(Gst.TagMergeMode.REPLACE, Gst.TAG_ORGANIZATION, self.organization_entry.get_text())
