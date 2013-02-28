@@ -46,16 +46,16 @@ class Preview(Gst.Bin):
         self.videoconvert.link(self.videoscale)
         self.videoscale.link(self.sink)
         sink_pad = Gst.GhostPad.new(
-            "sink_ghost_pad", self.videoconvert.get_static_pad("sink")
+            "sink", self.videoconvert.get_static_pad("sink")
         )
         if (sink_pad is None):
             Log.warning("error creating sink_pad")
         self.add_pad(sink_pad)
 
     def on_sync_message(self, sltv, message):
-        if message.structure is None:
+        if message.get_structure() is None:
             return
-        message_name = message.structure.get_name()
+        message_name = message.get_structure().get_name()
         if message_name == "prepare-window-handle":
             previewsink = message.src
             if previewsink.get_parent() == self.sink:
