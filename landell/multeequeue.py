@@ -37,11 +37,11 @@ class MulTeeQueue(Gst.Bin):
         self.pad_index = 0
 
     def get_src_pad(self):
-        request_pad = self.multiqueue.get_request_pad("sink%d")
-        self.tee.get_request_pad("src%d").link(request_pad)
-        src_pad = request_pad.iterate_internal_links().next()
+        request_pad = self.multiqueue.get_request_pad("sink_%u")
+        self.tee.get_request_pad("src_%u").link(request_pad)
+        (result, src_pad) = request_pad.iterate_internal_links().next()
         src_ghost_pad = Gst.GhostPad.new(
-                "src%d" % self.pad_index, src_pad
+                "src_%u" % self.pad_index, src_pad
         )
         if (src_ghost_pad is None):
             Log.warning("error creating multeequeue")
