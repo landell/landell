@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscópio Tecnologia
+# Copyright (C) 2013 Collabora Ltda
 # Author: Luciana Fujii Pontello <luciana@holoscopio.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -106,15 +107,15 @@ class PIPSelector(Gtk.DrawingArea):
         self.emit("changed", self.selected)
         self.queue_draw()
 
-    def get_preferred_height(self, minimum_height, natural_height):
-        print "get_preferred_height called"
-        minimun_height = 30
-        natural_height = 50
+    def do_get_preferred_height(self):
+        minimum_height = 60
+        natural_height = 80
+        return minimum_height, natural_height
 
-    def get_preferred_width(self, minimum_width, natural_width):
-        print "get_preferred_width called"
-        minimun_width = 30
-        natural_width = 50
+    def do_get_preferred_width(self):
+        minimum_width = 100
+        natural_width = 140
+        return minimum_width, natural_width
 
     def do_get_property(self, property):
         if property.name == "selected":
