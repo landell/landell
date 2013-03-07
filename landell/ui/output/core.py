@@ -43,7 +43,10 @@ class OutputUI:
         self.combobox.set_model(model)
 
     def get_config(self):
-        self.config["parent"] = self.combobox.get_active_text()
+        iter = self.combobox.get_active_iter()
+        if (iter is None):
+            return None
+        self.config["parent"] = self.combobox.get_model().get_value(iter, 0)
         return self.config
 
     def update_config(self):
