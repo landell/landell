@@ -17,7 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import gi
-from gi.repository import Gtk
+from gi.repository import Gtk, GLib
 from landell.settings import UI_DIR
 from landell.landell import *
 from landell.input.core import INPUT_TYPE_VIDEO, INPUT_TYPE_AUDIO
@@ -130,11 +130,11 @@ class SourceItem:
         actions = group.list_actions()
         if actions:
             radioaction = Gtk.RadioAction(
-                    self.name, "A", type, None, len(actions)
+                    self.name, "A", None, None, len(actions)
             )
-            radioaction.set_group(actions)
+            radioaction.join_group(actions[0])
         else:
-            radioaction = Gtk.RadioAction(self.name, "A", type, None, 0)
+            radioaction = Gtk.RadioAction.new(self.name, "A", None, None, 0)
             radioaction.activate()
             self.landell.set_video_source(self.name)
         group.add_action(radioaction)
