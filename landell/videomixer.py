@@ -144,16 +144,11 @@ class PictureInPicture(Gst.Bin):
                 "videoconvert", None
         )
         self.add(A_csp)
-        A_alpha = Gst.ElementFactory.make(
-                "identity", None
-        )
-        self.add(A_alpha)
         A_capsfilter.set_property("caps", self.caps['A'])
 
         A_videoscale.link(A_videorate)
         A_videorate.link(A_csp)
-        A_csp.link(A_alpha)
-        A_alpha.link(A_capsfilter)
+        A_csp.link(A_capsfilter)
 
         pad = self.videomixer.get_request_pad("sink_%u")
         pad.set_property("zorder",1)
@@ -189,14 +184,11 @@ class PictureInPicture(Gst.Bin):
         B_csp = Gst.ElementFactory.make(
                 "videoconvert", None
         )
-        B_alpha = Gst.ElementFactory.make("identity", None)
-        self.add(B_alpha)
         self.add(B_csp)
 
         B_videoscale.link(B_videorate)
         B_videorate.link(B_csp)
-        B_csp.link(B_alpha)
-        B_alpha.link(B_capsfilter)
+        B_csp.link(B_capsfilter)
 
         pad = self.videomixer.get_request_pad("sink_%u")
         pad.set_property("zorder", 10)
