@@ -74,10 +74,10 @@ class SourcesView(Gtk.VBox):
             for source_item in self.source_items:
                 source_item.source_destroy()
                 self.source_items.remove(source_item)
-            self.foreach(self._remove_source_item)
+            self.foreach(self._remove_source_item, None)
             self._create_items()
 
-    def _remove_source_item(self, widget):
+    def _remove_source_item(self, widget, data):
         self.remove(widget)
 
 class SourceItem:
