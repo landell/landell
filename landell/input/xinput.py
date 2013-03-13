@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010 Holoscopio Tecnologia
+# Copyright (C) 2013 Collabora Ltda
 # Author: Marcelo Jorge Vieira <metal@holoscopio.com>
 # Author: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
+# Author: Luciana Fujii Pontello <luciana.fujii@collabora.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -38,8 +40,8 @@ class XInput(Input):
 
         self.video_src.set_format(Gst.Format.TIME)
         self.video_src.set_property("use-damage", False)
-        self.video_src.set_property("endx", 800)
-        self.video_src.set_property("endy", 600)
+        self.video_src.set_property("endx", 799)
+        self.video_src.set_property("endy", 599)
 
         self.add(self.video_src)
         self.capsfilter = Gst.ElementFactory.make("capsfilter", "capsfilter")
@@ -55,6 +57,6 @@ class XInput(Input):
     def config(self, dict):
         num, den = Fract.fromdecimal(dict["framerate"])
         caps = Gst.caps_from_string(
-            "video/x-raw, framerate=%d/%d" % (num, den)
+            "video/x-raw, framerate=%d/%d, pixel-aspect-ratio=1/1" % (num, den)
         )
         self.capsfilter.set_property("caps", caps)
