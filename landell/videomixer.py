@@ -131,10 +131,6 @@ class PictureInPicture(Gst.Bin):
                 "videoscale", None
         )
         self.add(A_videoscale)
-        A_videorate = Gst.ElementFactory.make(
-                "videorate", None
-        )
-        self.add(A_videorate)
         A_capsfilter = Gst.ElementFactory.make(
                 "capsfilter", None
         )
@@ -146,8 +142,7 @@ class PictureInPicture(Gst.Bin):
         self.add(A_csp)
         A_capsfilter.set_property("caps", self.caps['A'])
 
-        A_videoscale.link(A_videorate)
-        A_videorate.link(A_csp)
+        A_videoscale.link(A_csp)
         A_csp.link(A_capsfilter)
 
         pad = self.videomixer.get_request_pad("sink_%u")
@@ -171,10 +166,6 @@ class PictureInPicture(Gst.Bin):
                 "videoscale", None
         )
         self.add(B_videoscale)
-        B_videorate = Gst.ElementFactory.make(
-                "videorate", None
-        )
-        self.add(B_videorate)
         B_capsfilter = Gst.ElementFactory.make(
                 "capsfilter", None
         )
@@ -186,8 +177,7 @@ class PictureInPicture(Gst.Bin):
         )
         self.add(B_csp)
 
-        B_videoscale.link(B_videorate)
-        B_videorate.link(B_csp)
+        B_videoscale.link(B_csp)
         B_csp.link(B_capsfilter)
 
         pad = self.videomixer.get_request_pad("sink_%u")
