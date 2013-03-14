@@ -39,7 +39,7 @@ class DVInput(Input):
         self.add(self.tee)
         self.queue_src = Gst.ElementFactory.make("queue", "dv_src_queue")
         self.add(self.queue_src)
-        self.dvdemux = Gst.ElementFactory.make("ffdemux_dv", "dvdemux")
+        self.dvdemux = Gst.ElementFactory.make("dvdemux", "dvdemux")
         self.add(self.dvdemux)
         self.dvdemux.connect("pad-added", self.on_pad_added)
         self.video_queue = Gst.ElementFactory.make(
@@ -53,7 +53,7 @@ class DVInput(Input):
 
         self.add(self.videoconvert)
 
-        self.dvdec = Gst.ElementFactory.make("dvdec", "dvdec")
+        self.dvdec = Gst.ElementFactory.make("avdec_dvvideo", "dvdec")
         self.add(self.dvdec)
         self.videoscale = Gst.ElementFactory.make(
                 "videoscale", "dv_videoscale"
