@@ -81,7 +81,8 @@ class OggTheoraVorbisEncoder(Encoder):
         if self.theoraenc:
             self.theoraenc.set_property("quality", int(dict["theora_quality"]))
             self.theoraenc.set_property("keyframe-force", int(dict["keyframe"]))
-            self.theoraenc.set_property("bitrate", int(dict["theora_bitrate"]))
+            if int(dict["theora_bitrate"]) != 0:
+                self.theoraenc.set_property("bitrate", int(dict["theora_bitrate"]))
         if self.vorbisenc:
             self.vorbisenc.set_property("quality", float(dict["vorbis_quality"]))
             self.vorbisenc.set_property("bitrate", int(dict["vorbis_bitrate"]))
