@@ -22,25 +22,10 @@ from landell.settings import UI_DIR
 
 class AudioUI:
     def __init__(self):
-        self.interface = Gtk.Builder()
-        self.interface.add_from_file(UI_DIR + "/audio_input.ui")
-        self.config = {}
-        self.box = self.interface.get_object("audio_box")
-        self.audiorate_entry = self.interface.get_object("audiorate_entry")
+        pass
 
     def get_widget(self):
-        return self.box
+        return None
 
     def get_name(self):
         return "Audio configuration"
-
-    def get_config(self):
-        self.config["audiorate"] = self.audiorate_entry.get_text()
-        return self.config
-
-    def update_config(self):
-        self.audiorate_entry.set_text(self.config["audiorate"])
-
-    def set_config(self, config):
-        self.config = config
-        self.update_config()

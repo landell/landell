@@ -42,12 +42,10 @@ class EditSource(Edit):
         if self.media_item:
             if media_item.parent:
                 self.audio = media_item.parent
-                self.audio.factory.get_ui().set_config(
-                        self.audio.get_config()
-                )
             self.set_factory(self.media_item.factory)
             self.name_entry.set_text(self.media_item.name)
-            self.media_item.factory.get_ui().set_config(media_item.get_config())
+            if self.media_item.factory.get_ui():
+                self.media_item.factory.get_ui().set_config(media_item.get_config())
 
 
     def save(self):
@@ -57,15 +55,12 @@ class EditSource(Edit):
                 return False
             if not self.media_list.get_item(name):
                 media_item = landell.mediaitem.MediaItem(name, self.factory)
-                media_item.set_config(self.factory.get_ui().get_config().copy())
+                if self.factory.get_ui():
+                    media_item.set_config(self.factory.get_ui().get_config().copy())
                 if self.audio_config:
                     audio = landell.mediaitem.MediaItem(
                             name, self.audio_factory
                     )
-                    audio.set_config(
-                            self.audio_factory.get_ui().get_config().copy()
-                    )
-
                     media_item.set_parent(audio)
                     audio.set_parent(None)
                     self.audio_list.add_item(name, audio)
@@ -73,13 +68,10 @@ class EditSource(Edit):
                     media_item.set_parent(None)
                 self.media_list.add_item(name, media_item)
         else:
-            self.media_item.set_config(
-                    self.factory.get_ui().get_config().copy()
-            )
-            if self.audio_config:
-                self.audio.set_config(
-                        self.audio_factory.get_ui().get_config().copy()
-                )
+            if self.factory.get_ui():
+                self.media_item.set_config(
+                        self.factory.get_ui().get_config().copy()
+                        )
         self.media_list.save()
         if self.audio_config:
             self.audio_list.save()

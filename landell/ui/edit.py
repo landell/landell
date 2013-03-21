@@ -50,7 +50,6 @@ class Edit:
 
         self.audio_config = None
 
-
     def set_media_item(self, media_item):
         self.media_item = media_item
         if self.media_item:
@@ -101,11 +100,3 @@ class Edit:
         if self.config_box:
             self.element_alignment.add(self.config_box)
             self.container_box.add(self.element_box)
-
-        if self.audio_config:
-            self.container_box.remove(self.audio_config)
-            self.audio_config = None
-        if self.factory.get_capabilities() and \
-                self.factory.get_capabilities() & INPUT_TYPE_AUDIO:
-            self.audio_config = self.audio_factory.get_ui().get_widget()
-            self.container_box.add(self.audio_config)

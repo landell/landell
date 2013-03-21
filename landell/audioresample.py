@@ -24,16 +24,6 @@ from log import Log
 
 class AudioResample(Gst.Bin):
 
-    __gproperties__ = {
-            'audiorate' : (GObject.TYPE_INT,              # type
-                        'audiorate',                      # nick name
-                        'audiorate',                      # description
-                        -1,                               # minimum value
-                        2147483647,                       # maximum value
-                        -1,                               # default value (not set)
-                        GObject.PARAM_READWRITE)          # flags
-    }
-
     def __init__(self):
         Gst.Bin.__init__(self)
 
@@ -52,46 +42,21 @@ class AudioResample(Gst.Bin):
         )
         self.add(self.audiorate)
 
-        self.capsfilter = Gst.ElementFactory.make(
-                "capsfilter", "audioresample_capsfilter"
-        )
-        self.add(self.capsfilter)
-
         self.audioconvert.link(self.audiorate)
         self.audiorate.link(self.audioresample)
-        self.audioresample.link(self.capsfilter)
 
         self.sink_pad = Gst.GhostPad.new(
                 "sink", self.audioconvert.get_static_pad("sink")
         )
         self.src_pad = Gst.GhostPad.new(
-                "src", self.capsfilter.get_static_pad("src")
+                "src", self.audioresample.get_static_pad("src")
         )
         if (self.sink_pad is None or self.src_pad is None):
             Log.warning("error creating audioresample")
         self.add_pad(self.sink_pad)
         self.add_pad(self.src_pad)
-        self.audiorate_property = -1
 
     def config(self, config):
-        self.set_property("audiorate", int(config["audiorate"]))
-
-    def do_get_property(self, property):
-        if property.name == "audiorate":
-            return self.audiorate_property
-        else:
-            Log.warning('audioresample unknown property %s' % property.name)
-
-    def do_set_property(self, property, value):
-        if property.name == "audiorate":
-            caps = Gst.caps_from_string(
-                    "audio/x-raw, rate=%d" %(
-                        value
-                    )
-            )
-            self.capsfilter.set_property("caps", caps)
-            self.audiorate_property = value
-        else:
-            Log.warning('audioresample unknown property %s' % property.name)
+         pass
 
 GObject.type_register(AudioResample)
