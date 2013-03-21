@@ -98,6 +98,7 @@ class Sltv(GObject.GObject):
         self.pip_source = None
         self.pip_position = None
         self.audio_source = None
+        self.audiorate_caps = None
 
         self.overlay_text = None
         self.overlay_font = "Sans Bold 14"
@@ -341,10 +342,15 @@ class Sltv(GObject.GObject):
             self.audio_tee = Gst.ElementFactory.make("tee", "audio_tee")
             self.player.add(self.audio_tee)
 
+            self.audiorate_capsfilter = \
+                    Gst.ElementFactory.make("capsfilter", "audiorate_capsfilter")
+            self.player.add(self.audiorate_capsfilter)
             self.volume = volume.Volume()
             self.player.add(self.volume)
 
-            self.input_selector.link(self.volume)
+            self.input_selector.link(self.audiorate_capsfilter)
+            self.audiorate_capsfilter.link(self.volume)
+            self.audiorate_capsfilter.set_property("caps", self.audiorate_caps)
             self.volume.link(self.effect[MEDIA_AUDIO])
             self.effect[MEDIA_AUDIO].link(self.convert)
             self.convert.link(self.audio_tee)
@@ -527,8 +533,9 @@ class Sltv(GObject.GObject):
             self.pip.set_property("position", selected, caps)
 
     def set_audiorate(self, audiorate):
-        #TODO: set audiorate
-        pass
+        self.audiorate_caps = Gst.caps_from_string(
+                "audio/x-raw, rate=%d" %(int(audiorate))
+                )
 
     def set_audio_source(self, source_name):
         self.audio_source = source_name
