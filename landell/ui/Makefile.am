@@ -28,6 +28,7 @@ landelllib_DATA = \
 	pip_widget.py \
 	metadata.py \
 	videobalance.py \
+	general.py \
 	output_item.py
 
 EXTRA_DIST = $(landelllib_DATA)

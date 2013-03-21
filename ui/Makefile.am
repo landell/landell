@@ -15,6 +15,7 @@ ui_DATA = edit.ui \
 	source.ui \
 	output.ui \
 	metadata.ui \
+	general.ui \
 	videobalance.ui
 
 EXTRA_DIST = $(ui_DATA)

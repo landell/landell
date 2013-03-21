@@ -219,6 +219,9 @@ class Sltv(GObject.GObject):
                     self.input_selector = Gst.ElementFactory.make(
                             "input-selector", "audio-selector"
                     )
+                    self.input_selector.set_property("cache-buffers", True)
+                    self.input_selector.set_property("sync-streams", True)
+                    self.input_selector.set_property("sync-mode", "clock")
                     self.player.add(self.input_selector)
 
                 audiobin = audioinputbin.AudioInputBin(source)
@@ -433,6 +436,8 @@ class Sltv(GObject.GObject):
         bus.connect("message", self.on_message)
         bus.connect("sync-message::element", self.on_sync_message)
         cr = self.player.set_state(Gst.State.PLAYING)
+
+
         if cr == Gst.StateChangeReturn.SUCCESS:
             self.emit("playing")
             self.is_playing = True
@@ -519,11 +524,16 @@ class Sltv(GObject.GObject):
     def set_pip_position(self, selected):
         self.pip_position = selected
         if self.playing():
-            self.pip.set_property("position", selected)
+            self.pip.set_property("position", selected, caps)
+
+    def set_audiorate(self, audiorate):
+        #TODO: set audiorate
+        pass
 
     def set_audio_source(self, source_name):
         self.audio_source = source_name
         if self.playing():
+            Gst.debug_bin_to_dot_file(self.player, Gst.DebugGraphDetails.ALL, "debug")
             self.input_selector.set_property(
                     "active-pad", self.audio_pads[source_name]
             )

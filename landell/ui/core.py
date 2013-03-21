@@ -40,6 +40,7 @@ import volume
 import settings as settings
 import pip_widget
 import metadata
+import general
 
 class SltvUI:
 
@@ -80,6 +81,7 @@ class SltvUI:
                 self, self.encoders, self.videoconverters
         )
         self.metadata_ui = metadata.MetadataUI(self.landell, self.settings_dialog)
+        self.general_ui = general.GeneralUI(self.landell, self.settings_dialog)
 
         self.hbuttonbox = self.interface.get_object("hbuttonbox1")
         self.volume = volume.VolumeUI(self, self.landell)
@@ -162,6 +164,11 @@ class SltvUI:
         vbox.set_border_width(12)
         vbox.pack_start(self.metadata_ui.get_widget(), True, False, 0)
         notebook.append_page(vbox, Gtk.Label('Metadata'))
+
+        vbox = Gtk.VBox()
+        vbox.set_border_width(12)
+        vbox.pack_start(self.general_ui.get_widget(), True, False, 0)
+        notebook.append_page(vbox, Gtk.Label('General'))
 
         #menu
 
