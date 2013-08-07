@@ -530,7 +530,7 @@ class Sltv(GObject.GObject):
     def set_pip_position(self, selected):
         self.pip_position = selected
         if self.playing():
-            self.pip.set_property("position", selected, caps)
+            self.pip.set_property("position", selected)
 
     def set_audiorate(self, audiorate):
         self.audiorate_caps = Gst.caps_from_string(
