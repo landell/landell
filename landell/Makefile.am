@@ -22,8 +22,7 @@ landelllib_DATA = \
 	utils.py \
 	metadata.py \
 	multeequeue.py \
-	outputbin.py \
-	audioinputbin.py
+	outputbin.py
 
 EXTRA_DIST = $(landelllib_DATA)
 

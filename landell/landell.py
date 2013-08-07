@@ -36,7 +36,6 @@ import volume
 import metadata
 import multeequeue
 import outputbin
-import audioinputbin
 
 MEDIA_AUDIO = 1
 MEDIA_VIDEO = 2
@@ -225,13 +224,9 @@ class Sltv(GObject.GObject):
                     self.input_selector.set_property("sync-mode", "clock")
                     self.player.add(self.input_selector)
 
-                audiobin = audioinputbin.AudioInputBin(source)
-                self.player.add(audiobin)
-
-                element.audio_pad.link(audiobin.get_static_pad("sink"))
                 self.audio_pads[name] = \
                         self.input_selector.get_request_pad("sink_%u")
-                audiobin.src_pad.link(self.audio_pads[name])
+                element.audio_pad.link(self.audio_pads[name])
 
             if element.does_video():
                 self.input_type |= MEDIA_VIDEO
