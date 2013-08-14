@@ -21,6 +21,7 @@ gi.require_version("Gst", "1.0")
 from gi.repository import Gst
 from core import Output
 from landell.log import Log
+import datetime
 
 class FileOutput(Output):
 
@@ -35,4 +36,5 @@ class FileOutput(Output):
         self.add_pad(self.sink_pad)
 
     def config(self, dict):
-        self.file_sink.set_property("location", dict["location"])
+        timestamp = str(datetime.datetime.now())
+        self.file_sink.set_property("location", dict["location"] + timestamp)
