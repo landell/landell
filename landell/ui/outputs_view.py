@@ -52,11 +52,13 @@ class OutputsView(Gtk.VBox):
 
     def _add_output(self, medialist, name, item):
         self._create_item(name)
-        self.foreach(self._remove_output_item)
+        self.foreach(self._remove_output_item, None)
         self._add_items()
 
     def _remove_output(self, medialist, name, item):
-        self.foreach(self._remove_output_item)
+        # FIXME: the Gtk GI annotation seems to be wrong; user_data
+        # should have a default value of None!
+        self.foreach(self._remove_output_item, None)
         self.output_items[name].disconnect_by_func(self._on_output_stopped)
         self.output_items.pop(name)
         self._add_items()
@@ -65,7 +67,7 @@ class OutputsView(Gtk.VBox):
         for name in sorted(self.output_items.keys()):
             self.pack_start(self.output_items[name].get_widget(), False, False, 0)
 
-    def _remove_output_item(self, widget):
+    def _remove_output_item(self, widget, *args):
         self.remove(widget)
 
     def _on_output_stopped(self, output_item):

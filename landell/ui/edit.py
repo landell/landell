@@ -79,7 +79,7 @@ class Edit:
             self.media_item.set_config(config)
         self.media_list.save()
 
-    def _gfi_helper(self, model, path, iter):
+    def _gfi_helper(self, model, path, iter, *args):
         name = self.factory.get_name()
         if model.get_value(iter, 0) == name:
             self._factory_iter = iter
@@ -88,7 +88,7 @@ class Edit:
 
     def _get_factory_index(self):
         self._factory_iter = None
-        self.elements_liststore.foreach(self._gfi_helper)
+        self.elements_liststore.foreach(self._gfi_helper, None)
         return self._factory_iter
 
     def set_factory(self, factory):
