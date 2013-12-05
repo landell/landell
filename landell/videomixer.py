@@ -201,9 +201,9 @@ class PictureInPicture(Gst.Bin):
         inside_width = width/2
         inside_height = height/2
         resolution = ",width=" + str(inside_width) + ",height=" + str(inside_height)
-        caps_string_inside = "video/x-raw, format=YUY2" + resolution
+        caps_string_inside = "video/x-raw " + resolution
         resolution = ",width=" + str(width) + ",height=" + str(height)
-        caps_string_outside = "video/x-raw, format=YUY2" + resolution
+        caps_string_outside = "video/x-raw " + resolution
         caps['B'] = Gst.caps_from_string(caps_string_inside)
         caps['A'] = Gst.caps_from_string(caps_string_outside)
         return caps
