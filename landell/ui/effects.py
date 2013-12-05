@@ -71,9 +71,10 @@ class EffectsUI:
         self.apply_button.set_sensitive(False)
 
     def _create_effects_combobox(self, combobox, effect_type):
+        combobox.append_text("none")
+        combobox.set_active(0)
         for etype in self.effect_registry.get_types(effect_type):
             combobox.append_text(etype)
-        combobox.set_active(0)
 
     def set_effects(self, state):
         self.video_effect_combobox.set_sensitive(state)
