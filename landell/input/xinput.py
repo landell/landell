@@ -31,23 +31,10 @@ class XInput(Input):
 
     def __init__(self):
         Input.__init__(self, CAPABILITIES)
-        self.video_src = Gst.ElementFactory.make("ximagesrc", "video_src")
-
-        # Setting format to time, to work with input-selector, since they're
-        # were not working together in version 0.10.18-1 from Debian.
-        # This should be fixed in ximagesrc's code and input-selector should
-        # also be fixed to work with byte format.
-
-        self.video_src.set_format(Gst.Format.TIME)
-        self.video_src.set_property("use-damage", False)
-        self.video_src.set_property("endx", 799)
-        self.video_src.set_property("endy", 599)
-
-        self.add(self.video_src)
+        self.video_src = None
         self.capsfilter = Gst.ElementFactory.make("capsfilter", "capsfilter")
         self.add(self.capsfilter)
 
-        self.video_src.link(self.capsfilter)
 
         self.video_pad = Gst.GhostPad.new("video_pad", self.capsfilter.get_static_pad("src"))
         if (self.video_pad is None):
@@ -60,3 +47,14 @@ class XInput(Input):
             "video/x-raw, framerate=%d/%d, pixel-aspect-ratio=1/1" % (num, den)
         )
         self.capsfilter.set_property("caps", caps)
+
+        self.video_src = Gst.ElementFactory.make("ximagesrc", "video_src")
+        self.video_src.set_property("use-damage", False)
+        if (dict.has_key("xname")):
+            self.video_src.set_property("xname", dict["xname"])
+        else:
+         self.video_src.set_property("endx", 799)
+         self.video_src.set_property("endy", 599)
+
+        self.add(self.video_src)
+        self.video_src.link(self.capsfilter)
