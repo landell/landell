@@ -34,7 +34,7 @@ class OutputUI:
         cell = Gtk.CellRendererText()
         self.combobox.pack_start(cell, True)
         self.combobox.add_attribute(cell, "text", 0)
-
+        self.combobox.set_active(0)
 
     def get_encoder_widget(self):
         return self.parent_box
