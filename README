@@ -25,40 +25,29 @@ Dependencies:
 
   Landell was tested with the following minimal versions:
 
-  libgstreamer0.10-0 (>= 0.10.19)
-  gstreamer0.10-plugins-base (>= 0.10.19)
-  gstreamer0.10-plugins-good (>= 0.10.26)
-  gstreamer0.10-plugins-bad (>= 0.10.7)
-  gstreamer0.10-ffmpeg (>= 0.10.4)
-  gstreamer0.10-alsa (>= 0.10.19)
-  gstreamer0.10-x (>= 0.10.19)
-  python (>= 2.5)
-  python-gst0.10 (>= 0.10.12)
+  libgstreamer1.0-0 (>= 1.2.4)
+  gstreamer1.0-plugins-base (>= 1.2.4)
+  gstreamer1.0-plugins-good (>= 1.2.4)
+  gstreamer1.0-plugins-bad (>= 1.2.4)
+  gstreamer1.0-libav (>= 1.3.2)
+  gstreamer1.0-alsa (>= 1.2.4)
+  gstreamer1.0-x (>= 1.2.4)
+  python (>= 2.7)
+  python-gi (>= 3.12.1)
   python-configobj (>= 4.5.2)
-  python-gobject (>= 2.14.2)
-  python-gtk2 (>= 2.12.1)
+  gtk+-3
 
   It may work with lower versions, but we haven't tested it.
   Please, send us any findings you make about minimal versions.
 
-Bugs:
-=====
-
-  The bug tracker can be reached by visiting the website
-  http://gonod.softwarelivre.org/cgi-bin/bugzilla/buglist.cgi?product=sltv
-
-  Before sending a bug report, please verify that you have the latest
-  version of Sltv. Many bugs (major and minor) are fixed at each release,
-  and if yours is out of date, the problem may already have been solved.
-
 Mailing list:
 =============
 
-  http://listas.softwarelivre.org/cgi-bin/mailman/listinfo/sltv-dev
-  sltv-dev@listas.softwarelivre.org
+  http://listas.softwarelivre.org/cgi-bin/mailman/listinfo/landell
+  landell@listas.softwarelivre.org
 
 Development:
 ============
 
-  http://git.holoscopio.com/?p=sltv.git;a=summary
-  git clone http://git.holoscopio.com/git/sltv.git
+  https://gitorious.org/landell
+  git clone git://gitorious.org/landell/landell.git
