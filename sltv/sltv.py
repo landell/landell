@@ -443,10 +443,9 @@ class Sltv(gobject.GObject):
 
                     gst.element_link_many(self.audio_tee, audio_queue, encoder)
 
-        if self.preview_enabled:
-            self.preview = Preview(self)
-            self.player.add(self.preview)
-            self.preview_tee.get_src_pad().link(self.preview.sink_pads().next())
+        self.preview = Preview(self)
+        self.player.add(self.preview)
+        self.preview_tee.get_src_pad().link(self.preview.sink_pads().next())
 
         if pip_width == 0:
             pip_width = 320
