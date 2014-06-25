@@ -29,8 +29,6 @@ class PreviewUI:
         self.interface = Gtk.Builder()
         self.interface.add_from_file(UI_DIR + "/preview.ui")
         self.widget = self.interface.get_object("vbox")
-        self.button = self.interface.get_object("preview_checkbutton")
-        self.button.connect("toggled", self.toggled)
         self.preview_state = False
         landell.set_preview(self.preview_state)
     def toggled(self, checkbox):

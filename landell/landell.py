@@ -411,10 +411,9 @@ class Sltv(GObject.GObject):
                     self.audio_tee.link(audio_queue)
                     audio_queue.link(encoder)
 
-        if self.preview_enabled:
-            self.preview = Preview(self)
-            self.player.add(self.preview)
-            self.preview_tee.get_src_pad().link(self.preview.get_static_pad("sink"))
+        self.preview = Preview(self)
+        self.player.add(self.preview)
+        self.preview_tee.get_src_pad().link(self.preview.get_static_pad("sink"))
 
         if pip_width == 0:
             pip_width = 320
