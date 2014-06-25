@@ -13,7 +13,6 @@ landelllib_DATA = \
 	medialist.py \
 	outputs.py \
 	videoconverter.py \
-	preview.py \
 	overlay.py \
 	effects.py \
 	volume.py \

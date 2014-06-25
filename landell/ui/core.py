@@ -33,7 +33,6 @@ import sources_view
 import outputs_view
 
 from previewarea import PreviewArea
-import preview
 import effects
 import overlay
 import volume
@@ -58,9 +57,6 @@ class SltvUI:
         self.landell.connect("pipeline-ready", self.on_pipeline_ready)
 
         self.preview_frame = self.interface.get_object("preview_frame")
-        self.preview_box = self.interface.get_object("preview_vbox")
-        self.preview = preview.PreviewUI(self, self.landell)
-        self.preview_box.pack_start(self.preview.get_widget(), False, False, 0)
         self.preview_area = PreviewArea()
         self.preview_frame.add(self.preview_area)
         self.preview_area.show()

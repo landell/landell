@@ -5,7 +5,6 @@ ui_DATA = edit.ui \
 	landell.ui \
 	medialist.ui \
 	output_setting.ui \
-	preview.ui \
 	overlay.ui \
 	effects.ui \
 	audio_input.ui \
