@@ -22,7 +22,7 @@ import os
 class Config:
 
     def __init__(self):
-        self.filename = os.path.expanduser("~/.sltv")
+        self.filename = os.path.expanduser("~/.landell")
         self.config = ConfigObj(self.filename)
 
     def get_filename(self):
