@@ -12,6 +12,8 @@ About:
 
   [0] http://en.wikipedia.org/wiki/Landell_de_Moura
 
+  Please consider testing the 1.0 branch, which uses gstreamer 1.x version.
+
 License:
 ========
 
@@ -40,14 +42,22 @@ Dependencies:
   It may work with lower versions, but we haven't tested it.
   Please, send us any findings you make about minimal versions.
 
+Bugs:
+=====
+
+  Please report any issues you find on github:
+
+  https://github.com/landell/landell/issues
+
+
 Mailing list:
 =============
 
+  Landell@listas.softwarelivre.org
   http://listas.softwarelivre.org/cgi-bin/mailman/listinfo/landell
-  landell@listas.softwarelivre.org
 
 Development:
 ============
 
-  https://gitorious.org/landell
-  git clone git://gitorious.org/landell/landell.git
+  https://github.com/landell/landell
+  git@github.com:landell/landell.git
