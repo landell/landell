@@ -12,6 +12,8 @@ About:
 
   [0] http://en.wikipedia.org/wiki/Landell_de_Moura
 
+  Please consider testing the 1.0 branch, which uses gstreamer 1.x version.
+
 License:
 ========
 
@@ -45,21 +47,19 @@ Dependencies:
 Bugs:
 =====
 
-  The bug tracker can be reached by visiting the website
-  http://gonod.softwarelivre.org/cgi-bin/bugzilla/buglist.cgi?product=sltv
+  Please report any issues you find on github:
 
-  Before sending a bug report, please verify that you have the latest
-  version of Sltv. Many bugs (major and minor) are fixed at each release,
-  and if yours is out of date, the problem may already have been solved.
+  https://github.com/landell/landell/issues
+
 
 Mailing list:
 =============
 
-  http://listas.softwarelivre.org/cgi-bin/mailman/listinfo/sltv-dev
-  sltv-dev@listas.softwarelivre.org
+  Landell@listas.softwarelivre.org
+  http://listas.softwarelivre.org/cgi-bin/mailman/listinfo/landell
 
 Development:
 ============
 
-  http://git.holoscopio.com/?p=sltv.git;a=summary
-  git clone http://git.holoscopio.com/git/sltv.git
+  https://github.com/landell/landell
+  git@github.com:landell/landell.git
